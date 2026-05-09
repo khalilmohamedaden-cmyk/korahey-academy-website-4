@@ -142,12 +142,57 @@
         
         .auth-btn:hover { color: #fff; }
 
+        /* Hero Buttons with Animated Pill - FIXED */
+        .hero-btns-group {
+            position: relative;
+            display: inline-flex;
+            background: rgba(255,255,255,0.03);
+            padding: 5px;
+            border-radius: 100px;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .hero-pill {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            width: calc(50% - 5px);
+            height: calc(100% - 10px);
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(15px);
+            border-radius: 100px;
+            transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .hero-pill.join-active { transform: translateX(0); }
+        .hero-pill.learn-active { transform: translateX(100%); }
+        
+        .btn-hero {
+            position: relative;
+            z-index: 2;
+            background: transparent;
+            border: none;
+            color: #fff;
+            padding: 10px 28px;
+            cursor: pointer;
+            font-weight: 600;
+            border-radius: 100px;
+            min-width: 120px;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+        
+        .btn-hero:hover { color: #fff; }
+
         /* Hero Slider */
         .hero { height: 100vh; position: relative; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
         .hero-image-slider img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: 1.5s; }
         .hero-image-slider img.active { opacity: 0.45; }
         .hero h1 { font-size: clamp(3rem, 8vw, 7.5rem); font-weight: 800; letter-spacing: -2px; margin-bottom: 20px; }
         .hero-description { font-size: 1.3rem; color: var(--text-dim); margin-bottom: 30px; }
+        .hero-btns-wrapper { display: flex; justify-content: center; margin-top: 40px; }
 
         /* Floating Pill Navigation */
         .video-nav-observer { position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; justify-content: center; height: 40px; z-index: 10; }
@@ -170,7 +215,6 @@
         .massive-title { font-size: 3.5rem; font-weight: 800; letter-spacing: -2px; text-align: center; margin-bottom: 20px; }
         .centered-p { max-width: 700px; margin: 0 auto; text-align: center; }
         .soft-rect-large { width: 100%; max-width: 1100px; height: 500px; object-fit: cover; border-radius: 28px; border: 1px solid var(--glass-border); margin: 50px auto; display: block; }
-        .hero-btns-wrapper { display: flex; justify-content: center; margin-top: 40px; }
 
         /* Mission Grid */
         .mission-grid {
@@ -319,25 +363,19 @@
 
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
-                
-                <li>
-                    <a href="#">Contact Us</a>
+                <li><a href="#">Contact Us</a>
                     <div class="dropdown-menu">
                         <a href="about.html">About Us</a>
                         <a href="teacher-contact.html">Teacher Contact</a>
                     </div>
                 </li>
-
-                <li>
-                    <a href="#">Academics</a>
+                <li><a href="#">Academics</a>
                     <div class="dropdown-menu">
                         <a href="results.html">Results &amp; Resources</a>
                         <a href="curriculum.html">Curriculum</a>
                     </div>
                 </li>
-
-                <li>
-                    <a href="#">Announcements</a>
+                <li><a href="#">Announcements</a>
                     <div class="dropdown-menu">
                         <a href="exam-calendar.html">Exam Calendar</a>
                         <a href="news.html">School News</a>
@@ -359,18 +397,14 @@
                             <p id="dropdownUserName" style="font-weight: 700; font-size: 0.95rem;"></p>
                             <p id="dropdownUserEmail" style="font-size: 0.75rem; color: var(--text-dim);"></p>
                         </div>
-                        <div class="dropdown-item" id="myAccountBtn">
-                            <span>My Account</span>
-                        </div>
+                        <div class="dropdown-item" id="myAccountBtn"><span>My Account</span></div>
                         <div id="adminDropdownItem" style="display: none;">
                             <div class="dropdown-item" id="adminDashboardBtn">
                                 <span>Admin Dashboard</span>
                                 <span style="background: rgba(255,100,0,0.2); color: #ffa500; font-size: 0.7rem; padding: 2px 8px; border-radius: 20px; margin-left: 8px;">ADMIN</span>
                             </div>
                         </div>
-                        <div class="dropdown-item" id="signOutBtn" style="color: #ff4d4d !important;">
-                            <span>Sign Out</span>
-                        </div>
+                        <div class="dropdown-item" id="signOutBtn" style="color: #ff4d4d !important;"><span>Sign Out</span></div>
                     </div>
                 </div>
             </div>
@@ -389,10 +423,11 @@
             <h1 class="reveal">Passion for Success</h1>
             <p class="hero-description reveal">Building a foundation for leadership and academic mastery.</p>
             <div class="hero-btns-wrapper reveal">
-                <div class="hero-btns-group" style="position: relative; display: flex; background: rgba(255,255,255,0.03); padding: 5px; border-radius: 100px; border: 1px solid var(--glass-border);">
-                    <div class="liquid-pill" id="hero-pill-bg" style="position: absolute; top: 5px; left: 5px; height: calc(100% - 10px); background: rgba(255,255,255,0.1); backdrop-filter: blur(15px); border-radius: 100px; transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1); z-index: 1; pointer-events: none;"></div>
-                    <button class="btn-hero active" id="heroJoinBtn" style="border: none; background: transparent; color: #fff; cursor: pointer; z-index: 2; position: relative; font-weight: 600; padding: 12px 25px; min-width: 120px;">Join Us</button>
-                    <button class="btn-hero" id="heroLearnBtn" style="border: none; background: transparent; color: #fff; cursor: pointer; z-index: 2; position: relative; font-weight: 600; padding: 12px 25px; min-width: 120px;">Learn More</button>
+                <!-- Hero Buttons with Animated Pill -->
+                <div class="hero-btns-group" id="heroBtnsGroup">
+                    <div class="hero-pill join-active" id="heroPill"></div>
+                    <button class="btn-hero active" id="heroJoinBtn">Join Us</button>
+                    <button class="btn-hero" id="heroLearnBtn">Learn More</button>
                 </div>
             </div>
         </div>
@@ -404,7 +439,7 @@
         </div>
     </header>
 
-    <!-- All sections (Our Mission, Academic Excellence, Core Values, etc.) -->
+    <!-- Our Mission -->
     <section class="info-split reveal-slide-up">
         <div class="info-container">
             <div class="info-image"><img src="slided4.png" class="soft-rect-wide" alt="Our Mission"></div>
@@ -415,6 +450,7 @@
         </div>
     </section>
 
+    <!-- Academic Excellence -->
     <section class="info-split reveal-slide-up">
         <div class="info-container">
             <div class="info-text">
@@ -425,6 +461,7 @@
         </div>
     </section>
 
+    <!-- Core Values -->
     <section class="offers-section reveal-slide-up">
         <h2 class="massive-title">Our Core Values</h2>
         <p style="text-align: center; max-width: 700px; margin: 0 auto 50px auto; color: var(--text-dim); font-size: 1.1rem;">What makes Korahey Academy special</p>
@@ -436,18 +473,22 @@
         </div>
     </section>
 
+    <!-- Why Families Choose -->
     <section class="why-us-v2 reveal-slide-up">
         <div class="why-header"><h2 class="massive-title">Why Families Choose Korahey Academy</h2><p class="clean-desc centered-p">Our mission is to drive progress and enhance the lives of our students.</p></div>
         <div class="why-img-container"><img src="slided1.png" class="soft-rect-large" alt="Why Choose Us" onerror="this.src='https://placehold.co/1100x500/1a1a1a/white?text=Korahey+Academy'"></div>
         <div class="why-footer"><p class="clean-desc centered-p">Families choose us for our focus on real growth every single day.</p>
-            <div class="hero-btns-wrapper"><div class="hero-btns-group" style="position: relative; display: flex; background: rgba(255,255,255,0.03); padding: 5px; border-radius: 100px; border: 1px solid var(--glass-border);">
-                <div class="liquid-pill" id="footer-pill-bg" style="position: absolute; top: 5px; left: 5px; height: calc(100% - 10px); background: rgba(255,255,255,0.1); backdrop-filter: blur(15px); border-radius: 100px; transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1); z-index: 1; pointer-events: none;"></div>
-                <button class="btn-hero active" id="footerJoinBtn" style="border: none; background: transparent; color: #fff; cursor: pointer; z-index: 2; position: relative; font-weight: 600; padding: 12px 25px; min-width: 120px;">Get Started</button>
-                <button class="btn-hero" id="footerLearnBtn" style="border: none; background: transparent; color: #fff; cursor: pointer; z-index: 2; position: relative; font-weight: 600; padding: 12px 25px; min-width: 120px;">Learn More</button>
-            </div></div>
+            <div class="hero-btns-wrapper">
+                <div class="hero-btns-group" id="footerBtnsGroup">
+                    <div class="hero-pill join-active" id="footerPill"></div>
+                    <button class="btn-hero active" id="footerJoinBtn">Get Started</button>
+                    <button class="btn-hero" id="footerLearnBtn">Learn More</button>
+                </div>
+            </div>
         </div>
     </section>
 
+    <!-- Exams -->
     <section class="exams-section reveal-slide-up">
         <div class="exams-layout-wrapper">
             <div class="exam-card-massive reveal-pop card-hover"><div style="margin-top: auto;"><span class="exam-pill">National Exam</span><h2 class="exam-title-huge">12th Grade</h2><p class="clean-desc exam-desc">Intensive preparation for university entrance. Our senior year program is designed to maximize student success through focused curriculum, expert faculty guidance, and comprehensive exam strategies.</p></div></div>
@@ -456,6 +497,7 @@
         </div>
     </section>
 
+    <!-- Stats -->
     <section class="stats-section reveal-slide-up">
         <div class="stats-pill-container">
             <div class="stat-pill-card reveal-pop card-hover"><span class="stat-number-large">98%</span><span class="stat-label-large">University Acceptance Rate</span></div>
@@ -464,6 +506,7 @@
         </div>
     </section>
 
+    <!-- Contact & Location -->
     <section class="contact-section reveal-slide-up">
         <div class="contact-container">
             <div class="contact-info"><h2 class="massive-title" style="text-align: left;">Contact & Location</h2><p class="clean-desc" style="margin-bottom: 50px;">We're here to help you with any questions about Korahey Academy. Get in touch or visit.</p>
@@ -479,9 +522,7 @@
     <footer><div class="footer-content"><div class="footer-logo">Korahey Academy</div><div class="footer-copyright">© 2026 Khalil · Official site for Korahey Academy</div><div class="footer-made">Made by Khalil</div></div></footer>
 
     <script>
-        // ============================================
-        // FIREBASE CONFIGURATION - THIS IS CORRECT
-        // ============================================
+        // Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyCC5oK1cMufciR1v4wLi-jfYvXa_cQBnd0",
             authDomain: "korahey-admin.firebaseapp.com",
@@ -508,8 +549,48 @@
         const dropdownUserEmail = document.getElementById('dropdownUserEmail');
         const adminDropdownItem = document.getElementById('adminDropdownItem');
 
-        // Pill animation on hover
-        function setupPillHover() {
+        // Hero Buttons Pill Animation
+        const heroPill = document.getElementById('heroPill');
+        const heroJoinBtn = document.getElementById('heroJoinBtn');
+        const heroLearnBtn = document.getElementById('heroLearnBtn');
+        
+        // Footer Buttons Pill Animation
+        const footerPill = document.getElementById('footerPill');
+        const footerJoinBtn = document.getElementById('footerJoinBtn');
+        const footerLearnBtn = document.getElementById('footerLearnBtn');
+
+        // Setup hero pill animation
+        function setupHeroPill() {
+            if (!heroJoinBtn || !heroLearnBtn || !heroPill) return;
+            
+            heroJoinBtn.addEventListener('mouseenter', () => {
+                heroPill.classList.remove('learn-active');
+                heroPill.classList.add('join-active');
+            });
+            
+            heroLearnBtn.addEventListener('mouseenter', () => {
+                heroPill.classList.remove('join-active');
+                heroPill.classList.add('learn-active');
+            });
+        }
+        
+        // Setup footer pill animation
+        function setupFooterPill() {
+            if (!footerJoinBtn || !footerLearnBtn || !footerPill) return;
+            
+            footerJoinBtn.addEventListener('mouseenter', () => {
+                footerPill.classList.remove('learn-active');
+                footerPill.classList.add('join-active');
+            });
+            
+            footerLearnBtn.addEventListener('mouseenter', () => {
+                footerPill.classList.remove('join-active');
+                footerPill.classList.add('learn-active');
+            });
+        }
+
+        // Setup auth pill animation
+        function setupAuthPill() {
             if (!signUpBtn || !logInBtn || !authPill) return;
             
             signUpBtn.addEventListener('mouseenter', () => {
@@ -532,11 +613,11 @@
         // Attach button events
         if (signUpBtn) signUpBtn.addEventListener('click', goToSignUp);
         if (logInBtn) logInBtn.addEventListener('click', goToLogIn);
+        if (heroJoinBtn) heroJoinBtn.addEventListener('click', goToSignUp);
+        if (heroLearnBtn) heroLearnBtn.addEventListener('click', goToLogIn);
+        if (footerJoinBtn) footerJoinBtn.addEventListener('click', goToSignUp);
+        if (footerLearnBtn) footerLearnBtn.addEventListener('click', goToLogIn);
         
-        document.getElementById('heroJoinBtn')?.addEventListener('click', goToSignUp);
-        document.getElementById('heroLearnBtn')?.addEventListener('click', goToLogIn);
-        document.getElementById('footerJoinBtn')?.addEventListener('click', goToSignUp);
-        document.getElementById('footerLearnBtn')?.addEventListener('click', goToLogIn);
         document.getElementById('myAccountBtn')?.addEventListener('click', openMyAccount);
         document.getElementById('adminDashboardBtn')?.addEventListener('click', goToAdminDashboard);
         document.getElementById('signOutBtn')?.addEventListener('click', () => auth.signOut().then(() => location.reload()));
@@ -575,7 +656,7 @@
                 if (profileSection) profileSection.style.display = 'none';
                 if (authWrapper) {
                     authWrapper.style.display = 'flex';
-                    setupPillHover();
+                    setupAuthPill();
                 }
             }
         });
@@ -621,6 +702,9 @@
 
         // Initialize
         window.addEventListener('load', () => {
+            setupHeroPill();
+            setupFooterPill();
+            
             if (slides.length) {
                 setTimeout(() => { updateHero(0); }, 100);
                 startAutoCycle();
