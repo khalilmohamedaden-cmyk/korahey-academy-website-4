@@ -346,14 +346,12 @@
             </ul>
 
             <div style="display: flex; align-items: center;">
-                <!-- Auth Buttons with Animated Pill -->
                 <div class="auth-wrapper" id="authWrapper">
                     <div class="auth-pill signup-active" id="authPill"></div>
                     <button class="auth-btn" id="signUpBtn">Sign Up</button>
                     <button class="auth-btn" id="logInBtn">Log In</button>
                 </div>
 
-                <!-- Profile Section -->
                 <div class="profile-section" id="profileSection" style="display: none;">
                     <img id="userAvatar" class="profile-avatar" src="default-avatar.png">
                     <div class="profile-dropdown">
@@ -406,7 +404,7 @@
         </div>
     </header>
 
-    <!-- Our Mission -->
+    <!-- All sections (Our Mission, Academic Excellence, Core Values, etc.) -->
     <section class="info-split reveal-slide-up">
         <div class="info-container">
             <div class="info-image"><img src="slided4.png" class="soft-rect-wide" alt="Our Mission"></div>
@@ -417,7 +415,6 @@
         </div>
     </section>
 
-    <!-- Academic Excellence -->
     <section class="info-split reveal-slide-up">
         <div class="info-container">
             <div class="info-text">
@@ -428,7 +425,6 @@
         </div>
     </section>
 
-    <!-- Core Values -->
     <section class="offers-section reveal-slide-up">
         <h2 class="massive-title">Our Core Values</h2>
         <p style="text-align: center; max-width: 700px; margin: 0 auto 50px auto; color: var(--text-dim); font-size: 1.1rem;">What makes Korahey Academy special</p>
@@ -440,7 +436,6 @@
         </div>
     </section>
 
-    <!-- Why Families Choose -->
     <section class="why-us-v2 reveal-slide-up">
         <div class="why-header"><h2 class="massive-title">Why Families Choose Korahey Academy</h2><p class="clean-desc centered-p">Our mission is to drive progress and enhance the lives of our students.</p></div>
         <div class="why-img-container"><img src="slided1.png" class="soft-rect-large" alt="Why Choose Us" onerror="this.src='https://placehold.co/1100x500/1a1a1a/white?text=Korahey+Academy'"></div>
@@ -453,7 +448,6 @@
         </div>
     </section>
 
-    <!-- Exams -->
     <section class="exams-section reveal-slide-up">
         <div class="exams-layout-wrapper">
             <div class="exam-card-massive reveal-pop card-hover"><div style="margin-top: auto;"><span class="exam-pill">National Exam</span><h2 class="exam-title-huge">12th Grade</h2><p class="clean-desc exam-desc">Intensive preparation for university entrance. Our senior year program is designed to maximize student success through focused curriculum, expert faculty guidance, and comprehensive exam strategies.</p></div></div>
@@ -462,7 +456,6 @@
         </div>
     </section>
 
-    <!-- Stats -->
     <section class="stats-section reveal-slide-up">
         <div class="stats-pill-container">
             <div class="stat-pill-card reveal-pop card-hover"><span class="stat-number-large">98%</span><span class="stat-label-large">University Acceptance Rate</span></div>
@@ -471,7 +464,6 @@
         </div>
     </section>
 
-    <!-- Contact & Location -->
     <section class="contact-section reveal-slide-up">
         <div class="contact-container">
             <div class="contact-info"><h2 class="massive-title" style="text-align: left;">Contact & Location</h2><p class="clean-desc" style="margin-bottom: 50px;">We're here to help you with any questions about Korahey Academy. Get in touch or visit.</p>
@@ -488,7 +480,7 @@
 
     <script>
         // ============================================
-        // FIREBASE CONFIGURATION
+        // FIREBASE CONFIGURATION - THIS IS CORRECT
         // ============================================
         const firebaseConfig = {
             apiKey: "AIzaSyCC5oK1cMufciR1v4wLi-jfYvXa_cQBnd0",
@@ -502,7 +494,6 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
-        const googleProvider = new firebase.auth.GoogleAuthProvider();
 
         const ADMIN_EMAIL = "khalilmohamedaden@gmail.com";
 
@@ -532,20 +523,7 @@
             });
         }
 
-        // Sign in with Redirect (faster than popup)
-        function signInWithGoogle() {
-            auth.signInWithRedirect(googleProvider);
-        }
-
-        // Handle redirect result
-        auth.getRedirectResult().then((result) => {
-            if (result.user) {
-                console.log('User signed in via redirect:', result.user);
-            }
-        }).catch((error) => {
-            console.error('Redirect sign-in error:', error);
-        });
-
+        // Navigation
         function goToSignUp() { window.location.href = 'Sign.up.html'; }
         function goToLogIn() { window.location.href = 'Log.in.html'; }
         function goToAdminDashboard() { window.location.href = 'admin.html'; }
@@ -553,12 +531,12 @@
 
         // Attach button events
         if (signUpBtn) signUpBtn.addEventListener('click', goToSignUp);
-        if (logInBtn) logInBtn.addEventListener('click', signInWithGoogle); // Google Sign In with Redirect
+        if (logInBtn) logInBtn.addEventListener('click', goToLogIn);
         
         document.getElementById('heroJoinBtn')?.addEventListener('click', goToSignUp);
-        document.getElementById('heroLearnBtn')?.addEventListener('click', signInWithGoogle);
+        document.getElementById('heroLearnBtn')?.addEventListener('click', goToLogIn);
         document.getElementById('footerJoinBtn')?.addEventListener('click', goToSignUp);
-        document.getElementById('footerLearnBtn')?.addEventListener('click', signInWithGoogle);
+        document.getElementById('footerLearnBtn')?.addEventListener('click', goToLogIn);
         document.getElementById('myAccountBtn')?.addEventListener('click', openMyAccount);
         document.getElementById('adminDashboardBtn')?.addEventListener('click', goToAdminDashboard);
         document.getElementById('signOutBtn')?.addEventListener('click', () => auth.signOut().then(() => location.reload()));
@@ -576,10 +554,9 @@
             if (adminDropdownItem) adminDropdownItem.style.display = isAdmin ? 'block' : 'none';
         }
 
-        // Auth state listener - INSTANT profile show
+        // Auth state listener
         auth.onAuthStateChanged(async (user) => {
             if (user) {
-                // User is logged in - show profile INSTANTLY
                 if (authWrapper) authWrapper.style.display = 'none';
                 if (profileSection) profileSection.style.display = 'flex';
                 if (userAvatar) {
@@ -595,7 +572,6 @@
                     ...(user.email === ADMIN_EMAIL && { isAdmin: true, role: 'super_admin' })
                 }, { merge: true });
             } else {
-                // No user - show auth buttons with pill animation
                 if (profileSection) profileSection.style.display = 'none';
                 if (authWrapper) {
                     authWrapper.style.display = 'flex';
@@ -604,24 +580,7 @@
             }
         });
 
-        // ============================================
-        // LIQUID PILL SETUP FOR HERO BUTTONS
-        // ============================================
-        function setupHeroPill(pillId, btnSelector) {
-            const pill = document.getElementById(pillId);
-            const btns = document.querySelectorAll(btnSelector);
-            if (!pill) return;
-            const update = (btn) => {
-                pill.style.width = `${btn.offsetWidth}px`;
-                pill.style.transform = `translateX(${btn.offsetLeft - 5}px)`;
-            };
-            if (btns[0]) update(btns[0]);
-            btns.forEach(btn => btn.addEventListener('mouseenter', () => update(btn)));
-        }
-
-        // ============================================
-        // HERO SLIDER
-        // ============================================
+        // Hero Slider
         const slides = document.querySelectorAll('.hero-image-slider img');
         const dots = document.querySelectorAll('.dot');
         const movingPill = document.getElementById('hero-line');
@@ -660,36 +619,24 @@
             });
         }
 
-        // ============================================
-        // REVEAL ANIMATIONS
-        // ============================================
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
-        }, { threshold: 0.1 });
-
-        // ============================================
-        // DYNAMIC ISLAND NAVIGATION
-        // ============================================
-        let lastScrollY = window.scrollY;
-        const nav = document.getElementById('navbar');
-
-        // ============================================
-        // INITIALIZE EVERYTHING
-        // ============================================
+        // Initialize
         window.addEventListener('load', () => {
-            setupHeroPill('hero-pill-bg', '.hero-btns-group .btn-hero');
-            setupHeroPill('footer-pill-bg', '.why-footer .btn-hero');
-            
             if (slides.length) {
                 setTimeout(() => { updateHero(0); }, 100);
                 startAutoCycle();
             }
             
-            document.querySelectorAll('.reveal, .reveal-slide-up, .reveal-pop').forEach(el => revealObserver.observe(el));
+            document.querySelectorAll('.reveal, .reveal-slide-up, .reveal-pop').forEach(el => {
+                new IntersectionObserver((entries) => {
+                    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+                }, { threshold: 0.1 }).observe(el);
+            });
         });
 
         window.addEventListener('resize', () => { if (dots.length && dots[currentIdx]) movePillToDot(currentIdx); });
         
+        let lastScrollY = window.scrollY;
+        const nav = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
             const currentScrollY = window.scrollY;
             if (nav) {
