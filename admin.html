@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Korahey Admin | Dashboard</title>
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #e8f4ff 0%, #ffffff 50%, #d4eaff 100%);
+            background-size: 200% 200%;
+            animation: gradientMove 8s ease infinite;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Dynamic Island Navigation */
+        .dynamic-island {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 12px 24px;
+            display: flex;
+            gap: 32px;
+            z-index: 1000;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .island-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 4px 12px;
+            border-radius: 30px;
+            background: transparent;
+        }
+
+        .island-icon:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .island-icon svg {
+            width: 22px;
+            height: 22px;
+            stroke: white;
+            fill: none;
+            stroke-width: 1.8;
+        }
+
+        .island-icon span {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+        }
+
+        /* Main Container */
+        .admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 100px 40px 60px;
+        }
+
+        /* Header */
+        .admin-header {
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .welcome-section h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1a2c3e;
+            margin-bottom: 8px;
+        }
+
+        .welcome-section p {
+            color: #5a6e7c;
+            font-size: 16px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: white;
+            padding: 8px 16px 8px 12px;
+            border-radius: 50px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .user-avatar-small {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-info-small {
+            font-weight: 500;
+            color: #1a2c3e;
+        }
+
+        .user-info-small span {
+            font-size: 12px;
+            color: #5a6e7c;
+        }
+
+        /* Search Bar - Canva Style */
+        .search-section {
+            margin-bottom: 40px;
+        }
+
+        .search-bar {
+            background: white;
+            border-radius: 60px;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e0e8f0;
+        }
+
+        .search-bar svg {
+            width: 22px;
+            height: 22px;
+            stroke: #8a9aa8;
+        }
+
+        .search-bar input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            background: transparent;
+            color: #1a2c3e;
+        }
+
+        .search-bar input::placeholder {
+            color: #b0c0ce;
+        }
+
+        /* Projects Section - Canva Style Grid */
+        .projects-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .projects-header h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1a2c3e;
+        }
+
+        .create-btn {
+            background: #1a5cff;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .create-btn:hover {
+            background: #0a4cdf;
+            transform: scale(1.02);
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e8eef3;
+        }
+
+        .project-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+        }
+
+        .project-preview {
+            height: 160px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-preview.exam { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .project-preview.schedule { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .project-preview.class { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        .project-preview.assignment { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+
+        .project-preview svg {
+            width: 48px;
+            height: 48px;
+            stroke: white;
+            fill: none;
+            stroke-width: 1.5;
+        }
+
+        .project-info {
+            padding: 16px;
+        }
+
+        .project-title {
+            font-weight: 600;
+            color: #1a2c3e;
+            margin-bottom: 6px;
+            font-size: 16px;
+        }
+
+        .project-date {
+            font-size: 12px;
+            color: #8a9aa8;
+        }
+
+        /* Create Modal - Canva Style */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 32px;
+            width: 90%;
+            max-width: 500px;
+            padding: 32px;
+            animation: modalPop 0.3s ease;
+        }
+
+        @keyframes modalPop {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-content h3 {
+            font-size: 24px;
+            color: #1a2c3e;
+            margin-bottom: 8px;
+        }
+
+        .modal-content p {
+            color: #5a6e7c;
+            margin-bottom: 24px;
+        }
+
+        .create-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .create-option {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            border: 1px solid #e0e8f0;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .create-option:hover {
+            background: #f5f9ff;
+            border-color: #1a5cff;
+        }
+
+        .create-option svg {
+            width: 28px;
+            height: 28px;
+            stroke: #1a5cff;
+        }
+
+        .create-option-text h4 {
+            font-weight: 600;
+            color: #1a2c3e;
+            margin-bottom: 4px;
+        }
+
+        .create-option-text span {
+            font-size: 13px;
+            color: #8a9aa8;
+        }
+
+        .close-modal {
+            margin-top: 20px;
+            width: 100%;
+            padding: 12px;
+            background: #f0f4f9;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 500;
+            color: #5a6e7c;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: #8a9aa8;
+        }
+
+        .empty-state svg {
+            width: 80px;
+            height: 80px;
+            stroke: #c0d0de;
+            margin-bottom: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .admin-container {
+                padding: 90px 20px 40px;
+            }
+            .dynamic-island {
+                padding: 8px 16px;
+                gap: 16px;
+            }
+            .island-icon span {
+                font-size: 9px;
+            }
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            .welcome-section h1 {
+                font-size: 24px;
+            }
+        }
+
+        /* Access Denied */
+        .access-denied {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            background: linear-gradient(135deg, #e8f4ff 0%, #ffffff 100%);
+        }
+
+        .access-denied-content {
+            background: white;
+            padding: 40px;
+            border-radius: 40px;
+            max-width: 400px;
+        }
+
+        .access-denied-content h2 {
+            color: #1a2c3e;
+            margin-bottom: 10px;
+        }
+
+        .access-denied-content p {
+            color: #5a6e7c;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="adminContent" style="display: none;">
+        <!-- Dynamic Island Navigation -->
+        <div class="dynamic-island">
+            <div class="island-icon" id="homeBtn">
+                <svg viewBox="0 0 24 24" stroke="currentColor">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2h-5v-7H9v7H5a2 2 0 0 1-2-2z"/>
+                </svg>
+                <span>Home</span>
+            </div>
+            <div class="island-icon" id="projectsBtn">
+                <svg viewBox="0 0 24 24" stroke="currentColor">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                    <line x1="9" y1="3" x2="9" y2="21"/>
+                    <line x1="15" y1="3" x2="15" y2="21"/>
+                </svg>
+                <span>Projects</span>
+            </div>
+            <div class="island-icon" id="createBtn">
+                <svg viewBox="0 0 24 24" stroke="currentColor">
+                    <path d="M12 5v14M5 12h14"/>
+                </svg>
+                <span>Create</span>
+            </div>
+            <div class="island-icon" id="profileBtn">
+                <svg viewBox="0 0 24 24" stroke="currentColor">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+                <span>Profile</span>
+            </div>
+        </div>
+
+        <div class="admin-container">
+            <div class="admin-header">
+                <div class="welcome-section">
+                    <h1>Welcome back, <span id="adminName">Admin</span> 👋</h1>
+                    <p>Manage your projects, exams, and schedules</p>
+                </div>
+                <div class="user-profile">
+                    <img id="adminAvatar" class="user-avatar-small" src="default-avatar.png">
+                    <div class="user-info-small">
+                        <div id="adminEmailShort">admin@korahey.com</div>
+                        <span>Administrator</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-section">
+                <div class="search-bar">
+                    <svg viewBox="0 0 24 24" stroke="currentColor">
+                        <circle cx="11" cy="11" r="8"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    <input type="text" id="searchInput" placeholder="Search your projects...">
+                </div>
+            </div>
+
+            <!-- Projects Section -->
+            <div class="projects-header">
+                <h2>Your Projects</h2>
+                <button class="create-btn" id="floatingCreateBtn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" stroke="white" stroke-width="2">
+                        <path d="M12 5v14M5 12h14"/>
+                    </svg>
+                    Create new
+                </button>
+            </div>
+
+            <div class="projects-grid" id="projectsGrid">
+                <!-- Projects will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Access Denied Screen -->
+    <div id="accessDenied" class="access-denied" style="display: none;">
+        <div class="access-denied-content">
+            <h2>Access Denied</h2>
+            <p>You don't have permission to view this page.</p>
+            <button class="create-btn" onclick="window.location.href='index.html'" style="background: #1a2c3e;">Back to Home</button>
+        </div>
+    </div>
+
+    <!-- Create Modal -->
+    <div class="modal" id="createModal">
+        <div class="modal-content">
+            <h3>Create new project</h3>
+            <p>Choose what you'd like to create</p>
+            <div class="create-options">
+                <div class="create-option" onclick="createProject('exam')">
+                    <svg viewBox="0 0 24 24" stroke="currentColor">
+                        <path d="M4 4h16v16H4z"/>
+                        <line x1="8" y1="9" x2="16" y2="9"/>
+                        <line x1="8" y1="13" x2="12" y2="13"/>
+                    </svg>
+                    <div class="create-option-text">
+                        <h4>Exam / Test</h4>
+                        <span>Create quizzes, exams, and assessments</span>
+                    </div>
+                </div>
+                <div class="create-option" onclick="createProject('schedule')">
+                    <svg viewBox="0 0 24 24" stroke="currentColor">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                        <line x1="16" y1="2" x2="16" y2="6"/>
+                        <line x1="8" y1="2" x2="8" y2="6"/>
+                        <line x1="3" y1="10" x2="21" y2="10"/>
+                    </svg>
+                    <div class="create-option-text">
+                        <h4>Class Schedule</h4>
+                        <span>Plan weekly classes and timetables</span>
+                    </div>
+                </div>
+                <div class="create-option" onclick="createProject('class')">
+                    <svg viewBox="0 0 24 24" stroke="currentColor">
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                        <line x1="8" y1="21" x2="16" y2="21"/>
+                        <line x1="12" y1="17" x2="12" y2="21"/>
+                    </svg>
+                    <div class="create-option-text">
+                        <h4>Class Material</h4>
+                        <span>Upload lessons, notes, and resources</span>
+                    </div>
+                </div>
+                <div class="create-option" onclick="createProject('assignment')">
+                    <svg viewBox="0 0 24 24" stroke="currentColor">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                    </svg>
+                    <div class="create-option-text">
+                        <h4>Assignment</h4>
+                        <span>Create homework and assignments</span>
+                    </div>
+                </div>
+            </div>
+            <button class="close-modal" onclick="closeModal()">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCC5oK1cMufciR1v4wLi-jfYvXa_cQBnd0",
+            authDomain: "korahey-admin.firebaseapp.com",
+            projectId: "korahey-admin",
+            storageBucket: "korahey-admin.firebasestorage.app",
+            messagingSenderId: "86298888884",
+            appId: "1:86298888884:web:f1d835de1cb9d2534d65e1"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        const ADMIN_EMAIL = "khalilmohamedaden@gmail.com";
+
+        let projects = [];
+
+        // Create project function
+        function createProject(type) {
+            let title = '';
+            let previewClass = '';
+            let icon = '';
+            
+            switch(type) {
+                case 'exam':
+                    title = `Exam ${new Date().toLocaleDateString()}`;
+                    previewClass = 'exam';
+                    break;
+                case 'schedule':
+                    title = `Schedule ${new Date().toLocaleDateString()}`;
+                    previewClass = 'schedule';
+                    break;
+                case 'class':
+                    title = `Class Material ${new Date().toLocaleDateString()}`;
+                    previewClass = 'class';
+                    break;
+                case 'assignment':
+                    title = `Assignment ${new Date().toLocaleDateString()}`;
+                    previewClass = 'assignment';
+                    break;
+            }
+            
+            const newProject = {
+                id: Date.now(),
+                title: title,
+                type: type,
+                previewClass: previewClass,
+                date: new Date().toISOString(),
+                userId: auth.currentUser?.uid
+            };
+            
+            projects.unshift(newProject);
+            saveProjects();
+            renderProjects();
+            closeModal();
+            alert(`Created: ${title}`);
+        }
+        
+        function saveProjects() {
+            localStorage.setItem('adminProjects', JSON.stringify(projects));
+        }
+        
+        function loadProjects() {
+            const saved = localStorage.getItem('adminProjects');
+            if (saved) {
+                projects = JSON.parse(saved);
+            } else {
+                // Demo projects
+                projects = [
+                    { id: 1, title: 'Final Exam - Grade 12', type: 'exam', previewClass: 'exam', date: '2026-05-15T10:00:00.000Z' },
+                    { id: 2, title: 'Weekly Class Schedule', type: 'schedule', previewClass: 'schedule', date: '2026-05-10T08:00:00.000Z' },
+                    { id: 3, title: 'Mathematics Notes', type: 'class', previewClass: 'class', date: '2026-05-05T14:00:00.000Z' },
+                    { id: 4, title: 'Homework - Chapter 5', type: 'assignment', previewClass: 'assignment', date: '2026-05-08T09:00:00.000Z' },
+                ];
+            }
+        }
+        
+        function renderProjects() {
+            const grid = document.getElementById('projectsGrid');
+            const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
+            
+            const filtered = projects.filter(p => p.title.toLowerCase().includes(searchTerm));
+            
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24" stroke="currentColor">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                            <line x1="9" y1="3" x2="9" y2="21"/>
+                            <line x1="15" y1="3" x2="15" y2="21"/>
+                        </svg>
+                        <h3>No projects yet</h3>
+                        <p>Click "Create new" to get started</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            grid.innerHTML = filtered.map(project => `
+                <div class="project-card" onclick="openProject(${project.id})">
+                    <div class="project-preview ${project.previewClass}">
+                        ${getIconForType(project.type)}
+                    </div>
+                    <div class="project-info">
+                        <div class="project-title">${escapeHtml(project.title)}</div>
+                        <div class="project-date">${formatDate(project.date)}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function getIconForType(type) {
+            switch(type) {
+                case 'exam':
+                    return `<svg viewBox="0 0 24 24" stroke="white"><path d="M4 4h16v16H4z"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="12" y2="13"/></svg>`;
+                case 'schedule':
+                    return `<svg viewBox="0 0 24 24" stroke="white"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`;
+                case 'class':
+                    return `<svg viewBox="0 0 24 24" stroke="white"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`;
+                default:
+                    return `<svg viewBox="0 0 24 24" stroke="white"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`;
+            }
+        }
+        
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+        
+        function escapeHtml(str) {
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+        
+        function openProject(id) {
+            alert(`Opening project ${id}\nFull editing coming soon!`);
+        }
+        
+        function openModal() {
+            document.getElementById('createModal').classList.add('active');
+        }
+        
+        function closeModal() {
+            document.getElementById('createModal').classList.remove('active');
+        }
+        
+        // Check admin access
+        async function checkAdminAccess(user) {
+            if (!user) {
+                document.getElementById('adminContent').style.display = 'none';
+                document.getElementById('accessDenied').style.display = 'flex';
+                return false;
+            }
+            
+            if (user.email === ADMIN_EMAIL) {
+                document.getElementById('adminContent').style.display = 'block';
+                document.getElementById('accessDenied').style.display = 'none';
+                document.getElementById('adminName').textContent = user.displayName || user.email.split('@')[0];
+                document.getElementById('adminEmailShort').textContent = user.email;
+                const avatar = document.getElementById('adminAvatar');
+                if (user.photoURL) avatar.src = user.photoURL;
+                else avatar.src = `https://ui-avatars.com/api/?name=${(user.displayName || user.email.charAt(0)).toUpperCase()}&background=1a5cff&color=fff&size=40`;
+                return true;
+            }
+            
+            const userDoc = await db.collection('users').doc(user.uid).get();
+            if (userDoc.exists && userDoc.data().isAdmin === true) {
+                document.getElementById('adminContent').style.display = 'block';
+                document.getElementById('accessDenied').style.display = 'none';
+                document.getElementById('adminName').textContent = user.displayName || user.email.split('@')[0];
+                document.getElementById('adminEmailShort').textContent = user.email;
+                return true;
+            }
+            
+            document.getElementById('adminContent').style.display = 'none';
+            document.getElementById('accessDenied').style.display = 'flex';
+            return false;
+        }
+        
+        // Navigation
+        document.getElementById('homeBtn')?.addEventListener('click', () => {
+            window.location.href = 'index.html';
+        });
+        
+        document.getElementById('projectsBtn')?.addEventListener('click', () => {
+            document.querySelector('.projects-header').scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        document.getElementById('createBtn')?.addEventListener('click', openModal);
+        document.getElementById('floatingCreateBtn')?.addEventListener('click', openModal);
+        
+        document.getElementById('profileBtn')?.addEventListener('click', () => {
+            alert('Profile settings coming soon!');
+        });
+        
+        document.getElementById('searchInput')?.addEventListener('input', renderProjects);
+        
+        // Auth check
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                await checkAdminAccess(user);
+                loadProjects();
+                renderProjects();
+            } else {
+                document.getElementById('adminContent').style.display = 'none';
+                document.getElementById('accessDenied').style.display = 'flex';
+            }
+        });
+    </script>
+</body>
+</html>
