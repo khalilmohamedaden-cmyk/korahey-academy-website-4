@@ -98,7 +98,7 @@
         }
         .profile-section:hover .profile-avatar { border-color: #fff; transform: scale(1.05); }
 
-        /* Auth Buttons with Animated Pill - FIXED */
+        /* Auth Buttons with Animated Pill */
         .auth-wrapper {
             position: relative;
             display: inline-flex;
@@ -502,6 +502,7 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
+        const googleProvider = new firebase.auth.GoogleAuthProvider();
 
         const ADMIN_EMAIL = "khalilmohamedaden@gmail.com";
 
@@ -531,6 +532,20 @@
             });
         }
 
+        // Sign in with Redirect (faster than popup)
+        function signInWithGoogle() {
+            auth.signInWithRedirect(googleProvider);
+        }
+
+        // Handle redirect result
+        auth.getRedirectResult().then((result) => {
+            if (result.user) {
+                console.log('User signed in via redirect:', result.user);
+            }
+        }).catch((error) => {
+            console.error('Redirect sign-in error:', error);
+        });
+
         function goToSignUp() { window.location.href = 'Sign.up.html'; }
         function goToLogIn() { window.location.href = 'Log.in.html'; }
         function goToAdminDashboard() { window.location.href = 'admin.html'; }
@@ -538,12 +553,12 @@
 
         // Attach button events
         if (signUpBtn) signUpBtn.addEventListener('click', goToSignUp);
-        if (logInBtn) logInBtn.addEventListener('click', goToLogIn);
+        if (logInBtn) logInBtn.addEventListener('click', signInWithGoogle); // Google Sign In with Redirect
         
         document.getElementById('heroJoinBtn')?.addEventListener('click', goToSignUp);
-        document.getElementById('heroLearnBtn')?.addEventListener('click', goToLogIn);
+        document.getElementById('heroLearnBtn')?.addEventListener('click', signInWithGoogle);
         document.getElementById('footerJoinBtn')?.addEventListener('click', goToSignUp);
-        document.getElementById('footerLearnBtn')?.addEventListener('click', goToLogIn);
+        document.getElementById('footerLearnBtn')?.addEventListener('click', signInWithGoogle);
         document.getElementById('myAccountBtn')?.addEventListener('click', openMyAccount);
         document.getElementById('adminDashboardBtn')?.addEventListener('click', goToAdminDashboard);
         document.getElementById('signOutBtn')?.addEventListener('click', () => auth.signOut().then(() => location.reload()));
