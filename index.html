@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Korahey Academy | Home</title>
     
-    <!-- Firebase SDKs - Loaded with defer for better performance -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js" defer></script>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     
     <style>
         :root {
@@ -98,7 +98,7 @@
         }
         .profile-section:hover .profile-avatar { border-color: #fff; transform: scale(1.05); }
 
-        /* Auth Buttons with Pill Animation */
+        /* Auth Buttons */
         .auth-wrapper {
             position: relative;
             display: flex;
@@ -122,13 +122,8 @@
             pointer-events: none;
         }
         
-        .auth-pill.signup-active {
-            transform: translateX(0);
-        }
-        
-        .auth-pill.login-active {
-            transform: translateX(100%);
-        }
+        .auth-pill.signup-active { transform: translateX(0); }
+        .auth-pill.login-active { transform: translateX(100%); }
         
         .auth-btn {
             position: relative;
@@ -140,19 +135,12 @@
             cursor: pointer;
             font-weight: 600;
             border-radius: 100px;
-            transition: all 0.2s ease;
             min-width: 100px;
             font-size: 0.9rem;
         }
         
-        .auth-wrapper {
-            opacity: 0;
-            transition: opacity 0.2s ease;
-        }
-        
-        .auth-wrapper.visible {
-            opacity: 1;
-        }
+        .auth-wrapper { opacity: 0; transition: opacity 0.2s ease; }
+        .auth-wrapper.visible { opacity: 1; }
 
         /* Hero Slider */
         .hero { height: 100vh; position: relative; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
@@ -288,17 +276,14 @@
         .small-info { color: var(--text-dim); font-size: 1rem; line-height: 1.6; margin-bottom: 20px; }
         .contact-map { flex: 1; height: 550px; border-radius: 30px; overflow: hidden; border: 1px solid var(--glass-border); background: #111; }
 
-        /* Card Hover */
         .card-hover { transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
         .card-hover:hover { transform: translateY(-10px) scale(1.01); border-color: rgba(255,255,255,0.2); }
 
-        /* Reveal Animations */
         .reveal, .reveal-pop, .reveal-slide-up { opacity: 0; transform: translateY(50px); transition: 1s cubic-bezier(0.16, 1, 0.3, 1); }
         .reveal.active, .reveal-pop.active, .reveal-slide-up.active { opacity: 1; transform: translateY(0); }
         .reveal-pop { transform: scale(0.9); }
         .reveal-pop.active { transform: scale(1); }
 
-        /* Footer */
         footer { padding: 60px 8% 40px; text-align: center; border-top: 1px solid var(--glass-border); background: #000; }
         .footer-content { max-width: 1200px; margin: 0 auto; }
         .footer-logo { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 20px; color: #fff; }
@@ -362,7 +347,7 @@
 
             <div style="display: flex; align-items: center;">
                 <!-- Auth Buttons with Animated Pill -->
-                <div class="auth-wrapper" id="authWrapper">
+                <div class="auth-wrapper" id="authWrapper" style="display: none;">
                     <div class="auth-pill signup-active" id="authPill"></div>
                     <button class="auth-btn" id="signUpBtn">Sign Up</button>
                     <button class="auth-btn" id="logInBtn">Log In</button>
@@ -517,7 +502,6 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
-        const provider = new firebase.auth.GoogleAuthProvider();
 
         const ADMIN_EMAIL = "khalilmohamedaden@gmail.com";
 
@@ -532,11 +516,7 @@
         const dropdownUserEmail = document.getElementById('dropdownUserEmail');
         const adminDropdownItem = document.getElementById('adminDropdownItem');
 
-        // Active button tracking for pill animation
-        let activeButton = 'signup';
-
         function setActiveButton(button) {
-            activeButton = button;
             if (button === 'signup') {
                 authPill.classList.remove('login-active');
                 authPill.classList.add('signup-active');
@@ -546,32 +526,10 @@
             }
         }
 
-        // Navigation functions
-        function goToSignUp() { 
-            window.location.href = 'Sign.up.html'; 
-        }
-        
-        function goToLogIn() { 
-            window.location.href = 'Log.in.html'; 
-        }
-        
-        function goToAdminDashboard() { 
-            window.location.href = 'admin.html'; 
-        }
-        
-        function openMyAccount() { 
-            alert('My Account page coming soon!'); 
-        }
-
-        // Sign in with Redirect (faster than popup)
-        function signInWithGoogleRedirect() {
-            auth.signInWithRedirect(provider);
-        }
-
-        // Handle redirect result
-        auth.getRedirectResult().catch((error) => {
-            console.error('Redirect sign-in error:', error);
-        });
+        function goToSignUp() { window.location.href = 'Sign.up.html'; }
+        function goToLogIn() { window.location.href = 'Log.in.html'; }
+        function goToAdminDashboard() { window.location.href = 'admin.html'; }
+        function openMyAccount() { alert('My Account page coming soon!'); }
 
         // Attach button events
         if (signUpBtn) signUpBtn.addEventListener('click', goToSignUp);
@@ -601,7 +559,7 @@
         // Auth state listener - NO FLICKER
         auth.onAuthStateChanged(async (user) => {
             if (user) {
-                // User is logged in - show profile, hide auth buttons
+                // User is logged in - show profile
                 if (authWrapper) authWrapper.style.display = 'none';
                 if (profileSection) profileSection.style.display = 'flex';
                 if (userAvatar) {
@@ -617,11 +575,14 @@
                     ...(user.email === ADMIN_EMAIL && { isAdmin: true, role: 'super_admin' })
                 }, { merge: true });
             } else {
-                // No user - show auth buttons
+                // No user - show auth buttons with pill animation
                 if (profileSection) profileSection.style.display = 'none';
                 if (authWrapper) {
                     authWrapper.style.display = 'flex';
-                    authWrapper.classList.add('visible');
+                    setTimeout(() => {
+                        authWrapper.classList.add('visible');
+                        setActiveButton('signup');
+                    }, 50);
                 }
             }
         });
@@ -701,7 +662,6 @@
         window.addEventListener('load', () => {
             setupPill('hero-pill-bg', '.hero-btns-group .btn-hero');
             setupPill('footer-pill-bg', '.why-footer .btn-hero');
-            setActiveButton('signup');
             
             if (slides.length) {
                 setTimeout(() => { updateHero(0); }, 100);
