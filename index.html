@@ -21,32 +21,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; background: #000; color: #fff; overflow-x: hidden; }
 
-        /* Page Transition Overlay */
-        .page-transition {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
-        }
-        .page-transition.active { opacity: 1; visibility: visible; }
-        .school-name-animation { text-align: center; transform: scale(0.8); opacity: 0; animation: popIn 0.6s cubic-bezier(0.34, 1.2, 0.64, 1) forwards; }
-        @keyframes popIn {
-            0% { transform: scale(0.5); opacity: 0; }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        .school-name-animation h1 { font-size: 3rem; font-weight: 800; letter-spacing: -2px; background: linear-gradient(135deg, #fff 0%, #888 50%, #fff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; }
-        .school-name-animation .tagline { font-size: 0.9rem; color: rgba(255,255,255,0.5); letter-spacing: 2px; font-weight: 500; }
-
         /* Navigation */
         nav { position: fixed; width: 100%; top: 25px; display: flex; justify-content: center; z-index: 1000; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         nav.nav-hidden { transform: translateY(-120px); }
@@ -304,14 +278,6 @@
 </head>
 <body>
 
-    <!-- Page Transition Overlay -->
-    <div class="page-transition" id="pageTransition">
-        <div class="school-name-animation">
-            <h1>KORAHEY ACADEMY</h1>
-            <div class="tagline">Passion for Success</div>
-        </div>
-    </div>
-
     <nav id="navbar">
         <div class="nav-container">
             <div class="logo" onclick="window.location.href='index.html'">
@@ -332,7 +298,7 @@
                 <li>
                     <a href="#">Academics</a>
                     <div class="dropdown-menu">
-                        <a href="results.html">Results & Resources</a>
+                        <a href="results.html">Results &amp; Resources</a>
                         <a href="curriculum.html">Curriculum</a>
                     </div>
                 </li>
@@ -360,16 +326,16 @@
                             <p id="dropdownUserEmail" style="font-size: 0.75rem; color: var(--text-dim);"></p>
                         </div>
                         <div class="dropdown-item" onclick="openMyAccount()">
-                            <span>👤</span> My Account
+                            <span>My Account</span>
                         </div>
                         <div id="adminDropdownItem" style="display: none;">
                             <div class="dropdown-item" onclick="goToAdminDashboard()">
-                                <span>⚙️</span> Admin Homepage
+                                <span>Admin Dashboard</span>
                                 <span style="background: rgba(255,100,0,0.2); color: #ffa500; font-size: 0.7rem; padding: 2px 8px; border-radius: 20px; margin-left: 8px;">ADMIN</span>
                             </div>
                         </div>
                         <div class="dropdown-item" onclick="signOutUser()" style="color: #ff4d4d !important;">
-                            <span>🚪</span> Sign Out
+                            <span>Sign Out</span>
                         </div>
                     </div>
                 </div>
@@ -504,16 +470,12 @@
         const ADMIN_EMAIL = "khalilmohamedaden@gmail.com";
         let currentUserIsAdmin = false;
 
-        const transitionOverlay = document.getElementById('pageTransition');
-        
         function goToSignUp() {
-            transitionOverlay.classList.add('active');
-            setTimeout(() => { window.location.href = 'Sign.up.html'; }, 600);
+            window.location.href = 'Sign.up.html';
         }
         
         function goToLogIn() {
-            transitionOverlay.classList.add('active');
-            setTimeout(() => { window.location.href = 'Log.in.html'; }, 600);
+            window.location.href = 'Log.in.html';
         }
 
         function goToAdminDashboard() {
@@ -669,7 +631,7 @@
         const nav = document.getElementById('navbar');
 
         // ============================================
-        // INITIALIZE EVERYTHING
+        // INITIALIZE EVERYTHING - NO LOADING SCREEN
         // ============================================
         window.addEventListener('load', () => {
             setupPill('hero-pill-bg', '.hero-btns-group .btn-hero');
@@ -700,14 +662,6 @@
             }
             lastScrollY = currentScrollY;
         });
-
-        // Entrance animation
-        if (transitionOverlay) {
-            transitionOverlay.classList.add('active');
-            setTimeout(() => {
-                transitionOverlay.classList.remove('active');
-            }, 800);
-        }
     </script>
 </body>
 </html>
