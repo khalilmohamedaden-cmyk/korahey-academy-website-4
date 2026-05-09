@@ -58,10 +58,8 @@
             box-shadow: 0 30px 60px rgba(0,0,0,0.5);
         }
 
-        /* Profile alignment tweak */
         .profile-dropdown { left: auto; right: 0; transform: scale(0.4) translateY(-20px); }
 
-        /* The Liquid Animation Trigger */
         .nav-links li:hover .dropdown-menu,
         .profile-section:hover .profile-dropdown { 
             opacity: 1; 
@@ -71,7 +69,6 @@
         
         .profile-section:hover .profile-dropdown { transform: scale(1) translateY(0); }
 
-        /* Dropdown Items Style */
         .dropdown-item, .dropdown-menu a {
             display: flex !important;
             align-items: center;
@@ -101,8 +98,18 @@
         }
         .profile-section:hover .profile-avatar { border-color: #fff; transform: scale(1.05); }
 
-        /* Auth Buttons */
-        .auth-btns-group { display: flex; background: rgba(255,255,255,0.05); padding: 4px; border-radius: 50px; border: 1px solid var(--glass-border); }
+        /* Auth Buttons - initially hidden to prevent flicker */
+        .auth-btns-group { 
+            display: flex; 
+            background: rgba(255,255,255,0.05); 
+            padding: 4px; 
+            border-radius: 50px; 
+            border: 1px solid var(--glass-border);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        .auth-btns-group.visible { opacity: 1; }
+        
         .btn-auth { border: none; background: transparent; color: #fff; padding: 10px 20px; cursor: pointer; font-weight: 600; border-radius: 50px; transition: 0.3s; min-width: 100px; }
         .btn-auth:hover { background: rgba(255,255,255,0.1); }
 
@@ -313,11 +320,13 @@
             </ul>
 
             <div style="display: flex; align-items: center;">
+                <!-- Auth Buttons - hidden until Firebase confirms no user -->
                 <div class="auth-btns-group" id="authButtons">
-                    <button class="btn-auth" onclick="goToSignUp()">Sign Up</button>
-                    <button class="btn-auth" onclick="goToLogIn()">Log In</button>
+                    <button class="btn-auth" id="signUpBtn">Sign Up</button>
+                    <button class="btn-auth" id="logInBtn">Log In</button>
                 </div>
 
+                <!-- Profile Section - hidden until user is confirmed -->
                 <div class="profile-section" id="profileSection" style="display: none;">
                     <img id="userAvatar" class="profile-avatar" src="default-avatar.png">
                     <div class="profile-dropdown">
@@ -325,16 +334,16 @@
                             <p id="dropdownUserName" style="font-weight: 700; font-size: 0.95rem;"></p>
                             <p id="dropdownUserEmail" style="font-size: 0.75rem; color: var(--text-dim);"></p>
                         </div>
-                        <div class="dropdown-item" onclick="openMyAccount()">
+                        <div class="dropdown-item" id="myAccountBtn">
                             <span>My Account</span>
                         </div>
                         <div id="adminDropdownItem" style="display: none;">
-                            <div class="dropdown-item" onclick="goToAdminDashboard()">
+                            <div class="dropdown-item" id="adminDashboardBtn">
                                 <span>Admin Dashboard</span>
                                 <span style="background: rgba(255,100,0,0.2); color: #ffa500; font-size: 0.7rem; padding: 2px 8px; border-radius: 20px; margin-left: 8px;">ADMIN</span>
                             </div>
                         </div>
-                        <div class="dropdown-item" onclick="signOutUser()" style="color: #ff4d4d !important;">
+                        <div class="dropdown-item" id="signOutBtn" style="color: #ff4d4d !important;">
                             <span>Sign Out</span>
                         </div>
                     </div>
@@ -357,8 +366,8 @@
             <div class="hero-btns-wrapper reveal">
                 <div class="hero-btns-group" style="position: relative; display: flex; background: rgba(255,255,255,0.03); padding: 5px; border-radius: 100px; border: 1px solid var(--glass-border);">
                     <div class="liquid-pill" id="hero-pill-bg" style="position: absolute; top: 5px; left: 5px; height: calc(100% - 10px); background: rgba(255,255,255,0.1); backdrop-filter: blur(15px); border-radius: 100px; transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1); z-index: 1; pointer-events: none;"></div>
-                    <button class="btn-hero active" onclick="goToSignUp()" style="border: none; background: transparent; color: #fff; cursor: pointer; z-index: 2; position: relative; font-weight: 600; padding: 12px 25px; min-width: 120px;">Join Us</button>
-                    <button class="btn-hero" onclick="goToLogIn()" style="border: none; background: transparent; color: #fff; cursor: pointer; z-index: 2; position: relative; font-weight: 600; padding: 12px 25px; min-width: 120px;">Learn More</button>
+                    <button class="btn-hero active" id="heroJoinBtn" style="border: none; background: transparent; color: #fff; cursor: pointer; z-index: 2; position: relative; font-weight: 600; padding: 12px 25px; min-width: 120px;">Join Us</button>
+                    <button class="btn-hero" id="heroLearnBtn" style="border: none; background: transparent; color: #fff; cursor: pointer; z-index: 2; position: relative; font-weight: 600; padding: 12px 25px; min-width: 120px;">Learn More</button>
                 </div>
             </div>
         </div>
@@ -411,8 +420,8 @@
         <div class="why-footer"><p class="clean-desc centered-p">Families choose us for our focus on real growth every single day.</p>
             <div class="hero-btns-wrapper"><div class="hero-btns-group" style="position: relative; display: flex; background: rgba(255,255,255,0.03); padding: 5px; border-radius: 100px; border: 1px solid var(--glass-border);">
                 <div class="liquid-pill" id="footer-pill-bg" style="position: absolute; top: 5px; left: 5px; height: calc(100% - 10px); background: rgba(255,255,255,0.1); backdrop-filter: blur(15px); border-radius: 100px; transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1); z-index: 1; pointer-events: none;"></div>
-                <button class="btn-hero active" onclick="goToSignUp()" style="border: none; background: transparent; color: #fff; cursor: pointer; z-index: 2; position: relative; font-weight: 600; padding: 12px 25px; min-width: 120px;">Get Started</button>
-                <button class="btn-hero" onclick="goToLogIn()" style="border: none; background: transparent; color: #fff; cursor: pointer; z-index: 2; position: relative; font-weight: 600; padding: 12px 25px; min-width: 120px;">Learn More</button>
+                <button class="btn-hero active" id="footerJoinBtn" style="border: none; background: transparent; color: #fff; cursor: pointer; z-index: 2; position: relative; font-weight: 600; padding: 12px 25px; min-width: 120px;">Get Started</button>
+                <button class="btn-hero" id="footerLearnBtn" style="border: none; background: transparent; color: #fff; cursor: pointer; z-index: 2; position: relative; font-weight: 600; padding: 12px 25px; min-width: 120px;">Learn More</button>
             </div></div>
         </div>
     </section>
@@ -468,94 +477,70 @@
         const db = firebase.firestore();
 
         const ADMIN_EMAIL = "khalilmohamedaden@gmail.com";
-        let currentUserIsAdmin = false;
+        let authInitialized = false;
 
-        function goToSignUp() {
-            window.location.href = 'Sign.up.html';
-        }
-        
-        function goToLogIn() {
-            window.location.href = 'Log.in.html';
-        }
+        // DOM Elements
+        const authButtons = document.getElementById('authButtons');
+        const profileSection = document.getElementById('profileSection');
+        const userAvatar = document.getElementById('userAvatar');
+        const dropdownUserName = document.getElementById('dropdownUserName');
+        const dropdownUserEmail = document.getElementById('dropdownUserEmail');
+        const adminDropdownItem = document.getElementById('adminDropdownItem');
 
-        function goToAdminDashboard() {
-            window.location.href = 'admin.html';
-        }
+        // Helper functions
+        function goToSignUp() { window.location.href = 'Sign.up.html'; }
+        function goToLogIn() { window.location.href = 'Log.in.html'; }
+        function goToAdminDashboard() { window.location.href = 'admin.html'; }
+        function openMyAccount() { alert('My Account page coming soon!'); }
 
-        function openMyAccount() {
-            alert('My Account page coming soon!');
-        }
+        // Attach button events
+        document.getElementById('signUpBtn')?.addEventListener('click', goToSignUp);
+        document.getElementById('logInBtn')?.addEventListener('click', goToLogIn);
+        document.getElementById('heroJoinBtn')?.addEventListener('click', goToSignUp);
+        document.getElementById('heroLearnBtn')?.addEventListener('click', goToLogIn);
+        document.getElementById('footerJoinBtn')?.addEventListener('click', goToSignUp);
+        document.getElementById('footerLearnBtn')?.addEventListener('click', goToLogIn);
+        document.getElementById('myAccountBtn')?.addEventListener('click', openMyAccount);
+        document.getElementById('adminDashboardBtn')?.addEventListener('click', goToAdminDashboard);
+        document.getElementById('signOutBtn')?.addEventListener('click', () => auth.signOut().then(() => location.reload()));
 
         async function updateProfileDropdown(user) {
-            const dropdownUserName = document.getElementById('dropdownUserName');
-            const dropdownUserEmail = document.getElementById('dropdownUserEmail');
-            const adminDropdownItem = document.getElementById('adminDropdownItem');
+            if (dropdownUserName) dropdownUserName.textContent = user.displayName || user.email.split('@')[0];
+            if (dropdownUserEmail) dropdownUserEmail.textContent = user.email;
             
-            if (dropdownUserName) {
-                dropdownUserName.textContent = user.displayName || user.email.split('@')[0];
-            }
-            if (dropdownUserEmail) {
-                dropdownUserEmail.textContent = user.email;
-            }
-            
-            let isAdmin = false;
-            
-            if (user.email === ADMIN_EMAIL) {
-                isAdmin = true;
-            } else {
+            let isAdmin = user.email === ADMIN_EMAIL;
+            if (!isAdmin) {
                 const userDoc = await db.collection('users').doc(user.uid).get();
-                if (userDoc.exists && userDoc.data().isAdmin === true) {
-                    isAdmin = true;
-                }
+                isAdmin = userDoc.exists && userDoc.data().isAdmin === true;
             }
             
-            currentUserIsAdmin = isAdmin;
-            
-            if (adminDropdownItem) {
-                adminDropdownItem.style.display = isAdmin ? 'block' : 'none';
-            }
+            if (adminDropdownItem) adminDropdownItem.style.display = isAdmin ? 'block' : 'none';
         }
 
+        // Auth state listener - NO FLICKER because auth buttons are hidden until confirmed
         auth.onAuthStateChanged(async (user) => {
-            const authButtons = document.getElementById('authButtons');
-            const profileSection = document.getElementById('profileSection');
-            const userAvatar = document.getElementById('userAvatar');
-            
             if (user) {
-                if (authButtons) authButtons.style.display = 'none';
+                // User is logged in - show profile immediately
+                if (authButtons) authButtons.classList.remove('visible');
                 if (profileSection) profileSection.style.display = 'flex';
-                if (userAvatar && user.photoURL) {
-                    userAvatar.src = user.photoURL;
-                } else if (userAvatar) {
-                    const initial = user.email ? user.email.charAt(0).toUpperCase() : 'U';
-                    userAvatar.src = `https://ui-avatars.com/api/?name=${initial}&background=ffffff&color=000000&size=42`;
+                if (userAvatar) {
+                    userAvatar.src = user.photoURL || `https://ui-avatars.com/api/?name=${(user.displayName || user.email.charAt(0)).toUpperCase()}&background=ffffff&color=000000&size=42`;
                 }
-                
                 await updateProfileDropdown(user);
                 
-                const userData = {
+                await db.collection('users').doc(user.uid).set({
                     email: user.email,
                     name: user.displayName || '',
                     photoURL: user.photoURL || '',
-                    lastLogin: firebase.firestore.FieldValue.serverTimestamp()
-                };
-                
-                if (user.email === ADMIN_EMAIL) {
-                    userData.isAdmin = true;
-                    userData.role = 'super_admin';
-                }
-                
-                await db.collection('users').doc(user.uid).set(userData, { merge: true });
-                
+                    lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
+                    ...(user.email === ADMIN_EMAIL && { isAdmin: true, role: 'super_admin' })
+                }, { merge: true });
             } else {
-                if (authButtons) authButtons.style.display = 'flex';
+                // No user - show auth buttons
                 if (profileSection) profileSection.style.display = 'none';
+                if (authButtons) authButtons.classList.add('visible');
             }
         });
-
-        function signOutUser() {
-            auth.signOut().then(() => { location.reload(); });
-        }
 
         // ============================================
         // LIQUID PILL SETUP
@@ -600,9 +585,7 @@
         }
 
         function startAutoCycle() {
-            autoInterval = setInterval(() => {
-                updateHero((currentIdx + 1) % slides.length);
-            }, 6000);
+            autoInterval = setInterval(() => updateHero((currentIdx + 1) % slides.length), 6000);
         }
 
         if (dots.length) {
@@ -619,9 +602,7 @@
         // REVEAL ANIMATIONS
         // ============================================
         const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('active');
-            });
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
         }, { threshold: 0.1 });
 
         // ============================================
@@ -631,7 +612,7 @@
         const nav = document.getElementById('navbar');
 
         // ============================================
-        // INITIALIZE EVERYTHING - NO LOADING SCREEN
+        // INITIALIZE EVERYTHING
         // ============================================
         window.addEventListener('load', () => {
             setupPill('hero-pill-bg', '.hero-btns-group .btn-hero');
@@ -642,23 +623,16 @@
                 startAutoCycle();
             }
             
-            document.querySelectorAll('.reveal, .reveal-slide-up, .reveal-pop').forEach(el => {
-                revealObserver.observe(el);
-            });
+            document.querySelectorAll('.reveal, .reveal-slide-up, .reveal-pop').forEach(el => revealObserver.observe(el));
         });
 
-        window.addEventListener('resize', () => {
-            if (dots.length && dots[currentIdx]) movePillToDot(currentIdx);
-        });
+        window.addEventListener('resize', () => { if (dots.length && dots[currentIdx]) movePillToDot(currentIdx); });
         
         window.addEventListener('scroll', () => {
             const currentScrollY = window.scrollY;
             if (nav) {
-                if (currentScrollY > lastScrollY && currentScrollY > 100) {
-                    nav.classList.add('nav-hidden');
-                } else {
-                    nav.classList.remove('nav-hidden');
-                }
+                if (currentScrollY > lastScrollY && currentScrollY > 100) nav.classList.add('nav-hidden');
+                else nav.classList.remove('nav-hidden');
             }
             lastScrollY = currentScrollY;
         });
