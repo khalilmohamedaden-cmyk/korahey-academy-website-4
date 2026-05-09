@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Korahey Academy | Home</title>
     
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <!-- Firebase SDKs - Loaded with defer for better performance -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js" defer></script>
     
     <style>
         :root {
@@ -39,7 +39,7 @@
         }
         .nav-links li:hover > a { color: #fff; }
 
-        /* LIQUID DROP DROPDOWN (METABALL STYLE) */
+        /* LIQUID DROP DROPDOWN */
         .dropdown-menu, .profile-dropdown {
             position: absolute;
             top: 65px;
@@ -98,20 +98,61 @@
         }
         .profile-section:hover .profile-avatar { border-color: #fff; transform: scale(1.05); }
 
-        /* Auth Buttons - initially hidden to prevent flicker */
-        .auth-btns-group { 
-            display: flex; 
-            background: rgba(255,255,255,0.05); 
-            padding: 4px; 
-            border-radius: 50px; 
+        /* Auth Buttons with Pill Animation */
+        .auth-wrapper {
+            position: relative;
+            display: flex;
+            background: rgba(255,255,255,0.03);
+            padding: 5px;
+            border-radius: 100px;
             border: 1px solid var(--glass-border);
+        }
+        
+        .auth-pill {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            width: calc(50% - 5px);
+            height: calc(100% - 10px);
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(15px);
+            border-radius: 100px;
+            transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .auth-pill.signup-active {
+            transform: translateX(0);
+        }
+        
+        .auth-pill.login-active {
+            transform: translateX(100%);
+        }
+        
+        .auth-btn {
+            position: relative;
+            z-index: 2;
+            background: transparent;
+            border: none;
+            color: #fff;
+            padding: 10px 24px;
+            cursor: pointer;
+            font-weight: 600;
+            border-radius: 100px;
+            transition: all 0.2s ease;
+            min-width: 100px;
+            font-size: 0.9rem;
+        }
+        
+        .auth-wrapper {
             opacity: 0;
             transition: opacity 0.2s ease;
         }
-        .auth-btns-group.visible { opacity: 1; }
         
-        .btn-auth { border: none; background: transparent; color: #fff; padding: 10px 20px; cursor: pointer; font-weight: 600; border-radius: 50px; transition: 0.3s; min-width: 100px; }
-        .btn-auth:hover { background: rgba(255,255,255,0.1); }
+        .auth-wrapper.visible {
+            opacity: 1;
+        }
 
         /* Hero Slider */
         .hero { height: 100vh; position: relative; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
@@ -320,13 +361,14 @@
             </ul>
 
             <div style="display: flex; align-items: center;">
-                <!-- Auth Buttons - hidden until Firebase confirms no user -->
-                <div class="auth-btns-group" id="authButtons">
-                    <button class="btn-auth" id="signUpBtn">Sign Up</button>
-                    <button class="btn-auth" id="logInBtn">Log In</button>
+                <!-- Auth Buttons with Animated Pill -->
+                <div class="auth-wrapper" id="authWrapper">
+                    <div class="auth-pill signup-active" id="authPill"></div>
+                    <button class="auth-btn" id="signUpBtn">Sign Up</button>
+                    <button class="auth-btn" id="logInBtn">Log In</button>
                 </div>
 
-                <!-- Profile Section - hidden until user is confirmed -->
+                <!-- Profile Section -->
                 <div class="profile-section" id="profileSection" style="display: none;">
                     <img id="userAvatar" class="profile-avatar" src="default-avatar.png">
                     <div class="profile-dropdown">
@@ -475,27 +517,66 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
+        const provider = new firebase.auth.GoogleAuthProvider();
 
         const ADMIN_EMAIL = "khalilmohamedaden@gmail.com";
-        let authInitialized = false;
 
         // DOM Elements
-        const authButtons = document.getElementById('authButtons');
+        const authWrapper = document.getElementById('authWrapper');
+        const authPill = document.getElementById('authPill');
+        const signUpBtn = document.getElementById('signUpBtn');
+        const logInBtn = document.getElementById('logInBtn');
         const profileSection = document.getElementById('profileSection');
         const userAvatar = document.getElementById('userAvatar');
         const dropdownUserName = document.getElementById('dropdownUserName');
         const dropdownUserEmail = document.getElementById('dropdownUserEmail');
         const adminDropdownItem = document.getElementById('adminDropdownItem');
 
-        // Helper functions
-        function goToSignUp() { window.location.href = 'Sign.up.html'; }
-        function goToLogIn() { window.location.href = 'Log.in.html'; }
-        function goToAdminDashboard() { window.location.href = 'admin.html'; }
-        function openMyAccount() { alert('My Account page coming soon!'); }
+        // Active button tracking for pill animation
+        let activeButton = 'signup';
+
+        function setActiveButton(button) {
+            activeButton = button;
+            if (button === 'signup') {
+                authPill.classList.remove('login-active');
+                authPill.classList.add('signup-active');
+            } else {
+                authPill.classList.remove('signup-active');
+                authPill.classList.add('login-active');
+            }
+        }
+
+        // Navigation functions
+        function goToSignUp() { 
+            window.location.href = 'Sign.up.html'; 
+        }
+        
+        function goToLogIn() { 
+            window.location.href = 'Log.in.html'; 
+        }
+        
+        function goToAdminDashboard() { 
+            window.location.href = 'admin.html'; 
+        }
+        
+        function openMyAccount() { 
+            alert('My Account page coming soon!'); 
+        }
+
+        // Sign in with Redirect (faster than popup)
+        function signInWithGoogleRedirect() {
+            auth.signInWithRedirect(provider);
+        }
+
+        // Handle redirect result
+        auth.getRedirectResult().catch((error) => {
+            console.error('Redirect sign-in error:', error);
+        });
 
         // Attach button events
-        document.getElementById('signUpBtn')?.addEventListener('click', goToSignUp);
-        document.getElementById('logInBtn')?.addEventListener('click', goToLogIn);
+        if (signUpBtn) signUpBtn.addEventListener('click', goToSignUp);
+        if (logInBtn) logInBtn.addEventListener('click', goToLogIn);
+        
         document.getElementById('heroJoinBtn')?.addEventListener('click', goToSignUp);
         document.getElementById('heroLearnBtn')?.addEventListener('click', goToLogIn);
         document.getElementById('footerJoinBtn')?.addEventListener('click', goToSignUp);
@@ -517,11 +598,11 @@
             if (adminDropdownItem) adminDropdownItem.style.display = isAdmin ? 'block' : 'none';
         }
 
-        // Auth state listener - NO FLICKER because auth buttons are hidden until confirmed
+        // Auth state listener - NO FLICKER
         auth.onAuthStateChanged(async (user) => {
             if (user) {
-                // User is logged in - show profile immediately
-                if (authButtons) authButtons.classList.remove('visible');
+                // User is logged in - show profile, hide auth buttons
+                if (authWrapper) authWrapper.style.display = 'none';
                 if (profileSection) profileSection.style.display = 'flex';
                 if (userAvatar) {
                     userAvatar.src = user.photoURL || `https://ui-avatars.com/api/?name=${(user.displayName || user.email.charAt(0)).toUpperCase()}&background=ffffff&color=000000&size=42`;
@@ -538,7 +619,10 @@
             } else {
                 // No user - show auth buttons
                 if (profileSection) profileSection.style.display = 'none';
-                if (authButtons) authButtons.classList.add('visible');
+                if (authWrapper) {
+                    authWrapper.style.display = 'flex';
+                    authWrapper.classList.add('visible');
+                }
             }
         });
 
@@ -617,6 +701,7 @@
         window.addEventListener('load', () => {
             setupPill('hero-pill-bg', '.hero-btns-group .btn-hero');
             setupPill('footer-pill-bg', '.why-footer .btn-hero');
+            setActiveButton('signup');
             
             if (slides.length) {
                 setTimeout(() => { updateHero(0); }, 100);
