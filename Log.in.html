@@ -160,23 +160,23 @@
     </div>
 
     <script>
-        // Firebase Configuration
+        // ============================================
+        // FIREBASE CONFIGURATION - YOUR ACTUAL CONFIG
+        // ============================================
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_SENDER_ID",
-            appId: "YOUR_APP_ID"
+            apiKey: "AIzaSyCC5oK1cMufciR1v4wLi-jfYvXa_cQBnd0",
+            authDomain: "korahey-admin.firebaseapp.com",
+            projectId: "korahey-admin",
+            storageBucket: "korahey-admin.firebasestorage.app",
+            messagingSenderId: "86298888884",
+            appId: "1:86298888884:web:f1d835de1cb9d2534d65e1"
         };
 
+        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
 
         const googleProvider = new firebase.auth.GoogleAuthProvider();
-        googleProvider.setCustomParameters({
-            client_id: "1072732013578-299qcl3vc51sfihcqa7m5ag6evo7633q.apps.googleusercontent.com"
-        });
 
         const transitionOverlay = document.getElementById('pageTransition');
         
@@ -241,7 +241,5 @@
             transitionOverlay.classList.add('fade-out');
         }, 800);
     </script>
-</body>
-</html>
 </body>
 </html>
