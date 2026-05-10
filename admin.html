@@ -13,8 +13,8 @@
     <style>
         :root {
             --apple-blue: #0071e3;
-            --glass-bg: rgba(255, 255, 255, 0.4);
-            --glass-border: rgba(255, 255, 255, 0.6);
+            --glass-bg: rgba(255, 255, 255, 0.3);
+            --glass-border: rgba(255, 255, 255, 0.4);
             --text-main: #1d1d1f;
         }
 
@@ -46,26 +46,26 @@
         }
 
         /* ============================================
-           CANVA-STYLE DYNAMIC ISLAND NAVIGATION
-           SAME DESIGN ON ALL DEVICES - NO CHANGES
+           APPLE DYNAMIC ISLAND - SMALL, LIQUID GLASS
+           Like iPhone Dynamic Island with blur effect
         ============================================ */
         .dynamic-island {
             position: fixed;
-            top: 20px;
+            top: 16px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(30px);
-            border-radius: 50px;
-            padding: 8px 20px;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            border-radius: 40px;
+            padding: 6px 16px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 4px;
             z-index: 2000;
-            border: 1px solid rgba(255, 255, 255, 0.9);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            border: 0.5px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
-            /* Ensure it works on all screen sizes */
             width: auto;
             max-width: 95%;
             overflow-x: auto;
@@ -77,91 +77,98 @@
             display: none;
         }
 
-        /* Individual nav items - SAME ON MOBILE */
+        /* Individual nav items - compact like Apple */
         .nav-item {
             display: flex;
             align-items: center;
-            gap: 6px;
-            padding: 8px 16px;
-            border-radius: 40px;
+            gap: 5px;
+            padding: 6px 12px;
+            border-radius: 30px;
             cursor: pointer;
             transition: all 0.2s ease;
-            color: #1d1d1f;
-            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 13px;
             font-weight: 500;
             position: relative;
             white-space: nowrap;
+            background: transparent;
         }
 
         .nav-item svg {
-            width: 18px;
-            height: 18px;
-            stroke: #1d1d1f;
+            width: 16px;
+            height: 16px;
+            stroke: rgba(255, 255, 255, 0.9);
             fill: none;
-            stroke-width: 2;
+            stroke-width: 1.8;
             transition: stroke 0.2s;
         }
 
         .nav-item span {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 500;
+            letter-spacing: -0.2px;
         }
 
         .nav-item:hover {
-            background: rgba(0, 0, 0, 0.05);
+            background: rgba(255, 255, 255, 0.15);
         }
 
         /* Active nav item */
         .nav-item.active {
-            background: rgba(0, 113, 227, 0.1);
-            color: var(--apple-blue);
+            background: rgba(255, 255, 255, 0.2);
         }
 
         .nav-item.active svg {
-            stroke: var(--apple-blue);
+            stroke: white;
         }
 
-        /* Badge for notifications */
+        /* Badge for notifications - Apple style */
         .badge {
             position: absolute;
-            top: -4px;
-            right: -4px;
+            top: -2px;
+            right: 0px;
             background: #ff3b30;
             color: white;
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 600;
-            padding: 2px 6px;
+            padding: 2px 5px;
             border-radius: 20px;
+            min-width: 16px;
+            text-align: center;
+            border: 1px solid rgba(0,0,0,0.2);
         }
 
-        /* Divider between nav items */
+        /* Divider between nav items - subtle */
         .nav-divider {
             width: 1px;
-            height: 24px;
-            background: rgba(0, 0, 0, 0.1);
-            margin: 0 4px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 0 2px;
         }
 
-        /* Create button (blue pill) - SAME ON MOBILE */
+        /* Create button (blue pill) - Apple style */
         .create-nav-btn {
             background: var(--apple-blue);
             color: white;
-            padding: 8px 20px;
-            border-radius: 40px;
+            padding: 6px 16px;
+            border-radius: 30px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             cursor: pointer;
             transition: all 0.2s;
             white-space: nowrap;
         }
 
         .create-nav-btn svg {
+            width: 14px;
+            height: 14px;
             stroke: white;
+            stroke-width: 2;
         }
 
         .create-nav-btn span {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 500;
         }
 
@@ -191,7 +198,7 @@
             width: 100%;
             padding: 20px 40px;
             border-radius: 60px;
-            border: 1px solid var(--glass-border);
+            border: 1px solid rgba(0,0,0,0.05);
             font-size: 1rem;
             background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(20px);
@@ -233,7 +240,7 @@
             display: flex; 
             align-items: center; 
             justify-content: center;
-            border: 1px solid var(--glass-border);
+            border: 1px solid rgba(0,0,0,0.05);
             transition: 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
@@ -278,9 +285,9 @@
 
         .pill {
             padding: 10px 22px;
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(0, 0, 0, 0.03);
             backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
+            border: 1px solid rgba(0,0,0,0.05);
             border-radius: 40px;
             font-size: 0.9rem;
             font-weight: 500;
@@ -316,7 +323,7 @@
             background: rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(30px);
             border-radius: 28px;
-            border: 1px solid var(--glass-border);
+            border: 1px solid rgba(255,255,255,0.8);
             overflow: hidden;
             transition: 0.4s;
             cursor: pointer;
@@ -502,10 +509,7 @@
             max-width: 400px;
         }
 
-        /* ============================================
-           MOBILE - SAME DESIGN, JUST SCROLLABLE IF NEEDED
-           NO HIDING OF TEXT OR ICONS
-        ============================================ */
+        /* Mobile - Dynamic Island stays same design */
         @media (max-width: 768px) {
             .glass-header {
                 padding: 130px 5% 60px;
@@ -514,35 +518,27 @@
                 font-size: 2.5rem;
                 letter-spacing: -1px;
             }
-            /* Dynamic Island - SAME DESIGN, JUST SCROLLABLE HORIZONTALLY */
+            /* Dynamic Island - SAME DESIGN, SCROLLABLE */
             .dynamic-island {
-                width: auto;
-                max-width: 94%;
-                padding: 8px 16px;
-                gap: 6px;
-                overflow-x: auto;
-                justify-content: flex-start;
-                -webkit-overflow-scrolling: touch;
+                top: 12px;
+                padding: 5px 12px;
+                gap: 2px;
             }
-            /* Nav items - SAME SIZE, NO HIDING */
             .nav-item {
-                padding: 6px 12px;
-                gap: 4px;
+                padding: 4px 8px;
             }
             .nav-item span {
-                font-size: 12px;
-                display: inline-block !important;
+                font-size: 11px;
             }
             .nav-item svg {
-                width: 16px;
-                height: 16px;
+                width: 14px;
+                height: 14px;
             }
             .create-nav-btn {
-                padding: 6px 14px;
+                padding: 4px 12px;
             }
             .create-nav-btn span {
-                font-size: 12px;
-                display: inline-block !important;
+                font-size: 11px;
             }
             .category-grid {
                 gap: 20px;
@@ -558,29 +554,12 @@
                 grid-template-columns: 1fr;
             }
         }
-
-        /* For very small phones, keep same design */
-        @media (max-width: 480px) {
-            .dynamic-island {
-                padding: 6px 12px;
-                gap: 4px;
-            }
-            .nav-item {
-                padding: 4px 10px;
-            }
-            .nav-item span {
-                font-size: 11px;
-            }
-            .create-nav-btn {
-                padding: 4px 12px;
-            }
-        }
     </style>
 </head>
 <body>
 
     <div id="adminContent" style="display: none;">
-        <!-- CANVA-STYLE DYNAMIC ISLAND NAVIGATION - SAME ON ALL DEVICES -->
+        <!-- APPLE DYNAMIC ISLAND - SMALL, LIQUID GLASS -->
         <nav class="dynamic-island">
             <div class="nav-item" onclick="goHome()">
                 <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2h-5v-7H9v7H5a2 2 0 0 1-2-2z"/></svg>
@@ -1081,4 +1060,3 @@
     </script>
 </body>
     </html>
-           
