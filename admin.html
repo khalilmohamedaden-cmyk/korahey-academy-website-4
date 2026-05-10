@@ -827,4 +827,183 @@
                 type: type,
                 category: category,
                 date: new Date().toISOString()
+            });
+            saveProjects();
+            renderProjects();
+            closeModal('createModal');
+        }
+
+        function setFilter(type, btn) {
+            currentFilter = type;
+            document.querySelectorAll('.filter-pills .pill').forEach(pill => {
+                pill.classList.remove('active');
+            });
+            btn.classList.add('active');
+            renderProjects();
+        }
+
+        function filterByCategory(category) {
+            const filtered = projects.filter(p => p.category === category);
+            const grid = document.getElementById('projectsGrid');
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div style="text-align: center; padding: 60px;"><h3>No ${category} found</h3></div>`;
+            } else {
+                grid.innerHTML = filtered.map(project => `
+                    <div class="liquid-card" onclick="openProject(${project.id})">
+                        <div class="card-preview ${project.type}">
+                            ${getIconForType(project.type)}
+                        </div>
+                        <div class="card-body">
+                            <h4>${escapeHtml(project.title)}</h4>
+                            <p>Modified ${formatDate(project.date)}</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // User Management
+        let users = [
+            { email: 'student1@example.com', role: 'student', banned: false },
+            { email: 'teacher1@example.com', role: 'teacher', banned: false }
+        ];
+
+        function loadUsers() {
+            const usersList = document.getElementById('usersList');
+            usersList.innerHTML = users.map(user => `
+                <div class="user-item">
+                    <div class="user-info">
+                        <span class="user-email">${user.email}</span>
+                        <span class="user-role">${user.role} ${user.banned ? '(Banned)' : ''}</span>
+                    </div>
+                    <div class="user-actions">
+                        ${!user.banned ? `<button class="ban-btn" onclick="banUser('${user.email}')">Ban</button>` : `<button class="make-admin-btn" onclick="unbanUser('${user.email}')">Unban</button>`}
+                        <button class="remove-btn" onclick="removeUser('${user.email}')">Remove</button>
+                        ${user.role !== 'admin' ? `<button class="make-admin-btn" onclick="makeAdmin('${user.email}')">Make Admin</button>` : ''}
+                    </div>
+                </div>
+            `).join('');
+            document.getElementById('usersBadge').style.display = users.length > 0 ? 'inline-flex' : 'none';
+            document.getElementById('usersBadge').textContent = users.length;
+        }
+
+        function addUser() {
+            const email = document.getElementById('newUserEmail').value;
+            if (!email) {
+                alert('Please enter an email');
+                return;
+            }
+            users.push({ email: email, role: 'student', banned: false });
+            document.getElementById('newUserEmail').value = '';
+            loadUsers();
+            alert(`Added user: ${email}`);
+        }
+
+        function banUser(email) {
+            const user = users.find(u => u.email === email);
+            if (user) user.banned = true;
+            loadUsers();
+        }
+
+        function unbanUser(email) {
+            const user = users.find(u => u.email === email);
+            if (user) user.banned = false;
+            loadUsers();
+        }
+
+        function removeUser(email) {
+            users = users.filter(u => u.email !== email);
+            loadUsers();
+        }
+
+        function makeAdmin(email) {
+            const user = users.find(u => u.email === email);
+            if (user) user.role = 'admin';
+            loadUsers();
+        }
+
+        // Messages
+        function loadMessages() {
+            const messagesList = document.getElementById('messagesList');
+            if (messages.length === 0) {
+                messagesList.innerHTML = `<div style="text-align: center; padding: 40px;">No messages yet</div>`;
+            } else {
+                messagesList.innerHTML = messages.map(msg => `
+                    <div class="message-item">
+                        <div class="message-title">${escapeHtml(msg.title)}</div>
+                        <div class="message-project">Project: ${msg.project}</div>
+                    </div>
+                `).join('');
+            }
+            updateMessagesBadge();
+        }
+
+        function updateMessagesBadge() {
+            const unreadCount = messages.filter(m => !m.read).length;
+            const badge = document.getElementById('messagesBadge');
+            if (unreadCount > 0) {
+                badge.style.display = 'inline-flex';
+                badge.textContent = unreadCount;
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        function saveMessages() {
+            localStorage.setItem('adminMessages', JSON.stringify(messages));
+        }
+
+        function loadStoredMessages() {
+            const saved = localStorage.getItem('adminMessages');
+            if (saved) {
+                messages = JSON.parse(saved);
+                updateMessagesBadge();
+            }
+        }
+
+        // Admin Access Check
+        async function checkAdminAccess(user) {
+            if (!user) {
+                document.getElementById('adminContent').style.display = 'none';
+                document.getElementById('accessDenied').style.display = 'flex';
+                return false;
+            }
+            
+            if (user.email === ADMIN_EMAIL) {
+                document.getElementById('adminContent').style.display = 'block';
+                document.getElementById('accessDenied').style.display = 'none';
+                document.getElementById('greetingText').textContent = `Hello, ${user.displayName || 'Admin'}`;
+                return true;
+            }
+            
+            const userDoc = await db.collection('users').doc(user.uid).get();
+            if (userDoc.exists && userDoc.data().isAdmin === true) {
+                document.getElementById('adminContent').style.display = 'block';
+                document.getElementById('accessDenied').style.display = 'none';
+                document.getElementById('greetingText').textContent = `Hello, ${user.displayName || 'Admin'}`;
+                return true;
+            }
+            
+            document.getElementById('adminContent').style.display = 'none';
+            document.getElementById('accessDenied').style.display = 'flex';
+            return false;
+        }
+
+        // Event Listeners
+        document.getElementById('searchInput')?.addEventListener('input', renderProjects);
+        
+        // Auth check
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                await checkAdminAccess(user);
+                loadProjects();
+                loadStoredMessages();
+            } else {
+                document.getElementById('adminContent').style.display = 'none';
+                document.getElementById('accessDenied').style.display = 'flex';
+            }
+        });
+    </script>
+</body>
+    </html>
            
