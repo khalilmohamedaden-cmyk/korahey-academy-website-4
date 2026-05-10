@@ -35,7 +35,7 @@
         }
 
         /* ============================================
-           VERTICAL DYNAMIC ISLAND - SMALLER
+           VERTICAL DYNAMIC ISLAND
         ============================================ */
         .dynamic-island {
             position: fixed;
@@ -163,6 +163,7 @@
             width: 18px;
             height: 18px;
             stroke: #fff;
+            fill: none;
         }
         
         body.loaded .ai-nav-item svg {
@@ -187,7 +188,7 @@
             background: rgba(0, 0, 0, 0.04);
         }
 
-        /* Korahey Academy Animation Overlay */
+        /* Korahey Academy Intro Overlay */
         .intro-overlay {
             position: fixed;
             top: 0;
@@ -212,7 +213,7 @@
         }
         
         .intro-logo {
-            font-size: 4rem;
+            font-size: 3.5rem;
             font-weight: 800;
             letter-spacing: -3px;
             background: linear-gradient(135deg, #fff, #888);
@@ -224,7 +225,7 @@
         }
         
         .intro-sub {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: rgba(255,255,255,0.6);
             margin-top: 15px;
             opacity: 0;
@@ -317,14 +318,6 @@
             border-color: rgba(0,0,0,0.05);
             background: rgba(255, 255, 255, 0.6);
             color: #1d1d1f;
-        }
-
-        .search-container input::placeholder {
-            color: rgba(255,255,255,0.5);
-        }
-        
-        body.loaded .search-container input::placeholder {
-            color: #aaa;
         }
 
         .category-grid {
@@ -775,6 +768,7 @@
             text-align: center;
         }
 
+        /* MOBILE - Smaller Dynamic Island, NO Create Button */
         @media (max-width: 900px) {
             .dynamic-island {
                 top: auto;
@@ -782,37 +776,52 @@
                 left: 50%;
                 transform: translateX(-50%);
                 flex-direction: row;
-                padding: 10px 12px;
-                gap: 6px;
+                padding: 8px 12px;
+                gap: 4px;
+                border-radius: 40px;
             }
-            .nav-item, .create-nav-btn, .ai-nav-item {
-                width: 48px;
+            .nav-item, .ai-nav-item {
+                width: 44px;
                 padding: 4px 2px;
             }
-            .nav-item svg, .create-nav-btn svg, .ai-nav-item svg {
+            .nav-item svg, .ai-nav-item svg {
                 width: 16px;
                 height: 16px;
             }
+            .nav-item span, .ai-nav-item span {
+                font-size: 8px;
+            }
+            /* HIDE CREATE BUTTON ON MOBILE */
+            .create-nav-btn {
+                display: none;
+            }
             .page-content {
-                margin: 20px 15px 90px 15px;
+                margin: 20px 15px 80px 15px;
                 padding: 20px;
             }
             .hello-text {
                 font-size: 2rem;
             }
             .category-grid {
-                gap: 15px;
+                gap: 12px;
             }
             .cat-icon {
-                width: 45px;
-                height: 45px;
+                width: 42px;
+                height: 42px;
             }
             .cat-icon svg {
-                width: 20px;
-                height: 20px;
+                width: 18px;
+                height: 18px;
+            }
+            .cat-item span {
+                font-size: 9px;
             }
             .filter-bar {
                 justify-content: center;
+            }
+            .filter-dropdown, .sort-btn {
+                padding: 8px 14px;
+                font-size: 0.75rem;
             }
             .recent-grid {
                 grid-template-columns: 1fr;
@@ -849,8 +858,15 @@
                 <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                 <span>Create</span>
             </div>
+            <!-- AI Robot Icon -->
             <div class="ai-nav-item" onclick="openKoraheyAI()">
-                <svg viewBox="0 0 24 24" stroke="currentColor"><path d="M12 2a10 10 0 0 1 10 10c0 5.5-4.5 10-10 10S2 17.5 2 12 6.5 2 12 2z"/><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="1"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <rect x="5" y="8" width="14" height="12" rx="2"/>
+                    <circle cx="9" cy="12" r="1.5"/>
+                    <circle cx="15" cy="12" r="1.5"/>
+                    <line x1="12" y1="16" x2="12" y2="18"/>
+                    <path d="M8 6l1-3M16 6l-1-3"/>
+                </svg>
                 <span>AI</span>
             </div>
             <div class="nav-item" onclick="openUsersModal()">
@@ -1029,7 +1045,7 @@
         function openUsersModal() { loadUsers(); openModal('usersModal'); }
         function openMessagesModal() { loadMessages(); openModal('messagesModal'); }
         function openApplications() { openModal('applicationsModal'); }
-        function openKoraheyAI() { alert('Korahey AI Assistant coming soon!'); }
+        function openKoraheyAI() { alert('Korahey AI Assistant coming soon! Ask me anything about design, documents, or school management.'); }
         function openSettings() { alert('Settings page coming soon!'); }
 
         function openModal(id) { document.getElementById(id).classList.add('active'); }
@@ -1230,7 +1246,6 @@
                     overlay.style.display = 'none';
                 }, 1000);
             }
-            // Trigger background transition
             document.body.classList.add('loaded');
         }, 1200);
         
@@ -1247,4 +1262,4 @@
         });
     </script>
 </body>
-    </html>
+</html>
