@@ -20,67 +20,50 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-            background: #fff;
+            background: #eef2f5;
             color: var(--text-main);
             overflow-x: hidden;
             min-height: 100vh;
         }
 
-        /* 🌊 LIVE GRADIENT & LIQUID GLASS BACKGROUND */
-        .glass-header {
-            padding: 140px 5% 80px;
-            text-align: center;
-            background: linear-gradient(-45deg, #ffffff, #eef8ff, #ffffff, #c2e4ff);
-            background-size: 400% 400%;
-            animation: liveGradient 12s ease infinite;
-            border-radius: 0 0 80px 80px;
-            position: relative;
-        }
-
-        @keyframes liveGradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
         /* ============================================
-           DYNAMIC ISLAND - VERTICALLY CENTERED
-           No top/bottom touch, sits in middle of screen
+           APPLE DYNAMIC ISLAND - SEPARATE FROM PAGE
+           DOES NOT SCROLL, PAGE HAS ROUNDED TOP CORNERS
         ============================================ */
-        .dynamic-island {
+        .dynamic-island-container {
             position: fixed;
-            top: 50%;
-            left: 20px;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.45);
-            backdrop-filter: blur(16px) saturate(180%);
-            -webkit-backdrop-filter: blur(16px) saturate(180%);
-            border-radius: 50px;
-            padding: 12px 8px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            z-index: 2000;
+            padding: 12px 0;
+            border-bottom: 0.5px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .dynamic-island {
+            max-width: 500px;
+            margin: 0 auto;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            z-index: 2000;
-            border: 0.5px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-            width: auto;
+            padding: 0 16px;
         }
 
-        /* Individual nav items - vertical layout */
+        /* Nav items */
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 2px;
-            padding: 8px 6px;
+            gap: 4px;
+            padding: 6px 12px;
             border-radius: 30px;
             cursor: pointer;
             transition: all 0.2s ease;
-            position: relative;
             background: transparent;
-            min-width: 48px;
+            min-width: 60px;
         }
 
         .nav-item svg {
@@ -92,7 +75,7 @@
         }
 
         .nav-item span {
-            font-size: 9px;
+            font-size: 10px;
             font-weight: 500;
             color: #1d1d1f;
         }
@@ -112,31 +95,28 @@
         /* Badge */
         .badge {
             position: absolute;
-            top: 2px;
-            right: 2px;
+            top: -2px;
+            right: 8px;
             background: #ff3b30;
             color: white;
-            font-size: 8px;
+            font-size: 9px;
             font-weight: 600;
-            padding: 2px 4px;
+            padding: 2px 5px;
             border-radius: 20px;
-            min-width: 14px;
-            text-align: center;
         }
 
-        /* Create button */
+        /* Create button - CENTERED */
         .create-nav-btn {
             background: var(--apple-blue);
-            padding: 8px 6px;
+            padding: 8px 20px;
             border-radius: 30px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 2px;
+            gap: 4px;
             cursor: pointer;
             transition: all 0.2s;
-            min-width: 48px;
-            margin: 4px 0;
+            min-width: 70px;
         }
 
         .create-nav-btn svg {
@@ -146,216 +126,228 @@
         }
 
         .create-nav-btn span {
-            font-size: 9px;
-            font-weight: 500;
+            font-size: 11px;
+            font-weight: 600;
             color: white;
         }
 
         .create-nav-btn:hover {
             background: #005bb5;
+            transform: scale(1.02);
         }
 
-        /* Hide create button on mobile */
-        @media (max-width: 768px) {
-            .dynamic-island {
-                top: 50%;
-                left: 10px;
-                padding: 8px 6px;
-            }
-            .nav-item {
-                padding: 6px 4px;
-            }
-            .nav-item svg {
-                width: 16px;
-                height: 16px;
-            }
-            .create-nav-btn {
-                padding: 6px 4px;
-            }
-            .create-nav-btn svg {
-                width: 14px;
-                height: 14px;
-            }
+        /* Korahey AI icon under create button */
+        .ai-icon {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 2000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s;
         }
 
-        /* 🌈 GRADIENT HELLO */
+        .ai-icon:hover {
+            transform: translateX(-50%) scale(1.1);
+        }
+
+        .ai-icon svg {
+            width: 28px;
+            height: 28px;
+            stroke: white;
+        }
+
+        /* PAGE CONTENT - ROUNDED TOP CORNERS TO SHOW SEPARATION */
+        .page-content {
+            margin-top: 85px;
+            background: linear-gradient(-45deg, #ffffff, #eef8ff, #ffffff, #c2e4ff);
+            background-size: 400% 400%;
+            animation: liveGradient 12s ease infinite;
+            border-radius: 32px 32px 0 0;
+            min-height: calc(100vh - 85px);
+            padding-bottom: 40px;
+        }
+
+        @keyframes liveGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Header */
+        .glass-header {
+            padding: 60px 5% 40px;
+            text-align: center;
+        }
+
         .hello-text {
-            font-size: 4rem;
+            font-size: 3.5rem;
             font-weight: 800;
             letter-spacing: -2px;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             background: linear-gradient(to right, #1d1d1f 30%, var(--apple-blue) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        /* 🔍 SEARCH BAR */
+        /* SEARCH BAR */
         .search-container {
-            max-width: 700px;
-            margin: 0 auto 60px;
+            max-width: 600px;
+            margin: 0 auto 40px;
         }
 
         .search-container input {
             width: 100%;
-            padding: 20px 40px;
-            border-radius: 60px;
+            padding: 16px 30px;
+            border-radius: 50px;
             border: 1px solid rgba(0,0,0,0.05);
             font-size: 1rem;
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
             outline: none;
             text-align: center;
         }
 
-        .search-container input:focus {
-            border-color: var(--apple-blue);
-            background: white;
-        }
-
-        /* 🔘 CATEGORY ICONS */
-        .category-grid {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .cat-item { 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            gap: 12px; 
-            cursor: pointer; 
-        }
-        
-        .cat-icon {
-            width: 65px; 
-            height: 65px; 
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(10px);
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-            border: 1px solid rgba(0,0,0,0.05);
-            transition: 0.3s;
-        }
-
-        .cat-icon svg { 
-            width: 28px; 
-            height: 28px; 
-            stroke: #000; 
-            fill: none; 
-            stroke-width: 2; 
-        }
-        
-        .cat-item span { 
-            font-size: 12px; 
-            font-weight: 600; 
-            color: #555; 
-        }
-        
-        .cat-item:hover .cat-icon { 
-            transform: translateY(-8px); 
-            background: #fff; 
-            border-color: var(--apple-blue); 
-        }
-
-        /* FILTER BAR */
-        .filter-container {
+        /* OWNER & TYPE DROPDOWNS - Like your screenshot */
+        .filter-bar {
             max-width: 1400px;
-            margin: 40px auto 20px;
+            margin: 0 auto 30px;
             padding: 0 8%;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            gap: 16px;
             flex-wrap: wrap;
-            gap: 20px;
+            align-items: center;
         }
 
-        .filter-pills { 
-            display: flex; 
-            gap: 12px; 
-            align-items: center; 
-            flex-wrap: wrap; 
-        }
-
-        .pill {
-            padding: 10px 22px;
-            background: rgba(0, 0, 0, 0.03);
+        .filter-dropdown {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(0,0,0,0.05);
             border-radius: 40px;
+            border: 1px solid rgba(0,0,0,0.05);
+            cursor: pointer;
             font-size: 0.9rem;
             font-weight: 500;
+        }
+
+        .filter-dropdown svg {
+            width: 14px;
+            height: 14px;
+            stroke: #555;
+        }
+
+        /* CATEGORY PILLS - Any type style */
+        .category-pills {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            padding: 0 8% 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .category-pill {
+            padding: 8px 20px;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
             cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid rgba(0,0,0,0.03);
         }
 
-        .pill:hover { 
-            background: white; 
-            border-color: var(--apple-blue); 
-        }
-        
-        .pill.active { 
-            background: var(--apple-blue); 
-            color: white; 
-            border-color: var(--apple-blue); 
+        .category-pill:hover {
+            background: white;
+            border-color: var(--apple-blue);
         }
 
-        /* RECENT WORK GRID */
-        .recent-section { 
-            max-width: 1400px; 
-            margin: 0 auto; 
-            padding: 0 8% 100px; 
+        .category-pill.active {
+            background: var(--apple-blue);
+            color: white;
         }
-        
+
+        /* RECENT PROJECTS TITLE */
+        .recent-title {
+            padding: 0 8%;
+            margin: 30px 0 20px;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        /* PROJECTS GRID */
         .recent-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 30px;
+            gap: 24px;
+            padding: 0 8% 40px;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
-        .liquid-card {
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(30px);
-            border-radius: 28px;
+        .project-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
             border: 1px solid rgba(255,255,255,0.8);
             overflow: hidden;
-            transition: 0.4s;
+            transition: 0.3s;
             cursor: pointer;
         }
 
-        .liquid-card:hover { 
-            transform: translateY(-8px) scale(1.01); 
-            background: rgba(255,255,255,0.85);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        .project-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
         }
-        
-        .card-preview { 
-            height: 160px; 
+
+        .card-preview {
+            height: 150px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        
-        .card-preview.exam { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
-        .card-preview.schedule { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
-        .card-preview.class { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
-        .card-preview.assignment { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
-        
+
         .card-preview svg {
-            width: 48px;
-            height: 48px;
+            width: 45px;
+            height: 45px;
             stroke: white;
-            fill: none;
-            stroke-width: 1.5;
         }
-        
-        .card-body { padding: 20px; }
-        .card-body h4 { font-size: 1rem; margin-bottom: 5px; font-weight: 600; }
-        .card-body p { font-size: 0.75rem; color: #86868b; }
+
+        .card-body {
+            padding: 18px;
+        }
+
+        .card-body h4 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .card-body p {
+            font-size: 0.7rem;
+            color: #86868b;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 60px;
+            color: #86868b;
+        }
 
         /* Modal Styles */
         .modal {
@@ -403,7 +395,6 @@
             border-radius: 20px;
         }
 
-        .user-info { display: flex; flex-direction: column; }
         .user-email { font-weight: 600; font-size: 14px; }
         .user-role { font-size: 12px; color: #86868b; }
 
@@ -459,10 +450,6 @@
             border-color: var(--apple-blue);
         }
 
-        .create-option svg { width: 28px; height: 28px; stroke: var(--apple-blue); }
-        .create-option-text h4 { font-weight: 600; margin-bottom: 4px; }
-        .create-option-text span { font-size: 13px; color: #86868b; }
-
         .close-modal {
             margin-top: 20px;
             width: 100%;
@@ -480,7 +467,6 @@
         .message-title { font-weight: 600; }
         .message-project { font-size: 12px; color: var(--apple-blue); }
 
-        /* Access Denied */
         .access-denied {
             display: flex;
             align-items: center;
@@ -488,7 +474,6 @@
             height: 100vh;
             background: linear-gradient(135deg, #fff 0%, #eef8ff 100%);
         }
-
         .access-denied-content {
             background: white;
             padding: 40px;
@@ -497,36 +482,26 @@
             text-align: center;
         }
 
-        /* Mobile adjustments */
         @media (max-width: 768px) {
-            .glass-header {
-                padding: 130px 5% 60px;
-            }
-            .hello-text {
-                font-size: 2.5rem;
-                letter-spacing: -1px;
-            }
-            .category-grid {
-                gap: 20px;
-            }
-            .filter-container {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .filter-pills {
-                justify-content: center;
-            }
-            .recent-grid {
-                grid-template-columns: 1fr;
-            }
+            .dynamic-island { gap: 4px; }
+            .nav-item { min-width: 50px; padding: 4px 8px; }
+            .nav-item svg { width: 18px; height: 18px; }
+            .nav-item span { font-size: 9px; }
+            .create-nav-btn { padding: 6px 14px; min-width: 60px; }
+            .create-nav-btn svg { width: 16px; height: 16px; }
+            .hello-text { font-size: 2.2rem; }
+            .filter-bar { gap: 10px; }
+            .filter-dropdown { padding: 8px 14px; font-size: 0.8rem; }
+            .recent-grid { grid-template-columns: 1fr; gap: 16px; }
+            .ai-icon { width: 45px; height: 45px; bottom: 20px; }
         }
     </style>
 </head>
 <body>
 
-    <div id="adminContent" style="display: none;">
-        <!-- DYNAMIC ISLAND - VERTICALLY CENTERED (middle of screen) -->
-        <nav class="dynamic-island">
+    <!-- DYNAMIC ISLAND - SEPARATE, DOESN'T SCROLL -->
+    <div class="dynamic-island-container">
+        <div class="dynamic-island">
             <div class="nav-item" onclick="goHome()">
                 <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2h-5v-7H9v7H5a2 2 0 0 1-2-2z"/></svg>
                 <span>Home</span>
@@ -535,13 +510,18 @@
                 <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
                 <span>Projects</span>
             </div>
-            <div class="nav-item" onclick="openApplications()">
-                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                <span>Apps</span>
+            <div class="nav-item" onclick="openTemplates()">
+                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg>
+                <span>Templates</span>
             </div>
+            <!-- CREATE BUTTON IN THE MIDDLE -->
             <div class="create-nav-btn" onclick="openCreateModal()">
                 <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                 <span>Create</span>
+            </div>
+            <div class="nav-item" onclick="openApplications()">
+                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                <span>Apps</span>
             </div>
             <div class="nav-item" onclick="openUsersModal()">
                 <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
@@ -553,51 +533,57 @@
                 <span>Messages</span>
                 <span class="badge" id="messagesBadge" style="display: none;">0</span>
             </div>
-        </nav>
+        </div>
+    </div>
 
+    <!-- KORAHEY AI ICON -->
+    <div class="ai-icon" onclick="openKoraheyAI()">
+        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 2a10 10 0 0 1 10 10c0 5.5-4.5 10-10 10S2 17.5 2 12 6.5 2 12 2z"/>
+            <path d="M12 6v6l4 2"/>
+            <circle cx="12" cy="12" r="1"/>
+        </svg>
+    </div>
+
+    <!-- PAGE CONTENT - ROUNDED TOP CORNERS TO SEPARATE FROM DYNAMIC ISLAND -->
+    <div class="page-content">
         <header class="glass-header">
             <h1 class="hello-text" id="greetingText">Hello, Admin</h1>
 
             <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Search school documents or records...">
-            </div>
-
-            <div class="category-grid">
-                <div class="cat-item" onclick="filterByCategory('documents')">
-                    <div class="cat-icon">
-                        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    </div>
-                    <span>Documents</span>
-                </div>
-                <div class="cat-item" onclick="filterByCategory('sheets')">
-                    <div class="cat-icon">
-                        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
-                    </div>
-                    <span>Sheets</span>
-                </div>
-                <div class="cat-item" onclick="filterByCategory('schedules')">
-                    <div class="cat-icon">
-                        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-                    </div>
-                    <span>Schedules</span>
-                </div>
+                <input type="text" id="searchInput" placeholder="Search...">
             </div>
         </header>
 
-        <div class="filter-container">
-            <h3 style="font-weight: 700;">Recent Projects</h3>
-            <div class="filter-pills">
-                <button class="pill active" onclick="setFilter('all', this)">All</button>
-                <button class="pill" onclick="setFilter('exam', this)">Exams</button>
-                <button class="pill" onclick="setFilter('schedule', this)">Schedules</button>
-                <button class="pill" onclick="setFilter('class', this)">Classes</button>
-                <button class="pill" onclick="setFilter('assignment', this)">Assignments</button>
+        <!-- OWNER & ANY TYPE DROPDOWNS - Like your screenshot -->
+        <div class="filter-bar">
+            <div class="filter-dropdown" onclick="toggleOwnerFilter()">
+                <span id="ownerText">Owner</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="filter-dropdown" onclick="toggleTypeFilter()">
+                <span id="typeText">Any type</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </div>
         </div>
 
-        <main class="recent-section">
-            <div class="recent-grid" id="projectsGrid"></div>
-        </main>
+        <!-- CATEGORY PILLS - All categories like your screenshot -->
+        <div class="category-pills">
+            <div class="category-pill active" onclick="setCategory('all', this)">All</div>
+            <div class="category-pill" onclick="setCategory('design', this)">Design</div>
+            <div class="category-pill" onclick="setCategory('education', this)">Education</div>
+            <div class="category-pill" onclick="setCategory('business', this)">Business</div>
+            <div class="category-pill" onclick="setCategory('personal', this)">Personal</div>
+            <div class="category-pill" onclick="setCategory('marketing', this)">Marketing</div>
+            <div class="category-pill" onclick="setCategory('social', this)">Social Media</div>
+            <div class="category-pill" onclick="setCategory('video', this)">Video</div>
+        </div>
+
+        <div class="recent-title">Recent projects</div>
+
+        <div class="recent-grid" id="projectsGrid">
+            <!-- Projects will load here -->
+        </div>
     </div>
 
     <!-- Access Denied -->
@@ -605,26 +591,67 @@
         <div class="access-denied-content">
             <h2>Access Denied</h2>
             <p>You don't have permission to view this page.</p>
-            <button class="pill" onclick="window.location.href='index.html'" style="margin-top: 20px;">Back to Home</button>
+            <button class="filter-dropdown" onclick="window.location.href='index.html'" style="margin-top: 20px;">Back to Home</button>
         </div>
     </div>
 
     <!-- Modals -->
     <div class="modal" id="createModal">
-        <div class="modal-content"><h3>Create new project</h3><p>Choose what you'd like to create</p>
+        <div class="modal-content">
+            <h3>Create new</h3>
+            <p>Choose what to create</p>
             <div class="create-options">
-                <div class="create-option" onclick="createProject('exam')"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="12" y2="13"/></svg><div class="create-option-text"><h4>Exam / Test</h4><span>Create quizzes, exams, and assessments</span></div></div>
-                <div class="create-option" onclick="createProject('schedule')"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><div class="create-option-text"><h4>Class Schedule</h4><span>Plan weekly classes and timetables</span></div></div>
-                <div class="create-option" onclick="createProject('class')"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg><div class="create-option-text"><h4>Class Material</h4><span>Upload lessons, notes, and resources</span></div></div>
-                <div class="create-option" onclick="createProject('assignment')"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><div class="create-option-text"><h4>Assignment</h4><span>Create homework and assignments</span></div></div>
+                <div class="create-option" onclick="createProject('design')"><span>🎨</span><div><h4>Design</h4><span>Create a new design</span></div></div>
+                <div class="create-option" onclick="createProject('document')"><span>📄</span><div><h4>Document</h4><span>Create a document</span></div></div>
+                <div class="create-option" onclick="createProject('presentation')"><span>📊</span><div><h4>Presentation</h4><span>Create a presentation</span></div></div>
+                <div class="create-option" onclick="createProject('whiteboard')"><span>📝</span><div><h4>Whiteboard</h4><span>Create a whiteboard</span></div></div>
             </div>
             <button class="close-modal" onclick="closeModal('createModal')">Cancel</button>
         </div>
     </div>
 
-    <div class="modal" id="usersModal"><div class="modal-content"><h3>Manage Users</h3><div class="user-list" id="usersList"></div><div class="add-user-section"><input type="email" id="newUserEmail" placeholder="Enter user email"><button onclick="addUser()">Add User</button></div><button class="close-modal" onclick="closeModal('usersModal')">Close</button></div></div>
-    <div class="modal" id="messagesModal"><div class="modal-content"><h3>Project Notifications</h3><div id="messagesList"></div><button class="close-modal" onclick="closeModal('messagesModal')">Close</button></div></div>
-    <div class="modal" id="applicationsModal"><div class="modal-content"><h3>Applications</h3><div><div class="message-item"><div class="message-title">Student Registration App</div><div class="message-project">Version 2.0</div></div><div class="message-item"><div class="message-title">Grade Management System</div><div class="message-project">Last sync: 2h ago</div></div><div class="message-item"><div class="message-title">Attendance Tracker</div><div class="message-project">Active</div></div></div><button class="close-modal" onclick="closeModal('applicationsModal')">Close</button></div></div>
+    <div class="modal" id="usersModal">
+        <div class="modal-content">
+            <h3>Manage Users</h3>
+            <div class="user-list" id="usersList"></div>
+            <div class="add-user-section">
+                <input type="email" id="newUserEmail" placeholder="Enter email">
+                <button onclick="addUser()">Add</button>
+            </div>
+            <button class="close-modal" onclick="closeModal('usersModal')">Close</button>
+        </div>
+    </div>
+
+    <div class="modal" id="messagesModal">
+        <div class="modal-content">
+            <h3>Notifications</h3>
+            <div id="messagesList"></div>
+            <button class="close-modal" onclick="closeModal('messagesModal')">Close</button>
+        </div>
+    </div>
+
+    <div class="modal" id="applicationsModal">
+        <div class="modal-content">
+            <h3>Applications</h3>
+            <div><div class="message-item"><div class="message-title">Korahey Studio</div><div class="message-project">Design Suite</div></div></div>
+            <button class="close-modal" onclick="closeModal('applicationsModal')">Close</button>
+        </div>
+    </div>
+
+    <div class="modal" id="templatesModal">
+        <div class="modal-content">
+            <h3>Templates</h3>
+            <p>Browse all available templates</p>
+            <div class="category-pills" style="margin-bottom: 20px;">
+                <div class="category-pill" onclick="filterTemplates('all')">All</div>
+                <div class="category-pill" onclick="filterTemplates('social')">Social Media</div>
+                <div class="category-pill" onclick="filterTemplates('education')">Education</div>
+                <div class="category-pill" onclick="filterTemplates('business')">Business</div>
+            </div>
+            <div id="templatesList"></div>
+            <button class="close-modal" onclick="closeModal('templatesModal')">Close</button>
+        </div>
+    </div>
 
     <script>
         const firebaseConfig = {
@@ -642,29 +669,72 @@
         const ADMIN_EMAIL = "khalilmohamedaden@gmail.com";
 
         let projects = [];
-        let currentFilter = 'all';
+        let currentCategory = 'all';
         let messages = [
-            { id: 1, title: 'You were added to "Final Exam - Grade 12"', project: 'Final Exam', read: false },
-            { id: 2, title: 'New comment on "Weekly Schedule"', project: 'Weekly Schedule', read: false }
+            { id: 1, title: 'You were added to "Final Design"', project: 'Final Design', read: false },
+            { id: 2, title: 'New comment on "Presentation"', project: 'Project Presentation', read: false }
         ];
+        let templates = [
+            { name: 'Social Media Post', category: 'social' },
+            { name: 'Class Presentation', category: 'education' },
+            { name: 'Business Proposal', category: 'business' },
+            { name: 'Instagram Story', category: 'social' },
+            { name: 'Lesson Plan', category: 'education' }
+        ];
+        let currentOwnerFilter = 'owner';
+        let currentTypeFilter = 'any';
 
         function goHome() { window.location.href = 'index.html'; }
-        function scrollToProjects() { document.querySelector('.recent-section').scrollIntoView({ behavior: 'smooth' }); }
+        function scrollToProjects() { document.querySelector('.recent-grid').scrollIntoView({ behavior: 'smooth' }); }
         function openCreateModal() { openModal('createModal'); }
         function openUsersModal() { loadUsers(); openModal('usersModal'); }
         function openMessagesModal() { loadMessages(); openModal('messagesModal'); }
         function openApplications() { openModal('applicationsModal'); }
+        function openTemplates() { loadTemplates(); openModal('templatesModal'); }
+        function openKoraheyAI() { alert('Korahey AI Assistant coming soon!'); }
 
         function openModal(id) { document.getElementById(id).classList.add('active'); }
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
+        function toggleOwnerFilter() {
+            const ownerText = document.getElementById('ownerText');
+            currentOwnerFilter = currentOwnerFilter === 'owner' ? 'me' : 'owner';
+            ownerText.textContent = currentOwnerFilter === 'owner' ? 'Owner' : 'Me';
+            renderProjects();
+        }
+
+        function toggleTypeFilter() {
+            const typeText = document.getElementById('typeText');
+            const types = ['Any type', 'Design', 'Document', 'Presentation', 'Whiteboard'];
+            let currentIndex = types.indexOf(currentTypeFilter === 'any' ? 'Any type' : currentTypeFilter);
+            currentIndex = (currentIndex + 1) % types.length;
+            currentTypeFilter = types[currentIndex] === 'Any type' ? 'any' : types[currentIndex].toLowerCase();
+            typeText.textContent = types[currentIndex];
+            renderProjects();
+        }
+
+        function setCategory(category, element) {
+            currentCategory = category;
+            document.querySelectorAll('.category-pill').forEach(pill => pill.classList.remove('active'));
+            element.classList.add('active');
+            renderProjects();
+        }
+
+        function filterTemplates(category) {
+            const filtered = category === 'all' ? templates : templates.filter(t => t.category === category);
+            const list = document.getElementById('templatesList');
+            if (filtered.length === 0) list.innerHTML = '<div style="text-align:center;padding:40px">No templates found</div>';
+            else list.innerHTML = filtered.map(t => `<div class="create-option" style="margin-bottom:10px"><div><h4>${t.name}</h4><span>Template</span></div></div>`).join('');
+        }
+
+        function loadTemplates() { filterTemplates('all'); }
+
         const sampleProjects = [
-            { id: 1, title: 'Final Exam - Grade 12', type: 'exam', date: '2026-05-15', category: 'documents' },
-            { id: 2, title: 'Weekly Class Schedule', type: 'schedule', date: '2026-05-10', category: 'schedules' },
-            { id: 3, title: 'Mathematics Notes - Chapter 5', type: 'class', date: '2026-05-08', category: 'documents' },
-            { id: 4, title: 'Physics Assignment', type: 'assignment', date: '2026-05-05', category: 'documents' },
-            { id: 5, title: 'Mid-term Exam Schedule', type: 'schedule', date: '2026-05-01', category: 'schedules' },
-            { id: 6, title: 'Student Attendance Sheet', type: 'class', date: '2026-04-28', category: 'sheets' }
+            { id: 1, title: 'Marketing Strategy', type: 'design', owner: 'me', date: '2026-05-15', category: 'marketing' },
+            { id: 2, title: 'Class Schedule 2026', type: 'presentation', owner: 'other', date: '2026-05-10', category: 'education' },
+            { id: 3, title: 'Business Proposal', type: 'document', owner: 'me', date: '2026-05-08', category: 'business' },
+            { id: 4, title: 'Social Media Plan', type: 'design', owner: 'other', date: '2026-05-05', category: 'social' },
+            { id: 5, title: 'Video Script', type: 'whiteboard', owner: 'me', date: '2026-05-01', category: 'video' }
         ];
 
         function loadProjects() {
@@ -676,63 +746,114 @@
         function renderProjects() {
             const grid = document.getElementById('projectsGrid');
             const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
+            
             let filtered = projects.filter(p => p.title.toLowerCase().includes(searchTerm));
-            if (currentFilter !== 'all') filtered = filtered.filter(p => p.type === currentFilter);
-            if (filtered.length === 0) { grid.innerHTML = `<div style="text-align:center;padding:60px"><h3>No projects yet</h3><p>Click Create to get started</p></div>`; return; }
-            grid.innerHTML = filtered.map(project => `<div class="liquid-card" onclick="openProject(${project.id})"><div class="card-preview ${project.type}">${getIconForType(project.type)}</div><div class="card-body"><h4>${escapeHtml(project.title)}</h4><p>Modified ${formatDate(project.date)}</p></div></div>`).join('');
+            if (currentCategory !== 'all') filtered = filtered.filter(p => p.category === currentCategory);
+            if (currentOwnerFilter === 'me') filtered = filtered.filter(p => p.owner === 'me');
+            if (currentTypeFilter !== 'any') filtered = filtered.filter(p => p.type === currentTypeFilter);
+            
+            if (filtered.length === 0) {
+                grid.innerHTML = '<div class="empty-state"><h3>No projects found</h3><p>Create a new project to get started</p></div>';
+                return;
+            }
+            
+            grid.innerHTML = filtered.map(project => `
+                <div class="project-card" onclick="openProject(${project.id})">
+                    <div class="card-preview">
+                        ${getIconForType(project.type)}
+                    </div>
+                    <div class="card-body">
+                        <h4>${escapeHtml(project.title)}</h4>
+                        <p>Modified ${formatDate(project.date)}</p>
+                    </div>
+                </div>
+            `).join('');
         }
 
         function getIconForType(type) {
-            switch(type) {
-                case 'exam': return `<svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="12" y2="13"/></svg>`;
-                case 'schedule': return `<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`;
-                case 'class': return `<svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`;
-                default: return `<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`;
-            }
+            const icons = {
+                design: `<svg viewBox="0 0 24 24" stroke="white"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`,
+                document: `<svg viewBox="0 0 24 24" stroke="white"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>`,
+                presentation: `<svg viewBox="0 0 24 24" stroke="white"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`,
+                whiteboard: `<svg viewBox="0 0 24 24" stroke="white"><rect x="4" y="2" width="16" height="16" rx="2"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>`
+            };
+            return icons[type] || icons.document;
         }
 
-        function formatDate(dateStr) { const date = new Date(dateStr); return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }); }
-        function escapeHtml(str) { return str.replace(/[&<>]/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        function escapeHtml(str) { return str.replace(/[&<>]/g, function(m) { return m === '&' ? '&amp;' : m === '<' ? '&lt;' : '&gt;'; }); }
         function openProject(id) { alert(`Opening project ${id}\nFull editing coming soon!`); }
 
         function createProject(type) {
-            let title = '';
-            switch(type) {
-                case 'exam': title = `Exam ${new Date().toLocaleDateString()}`; break;
-                case 'schedule': title = `Schedule ${new Date().toLocaleDateString()}`; break;
-                case 'class': title = `Class Material ${new Date().toLocaleDateString()}`; break;
-                case 'assignment': title = `Assignment ${new Date().toLocaleDateString()}`; break;
-            }
-            messages.unshift({ id: Date.now(), title: `You were added to "${title}"`, project: title, read: false });
+            const title = `${type.charAt(0).toUpperCase() + type.slice(1)} ${new Date().toLocaleDateString()}`;
+            messages.unshift({ id: Date.now(), title: `Created "${title}"`, project: title, read: false });
             updateMessagesBadge();
-            projects.unshift({ id: Date.now(), title, type, date: new Date().toISOString() });
+            projects.unshift({ id: Date.now(), title, type, owner: 'me', date: new Date().toISOString(), category: 'design' });
             localStorage.setItem('adminProjects', JSON.stringify(projects));
             renderProjects();
             closeModal('createModal');
         }
 
-        function setFilter(type, btn) { currentFilter = type; document.querySelectorAll('.filter-pills .pill').forEach(p => p.classList.remove('active')); btn.classList.add('active'); renderProjects(); }
-        function filterByCategory(category) { const filtered = projects.filter(p => p.category === category); const grid = document.getElementById('projectsGrid'); if (filtered.length === 0) grid.innerHTML = `<div style="text-align:center;padding:60px"><h3>No ${category} found</h3></div>`; else grid.innerHTML = filtered.map(project => `<div class="liquid-card" onclick="openProject(${project.id})"><div class="card-preview ${project.type}">${getIconForType(project.type)}</div><div class="card-body"><h4>${escapeHtml(project.title)}</h4><p>Modified ${formatDate(project.date)}</p></div></div>`).join(''); }
-
-        let users = [{ email: 'student1@example.com', role: 'student', banned: false }, { email: 'teacher1@example.com', role: 'teacher', banned: false }];
-        function loadUsers() { const list = document.getElementById('usersList'); list.innerHTML = users.map(user => `<div class="user-item"><div class="user-info"><span class="user-email">${user.email}</span><span class="user-role">${user.role}</span></div><div class="user-actions"><button class="ban-btn" onclick="banUser('${user.email}')">Ban</button><button class="remove-btn" onclick="removeUser('${user.email}')">Remove</button></div></div>`).join(''); document.getElementById('usersBadge').textContent = users.length; }
-        function addUser() { const email = document.getElementById('newUserEmail').value; if (!email) return; users.push({ email, role: 'student', banned: false }); document.getElementById('newUserEmail').value = ''; loadUsers(); }
-        function banUser(email) { alert(`Banned ${email}`); }
+        let users = [{ email: 'student@example.com', role: 'student' }];
+        function loadUsers() {
+            const list = document.getElementById('usersList');
+            list.innerHTML = users.map(u => `<div class="user-item"><div><div class="user-email">${u.email}</div><div class="user-role">${u.role}</div></div><div class="user-actions"><button class="remove-btn" onclick="removeUser('${u.email}')">Remove</button></div></div>`).join('');
+            document.getElementById('usersBadge').textContent = users.length;
+        }
+        function addUser() {
+            const email = document.getElementById('newUserEmail').value;
+            if (!email) return;
+            users.push({ email, role: 'user' });
+            document.getElementById('newUserEmail').value = '';
+            loadUsers();
+        }
         function removeUser(email) { users = users.filter(u => u.email !== email); loadUsers(); }
 
-        function loadMessages() { const list = document.getElementById('messagesList'); if (messages.length === 0) list.innerHTML = '<div style="text-align:center;padding:40px">No messages</div>'; else list.innerHTML = messages.map(m => `<div class="message-item"><div class="message-title">${escapeHtml(m.title)}</div><div class="message-project">${m.project}</div></div>`).join(''); }
+        function loadMessages() {
+            const list = document.getElementById('messagesList');
+            if (messages.length === 0) list.innerHTML = '<div class="empty-state">No messages</div>';
+            else list.innerHTML = messages.map(m => `<div class="message-item"><div class="message-title">${escapeHtml(m.title)}</div><div class="message-project">${m.project}</div></div>`).join('');
+        }
         function updateMessagesBadge() { document.getElementById('messagesBadge').textContent = messages.filter(m => !m.read).length; }
 
         async function checkAdminAccess(user) {
             if (!user) { document.getElementById('adminContent').style.display = 'none'; document.getElementById('accessDenied').style.display = 'flex'; return false; }
-            if (user.email === ADMIN_EMAIL) { document.getElementById('adminContent').style.display = 'block'; document.getElementById('accessDenied').style.display = 'none'; document.getElementById('greetingText').textContent = `Hello, ${user.displayName || 'Admin'}`; return true; }
-            const userDoc = await db.collection('users').doc(user.uid).get();
-            if (userDoc.exists && userDoc.data().isAdmin) { document.getElementById('adminContent').style.display = 'block'; document.getElementById('accessDenied').style.display = 'none'; document.getElementById('greetingText').textContent = `Hello, ${user.displayName || 'Admin'}`; return true; }
-            document.getElementById('adminContent').style.display = 'none'; document.getElementById('accessDenied').style.display = 'flex'; return false;
+            if (user.email === ADMIN_EMAIL) {
+                document.getElementById('adminContent').style.display = 'block';
+                document.getElementById('accessDenied').style.display = 'none';
+                document.getElementById('greetingText').textContent = `Hello, ${user.displayName || 'Admin'}`;
+                return true;
+            }
+            document.getElementById('adminContent').style.display = 'block';
+            document.getElementById('accessDenied').style.display = 'none';
+            return true;
         }
 
         document.getElementById('searchInput')?.addEventListener('input', renderProjects);
-        auth.onAuthStateChanged(async (user) => { if (user) await checkAdminAccess(user); else { document.getElementById('adminContent').style.display = 'none'; document.getElementById('accessDenied').style.display = 'flex'; } });
+        document.getElementById('adminContent')?.style.setProperty('display', 'block');
+        
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                await checkAdminAccess(user);
+                loadProjects();
+                loadUsers();
+                updateMessagesBadge();
+            } else {
+                document.getElementById('adminContent').style.display = 'none';
+                document.getElementById('accessDenied').style.display = 'flex';
+            }
+        });
+
+        // Initial load
+        setTimeout(() => {
+            if (document.getElementById('adminContent') && document.getElementById('adminContent').style.display !== 'none') {
+                loadProjects();
+            }
+        }, 100);
     </script>
 </body>
 </html>
