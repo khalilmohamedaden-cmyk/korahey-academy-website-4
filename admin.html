@@ -44,53 +44,37 @@
         }
 
         /* ============================================
-           DYNAMIC ISLAND
-           Desktop/iPad: LEFT side
-           Mobile: CENTERED
+           DYNAMIC ISLAND - VERTICALLY CENTERED
+           No top/bottom touch, sits in middle of screen
         ============================================ */
         .dynamic-island {
             position: fixed;
-            top: 16px;
+            top: 50%;
+            left: 20px;
+            transform: translateY(-50%);
             background: rgba(255, 255, 255, 0.45);
             backdrop-filter: blur(16px) saturate(180%);
             -webkit-backdrop-filter: blur(16px) saturate(180%);
             border-radius: 50px;
-            padding: 6px 12px;
+            padding: 12px 8px;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 4px;
+            gap: 8px;
             z-index: 2000;
             border: 0.5px solid rgba(255, 255, 255, 0.3);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
             width: auto;
         }
 
-        /* Desktop and iPad: Left side */
-        @media (min-width: 769px) {
-            .dynamic-island {
-                left: 20px;
-                transform: none;
-            }
-        }
-
-        /* Mobile: Centered */
-        @media (max-width: 768px) {
-            .dynamic-island {
-                left: 50%;
-                transform: translateX(-50%);
-                max-width: 92%;
-                padding: 4px 10px;
-            }
-        }
-
-        /* Individual nav items */
+        /* Individual nav items - vertical layout */
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 2px;
-            padding: 5px 10px;
+            padding: 8px 6px;
             border-radius: 30px;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -100,8 +84,8 @@
         }
 
         .nav-item svg {
-            width: 16px;
-            height: 16px;
+            width: 20px;
+            height: 20px;
             stroke: #1d1d1f;
             fill: none;
             stroke-width: 1.8;
@@ -128,8 +112,8 @@
         /* Badge */
         .badge {
             position: absolute;
-            top: -2px;
-            right: 4px;
+            top: 2px;
+            right: 2px;
             background: #ff3b30;
             color: white;
             font-size: 8px;
@@ -140,10 +124,10 @@
             text-align: center;
         }
 
-        /* Create button - IN THE MIDDLE */
+        /* Create button */
         .create-nav-btn {
             background: var(--apple-blue);
-            padding: 5px 12px;
+            padding: 8px 6px;
             border-radius: 30px;
             display: flex;
             flex-direction: column;
@@ -152,12 +136,12 @@
             cursor: pointer;
             transition: all 0.2s;
             min-width: 48px;
-            margin: 0 4px;
+            margin: 4px 0;
         }
 
         .create-nav-btn svg {
-            width: 14px;
-            height: 14px;
+            width: 18px;
+            height: 18px;
             stroke: white;
         }
 
@@ -173,8 +157,24 @@
 
         /* Hide create button on mobile */
         @media (max-width: 768px) {
+            .dynamic-island {
+                top: 50%;
+                left: 10px;
+                padding: 8px 6px;
+            }
+            .nav-item {
+                padding: 6px 4px;
+            }
+            .nav-item svg {
+                width: 16px;
+                height: 16px;
+            }
             .create-nav-btn {
-                display: none;
+                padding: 6px 4px;
+            }
+            .create-nav-btn svg {
+                width: 14px;
+                height: 14px;
             }
         }
 
@@ -506,17 +506,6 @@
                 font-size: 2.5rem;
                 letter-spacing: -1px;
             }
-            .nav-item {
-                min-width: 42px;
-                padding: 4px 6px;
-            }
-            .nav-item svg {
-                width: 14px;
-                height: 14px;
-            }
-            .nav-item span {
-                font-size: 8px;
-            }
             .category-grid {
                 gap: 20px;
             }
@@ -536,7 +525,7 @@
 <body>
 
     <div id="adminContent" style="display: none;">
-        <!-- DYNAMIC ISLAND - LEFT on Desktop/iPad, CENTERED on Mobile -->
+        <!-- DYNAMIC ISLAND - VERTICALLY CENTERED (middle of screen) -->
         <nav class="dynamic-island">
             <div class="nav-item" onclick="goHome()">
                 <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2h-5v-7H9v7H5a2 2 0 0 1-2-2z"/></svg>
@@ -550,7 +539,6 @@
                 <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                 <span>Apps</span>
             </div>
-            <!-- Create button in the MIDDLE -->
             <div class="create-nav-btn" onclick="openCreateModal()">
                 <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                 <span>Create</span>
@@ -623,63 +611,20 @@
 
     <!-- Modals -->
     <div class="modal" id="createModal">
-        <div class="modal-content">
-            <h3>Create new project</h3>
-            <p>Choose what you'd like to create</p>
+        <div class="modal-content"><h3>Create new project</h3><p>Choose what you'd like to create</p>
             <div class="create-options">
-                <div class="create-option" onclick="createProject('exam')">
-                    <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="12" y2="13"/></svg>
-                    <div class="create-option-text"><h4>Exam / Test</h4><span>Create quizzes, exams, and assessments</span></div>
-                </div>
-                <div class="create-option" onclick="createProject('schedule')">
-                    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                    <div class="create-option-text"><h4>Class Schedule</h4><span>Plan weekly classes and timetables</span></div>
-                </div>
-                <div class="create-option" onclick="createProject('class')">
-                    <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-                    <div class="create-option-text"><h4>Class Material</h4><span>Upload lessons, notes, and resources</span></div>
-                </div>
-                <div class="create-option" onclick="createProject('assignment')">
-                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                    <div class="create-option-text"><h4>Assignment</h4><span>Create homework and assignments</span></div>
-                </div>
+                <div class="create-option" onclick="createProject('exam')"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="12" y2="13"/></svg><div class="create-option-text"><h4>Exam / Test</h4><span>Create quizzes, exams, and assessments</span></div></div>
+                <div class="create-option" onclick="createProject('schedule')"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><div class="create-option-text"><h4>Class Schedule</h4><span>Plan weekly classes and timetables</span></div></div>
+                <div class="create-option" onclick="createProject('class')"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg><div class="create-option-text"><h4>Class Material</h4><span>Upload lessons, notes, and resources</span></div></div>
+                <div class="create-option" onclick="createProject('assignment')"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><div class="create-option-text"><h4>Assignment</h4><span>Create homework and assignments</span></div></div>
             </div>
             <button class="close-modal" onclick="closeModal('createModal')">Cancel</button>
         </div>
     </div>
 
-    <div class="modal" id="usersModal">
-        <div class="modal-content">
-            <h3>Manage Users</h3>
-            <p>Add, remove, or ban users</p>
-            <div class="user-list" id="usersList"></div>
-            <div class="add-user-section">
-                <input type="email" id="newUserEmail" placeholder="Enter user email">
-                <button onclick="addUser()">Add User</button>
-            </div>
-            <button class="close-modal" onclick="closeModal('usersModal')">Close</button>
-        </div>
-    </div>
-
-    <div class="modal" id="messagesModal">
-        <div class="modal-content">
-            <h3>Project Notifications</h3>
-            <div id="messagesList"></div>
-            <button class="close-modal" onclick="closeModal('messagesModal')">Close</button>
-        </div>
-    </div>
-
-    <div class="modal" id="applicationsModal">
-        <div class="modal-content">
-            <h3>Applications</h3>
-            <div id="applicationsList">
-                <div class="message-item"><div class="message-title">Student Registration App</div><div class="message-project">Version 2.0</div></div>
-                <div class="message-item"><div class="message-title">Grade Management System</div><div class="message-project">Last sync: 2h ago</div></div>
-                <div class="message-item"><div class="message-title">Attendance Tracker</div><div class="message-project">Active</div></div>
-            </div>
-            <button class="close-modal" onclick="closeModal('applicationsModal')">Close</button>
-        </div>
-    </div>
+    <div class="modal" id="usersModal"><div class="modal-content"><h3>Manage Users</h3><div class="user-list" id="usersList"></div><div class="add-user-section"><input type="email" id="newUserEmail" placeholder="Enter user email"><button onclick="addUser()">Add User</button></div><button class="close-modal" onclick="closeModal('usersModal')">Close</button></div></div>
+    <div class="modal" id="messagesModal"><div class="modal-content"><h3>Project Notifications</h3><div id="messagesList"></div><button class="close-modal" onclick="closeModal('messagesModal')">Close</button></div></div>
+    <div class="modal" id="applicationsModal"><div class="modal-content"><h3>Applications</h3><div><div class="message-item"><div class="message-title">Student Registration App</div><div class="message-project">Version 2.0</div></div><div class="message-item"><div class="message-title">Grade Management System</div><div class="message-project">Last sync: 2h ago</div></div><div class="message-item"><div class="message-title">Attendance Tracker</div><div class="message-project">Active</div></div></div><button class="close-modal" onclick="closeModal('applicationsModal')">Close</button></div></div>
 
     <script>
         const firebaseConfig = {
@@ -733,23 +678,8 @@
             const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
             let filtered = projects.filter(p => p.title.toLowerCase().includes(searchTerm));
             if (currentFilter !== 'all') filtered = filtered.filter(p => p.type === currentFilter);
-            
-            if (filtered.length === 0) {
-                grid.innerHTML = `<div style="text-align:center;padding:60px"><h3>No projects yet</h3><p>Click Create to get started</p></div>`;
-                return;
-            }
-            
-            grid.innerHTML = filtered.map(project => `
-                <div class="liquid-card" onclick="openProject(${project.id})">
-                    <div class="card-preview ${project.type}">
-                        ${getIconForType(project.type)}
-                    </div>
-                    <div class="card-body">
-                        <h4>${escapeHtml(project.title)}</h4>
-                        <p>Modified ${formatDate(project.date)}</p>
-                    </div>
-                </div>
-            `).join('');
+            if (filtered.length === 0) { grid.innerHTML = `<div style="text-align:center;padding:60px"><h3>No projects yet</h3><p>Click Create to get started</p></div>`; return; }
+            grid.innerHTML = filtered.map(project => `<div class="liquid-card" onclick="openProject(${project.id})"><div class="card-preview ${project.type}">${getIconForType(project.type)}</div><div class="card-body"><h4>${escapeHtml(project.title)}</h4><p>Modified ${formatDate(project.date)}</p></div></div>`).join('');
         }
 
         function getIconForType(type) {
@@ -761,20 +691,8 @@
             }
         }
 
-        function formatDate(dateStr) {
-            const date = new Date(dateStr);
-            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-        }
-
-        function escapeHtml(str) {
-            return str.replace(/[&<>]/g, function(m) {
-                if (m === '&') return '&amp;';
-                if (m === '<') return '&lt;';
-                if (m === '>') return '&gt;';
-                return m;
-            });
-        }
-
+        function formatDate(dateStr) { const date = new Date(dateStr); return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }); }
+        function escapeHtml(str) { return str.replace(/[&<>]/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
         function openProject(id) { alert(`Opening project ${id}\nFull editing coming soon!`); }
 
         function createProject(type) {
@@ -793,77 +711,28 @@
             closeModal('createModal');
         }
 
-        function setFilter(type, btn) {
-            currentFilter = type;
-            document.querySelectorAll('.filter-pills .pill').forEach(p => p.classList.remove('active'));
-            btn.classList.add('active');
-            renderProjects();
-        }
-
-        function filterByCategory(category) {
-            const filtered = projects.filter(p => p.category === category);
-            const grid = document.getElementById('projectsGrid');
-            if (filtered.length === 0) grid.innerHTML = `<div style="text-align:center;padding:60px"><h3>No ${category} found</h3></div>`;
-            else grid.innerHTML = filtered.map(project => `
-                <div class="liquid-card" onclick="openProject(${project.id})">
-                    <div class="card-preview ${project.type}">${getIconForType(project.type)}</div>
-                    <div class="card-body"><h4>${escapeHtml(project.title)}</h4><p>Modified ${formatDate(project.date)}</p></div>
-                </div>
-            `).join('');
-        }
+        function setFilter(type, btn) { currentFilter = type; document.querySelectorAll('.filter-pills .pill').forEach(p => p.classList.remove('active')); btn.classList.add('active'); renderProjects(); }
+        function filterByCategory(category) { const filtered = projects.filter(p => p.category === category); const grid = document.getElementById('projectsGrid'); if (filtered.length === 0) grid.innerHTML = `<div style="text-align:center;padding:60px"><h3>No ${category} found</h3></div>`; else grid.innerHTML = filtered.map(project => `<div class="liquid-card" onclick="openProject(${project.id})"><div class="card-preview ${project.type}">${getIconForType(project.type)}</div><div class="card-body"><h4>${escapeHtml(project.title)}</h4><p>Modified ${formatDate(project.date)}</p></div></div>`).join(''); }
 
         let users = [{ email: 'student1@example.com', role: 'student', banned: false }, { email: 'teacher1@example.com', role: 'teacher', banned: false }];
-
-        function loadUsers() {
-            const list = document.getElementById('usersList');
-            list.innerHTML = users.map(user => `
-                <div class="user-item">
-                    <div class="user-info"><span class="user-email">${user.email}</span><span class="user-role">${user.role}</span></div>
-                    <div class="user-actions"><button class="ban-btn" onclick="banUser('${user.email}')">Ban</button><button class="remove-btn" onclick="removeUser('${user.email}')">Remove</button></div>
-                </div>
-            `).join('');
-            document.getElementById('usersBadge').textContent = users.length;
-        }
-
-        function addUser() {
-            const email = document.getElementById('newUserEmail').value;
-            if (!email) return;
-            users.push({ email, role: 'student', banned: false });
-            document.getElementById('newUserEmail').value = '';
-            loadUsers();
-        }
+        function loadUsers() { const list = document.getElementById('usersList'); list.innerHTML = users.map(user => `<div class="user-item"><div class="user-info"><span class="user-email">${user.email}</span><span class="user-role">${user.role}</span></div><div class="user-actions"><button class="ban-btn" onclick="banUser('${user.email}')">Ban</button><button class="remove-btn" onclick="removeUser('${user.email}')">Remove</button></div></div>`).join(''); document.getElementById('usersBadge').textContent = users.length; }
+        function addUser() { const email = document.getElementById('newUserEmail').value; if (!email) return; users.push({ email, role: 'student', banned: false }); document.getElementById('newUserEmail').value = ''; loadUsers(); }
         function banUser(email) { alert(`Banned ${email}`); }
         function removeUser(email) { users = users.filter(u => u.email !== email); loadUsers(); }
 
-        function loadMessages() {
-            const list = document.getElementById('messagesList');
-            if (messages.length === 0) list.innerHTML = '<div style="text-align:center;padding:40px">No messages</div>';
-            else list.innerHTML = messages.map(m => `<div class="message-item"><div class="message-title">${escapeHtml(m.title)}</div><div class="message-project">${m.project}</div></div>`).join('');
-        }
+        function loadMessages() { const list = document.getElementById('messagesList'); if (messages.length === 0) list.innerHTML = '<div style="text-align:center;padding:40px">No messages</div>'; else list.innerHTML = messages.map(m => `<div class="message-item"><div class="message-title">${escapeHtml(m.title)}</div><div class="message-project">${m.project}</div></div>`).join(''); }
         function updateMessagesBadge() { document.getElementById('messagesBadge').textContent = messages.filter(m => !m.read).length; }
 
         async function checkAdminAccess(user) {
             if (!user) { document.getElementById('adminContent').style.display = 'none'; document.getElementById('accessDenied').style.display = 'flex'; return false; }
-            if (user.email === ADMIN_EMAIL) {
-                document.getElementById('adminContent').style.display = 'block';
-                document.getElementById('accessDenied').style.display = 'none';
-                document.getElementById('greetingText').textContent = `Hello, ${user.displayName || 'Admin'}`;
-                return true;
-            }
+            if (user.email === ADMIN_EMAIL) { document.getElementById('adminContent').style.display = 'block'; document.getElementById('accessDenied').style.display = 'none'; document.getElementById('greetingText').textContent = `Hello, ${user.displayName || 'Admin'}`; return true; }
             const userDoc = await db.collection('users').doc(user.uid).get();
-            if (userDoc.exists && userDoc.data().isAdmin) {
-                document.getElementById('adminContent').style.display = 'block';
-                document.getElementById('accessDenied').style.display = 'none';
-                document.getElementById('greetingText').textContent = `Hello, ${user.displayName || 'Admin'}`;
-                return true;
-            }
-            document.getElementById('adminContent').style.display = 'none';
-            document.getElementById('accessDenied').style.display = 'flex';
-            return false;
+            if (userDoc.exists && userDoc.data().isAdmin) { document.getElementById('adminContent').style.display = 'block'; document.getElementById('accessDenied').style.display = 'none'; document.getElementById('greetingText').textContent = `Hello, ${user.displayName || 'Admin'}`; return true; }
+            document.getElementById('adminContent').style.display = 'none'; document.getElementById('accessDenied').style.display = 'flex'; return false;
         }
 
         document.getElementById('searchInput')?.addEventListener('input', renderProjects);
         auth.onAuthStateChanged(async (user) => { if (user) await checkAdminAccess(user); else { document.getElementById('adminContent').style.display = 'none'; document.getElementById('accessDenied').style.display = 'flex'; } });
     </script>
 </body>
-    </html>
+</html>
