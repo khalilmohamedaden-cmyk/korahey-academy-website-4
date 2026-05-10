@@ -30,7 +30,7 @@
 
         /* 🌊 LIVE GRADIENT & LIQUID GLASS BACKGROUND */
         .glass-header {
-            padding: 160px 5% 80px;
+            padding: 140px 5% 80px;
             text-align: center;
             background: linear-gradient(-45deg, #ffffff, #eef8ff, #ffffff, #c2e4ff);
             background-size: 400% 400%;
@@ -45,51 +45,111 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* 🏝️ LIQUID GLASS DYNAMIC ISLAND */
+        /* ============================================
+           CANVA-STYLE DYNAMIC ISLAND NAVIGATION
+           Fixed at top, centered, soft glass edges
+        ============================================ */
         .dynamic-island {
             position: fixed;
-            top: 25px;
+            top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(40px) saturate(200%);
-            border-radius: 100px;
-            padding: 12px 30px;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(30px);
+            border-radius: 50px;
+            padding: 8px 20px;
             display: flex;
             align-items: center;
-            gap: 35px;
+            gap: 8px;
             z-index: 2000;
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
         }
 
-        .island-link {
+        /* Individual nav items */
+        .nav-item {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 40px;
             cursor: pointer;
-            transition: 0.3s;
-            text-decoration: none;
+            transition: all 0.2s ease;
+            color: #1d1d1f;
+            font-size: 14px;
+            font-weight: 500;
+            position: relative;
         }
 
-        .island-link svg { width: 22px; height: 22px; stroke: #000; fill: none; stroke-width: 2.2; transition: 0.3s; }
-        .island-link span { font-size: 9px; color: #555; font-weight: 500; }
-        .island-link:hover { transform: translateY(-3px); }
-        .island-link:hover svg { stroke: var(--apple-blue); }
-        .island-link:hover span { color: var(--apple-blue); }
+        .nav-item svg {
+            width: 18px;
+            height: 18px;
+            stroke: #1d1d1f;
+            fill: none;
+            stroke-width: 2;
+            transition: stroke 0.2s;
+        }
 
-        /* Notification Badge */
+        .nav-item span {
+            font-size: 13px;
+        }
+
+        .nav-item:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        /* Active nav item */
+        .nav-item.active {
+            background: rgba(0, 113, 227, 0.1);
+            color: var(--apple-blue);
+        }
+
+        .nav-item.active svg {
+            stroke: var(--apple-blue);
+        }
+
+        /* Badge for notifications */
         .badge {
             position: absolute;
-            top: -8px;
-            right: -12px;
+            top: -4px;
+            right: -4px;
             background: #ff3b30;
             color: white;
             font-size: 10px;
             font-weight: 600;
             padding: 2px 6px;
             border-radius: 20px;
+        }
+
+        /* Divider between nav items */
+        .nav-divider {
+            width: 1px;
+            height: 24px;
+            background: rgba(0, 0, 0, 0.1);
+            margin: 0 4px;
+        }
+
+        /* Create button (blue pill) */
+        .create-nav-btn {
+            background: var(--apple-blue);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .create-nav-btn svg {
+            stroke: white;
+        }
+
+        .create-nav-btn:hover {
+            background: #005bb5;
+            transform: scale(1.02);
         }
 
         /* 🌈 GRADIENT HELLO */
@@ -134,22 +194,50 @@
             justify-content: center;
             gap: 40px;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
-        .cat-item { display: flex; flex-direction: column; align-items: center; gap: 12px; cursor: pointer; }
+        .cat-item { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 12px; 
+            cursor: pointer; 
+            transition: 0.2s;
+        }
         
         .cat-icon {
-            width: 65px; height: 65px; border-radius: 20px;
+            width: 65px; 
+            height: 65px; 
+            border-radius: 20px;
             background: rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(10px);
-            display: flex; align-items: center; justify-content: center;
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
             border: 1px solid var(--glass-border);
             transition: 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
-        .cat-icon svg { width: 28px; height: 28px; stroke: #000; fill: none; stroke-width: 2; }
-        .cat-item span { font-size: 12px; font-weight: 600; color: #555; }
-        .cat-item:hover .cat-icon { transform: translateY(-8px); background: #fff; border-color: var(--apple-blue); }
+        .cat-icon svg { 
+            width: 28px; 
+            height: 28px; 
+            stroke: #000; 
+            fill: none; 
+            stroke-width: 2; 
+        }
+        
+        .cat-item span { 
+            font-size: 12px; 
+            font-weight: 600; 
+            color: #555; 
+        }
+        
+        .cat-item:hover .cat-icon { 
+            transform: translateY(-8px); 
+            background: #fff; 
+            border-color: var(--apple-blue); 
+        }
 
         /* 🛠️ FILTER BAR */
         .filter-container {
@@ -163,7 +251,12 @@
             gap: 20px;
         }
 
-        .filter-pills { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+        .filter-pills { 
+            display: flex; 
+            gap: 12px; 
+            align-items: center; 
+            flex-wrap: wrap; 
+        }
 
         .pill {
             padding: 10px 22px;
@@ -174,17 +267,27 @@
             font-size: 0.9rem;
             font-weight: 500;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
             transition: 0.2s;
         }
 
-        .pill:hover { background: white; border-color: var(--apple-blue); }
-        .pill.active { background: var(--apple-blue); color: white; border-color: var(--apple-blue); }
+        .pill:hover { 
+            background: white; 
+            border-color: var(--apple-blue); 
+        }
+        
+        .pill.active { 
+            background: var(--apple-blue); 
+            color: white; 
+            border-color: var(--apple-blue); 
+        }
 
         /* 🖼️ RECENT WORK GRID */
-        .recent-section { max-width: 1400px; margin: 0 auto; padding: 0 8% 100px; }
+        .recent-section { 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            padding: 0 8% 100px; 
+        }
+        
         .recent-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -357,37 +460,12 @@
             cursor: pointer;
         }
 
-        /* Message Item */
         .message-item {
             padding: 12px;
             border-bottom: 1px solid #e5e5e5;
         }
         .message-title { font-weight: 600; }
         .message-project { font-size: 12px; color: var(--apple-blue); }
-
-        /* Create Button */
-        .floating-create-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: var(--apple-blue);
-            border: none;
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(0,113,227,0.3);
-            transition: 0.3s;
-            z-index: 100;
-        }
-
-        .floating-create-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 20px rgba(0,113,227,0.4);
-        }
 
         /* Access Denied */
         .access-denied {
@@ -406,10 +484,18 @@
             max-width: 400px;
         }
 
-        @media (max-width: 768px) {
-            .glass-header { padding: 130px 5% 60px; }
+        @media (max-width: 900px) {
+            .glass-header { padding: 180px 5% 60px; }
             .hello-text { font-size: 2.5rem; letter-spacing: -1px; }
-            .dynamic-island { padding: 8px 20px; gap: 20px; }
+            .dynamic-island { 
+                flex-wrap: wrap; 
+                width: 90%; 
+                justify-content: center;
+                border-radius: 30px;
+                padding: 10px 16px;
+            }
+            .nav-item span { display: none; }
+            .create-nav-btn span { display: inline; }
             .category-grid { gap: 20px; }
             .filter-container { flex-direction: column; align-items: stretch; }
             .filter-pills { justify-content: center; }
@@ -419,29 +505,37 @@
 <body>
 
     <div id="adminContent" style="display: none;">
-        <!-- Dynamic Island Navigation -->
+        <!-- CANVA-STYLE DYNAMIC ISLAND NAVIGATION -->
         <nav class="dynamic-island">
-            <div class="island-link" onclick="goHome()">
-                <svg viewBox="0 0 24 24" style="stroke-width: 2.5;"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2h-5v-7H9v7H5a2 2 0 0 1-2-2z"/></svg>
+            <div class="nav-item" onclick="goHome()">
+                <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2h-5v-7H9v7H5a2 2 0 0 1-2-2z"/></svg>
                 <span>Home</span>
             </div>
-            <div class="island-link" onclick="openCreateModal()">
-                <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                <span>Create</span>
+            <div class="nav-divider"></div>
+            <div class="nav-item" onclick="scrollToProjects()">
+                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+                <span>Projects</span>
             </div>
-            <div class="island-link" onclick="openApplications()">
+            <div class="nav-divider"></div>
+            <div class="nav-item" onclick="openApplications()">
                 <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                 <span>Apps</span>
             </div>
-            <div class="island-link" onclick="openUsersModal()">
+            <div class="nav-divider"></div>
+            <div class="nav-item" onclick="openUsersModal()">
                 <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                 <span>Users</span>
                 <span class="badge" id="usersBadge" style="display: none;">0</span>
             </div>
-            <div class="island-link" onclick="openMessagesModal()">
+            <div class="nav-divider"></div>
+            <div class="nav-item" onclick="openMessagesModal()">
                 <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                 <span>Messages</span>
                 <span class="badge" id="messagesBadge" style="display: none;">0</span>
+            </div>
+            <div class="create-nav-btn" onclick="openCreateModal()">
+                <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span>Create</span>
             </div>
         </nav>
 
@@ -477,11 +571,11 @@
         <div class="filter-container">
             <h3 style="font-weight: 700;">Recent Projects</h3>
             <div class="filter-pills">
-                <button class="pill active" onclick="setFilter('all')">All</button>
-                <button class="pill" onclick="setFilter('exam')">Exams</button>
-                <button class="pill" onclick="setFilter('schedule')">Schedules</button>
-                <button class="pill" onclick="setFilter('class')">Classes</button>
-                <button class="pill" onclick="setFilter('assignment')">Assignments</button>
+                <button class="pill active" onclick="setFilter('all', this)">All</button>
+                <button class="pill" onclick="setFilter('exam', this)">Exams</button>
+                <button class="pill" onclick="setFilter('schedule', this)">Schedules</button>
+                <button class="pill" onclick="setFilter('class', this)">Classes</button>
+                <button class="pill" onclick="setFilter('assignment', this)">Assignments</button>
             </div>
         </div>
 
@@ -490,11 +584,6 @@
                 <!-- Projects will load here -->
             </div>
         </main>
-
-        <!-- Floating Create Button -->
-        <button class="floating-create-btn" onclick="openCreateModal()">
-            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        </button>
     </div>
 
     <!-- Access Denied Screen -->
@@ -550,9 +639,7 @@
         <div class="modal-content">
             <h3>Manage Users</h3>
             <p>Add, remove, or ban users from the platform</p>
-            <div class="user-list" id="usersList">
-                <!-- Users will load here -->
-            </div>
+            <div class="user-list" id="usersList"></div>
             <div class="add-user-section">
                 <input type="email" id="newUserEmail" placeholder="Enter user email">
                 <button onclick="addUser()">Add User</button>
@@ -566,9 +653,7 @@
         <div class="modal-content">
             <h3>Project Notifications</h3>
             <p>Messages from projects you're added to</p>
-            <div id="messagesList" style="max-height: 400px; overflow-y: auto;">
-                <!-- Messages will load here -->
-            </div>
+            <div id="messagesList"></div>
             <button class="close-modal" onclick="closeModal('messagesModal')">Close</button>
         </div>
     </div>
@@ -578,7 +663,7 @@
         <div class="modal-content">
             <h3>Applications</h3>
             <p>Manage your school applications</p>
-            <div id="applicationsList" style="max-height: 400px; overflow-y: auto;">
+            <div id="applicationsList">
                 <div class="message-item">
                     <div class="message-title">Student Registration App</div>
                     <div class="message-project">Version 2.0 - Updated today</div>
@@ -620,7 +705,9 @@
             { id: 2, title: 'New comment on "Weekly Schedule"', project: 'Weekly Schedule', read: false }
         ];
 
+        // Navigation Functions
         function goHome() { window.location.href = 'index.html'; }
+        function scrollToProjects() { document.querySelector('.recent-section').scrollIntoView({ behavior: 'smooth' }); }
         function openCreateModal() { openModal('createModal'); }
         function openUsersModal() { loadUsers(); openModal('usersModal'); }
         function openMessagesModal() { loadMessages(); openModal('messagesModal'); }
@@ -670,7 +757,7 @@
             }
             
             if (filtered.length === 0) {
-                grid.innerHTML = `<div class="empty-state" style="text-align: center; padding: 60px;"><h3>No projects yet</h3><p>Click the + button to create one</p></div>`;
+                grid.innerHTML = `<div style="text-align: center; padding: 60px;"><h3>No projects yet</h3><p>Click Create to get started</p></div>`;
                 return;
             }
             
@@ -725,7 +812,6 @@
                 case 'assignment': title = `Assignment ${new Date().toLocaleDateString()}`; category = 'documents'; break;
             }
             
-            // Add a message notification for this project
             messages.unshift({
                 id: Date.now(),
                 title: `You were added to "${title}"`,
@@ -741,188 +827,4 @@
                 type: type,
                 category: category,
                 date: new Date().toISOString()
-            });
-            saveProjects();
-            renderProjects();
-            closeModal('createModal');
-            alert(`Created: ${title}`);
-        }
-
-        function setFilter(type) {
-            currentFilter = type;
-            document.querySelectorAll('.filter-pills .pill').forEach(pill => {
-                pill.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            renderProjects();
-        }
-
-        function filterByCategory(category) {
-            // Filter projects by category
-            const filtered = projects.filter(p => p.category === category);
-            const grid = document.getElementById('projectsGrid');
-            if (filtered.length === 0) {
-                grid.innerHTML = `<div class="empty-state" style="text-align: center; padding: 60px;"><h3>No ${category} found</h3></div>`;
-            } else {
-                grid.innerHTML = filtered.map(project => `
-                    <div class="liquid-card" onclick="openProject(${project.id})">
-                        <div class="card-preview ${project.type}">
-                            ${getIconForType(project.type)}
-                        </div>
-                        <div class="card-body">
-                            <h4>${escapeHtml(project.title)}</h4>
-                            <p>Modified ${formatDate(project.date)}</p>
-                        </div>
-                    </div>
-                `).join('');
-            }
-        }
-
-        // User Management
-        let users = [
-            { email: 'student1@example.com', role: 'student', banned: false },
-            { email: 'teacher1@example.com', role: 'teacher', banned: false }
-        ];
-
-        function loadUsers() {
-            const usersList = document.getElementById('usersList');
-            usersList.innerHTML = users.map(user => `
-                <div class="user-item">
-                    <div class="user-info">
-                        <span class="user-email">${user.email}</span>
-                        <span class="user-role">${user.role} ${user.banned ? '(Banned)' : ''}</span>
-                    </div>
-                    <div class="user-actions">
-                        ${!user.banned ? `<button class="ban-btn" onclick="banUser('${user.email}')">Ban</button>` : `<button class="make-admin-btn" onclick="unbanUser('${user.email}')">Unban</button>`}
-                        <button class="remove-btn" onclick="removeUser('${user.email}')">Remove</button>
-                        ${user.role !== 'admin' ? `<button class="make-admin-btn" onclick="makeAdmin('${user.email}')">Make Admin</button>` : ''}
-                    </div>
-                </div>
-            `).join('');
-            document.getElementById('usersBadge').style.display = users.length > 0 ? 'inline-flex' : 'none';
-            document.getElementById('usersBadge').textContent = users.length;
-        }
-
-        function addUser() {
-            const email = document.getElementById('newUserEmail').value;
-            if (!email) {
-                alert('Please enter an email');
-                return;
-            }
-            users.push({ email: email, role: 'student', banned: false });
-            document.getElementById('newUserEmail').value = '';
-            loadUsers();
-            alert(`Added user: ${email}`);
-        }
-
-        function banUser(email) {
-            const user = users.find(u => u.email === email);
-            if (user) user.banned = true;
-            loadUsers();
-            alert(`Banned user: ${email}`);
-        }
-
-        function unbanUser(email) {
-            const user = users.find(u => u.email === email);
-            if (user) user.banned = false;
-            loadUsers();
-            alert(`Unbanned user: ${email}`);
-        }
-
-        function removeUser(email) {
-            users = users.filter(u => u.email !== email);
-            loadUsers();
-            alert(`Removed user: ${email}`);
-        }
-
-        function makeAdmin(email) {
-            const user = users.find(u => u.email === email);
-            if (user) user.role = 'admin';
-            loadUsers();
-            alert(`${email} is now an admin`);
-        }
-
-        // Messages
-        function loadMessages() {
-            const messagesList = document.getElementById('messagesList');
-            if (messages.length === 0) {
-                messagesList.innerHTML = `<div style="text-align: center; padding: 40px;">No messages yet</div>`;
-            } else {
-                messagesList.innerHTML = messages.map(msg => `
-                    <div class="message-item">
-                        <div class="message-title">${escapeHtml(msg.title)}</div>
-                        <div class="message-project">Project: ${msg.project}</div>
-                    </div>
-                `).join('');
-            }
-            updateMessagesBadge();
-        }
-
-        function updateMessagesBadge() {
-            const unreadCount = messages.filter(m => !m.read).length;
-            const badge = document.getElementById('messagesBadge');
-            if (unreadCount > 0) {
-                badge.style.display = 'inline-flex';
-                badge.textContent = unreadCount;
-            } else {
-                badge.style.display = 'none';
-            }
-        }
-
-        function saveMessages() {
-            localStorage.setItem('adminMessages', JSON.stringify(messages));
-        }
-
-        function loadStoredMessages() {
-            const saved = localStorage.getItem('adminMessages');
-            if (saved) {
-                messages = JSON.parse(saved);
-                updateMessagesBadge();
-            }
-        }
-
-        // Check admin access
-        async function checkAdminAccess(user) {
-            if (!user) {
-                document.getElementById('adminContent').style.display = 'none';
-                document.getElementById('accessDenied').style.display = 'flex';
-                return false;
-            }
-            
-            if (user.email === ADMIN_EMAIL) {
-                document.getElementById('adminContent').style.display = 'block';
-                document.getElementById('accessDenied').style.display = 'none';
-                document.getElementById('greetingText').textContent = `Hello, ${user.displayName || 'Admin'}`;
-                return true;
-            }
-            
-            const userDoc = await db.collection('users').doc(user.uid).get();
-            if (userDoc.exists && userDoc.data().isAdmin === true) {
-                document.getElementById('adminContent').style.display = 'block';
-                document.getElementById('accessDenied').style.display = 'none';
-                document.getElementById('greetingText').textContent = `Hello, ${user.displayName || 'Admin'}`;
-                return true;
-            }
-            
-            document.getElementById('adminContent').style.display = 'none';
-            document.getElementById('accessDenied').style.display = 'flex';
-            return false;
-        }
-
-        // Event Listeners
-        document.getElementById('searchInput')?.addEventListener('input', renderProjects);
-        
-        // Auth check
-        auth.onAuthStateChanged(async (user) => {
-            if (user) {
-                await checkAdminAccess(user);
-                loadProjects();
-                loadStoredMessages();
-            } else {
-                document.getElementById('adminContent').style.display = 'none';
-                document.getElementById('accessDenied').style.display = 'flex';
-            }
-        });
-    </script>
-</body>
-</html>
+           
