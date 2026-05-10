@@ -45,7 +45,7 @@
 
         /* ============================================
            APPLE DYNAMIC ISLAND - SMALL, CENTERED, TRANSPARENT
-           DOES NOT TOUCH EDGES ON ANY DEVICE
+           NO DIVIDER LINES
         ============================================ */
         .dynamic-island {
             position: fixed;
@@ -60,7 +60,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 2px;
+            gap: 4px;
             z-index: 2000;
             border: 0.5px solid rgba(255, 255, 255, 0.3);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
@@ -68,7 +68,7 @@
             max-width: 88%;
         }
 
-        /* Individual nav items - compact */
+        /* Individual nav items */
         .nav-item {
             display: flex;
             flex-direction: column;
@@ -124,15 +124,7 @@
             text-align: center;
         }
 
-        /* Divider */
-        .nav-divider {
-            width: 1px;
-            height: 24px;
-            background: rgba(0, 0, 0, 0.08);
-            margin: 0;
-        }
-
-        /* Create button inside island */
+        /* Create button - DESKTOP ONLY */
         .create-nav-btn {
             background: var(--apple-blue);
             padding: 5px 12px;
@@ -162,9 +154,16 @@
             background: #005bb5;
         }
 
+        /* Hide create button on mobile */
+        @media (max-width: 768px) {
+            .create-nav-btn {
+                display: none;
+            }
+        }
+
         /* 🌈 GRADIENT HELLO */
         .hello-text {
-            font-size: 3.5rem;
+            font-size: 4rem;
             font-weight: 800;
             letter-spacing: -2px;
             margin-bottom: 40px;
@@ -175,27 +174,32 @@
 
         /* 🔍 SEARCH BAR */
         .search-container {
-            max-width: 600px;
-            margin: 0 auto 50px;
+            max-width: 700px;
+            margin: 0 auto 60px;
         }
 
         .search-container input {
             width: 100%;
-            padding: 16px 30px;
-            border-radius: 50px;
+            padding: 20px 40px;
+            border-radius: 60px;
             border: 1px solid rgba(0,0,0,0.05);
-            font-size: 0.95rem;
+            font-size: 1rem;
             background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(16px);
+            backdrop-filter: blur(20px);
             outline: none;
             text-align: center;
+        }
+
+        .search-container input:focus {
+            border-color: var(--apple-blue);
+            background: white;
         }
 
         /* 🔘 CATEGORY ICONS */
         .category-grid {
             display: flex;
             justify-content: center;
-            gap: 30px;
+            gap: 40px;
             margin-bottom: 20px;
             flex-wrap: wrap;
         }
@@ -204,32 +208,41 @@
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            gap: 8px; 
+            gap: 12px; 
             cursor: pointer; 
         }
         
         .cat-icon {
-            width: 55px; 
-            height: 55px; 
-            border-radius: 18px;
+            width: 65px; 
+            height: 65px; 
+            border-radius: 20px;
             background: rgba(255, 255, 255, 0.4);
             backdrop-filter: blur(10px);
             display: flex; 
             align-items: center; 
             justify-content: center;
             border: 1px solid rgba(0,0,0,0.05);
+            transition: 0.3s;
         }
 
         .cat-icon svg { 
-            width: 24px; 
-            height: 24px; 
+            width: 28px; 
+            height: 28px; 
             stroke: #000; 
+            fill: none; 
+            stroke-width: 2; 
         }
         
         .cat-item span { 
-            font-size: 11px; 
-            font-weight: 500; 
+            font-size: 12px; 
+            font-weight: 600; 
             color: #555; 
+        }
+        
+        .cat-item:hover .cat-icon { 
+            transform: translateY(-8px); 
+            background: #fff; 
+            border-color: var(--apple-blue); 
         }
 
         /* FILTER BAR */
@@ -241,55 +254,69 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 20px;
         }
 
-        .filter-pills { display: flex; gap: 10px; flex-wrap: wrap; }
+        .filter-pills { 
+            display: flex; 
+            gap: 12px; 
+            align-items: center; 
+            flex-wrap: wrap; 
+        }
 
         .pill {
-            padding: 8px 18px;
+            padding: 10px 22px;
             background: rgba(0, 0, 0, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0,0,0,0.05);
             border-radius: 40px;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-weight: 500;
             cursor: pointer;
+        }
+
+        .pill:hover { 
+            background: white; 
+            border-color: var(--apple-blue); 
         }
         
         .pill.active { 
             background: var(--apple-blue); 
             color: white; 
+            border-color: var(--apple-blue); 
         }
 
-        /* RECENT WORK GRID */
+        /* RECENT WORK GRID - ORIGINAL DESIGN */
         .recent-section { 
             max-width: 1400px; 
             margin: 0 auto; 
-            padding: 0 8% 80px; 
+            padding: 0 8% 100px; 
         }
         
         .recent-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
         }
 
         .liquid-card {
             background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
+            backdrop-filter: blur(30px);
+            border-radius: 28px;
             border: 1px solid rgba(255,255,255,0.8);
             overflow: hidden;
+            transition: 0.4s;
             cursor: pointer;
-            transition: 0.3s;
         }
 
         .liquid-card:hover { 
-            transform: translateY(-5px); 
-            background: rgba(255,255,255,0.8);
+            transform: translateY(-8px) scale(1.01); 
+            background: rgba(255,255,255,0.85);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
         
         .card-preview { 
-            height: 140px; 
+            height: 160px; 
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             align-items: center;
@@ -301,11 +328,17 @@
         .card-preview.class { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
         .card-preview.assignment { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
         
-        .card-preview svg { width: 40px; height: 40px; stroke: white; }
+        .card-preview svg {
+            width: 48px;
+            height: 48px;
+            stroke: white;
+            fill: none;
+            stroke-width: 1.5;
+        }
         
-        .card-body { padding: 16px; }
-        .card-body h4 { font-size: 0.95rem; margin-bottom: 4px; }
-        .card-body p { font-size: 0.7rem; color: #86868b; }
+        .card-body { padding: 20px; }
+        .card-body h4 { font-size: 1rem; margin-bottom: 5px; font-weight: 600; }
+        .card-body p { font-size: 0.75rem; color: #86868b; }
 
         /* Modal Styles */
         .modal {
@@ -326,30 +359,46 @@
 
         .modal-content {
             background: white;
-            border-radius: 28px;
+            border-radius: 32px;
             width: 90%;
-            max-width: 450px;
-            padding: 28px;
+            max-width: 500px;
+            padding: 32px;
             max-height: 80vh;
             overflow-y: auto;
         }
 
-        .user-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+        .modal-content h3 { font-size: 24px; margin-bottom: 8px; }
+        .modal-content p { color: #86868b; margin-bottom: 24px; }
+
+        .user-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
         .user-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px;
+            padding: 12px;
             border: 1px solid #e5e5e5;
-            border-radius: 16px;
+            border-radius: 20px;
         }
-        .user-email { font-weight: 600; font-size: 13px; }
-        .user-role { font-size: 11px; color: #86868b; }
-        .user-actions { display: flex; gap: 8px; }
-        .user-actions button { padding: 4px 10px; border-radius: 20px; font-size: 11px; cursor: pointer; }
+
+        .user-info { display: flex; flex-direction: column; }
+        .user-email { font-weight: 600; font-size: 14px; }
+        .user-role { font-size: 12px; color: #86868b; }
+
+        .user-actions { display: flex; gap: 10px; }
+        .user-actions button {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+        }
         .ban-btn { background: #ff3b30; color: white; border: none; }
         .remove-btn { background: #e5e5e5; border: none; }
-        .make-admin-btn { background: var(--apple-blue); color: white; border: none; }
 
         .add-user-section {
             display: flex;
@@ -358,13 +407,13 @@
         }
         .add-user-section input {
             flex: 1;
-            padding: 10px;
+            padding: 12px;
             border: 1px solid #e5e5e5;
             border-radius: 30px;
             outline: none;
         }
         .add-user-section button {
-            padding: 10px 18px;
+            padding: 12px 20px;
             background: var(--apple-blue);
             color: white;
             border: none;
@@ -372,23 +421,33 @@
             cursor: pointer;
         }
 
-        .create-options { display: flex; flex-direction: column; gap: 10px; }
+        .create-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
         .create-option {
             display: flex;
             align-items: center;
-            gap: 14px;
-            padding: 14px;
+            gap: 16px;
+            padding: 16px;
             border: 1px solid #e5e5e5;
-            border-radius: 18px;
+            border-radius: 20px;
             cursor: pointer;
         }
-        .create-option:hover { background: #f5f9ff; border-color: var(--apple-blue); }
-        .create-option svg { width: 24px; height: 24px; stroke: var(--apple-blue); }
-        .create-option-text h4 { font-size: 15px; margin-bottom: 2px; }
-        .create-option-text span { font-size: 12px; color: #86868b; }
+
+        .create-option:hover {
+            background: #f5f9ff;
+            border-color: var(--apple-blue);
+        }
+
+        .create-option svg { width: 28px; height: 28px; stroke: var(--apple-blue); }
+        .create-option-text h4 { font-weight: 600; margin-bottom: 4px; }
+        .create-option-text span { font-size: 13px; color: #86868b; }
 
         .close-modal {
-            margin-top: 18px;
+            margin-top: 20px;
             width: 100%;
             padding: 12px;
             background: #f5f5f5;
@@ -401,8 +460,8 @@
             padding: 12px;
             border-bottom: 1px solid #e5e5e5;
         }
-        .message-title { font-weight: 600; font-size: 14px; }
-        .message-project { font-size: 11px; color: var(--apple-blue); }
+        .message-title { font-weight: 600; }
+        .message-project { font-size: 12px; color: var(--apple-blue); }
 
         /* Access Denied */
         .access-denied {
@@ -412,30 +471,30 @@
             height: 100vh;
             background: linear-gradient(135deg, #fff 0%, #eef8ff 100%);
         }
+
         .access-denied-content {
             background: white;
             padding: 40px;
             border-radius: 40px;
-            max-width: 350px;
+            max-width: 400px;
             text-align: center;
         }
 
-        /* MOBILE - Dynamic Island small, centered, transparent */
+        /* MOBILE */
         @media (max-width: 768px) {
             .glass-header {
-                padding: 130px 5% 50px;
+                padding: 130px 5% 60px;
             }
             .hello-text {
-                font-size: 2.2rem;
+                font-size: 2.5rem;
                 letter-spacing: -1px;
             }
             .dynamic-island {
                 top: 12px;
                 padding: 4px 10px;
-                gap: 0px;
+                gap: 2px;
                 max-width: 92%;
                 background: rgba(255, 255, 255, 0.5);
-                backdrop-filter: blur(14px);
             }
             .nav-item {
                 min-width: 42px;
@@ -448,34 +507,15 @@
             .nav-item span {
                 font-size: 8px;
             }
-            .create-nav-btn {
-                padding: 4px 10px;
-                min-width: 42px;
-            }
-            .create-nav-btn svg {
-                width: 12px;
-                height: 12px;
-            }
-            .create-nav-btn span {
-                font-size: 8px;
-            }
-            .nav-divider {
-                height: 20px;
-            }
             .category-grid {
                 gap: 20px;
-            }
-            .cat-icon {
-                width: 48px;
-                height: 48px;
-            }
-            .cat-icon svg {
-                width: 20px;
-                height: 20px;
             }
             .filter-container {
                 flex-direction: column;
                 align-items: stretch;
+            }
+            .filter-pills {
+                justify-content: center;
             }
             .recent-grid {
                 grid-template-columns: 1fr;
@@ -486,34 +526,31 @@
 <body>
 
     <div id="adminContent" style="display: none;">
-        <!-- APPLE DYNAMIC ISLAND - SMALL, CENTERED, TRANSPARENT -->
+        <!-- APPLE DYNAMIC ISLAND - NO DIVIDERS, CREATE HIDDEN ON MOBILE -->
         <nav class="dynamic-island">
             <div class="nav-item" onclick="goHome()">
                 <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2h-5v-7H9v7H5a2 2 0 0 1-2-2z"/></svg>
                 <span>Home</span>
             </div>
-            <div class="nav-divider"></div>
             <div class="nav-item" onclick="scrollToProjects()">
                 <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
                 <span>Projects</span>
             </div>
-            <div class="nav-divider"></div>
             <div class="nav-item" onclick="openApplications()">
                 <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                 <span>Apps</span>
             </div>
-            <div class="nav-divider"></div>
             <div class="nav-item" onclick="openUsersModal()">
                 <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                 <span>Users</span>
                 <span class="badge" id="usersBadge" style="display: none;">0</span>
             </div>
-            <div class="nav-divider"></div>
             <div class="nav-item" onclick="openMessagesModal()">
                 <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                 <span>Messages</span>
                 <span class="badge" id="messagesBadge" style="display: none;">0</span>
             </div>
+            <!-- Create button - DESKTOP ONLY (hidden on mobile via CSS) -->
             <div class="create-nav-btn" onclick="openCreateModal()">
                 <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                 <span>Create</span>
@@ -524,27 +561,33 @@
             <h1 class="hello-text" id="greetingText">Hello, Admin</h1>
 
             <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Search...">
+                <input type="text" id="searchInput" placeholder="Search school documents or records...">
             </div>
 
             <div class="category-grid">
                 <div class="cat-item" onclick="filterByCategory('documents')">
-                    <div class="cat-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-                    <span>Docs</span>
+                    <div class="cat-icon">
+                        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    </div>
+                    <span>Documents</span>
                 </div>
                 <div class="cat-item" onclick="filterByCategory('sheets')">
-                    <div class="cat-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg></div>
+                    <div class="cat-icon">
+                        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+                    </div>
                     <span>Sheets</span>
                 </div>
                 <div class="cat-item" onclick="filterByCategory('schedules')">
-                    <div class="cat-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+                    <div class="cat-icon">
+                        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                    </div>
                     <span>Schedules</span>
                 </div>
             </div>
         </header>
 
         <div class="filter-container">
-            <h3 style="font-weight: 600;">Recent Projects</h3>
+            <h3 style="font-weight: 700;">Recent Projects</h3>
             <div class="filter-pills">
                 <button class="pill active" onclick="setFilter('all', this)">All</button>
                 <button class="pill" onclick="setFilter('exam', this)">Exams</button>
@@ -563,7 +606,7 @@
     <div id="accessDenied" class="access-denied" style="display: none;">
         <div class="access-denied-content">
             <h2>Access Denied</h2>
-            <p>You don't have permission.</p>
+            <p>You don't have permission to view this page.</p>
             <button class="pill" onclick="window.location.href='index.html'" style="margin-top: 20px;">Back to Home</button>
         </div>
     </div>
@@ -571,24 +614,24 @@
     <!-- Modals -->
     <div class="modal" id="createModal">
         <div class="modal-content">
-            <h3>Create new</h3>
-            <p>Choose what to create</p>
+            <h3>Create new project</h3>
+            <p>Choose what you'd like to create</p>
             <div class="create-options">
                 <div class="create-option" onclick="createProject('exam')">
                     <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="12" y2="13"/></svg>
-                    <div><h4>Exam</h4><span>Create quizzes and tests</span></div>
+                    <div class="create-option-text"><h4>Exam / Test</h4><span>Create quizzes, exams, and assessments</span></div>
                 </div>
                 <div class="create-option" onclick="createProject('schedule')">
                     <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                    <div><h4>Schedule</h4><span>Plan classes</span></div>
+                    <div class="create-option-text"><h4>Class Schedule</h4><span>Plan weekly classes and timetables</span></div>
                 </div>
                 <div class="create-option" onclick="createProject('class')">
                     <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-                    <div><h4>Class Material</h4><span>Upload lessons</span></div>
+                    <div class="create-option-text"><h4>Class Material</h4><span>Upload lessons, notes, and resources</span></div>
                 </div>
                 <div class="create-option" onclick="createProject('assignment')">
                     <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                    <div><h4>Assignment</h4><span>Homework</span></div>
+                    <div class="create-option-text"><h4>Assignment</h4><span>Create homework and assignments</span></div>
                 </div>
             </div>
             <button class="close-modal" onclick="closeModal('createModal')">Cancel</button>
@@ -598,10 +641,11 @@
     <div class="modal" id="usersModal">
         <div class="modal-content">
             <h3>Manage Users</h3>
+            <p>Add, remove, or ban users</p>
             <div class="user-list" id="usersList"></div>
             <div class="add-user-section">
-                <input type="email" id="newUserEmail" placeholder="Email">
-                <button onclick="addUser()">Add</button>
+                <input type="email" id="newUserEmail" placeholder="Enter user email">
+                <button onclick="addUser()">Add User</button>
             </div>
             <button class="close-modal" onclick="closeModal('usersModal')">Close</button>
         </div>
@@ -609,7 +653,7 @@
 
     <div class="modal" id="messagesModal">
         <div class="modal-content">
-            <h3>Notifications</h3>
+            <h3>Project Notifications</h3>
             <div id="messagesList"></div>
             <button class="close-modal" onclick="closeModal('messagesModal')">Close</button>
         </div>
@@ -618,9 +662,9 @@
     <div class="modal" id="applicationsModal">
         <div class="modal-content">
             <h3>Applications</h3>
-            <div>
-                <div class="message-item"><div class="message-title">Student Registration</div><div class="message-project">Version 2.0</div></div>
-                <div class="message-item"><div class="message-title">Grade Management</div><div class="message-project">Last sync: 2h ago</div></div>
+            <div id="applicationsList">
+                <div class="message-item"><div class="message-title">Student Registration App</div><div class="message-project">Version 2.0</div></div>
+                <div class="message-item"><div class="message-title">Grade Management System</div><div class="message-project">Last sync: 2h ago</div></div>
                 <div class="message-item"><div class="message-title">Attendance Tracker</div><div class="message-project">Active</div></div>
             </div>
             <button class="close-modal" onclick="closeModal('applicationsModal')">Close</button>
@@ -645,8 +689,8 @@
         let projects = [];
         let currentFilter = 'all';
         let messages = [
-            { id: 1, title: 'Added to "Final Exam"', project: 'Final Exam', read: false },
-            { id: 2, title: 'New comment on schedule', project: 'Schedule', read: false }
+            { id: 1, title: 'You were added to "Final Exam - Grade 12"', project: 'Final Exam', read: false },
+            { id: 2, title: 'New comment on "Weekly Schedule"', project: 'Weekly Schedule', read: false }
         ];
 
         function goHome() { window.location.href = 'index.html'; }
@@ -661,8 +705,11 @@
 
         const sampleProjects = [
             { id: 1, title: 'Final Exam - Grade 12', type: 'exam', date: '2026-05-15', category: 'documents' },
-            { id: 2, title: 'Weekly Schedule', type: 'schedule', date: '2026-05-10', category: 'schedules' },
-            { id: 3, title: 'Math Notes', type: 'class', date: '2026-05-08', category: 'documents' }
+            { id: 2, title: 'Weekly Class Schedule', type: 'schedule', date: '2026-05-10', category: 'schedules' },
+            { id: 3, title: 'Mathematics Notes - Chapter 5', type: 'class', date: '2026-05-08', category: 'documents' },
+            { id: 4, title: 'Physics Assignment', type: 'assignment', date: '2026-05-05', category: 'documents' },
+            { id: 5, title: 'Mid-term Exam Schedule', type: 'schedule', date: '2026-05-01', category: 'schedules' },
+            { id: 6, title: 'Student Attendance Sheet', type: 'class', date: '2026-04-28', category: 'sheets' }
         ];
 
         function loadProjects() {
@@ -678,26 +725,58 @@
             if (currentFilter !== 'all') filtered = filtered.filter(p => p.type === currentFilter);
             
             if (filtered.length === 0) {
-                grid.innerHTML = '<div style="text-align:center;padding:60px"><h3>No projects</h3><p>Click Create</p></div>';
+                grid.innerHTML = `<div style="text-align:center;padding:60px"><h3>No projects yet</h3><p>Click Create to get started</p></div>`;
                 return;
             }
             
-            grid.innerHTML = filtered.map(p => `
-                <div class="liquid-card" onclick="openProject(${p.id})">
-                    <div class="card-preview ${p.type}">
-                        <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><line x1="8" y1="9" x2="16" y2="9"/></svg>
+            grid.innerHTML = filtered.map(project => `
+                <div class="liquid-card" onclick="openProject(${project.id})">
+                    <div class="card-preview ${project.type}">
+                        ${getIconForType(project.type)}
                     </div>
                     <div class="card-body">
-                        <h4>${p.title}</h4>
-                        <p>Modified ${new Date(p.date).toLocaleDateString()}</p>
+                        <h4>${escapeHtml(project.title)}</h4>
+                        <p>Modified ${formatDate(project.date)}</p>
                     </div>
                 </div>
             `).join('');
         }
 
+        function getIconForType(type) {
+            switch(type) {
+                case 'exam': return `<svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="12" y2="13"/></svg>`;
+                case 'schedule': return `<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`;
+                case 'class': return `<svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`;
+                default: return `<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`;
+            }
+        }
+
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+
+        function openProject(id) { alert(`Opening project ${id}\nFull editing coming soon!`); }
+
         function createProject(type) {
-            const title = `${type.charAt(0).toUpperCase() + type.slice(1)} ${new Date().toLocaleDateString()}`;
-            messages.unshift({ id: Date.now(), title: `Added to "${title}"`, project: title, read: false });
+            let title = '';
+            let category = 'documents';
+            switch(type) {
+                case 'exam': title = `Exam ${new Date().toLocaleDateString()}`; break;
+                case 'schedule': title = `Schedule ${new Date().toLocaleDateString()}`; break;
+                case 'class': title = `Class Material ${new Date().toLocaleDateString()}`; break;
+                case 'assignment': title = `Assignment ${new Date().toLocaleDateString()}`; break;
+            }
+            messages.unshift({ id: Date.now(), title: `You were added to "${title}"`, project: title, read: false });
             updateMessagesBadge();
             projects.unshift({ id: Date.now(), title, type, date: new Date().toISOString() });
             localStorage.setItem('adminProjects', JSON.stringify(projects));
@@ -712,21 +791,27 @@
             renderProjects();
         }
 
-        function filterByCategory(cat) {
-            const filtered = projects.filter(p => p.category === cat);
+        function filterByCategory(category) {
+            const filtered = projects.filter(p => p.category === category);
             const grid = document.getElementById('projectsGrid');
-            if (filtered.length === 0) grid.innerHTML = `<div style="text-align:center;padding:60px"><h3>No ${cat}</h3></div>`;
-            else grid.innerHTML = filtered.map(p => `<div class="liquid-card"><div class="card-preview ${p.type}"></div><div class="card-body"><h4>${p.title}</h4></div></div>`).join('');
+            if (filtered.length === 0) grid.innerHTML = `<div style="text-align:center;padding:60px"><h3>No ${category} found</h3></div>`;
+            else grid.innerHTML = filtered.map(project => `
+                <div class="liquid-card" onclick="openProject(${project.id})">
+                    <div class="card-preview ${project.type}">${getIconForType(project.type)}</div>
+                    <div class="card-body"><h4>${escapeHtml(project.title)}</h4><p>Modified ${formatDate(project.date)}</p></div>
+                </div>
+            `).join('');
         }
 
-        function openProject(id) { alert(`Opening project ${id}`); }
+        let users = [{ email: 'student1@example.com', role: 'student', banned: false }, { email: 'teacher1@example.com', role: 'teacher', banned: false }];
 
-        let users = [{ email: 'student@example.com', role: 'student', banned: false }];
         function loadUsers() {
             const list = document.getElementById('usersList');
-            list.innerHTML = users.map(u => `
-                <div class="user-item"><div><div class="user-email">${u.email}</div><div class="user-role">${u.role}</div></div>
-                <div class="user-actions"><button class="ban-btn" onclick="banUser('${u.email}')">Ban</button><button class="remove-btn" onclick="removeUser('${u.email}')">Remove</button></div></div>
+            list.innerHTML = users.map(user => `
+                <div class="user-item">
+                    <div class="user-info"><span class="user-email">${user.email}</span><span class="user-role">${user.role}</span></div>
+                    <div class="user-actions"><button class="ban-btn" onclick="banUser('${user.email}')">Ban</button><button class="remove-btn" onclick="removeUser('${user.email}')">Remove</button></div>
+                </div>
             `).join('');
             document.getElementById('usersBadge').textContent = users.length;
         }
@@ -743,25 +828,33 @@
 
         function loadMessages() {
             const list = document.getElementById('messagesList');
-            if (messages.length === 0) list.innerHTML = '<div style="padding:40px;text-align:center">No messages</div>';
-            else list.innerHTML = messages.map(m => `<div class="message-item"><div class="message-title">${m.title}</div><div class="message-project">${m.project}</div></div>`).join('');
+            if (messages.length === 0) list.innerHTML = '<div style="text-align:center;padding:40px">No messages</div>';
+            else list.innerHTML = messages.map(m => `<div class="message-item"><div class="message-title">${escapeHtml(m.title)}</div><div class="message-project">${m.project}</div></div>`).join('');
         }
         function updateMessagesBadge() { document.getElementById('messagesBadge').textContent = messages.filter(m => !m.read).length; }
 
-        auth.onAuthStateChanged(async (user) => {
-            if (user && (user.email === ADMIN_EMAIL || (await db.collection('users').doc(user.uid).get()).data()?.isAdmin)) {
+        async function checkAdminAccess(user) {
+            if (!user) { document.getElementById('adminContent').style.display = 'none'; document.getElementById('accessDenied').style.display = 'flex'; return false; }
+            if (user.email === ADMIN_EMAIL) {
                 document.getElementById('adminContent').style.display = 'block';
                 document.getElementById('accessDenied').style.display = 'none';
                 document.getElementById('greetingText').textContent = `Hello, ${user.displayName || 'Admin'}`;
-                loadProjects();
-                updateMessagesBadge();
-            } else {
-                document.getElementById('adminContent').style.display = 'none';
-                document.getElementById('accessDenied').style.display = 'flex';
+                return true;
             }
-        });
+            const userDoc = await db.collection('users').doc(user.uid).get();
+            if (userDoc.exists && userDoc.data().isAdmin) {
+                document.getElementById('adminContent').style.display = 'block';
+                document.getElementById('accessDenied').style.display = 'none';
+                document.getElementById('greetingText').textContent = `Hello, ${user.displayName || 'Admin'}`;
+                return true;
+            }
+            document.getElementById('adminContent').style.display = 'none';
+            document.getElementById('accessDenied').style.display = 'flex';
+            return false;
+        }
 
         document.getElementById('searchInput')?.addEventListener('input', renderProjects);
+        auth.onAuthStateChanged(async (user) => { if (user) await checkAdminAccess(user); else { document.getElementById('adminContent').style.display = 'none'; document.getElementById('accessDenied').style.display = 'flex'; } });
     </script>
 </body>
-    </html>
+            </html>
