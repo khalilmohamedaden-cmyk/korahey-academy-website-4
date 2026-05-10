@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Korahey Admin | Dashboard</title>
     
     <!-- Firebase SDKs -->
@@ -47,14 +47,14 @@
 
         /* ============================================
            CANVA-STYLE DYNAMIC ISLAND NAVIGATION
-           Fixed at top, centered, soft glass edges
+           SAME DESIGN ON ALL DEVICES - NO CHANGES
         ============================================ */
         .dynamic-island {
             position: fixed;
             top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.75);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(30px);
             border-radius: 50px;
             padding: 8px 20px;
@@ -62,12 +62,22 @@
             align-items: center;
             gap: 8px;
             z-index: 2000;
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
             transition: all 0.3s ease;
+            /* Ensure it works on all screen sizes */
+            width: auto;
+            max-width: 95%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        
+        .dynamic-island::-webkit-scrollbar {
+            display: none;
         }
 
-        /* Individual nav items */
+        /* Individual nav items - SAME ON MOBILE */
         .nav-item {
             display: flex;
             align-items: center;
@@ -80,6 +90,7 @@
             font-size: 14px;
             font-weight: 500;
             position: relative;
+            white-space: nowrap;
         }
 
         .nav-item svg {
@@ -93,6 +104,7 @@
 
         .nav-item span {
             font-size: 13px;
+            font-weight: 500;
         }
 
         .nav-item:hover {
@@ -130,7 +142,7 @@
             margin: 0 4px;
         }
 
-        /* Create button (blue pill) */
+        /* Create button (blue pill) - SAME ON MOBILE */
         .create-nav-btn {
             background: var(--apple-blue);
             color: white;
@@ -141,10 +153,16 @@
             gap: 8px;
             cursor: pointer;
             transition: all 0.2s;
+            white-space: nowrap;
         }
 
         .create-nav-btn svg {
             stroke: white;
+        }
+
+        .create-nav-btn span {
+            font-size: 13px;
+            font-weight: 500;
         }
 
         .create-nav-btn:hover {
@@ -484,28 +502,85 @@
             max-width: 400px;
         }
 
-        @media (max-width: 900px) {
-            .glass-header { padding: 180px 5% 60px; }
-            .hello-text { font-size: 2.5rem; letter-spacing: -1px; }
-            .dynamic-island { 
-                flex-wrap: wrap; 
-                width: 90%; 
-                justify-content: center;
-                border-radius: 30px;
-                padding: 10px 16px;
+        /* ============================================
+           MOBILE - SAME DESIGN, JUST SCROLLABLE IF NEEDED
+           NO HIDING OF TEXT OR ICONS
+        ============================================ */
+        @media (max-width: 768px) {
+            .glass-header {
+                padding: 130px 5% 60px;
             }
-            .nav-item span { display: none; }
-            .create-nav-btn span { display: inline; }
-            .category-grid { gap: 20px; }
-            .filter-container { flex-direction: column; align-items: stretch; }
-            .filter-pills { justify-content: center; }
+            .hello-text {
+                font-size: 2.5rem;
+                letter-spacing: -1px;
+            }
+            /* Dynamic Island - SAME DESIGN, JUST SCROLLABLE HORIZONTALLY */
+            .dynamic-island {
+                width: auto;
+                max-width: 94%;
+                padding: 8px 16px;
+                gap: 6px;
+                overflow-x: auto;
+                justify-content: flex-start;
+                -webkit-overflow-scrolling: touch;
+            }
+            /* Nav items - SAME SIZE, NO HIDING */
+            .nav-item {
+                padding: 6px 12px;
+                gap: 4px;
+            }
+            .nav-item span {
+                font-size: 12px;
+                display: inline-block !important;
+            }
+            .nav-item svg {
+                width: 16px;
+                height: 16px;
+            }
+            .create-nav-btn {
+                padding: 6px 14px;
+            }
+            .create-nav-btn span {
+                font-size: 12px;
+                display: inline-block !important;
+            }
+            .category-grid {
+                gap: 20px;
+            }
+            .filter-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filter-pills {
+                justify-content: center;
+            }
+            .recent-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* For very small phones, keep same design */
+        @media (max-width: 480px) {
+            .dynamic-island {
+                padding: 6px 12px;
+                gap: 4px;
+            }
+            .nav-item {
+                padding: 4px 10px;
+            }
+            .nav-item span {
+                font-size: 11px;
+            }
+            .create-nav-btn {
+                padding: 4px 12px;
+            }
         }
     </style>
 </head>
 <body>
 
     <div id="adminContent" style="display: none;">
-        <!-- CANVA-STYLE DYNAMIC ISLAND NAVIGATION -->
+        <!-- CANVA-STYLE DYNAMIC ISLAND NAVIGATION - SAME ON ALL DEVICES -->
         <nav class="dynamic-island">
             <div class="nav-item" onclick="goHome()">
                 <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2h-5v-7H9v7H5a2 2 0 0 1-2-2z"/></svg>
