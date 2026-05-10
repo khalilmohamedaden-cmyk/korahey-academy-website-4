@@ -27,48 +27,41 @@
         }
 
         /* ============================================
-           APPLE DYNAMIC ISLAND - SEPARATE FROM PAGE
-           DOES NOT SCROLL, PAGE HAS ROUNDED TOP CORNERS
+           DYNAMIC ISLAND - LEFT SIDE (iPad/PC)
         ============================================ */
-        .dynamic-island-container {
+        .dynamic-island {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
+            top: 20px;
+            left: 20px;
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(20px);
-            z-index: 2000;
-            padding: 12px 0;
-            border-bottom: 0.5px solid rgba(0, 0, 0, 0.05);
-        }
-
-        .dynamic-island {
-            max-width: 500px;
-            margin: 0 auto;
+            border-radius: 50px;
+            padding: 8px 20px;
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 8px;
-            padding: 0 16px;
+            z-index: 2000;
+            border: 0.5px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
         }
 
-        /* Nav items */
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
             padding: 6px 12px;
             border-radius: 30px;
             cursor: pointer;
             transition: all 0.2s ease;
+            position: relative;
             background: transparent;
             min-width: 60px;
         }
 
         .nav-item svg {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             stroke: #1d1d1f;
             fill: none;
             stroke-width: 1.8;
@@ -84,96 +77,87 @@
             background: rgba(0, 0, 0, 0.04);
         }
 
-        .nav-item.active svg {
+        .nav-item.active svg,
+        .nav-item.active span {
+            color: var(--apple-blue);
             stroke: var(--apple-blue);
         }
 
-        .nav-item.active span {
-            color: var(--apple-blue);
-        }
-
-        /* Badge */
         .badge {
             position: absolute;
             top: -2px;
-            right: 8px;
+            right: 4px;
             background: #ff3b30;
             color: white;
-            font-size: 9px;
-            font-weight: 600;
+            font-size: 8px;
             padding: 2px 5px;
             border-radius: 20px;
         }
 
-        /* Create button - CENTERED */
         .create-nav-btn {
             background: var(--apple-blue);
-            padding: 8px 20px;
+            padding: 6px 16px;
             border-radius: 30px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
             cursor: pointer;
-            transition: all 0.2s;
-            min-width: 70px;
+            min-width: 60px;
         }
 
         .create-nav-btn svg {
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             stroke: white;
         }
 
         .create-nav-btn span {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
             color: white;
         }
 
         .create-nav-btn:hover {
             background: #005bb5;
-            transform: scale(1.02);
         }
 
-        /* Korahey AI icon under create button */
-        .ai-icon {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
+        /* Korahey AI Icon */
+        .ai-nav-item {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
+            gap: 3px;
+            padding: 6px 12px;
+            border-radius: 30px;
             cursor: pointer;
-            z-index: 2000;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            transition: all 0.3s;
+            background: linear-gradient(135deg, #667eea, #764ba2);
         }
 
-        .ai-icon:hover {
-            transform: translateX(-50%) scale(1.1);
-        }
-
-        .ai-icon svg {
-            width: 28px;
-            height: 28px;
+        .ai-nav-item svg {
+            width: 18px;
+            height: 18px;
             stroke: white;
         }
 
-        /* PAGE CONTENT - ROUNDED TOP CORNERS TO SHOW SEPARATION */
+        .ai-nav-item span {
+            font-size: 10px;
+            font-weight: 500;
+            color: white;
+        }
+
+        /* PAGE CONTENT - SOFT EDGES */
         .page-content {
-            margin-top: 85px;
+            margin-left: 180px;
+            margin-top: 20px;
+            margin-right: 20px;
             background: linear-gradient(-45deg, #ffffff, #eef8ff, #ffffff, #c2e4ff);
             background-size: 400% 400%;
             animation: liveGradient 12s ease infinite;
-            border-radius: 32px 32px 0 0;
-            min-height: calc(100vh - 85px);
-            padding-bottom: 40px;
+            border-radius: 40px;
+            min-height: calc(100vh - 40px);
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
         }
 
         @keyframes liveGradient {
@@ -182,17 +166,17 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Header */
+        /* HEADER */
         .glass-header {
-            padding: 60px 5% 40px;
             text-align: center;
+            margin-bottom: 30px;
         }
 
         .hello-text {
-            font-size: 3.5rem;
+            font-size: 3rem;
             font-weight: 800;
             letter-spacing: -2px;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             background: linear-gradient(to right, #1d1d1f 30%, var(--apple-blue) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -200,34 +184,32 @@
 
         /* SEARCH BAR */
         .search-container {
-            max-width: 600px;
-            margin: 0 auto 40px;
+            max-width: 500px;
+            margin: 0 auto 30px;
         }
 
         .search-container input {
             width: 100%;
-            padding: 16px 30px;
+            padding: 14px 25px;
             border-radius: 50px;
             border: 1px solid rgba(0,0,0,0.05);
-            font-size: 1rem;
+            font-size: 0.95rem;
             background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(10px);
             outline: none;
             text-align: center;
         }
 
-        /* OWNER & TYPE DROPDOWNS - Like your screenshot */
+        /* FILTER BAR - Owner & All Projects Dropdowns */
         .filter-bar {
-            max-width: 1400px;
-            margin: 0 auto 30px;
-            padding: 0 8%;
             display: flex;
-            gap: 16px;
+            gap: 15px;
+            margin-bottom: 30px;
             flex-wrap: wrap;
-            align-items: center;
         }
 
         .filter-dropdown {
+            position: relative;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -247,44 +229,42 @@
             stroke: #555;
         }
 
-        /* CATEGORY PILLS - Any type style */
-        .category-pills {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            padding: 0 8% 20px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .category-pill {
-            padding: 8px 20px;
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(10px);
-            border-radius: 40px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: 0.2s;
-            border: 1px solid rgba(0,0,0,0.03);
-        }
-
-        .category-pill:hover {
+        /* Dropdown menu */
+        .dropdown-menu {
+            position: absolute;
+            top: 45px;
+            left: 0;
             background: white;
-            border-color: var(--apple-blue);
+            border-radius: 20px;
+            padding: 10px 0;
+            min-width: 160px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            z-index: 100;
+            display: none;
         }
 
-        .category-pill.active {
-            background: var(--apple-blue);
-            color: white;
+        .dropdown-menu a {
+            display: block;
+            padding: 10px 20px;
+            text-decoration: none;
+            color: #1d1d1f;
+            font-size: 0.85rem;
+            transition: 0.2s;
         }
 
-        /* RECENT PROJECTS TITLE */
+        .dropdown-menu a:hover {
+            background: #f5f5f5;
+        }
+
+        .filter-dropdown.active .dropdown-menu {
+            display: block;
+        }
+
+        /* RECENT TITLE */
         .recent-title {
-            padding: 0 8%;
-            margin: 30px 0 20px;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 600;
+            margin-bottom: 20px;
         }
 
         /* PROJECTS GRID */
@@ -292,9 +272,6 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 24px;
-            padding: 0 8% 40px;
-            max-width: 1400px;
-            margin: 0 auto;
         }
 
         .project-card {
@@ -314,7 +291,7 @@
         }
 
         .card-preview {
-            height: 150px;
+            height: 140px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             align-items: center;
@@ -342,7 +319,6 @@
             color: #86868b;
         }
 
-        /* Empty state */
         .empty-state {
             text-align: center;
             padding: 60px;
@@ -482,25 +458,46 @@
             text-align: center;
         }
 
-        @media (max-width: 768px) {
-            .dynamic-island { gap: 4px; }
-            .nav-item { min-width: 50px; padding: 4px 8px; }
-            .nav-item svg { width: 18px; height: 18px; }
-            .nav-item span { font-size: 9px; }
-            .create-nav-btn { padding: 6px 14px; min-width: 60px; }
-            .create-nav-btn svg { width: 16px; height: 16px; }
-            .hello-text { font-size: 2.2rem; }
-            .filter-bar { gap: 10px; }
-            .filter-dropdown { padding: 8px 14px; font-size: 0.8rem; }
-            .recent-grid { grid-template-columns: 1fr; gap: 16px; }
-            .ai-icon { width: 45px; height: 45px; bottom: 20px; }
+        /* MOBILE RESPONSIVE */
+        @media (max-width: 900px) {
+            .dynamic-island {
+                left: 50%;
+                transform: translateX(-50%);
+                top: 10px;
+                padding: 6px 15px;
+                gap: 5px;
+            }
+            .nav-item, .create-nav-btn, .ai-nav-item {
+                min-width: 50px;
+                padding: 4px 8px;
+            }
+            .nav-item svg, .ai-nav-item svg, .create-nav-btn svg {
+                width: 16px;
+                height: 16px;
+            }
+            .nav-item span, .create-nav-btn span, .ai-nav-item span {
+                font-size: 9px;
+            }
+            .page-content {
+                margin: 70px 10px 10px 10px;
+                padding: 20px;
+            }
+            .hello-text {
+                font-size: 2rem;
+            }
+            .filter-bar {
+                justify-content: center;
+            }
+            .recent-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- DYNAMIC ISLAND - SEPARATE, DOESN'T SCROLL -->
-    <div class="dynamic-island-container">
+    <div id="adminContent">
+        <!-- DYNAMIC ISLAND - LEFT SIDE -->
         <div class="dynamic-island">
             <div class="nav-item" onclick="goHome()">
                 <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2h-5v-7H9v7H5a2 2 0 0 1-2-2z"/></svg>
@@ -510,14 +507,13 @@
                 <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
                 <span>Projects</span>
             </div>
-            <div class="nav-item" onclick="openTemplates()">
-                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg>
-                <span>Templates</span>
-            </div>
-            <!-- CREATE BUTTON IN THE MIDDLE -->
             <div class="create-nav-btn" onclick="openCreateModal()">
                 <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                 <span>Create</span>
+            </div>
+            <div class="ai-nav-item" onclick="openKoraheyAI()">
+                <svg viewBox="0 0 24 24" stroke="currentColor"><path d="M12 2a10 10 0 0 1 10 10c0 5.5-4.5 10-10 10S2 17.5 2 12 6.5 2 12 2z"/><path d="M12 6v6l4 2"/></svg>
+                <span>Korahey AI</span>
             </div>
             <div class="nav-item" onclick="openApplications()">
                 <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
@@ -534,55 +530,49 @@
                 <span class="badge" id="messagesBadge" style="display: none;">0</span>
             </div>
         </div>
-    </div>
 
-    <!-- KORAHEY AI ICON -->
-    <div class="ai-icon" onclick="openKoraheyAI()">
-        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-            <path d="M12 2a10 10 0 0 1 10 10c0 5.5-4.5 10-10 10S2 17.5 2 12 6.5 2 12 2z"/>
-            <path d="M12 6v6l4 2"/>
-            <circle cx="12" cy="12" r="1"/>
-        </svg>
-    </div>
+        <!-- PAGE CONTENT - SOFT EDGES -->
+        <div class="page-content">
+            <div class="glass-header">
+                <h1 class="hello-text" id="greetingText">Hello, Admin</h1>
 
-    <!-- PAGE CONTENT - ROUNDED TOP CORNERS TO SEPARATE FROM DYNAMIC ISLAND -->
-    <div class="page-content">
-        <header class="glass-header">
-            <h1 class="hello-text" id="greetingText">Hello, Admin</h1>
-
-            <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Search...">
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Search...">
+                </div>
             </div>
-        </header>
 
-        <!-- OWNER & ANY TYPE DROPDOWNS - Like your screenshot -->
-        <div class="filter-bar">
-            <div class="filter-dropdown" onclick="toggleOwnerFilter()">
-                <span id="ownerText">Owner</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            <!-- FILTER BAR - Owner & All Projects Dropdowns -->
+            <div class="filter-bar">
+                <div class="filter-dropdown" id="ownerDropdown">
+                    <span id="ownerText">Owner</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    <div class="dropdown-menu">
+                        <a onclick="setOwnerFilter('owner')">Owner</a>
+                        <a onclick="setOwnerFilter('me')">Me</a>
+                    </div>
+                </div>
+
+                <div class="filter-dropdown" id="categoryDropdown">
+                    <span id="categoryText">All projects</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    <div class="dropdown-menu" id="categoryMenu">
+                        <a onclick="setCategory('all')">All projects</a>
+                        <a onclick="setCategory('design')">Design</a>
+                        <a onclick="setCategory('education')">Education</a>
+                        <a onclick="setCategory('business')">Business</a>
+                        <a onclick="setCategory('personal')">Personal</a>
+                        <a onclick="setCategory('marketing')">Marketing</a>
+                        <a onclick="setCategory('social')">Social Media</a>
+                        <a onclick="setCategory('video')">Video</a>
+                    </div>
+                </div>
             </div>
-            <div class="filter-dropdown" onclick="toggleTypeFilter()">
-                <span id="typeText">Any type</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+
+            <div class="recent-title">Recent projects</div>
+
+            <div class="recent-grid" id="projectsGrid">
+                <!-- Projects will load here -->
             </div>
-        </div>
-
-        <!-- CATEGORY PILLS - All categories like your screenshot -->
-        <div class="category-pills">
-            <div class="category-pill active" onclick="setCategory('all', this)">All</div>
-            <div class="category-pill" onclick="setCategory('design', this)">Design</div>
-            <div class="category-pill" onclick="setCategory('education', this)">Education</div>
-            <div class="category-pill" onclick="setCategory('business', this)">Business</div>
-            <div class="category-pill" onclick="setCategory('personal', this)">Personal</div>
-            <div class="category-pill" onclick="setCategory('marketing', this)">Marketing</div>
-            <div class="category-pill" onclick="setCategory('social', this)">Social Media</div>
-            <div class="category-pill" onclick="setCategory('video', this)">Video</div>
-        </div>
-
-        <div class="recent-title">Recent projects</div>
-
-        <div class="recent-grid" id="projectsGrid">
-            <!-- Projects will load here -->
         </div>
     </div>
 
@@ -601,10 +591,10 @@
             <h3>Create new</h3>
             <p>Choose what to create</p>
             <div class="create-options">
-                <div class="create-option" onclick="createProject('design')"><span>🎨</span><div><h4>Design</h4><span>Create a new design</span></div></div>
-                <div class="create-option" onclick="createProject('document')"><span>📄</span><div><h4>Document</h4><span>Create a document</span></div></div>
-                <div class="create-option" onclick="createProject('presentation')"><span>📊</span><div><h4>Presentation</h4><span>Create a presentation</span></div></div>
-                <div class="create-option" onclick="createProject('whiteboard')"><span>📝</span><div><h4>Whiteboard</h4><span>Create a whiteboard</span></div></div>
+                <div class="create-option" onclick="createProject('design')"><div><h4>Design</h4><span>Create a new design</span></div></div>
+                <div class="create-option" onclick="createProject('document')"><div><h4>Document</h4><span>Create a document</span></div></div>
+                <div class="create-option" onclick="createProject('presentation')"><div><h4>Presentation</h4><span>Create a presentation</span></div></div>
+                <div class="create-option" onclick="createProject('whiteboard')"><div><h4>Whiteboard</h4><span>Create a whiteboard</span></div></div>
             </div>
             <button class="close-modal" onclick="closeModal('createModal')">Cancel</button>
         </div>
@@ -638,21 +628,6 @@
         </div>
     </div>
 
-    <div class="modal" id="templatesModal">
-        <div class="modal-content">
-            <h3>Templates</h3>
-            <p>Browse all available templates</p>
-            <div class="category-pills" style="margin-bottom: 20px;">
-                <div class="category-pill" onclick="filterTemplates('all')">All</div>
-                <div class="category-pill" onclick="filterTemplates('social')">Social Media</div>
-                <div class="category-pill" onclick="filterTemplates('education')">Education</div>
-                <div class="category-pill" onclick="filterTemplates('business')">Business</div>
-            </div>
-            <div id="templatesList"></div>
-            <button class="close-modal" onclick="closeModal('templatesModal')">Close</button>
-        </div>
-    </div>
-
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyCC5oK1cMufciR1v4wLi-jfYvXa_cQBnd0",
@@ -670,65 +645,64 @@
 
         let projects = [];
         let currentCategory = 'all';
+        let currentOwner = 'owner';
         let messages = [
-            { id: 1, title: 'You were added to "Final Design"', project: 'Final Design', read: false },
-            { id: 2, title: 'New comment on "Presentation"', project: 'Project Presentation', read: false }
+            { id: 1, title: 'You were added to "Final Design"', project: 'Final Design', read: false }
         ];
-        let templates = [
-            { name: 'Social Media Post', category: 'social' },
-            { name: 'Class Presentation', category: 'education' },
-            { name: 'Business Proposal', category: 'business' },
-            { name: 'Instagram Story', category: 'social' },
-            { name: 'Lesson Plan', category: 'education' }
-        ];
-        let currentOwnerFilter = 'owner';
-        let currentTypeFilter = 'any';
+        let currentUser = null;
 
+        // Navigation Functions
         function goHome() { window.location.href = 'index.html'; }
         function scrollToProjects() { document.querySelector('.recent-grid').scrollIntoView({ behavior: 'smooth' }); }
         function openCreateModal() { openModal('createModal'); }
         function openUsersModal() { loadUsers(); openModal('usersModal'); }
         function openMessagesModal() { loadMessages(); openModal('messagesModal'); }
         function openApplications() { openModal('applicationsModal'); }
-        function openTemplates() { loadTemplates(); openModal('templatesModal'); }
         function openKoraheyAI() { alert('Korahey AI Assistant coming soon!'); }
 
         function openModal(id) { document.getElementById(id).classList.add('active'); }
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
-        function toggleOwnerFilter() {
-            const ownerText = document.getElementById('ownerText');
-            currentOwnerFilter = currentOwnerFilter === 'owner' ? 'me' : 'owner';
-            ownerText.textContent = currentOwnerFilter === 'owner' ? 'Owner' : 'Me';
+        // Dropdown functions
+        function setOwnerFilter(owner) {
+            currentOwner = owner;
+            document.getElementById('ownerText').textContent = owner === 'owner' ? 'Owner' : 'Me';
+            document.getElementById('ownerDropdown').classList.remove('active');
             renderProjects();
         }
 
-        function toggleTypeFilter() {
-            const typeText = document.getElementById('typeText');
-            const types = ['Any type', 'Design', 'Document', 'Presentation', 'Whiteboard'];
-            let currentIndex = types.indexOf(currentTypeFilter === 'any' ? 'Any type' : currentTypeFilter);
-            currentIndex = (currentIndex + 1) % types.length;
-            currentTypeFilter = types[currentIndex] === 'Any type' ? 'any' : types[currentIndex].toLowerCase();
-            typeText.textContent = types[currentIndex];
-            renderProjects();
-        }
-
-        function setCategory(category, element) {
+        function setCategory(category) {
             currentCategory = category;
-            document.querySelectorAll('.category-pill').forEach(pill => pill.classList.remove('active'));
-            element.classList.add('active');
+            const displayName = category === 'all' ? 'All projects' : 
+                category === 'design' ? 'Design' :
+                category === 'education' ? 'Education' :
+                category === 'business' ? 'Business' :
+                category === 'personal' ? 'Personal' :
+                category === 'marketing' ? 'Marketing' :
+                category === 'social' ? 'Social Media' : 'Video';
+            document.getElementById('categoryText').textContent = displayName;
+            document.getElementById('categoryDropdown').classList.remove('active');
             renderProjects();
         }
 
-        function filterTemplates(category) {
-            const filtered = category === 'all' ? templates : templates.filter(t => t.category === category);
-            const list = document.getElementById('templatesList');
-            if (filtered.length === 0) list.innerHTML = '<div style="text-align:center;padding:40px">No templates found</div>';
-            else list.innerHTML = filtered.map(t => `<div class="create-option" style="margin-bottom:10px"><div><h4>${t.name}</h4><span>Template</span></div></div>`).join('');
-        }
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.filter-dropdown')) {
+                document.querySelectorAll('.filter-dropdown').forEach(d => d.classList.remove('active'));
+            }
+        });
 
-        function loadTemplates() { filterTemplates('all'); }
+        document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
+            dropdown.addEventListener('click', function(e) {
+                e.stopPropagation();
+                document.querySelectorAll('.filter-dropdown').forEach(d => {
+                    if (d !== dropdown) d.classList.remove('active');
+                });
+                dropdown.classList.toggle('active');
+            });
+        });
 
+        // Sample projects
         const sampleProjects = [
             { id: 1, title: 'Marketing Strategy', type: 'design', owner: 'me', date: '2026-05-15', category: 'marketing' },
             { id: 2, title: 'Class Schedule 2026', type: 'presentation', owner: 'other', date: '2026-05-10', category: 'education' },
@@ -749,8 +723,7 @@
             
             let filtered = projects.filter(p => p.title.toLowerCase().includes(searchTerm));
             if (currentCategory !== 'all') filtered = filtered.filter(p => p.category === currentCategory);
-            if (currentOwnerFilter === 'me') filtered = filtered.filter(p => p.owner === 'me');
-            if (currentTypeFilter !== 'any') filtered = filtered.filter(p => p.type === currentTypeFilter);
+            if (currentOwner === 'me') filtered = filtered.filter(p => p.owner === 'me');
             
             if (filtered.length === 0) {
                 grid.innerHTML = '<div class="empty-state"><h3>No projects found</h3><p>Create a new project to get started</p></div>';
@@ -760,7 +733,7 @@
             grid.innerHTML = filtered.map(project => `
                 <div class="project-card" onclick="openProject(${project.id})">
                     <div class="card-preview">
-                        ${getIconForType(project.type)}
+                        <svg viewBox="0 0 24 24" stroke="white"><path d="M4 4h16v16H4z"/><line x1="8" y1="9" x2="16" y2="9"/></svg>
                     </div>
                     <div class="card-body">
                         <h4>${escapeHtml(project.title)}</h4>
@@ -768,16 +741,6 @@
                     </div>
                 </div>
             `).join('');
-        }
-
-        function getIconForType(type) {
-            const icons = {
-                design: `<svg viewBox="0 0 24 24" stroke="white"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`,
-                document: `<svg viewBox="0 0 24 24" stroke="white"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>`,
-                presentation: `<svg viewBox="0 0 24 24" stroke="white"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`,
-                whiteboard: `<svg viewBox="0 0 24 24" stroke="white"><rect x="4" y="2" width="16" height="16" rx="2"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>`
-            };
-            return icons[type] || icons.document;
         }
 
         function formatDate(dateStr) {
@@ -818,26 +781,56 @@
             if (messages.length === 0) list.innerHTML = '<div class="empty-state">No messages</div>';
             else list.innerHTML = messages.map(m => `<div class="message-item"><div class="message-title">${escapeHtml(m.title)}</div><div class="message-project">${m.project}</div></div>`).join('');
         }
-        function updateMessagesBadge() { document.getElementById('messagesBadge').textContent = messages.filter(m => !m.read).length; }
+        function updateMessagesBadge() { 
+            const badge = document.getElementById('messagesBadge');
+            const unread = messages.filter(m => !m.read).length;
+            if (badge) {
+                if (unread > 0) {
+                    badge.style.display = 'inline-flex';
+                    badge.textContent = unread;
+                } else {
+                    badge.style.display = 'none';
+                }
+            }
+        }
 
+        // Admin Access Check
         async function checkAdminAccess(user) {
-            if (!user) { document.getElementById('adminContent').style.display = 'none'; document.getElementById('accessDenied').style.display = 'flex'; return false; }
+            if (!user) {
+                document.getElementById('adminContent').style.display = 'none';
+                document.getElementById('accessDenied').style.display = 'flex';
+                return false;
+            }
+            
             if (user.email === ADMIN_EMAIL) {
                 document.getElementById('adminContent').style.display = 'block';
                 document.getElementById('accessDenied').style.display = 'none';
-                document.getElementById('greetingText').textContent = `Hello, ${user.displayName || 'Admin'}`;
+                const firstName = user.displayName ? user.displayName.split(' ')[0] : user.email.split('@')[0];
+                document.getElementById('greetingText').textContent = `Hello, ${firstName}`;
                 return true;
             }
-            document.getElementById('adminContent').style.display = 'block';
-            document.getElementById('accessDenied').style.display = 'none';
-            return true;
+            
+            const userDoc = await db.collection('users').doc(user.uid).get();
+            if (userDoc.exists && userDoc.data().isAdmin === true) {
+                document.getElementById('adminContent').style.display = 'block';
+                document.getElementById('accessDenied').style.display = 'none';
+                const firstName = user.displayName ? user.displayName.split(' ')[0] : user.email.split('@')[0];
+                document.getElementById('greetingText').textContent = `Hello, ${firstName}`;
+                return true;
+            }
+            
+            document.getElementById('adminContent').style.display = 'none';
+            document.getElementById('accessDenied').style.display = 'flex';
+            return false;
         }
 
+        // Event Listeners
         document.getElementById('searchInput')?.addEventListener('input', renderProjects);
-        document.getElementById('adminContent')?.style.setProperty('display', 'block');
         
+        // Auth check
         auth.onAuthStateChanged(async (user) => {
             if (user) {
+                currentUser = user;
                 await checkAdminAccess(user);
                 loadProjects();
                 loadUsers();
@@ -847,13 +840,6 @@
                 document.getElementById('accessDenied').style.display = 'flex';
             }
         });
-
-        // Initial load
-        setTimeout(() => {
-            if (document.getElementById('adminContent') && document.getElementById('adminContent').style.display !== 'none') {
-                loadProjects();
-            }
-        }, 100);
     </script>
 </body>
 </html>
