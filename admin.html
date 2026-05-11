@@ -2,205 +2,156 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Korahey Admin | Dashboard</title>
-    
-    <!-- Firebase SDKs (Compat Version) -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-
-    <!-- External CSS Reference (Optional) or Keep Internal Below -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Korahey Academy | Excellence in Education</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- 1. ENTRANCE ANIMATION LAYER -->
-    <div class="admin-entrance" id="adminEntrance">
-        <div class="entrance-content">
-            <div class="entrance-logo">KORAHEY ACADEMY</div>
-            <div class="entrance-sub">ADMIN DASHBOARD</div>
-            <div class="entrance-dots">
-                <span></span><span></span><span></span>
+    <!-- 🏝️ DYNAMIC ISLAND NAVIGATION -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="logo.png" alt="Korahey Logo" class="logo-img">
             </div>
-        </div>
-    </div>
-
-    <!-- 2. MAIN APP CONTAINER -->
-    <div class="admin-container" id="adminContainer">
-        <div id="adminContent" style="display: none; opacity: 0; transition: opacity 0.8s ease;">
             
-            <!-- 🏝️ DYNAMIC ISLAND NAVIGATION -->
-            <nav class="dynamic-island">
-                <div class="nav-item" onclick="goHome()" title="Home">
-                    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2h-5v-7H9v7H5a2 2 0 0 1-2-2z"/></svg>
-                    <span>Home</span>
-                </div>
-                <div class="nav-item" onclick="scrollToProjects()" title="Projects">
-                    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
-                    <span>Projects</span>
-                </div>
-                <div class="nav-item" onclick="openApplications()" title="Applications">
-                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    <span>Apps</span>
-                </div>
-                <div class="nav-item" onclick="openUsersModal()" title="Users">
-                    <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-                    <span>Users</span>
-                    <span class="badge" id="usersBadge" style="display: none;">0</span>
-                </div>
-                <div class="nav-item" onclick="openMessagesModal()" title="Messages">
-                    <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                    <span>Inbox</span>
-                    <span class="badge" id="messagesBadge" style="display: none;">0</span>
-                </div>
-                
-                <hr style="border: 0.5px solid rgba(255,255,255,0.1); width: 60%; margin: 5px 0;">
-                
-                <div class="ai-nav-btn" onclick="openAI()">
-                    <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 1 10 10c0 5.5-4.5 10-10 10S2 17.5 2 12 6.5 2 12 2z"/><circle cx="12" cy="12" r="2"/></svg>
-                    <span>AI</span>
-                </div>
-                <div class="create-nav-btn" onclick="openCreateModal()">
-                    <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                    <span>New</span>
-                </div>
-            </nav>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#missions">Missions</a></li>
+                <li><a href="#exams">Exams</a></li>
+            </ul>
 
-            <!-- 🏠 HEADER SECTION -->
-            <header class="glass-header">
-                <h1 class="hello-text" id="greetingText">Hello Admin</h1>
-
-                <!-- Search Interface -->
-                <div class="search-container">
-                    <div class="search-wrapper">
-                        <div class="search-input-area">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                            <input type="text" id="searchInput" placeholder="Search files, exams, or students...">
-                            <button class="clear-search" id="clearSearchBtn">
-                                <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Category Filters -->
-                <div class="category-dropdown">
-                    <div class="category-select" onclick="toggleCategoryMenu()">
-                        <span id="selectedCategory">All Categories</span>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-                    </div>
-                    <div class="category-menu" id="categoryMenu">
-                        <a onclick="selectCategory('all')">📂 All Categories</a>
-                        <a onclick="selectCategory('documents')">📄 Documents</a>
-                        <a onclick="selectCategory('schedules')">📅 Schedules</a>
-                        <a onclick="selectCategory('classwork')">🏫 Classwork</a>
-                        <a onclick="selectCategory('exams')">📝 Exams</a>
-                    </div>
-                </div>
-            </header>
-
-            <!-- 📊 ACTION BAR -->
-            <section class="filter-bar">
-                <div class="filter-left">
-                    <h3>Recent Files</h3>
-                    <div class="owner-dropdown">
-                        <button class="owner-btn" onclick="toggleOwnerDropdown()">
-                            Any owner
-                            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-                        </button>
-                        <div class="owner-menu" id="ownerMenu">
-                            <a onclick="filterByOwner('any')">Any owner</a>
-                            <a onclick="filterByOwner('me')">Owned by me</a>
-                            <a onclick="filterByOwner('shared')">Shared with me</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="filter-pills">
-                    <button class="pill active" onclick="setFilter('all', this)">All</button>
-                    <button class="pill" onclick="setFilter('exam', this)">Exams</button>
-                    <button class="pill" onclick="setFilter('schedule', this)">Schedules</button>
-                    <button class="pill" onclick="setFilter('classwork', this)">Classwork</button>
-                </div>
-            </section>
-
-            <!-- 👥 SHARED SECTION -->
-            <section class="shared-section">
-                <div class="shared-header">
-                    <h3>Shared with you</h3>
-                    <a onclick="showAllShared()">See all →</a>
-                </div>
-                <div class="shared-grid" id="sharedGrid">
-                    <!-- Cards injected by JS -->
-                </div>
-            </section>
-
-            <!-- 🧱 MAIN CONTENT GRID -->
-            <main class="recent-section">
-                <div class="recent-grid" id="projectsGrid">
-                    <!-- Liquid cards injected by JS -->
-                </div>
-            </main>
+            <div class="auth-btns-group">
+                <div class="liquid-pill" id="nav-pill-bg"></div>
+                <button class="btn-auth" onclick="window.location.href='login.html'">Login</button>
+                <button class="btn-auth" onclick="window.location.href='admin.html'">Admin</button>
+            </div>
         </div>
-    </div>
+    </nav>
 
-    <!-- 🚫 ACCESS CONTROL LAYER -->
-    <div id="accessDenied" class="access-denied" style="display: none;">
-        <div class="access-denied-content">
-            <div style="font-size: 50px; margin-bottom: 20px;">🔒</div>
-            <h2>Access Restricted</h2>
-            <p>You do not have administrative privileges to view this dashboard.</p>
-            <button class="pill" onclick="window.location.href='index.html'" style="margin-top: 20px; background: #0071e3; color: white; width: 100%;">Return to Portal</button>
+    <!-- 🚀 HERO SECTION -->
+    <section class="hero" id="home">
+        <div class="hero-image-slider">
+            <img src="https://images.unsplash.com/photo-1523050853023-8c2d27443ef8?auto=format&fit=crop&q=80" class="active" alt="Campus">
+            <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80" alt="Students">
+            <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&q=80" alt="Learning">
         </div>
-    </div>
 
-    <!-- 🛠️ MODAL SYSTEM -->
-    
-    <!-- Create Modal -->
-    <div class="modal" id="createModal">
-        <div class="modal-content">
-            <h3>Create New</h3>
-            <div class="create-options">
-                <div class="create-option" onclick="createProject('exam')">
-                    <div class="icon-box exam">📝</div>
-                    <div class="create-option-text"><h4>Exam</h4><span>Quizzes and tests</span></div>
-                </div>
-                <div class="create-option" onclick="createProject('schedule')">
-                    <div class="icon-box schedule">📅</div>
-                    <div class="create-option-text"><h4>Schedule</h4><span>Class timelines</span></div>
-                </div>
-                <div class="create-option" onclick="createProject('classwork')">
-                    <div class="icon-box classwork">📚</div>
-                    <div class="create-option-text"><h4>Classwork</h4><span>Lesson materials</span></div>
+        <div class="hero-content reveal-slide-up">
+            <h1>Korahey Academy</h1>
+            <p class="hero-description">Empowering the next generation of leaders in Jijiga.</p>
+            
+            <div class="hero-btns-wrapper">
+                <div class="hero-btns-group">
+                    <div class="liquid-pill" id="hero-pill-bg"></div>
+                    <button class="btn-hero">Get Started</button>
+                    <button class="btn-hero">Learn More</button>
                 </div>
             </div>
-            <button class="close-modal" onclick="closeModal('createModal')">Dismiss</button>
         </div>
-    </div>
 
-    <!-- Users Modal -->
-    <div class="modal" id="usersModal">
-        <div class="modal-content">
-            <h3>Staff & Students</h3>
-            <div class="user-list" id="usersList"></div>
-            <div class="add-user-section">
-                <input type="email" id="newUserEmail" placeholder="User email address">
-                <button onclick="addUser()">Invite</button>
+        <!-- 🟢 DOT NAVIGATION (Liquid Absorption) -->
+        <div class="video-nav-observer">
+            <div class="obs-line-bg"></div>
+            <div class="obs-line-active" id="hero-line"></div>
+            <div class="obs-dots">
+                <div class="dot active"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
             </div>
-            <button class="close-modal" onclick="closeModal('usersModal')">Close</button>
         </div>
-    </div>
+    </section>
 
-    <!-- Inbox Modal -->
-    <div class="modal" id="messagesModal">
-        <div class="modal-content">
-            <h3>Notifications</h3>
-            <div id="messagesList"></div>
-            <button class="close-modal" onclick="closeModal('messagesModal')">Close</button>
+    <!-- 📖 INFO SECTION -->
+    <section class="info-split" id="about">
+        <div class="info-container">
+            <div class="info-text reveal">
+                <span class="circle-label">ESTABLISHED 2024</span>
+                <h2 class="sub-title">Modern Learning <br>Environment</h2>
+                <p class="clean-desc">At Korahey Academy, we combine traditional values with modern technology to provide an unparalleled educational experience.</p>
+            </div>
+            <div class="info-visual reveal-pop">
+                <img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&q=80" class="soft-rect-wide" alt="Library">
+            </div>
         </div>
-    </div>
+    </section>
 
-    <!-- Custom Scripts Reference -->
+    <!-- 🎯 MISSIONS GRID -->
+    <section class="why-us-v2" id="missions">
+        <h2 class="massive-title reveal-slide-up">Our Core Missions</h2>
+        <p class="clean-desc centered-p reveal-slide-up">Dedicated to excellence across every department.</p>
+        
+        <div class="mission-grid" style="margin-top: 60px;">
+            <div class="mission-card-item reveal">
+                <span class="circle-label">ACADEMICS</span>
+                <h3>Top-Tier Faculty</h3>
+                <p class="clean-desc">Learn from industry experts and experienced educators focused on student success.</p>
+            </div>
+            <div class="mission-card-item reveal" style="transition-delay: 0.1s;">
+                <span class="circle-label">INNOVATION</span>
+                <h3>Digital First</h3>
+                <p class="clean-desc">Utilizing the latest AI tools and digital platforms to enhance the learning journey.</p>
+            </div>
+            <div class="mission-card-item reveal" style="transition-delay: 0.2s;">
+                <span class="circle-label">COMMUNITY</span>
+                <h3>Leader Growth</h3>
+                <p class="clean-desc">Building character and leadership skills to serve the community of Jijiga.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 📊 STATS PILLS -->
+    <section class="stats-section">
+        <div class="stats-pill-container reveal-pop">
+            <div class="stat-pill-card">
+                <span class="stat-number-large">98%</span>
+                <span class="stat-label-large">Success Rate</span>
+            </div>
+            <div class="stat-pill-card">
+                <span class="stat-number-large">1.2k</span>
+                <span class="stat-label-large">Active Students</span>
+            </div>
+            <div class="stat-pill-card">
+                <span class="stat-number-large">50+</span>
+                <span class="stat-label-large">Expert Teachers</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 📝 EXAMS SECTION -->
+    <section class="exams-section" id="exams">
+        <div class="exams-layout-wrapper">
+            <div class="exam-card-massive reveal">
+                <h2 class="exam-title-huge">National <br>Exams</h2>
+                <p class="exam-desc">We provide specialized preparation tracks for Grade 8 and Grade 12 national assessments.</p>
+                <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80" class="soft-rect-large" alt="Exam Prep">
+            </div>
+            
+            <div class="exam-stack-container">
+                <div class="exam-card-stack-item reveal-pop">
+                    <h3>Mock Trials</h3>
+                    <p class="exam-small-desc">Weekly practice tests to build confidence and time management skills.</p>
+                </div>
+                <div class="exam-card-stack-item reveal-pop">
+                    <h3>Resources</h3>
+                    <p class="exam-small-desc">Access our digital library of past papers and study guides 24/7.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="why-footer">
+        <p>&copy; 2026 Korahey Academy. All rights reserved.</p>
+        <div class="hero-btns-wrapper" style="margin-top: 20px; scale: 0.8;">
+            <div class="hero-btns-group">
+                <div class="liquid-pill" id="footer-pill-bg"></div>
+                <button class="btn-hero">Contact Us</button>
+                <button class="btn-hero">Careers</button>
+            </div>
+        </div>
+    </footer>
+
     <script src="script.js"></script>
 </body>
 </html>
