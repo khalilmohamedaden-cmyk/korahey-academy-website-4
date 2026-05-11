@@ -26,6 +26,91 @@
             min-height: 100vh;
         }
 
+        /* ============================================
+           ENTRANCE ANIMATION FOR ADMIN DASHBOARD
+        ============================================ */
+        .admin-entrance {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ffffff 0%, #eef8ff 100%);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+
+        .admin-entrance.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .entrance-content {
+            text-align: center;
+            animation: entrancePop 0.8s cubic-bezier(0.34, 1.2, 0.64, 1) forwards;
+        }
+
+        @keyframes entrancePop {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .entrance-logo {
+            font-size: 4rem;
+            font-weight: 800;
+            letter-spacing: -3px;
+            background: linear-gradient(135deg, #1d1d1f 0%, var(--apple-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+
+        .entrance-sub {
+            font-size: 1rem;
+            color: #86868b;
+            letter-spacing: 2px;
+        }
+
+        .entrance-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .entrance-dots span {
+            width: 8px;
+            height: 8px;
+            background: var(--apple-blue);
+            border-radius: 50%;
+            display: inline-block;
+            animation: dotPulse 1.4s ease infinite;
+        }
+
+        .entrance-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .entrance-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes dotPulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Main content - initially hidden */
+        #adminContent {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
         /* 🌊 LIVE GRADIENT & LIQUID GLASS BACKGROUND */
         .glass-header {
             padding: 140px 5% 80px;
@@ -44,27 +129,80 @@
         }
 
         /* ============================================
-           APPLE DYNAMIC ISLAND - FIXED, CENTERED, TRANSPARENT
+           DYNAMIC ISLAND - RESPONSIVE
+           iPad Vertical: LEFT side (vertical)
+           iPad Horizontal: BOTTOM (horizontal)
         ============================================ */
         .dynamic-island {
             position: fixed;
-            top: 16px;
-            left: 50%;
-            transform: translateX(-50%);
             background: rgba(255, 255, 255, 0.45);
             backdrop-filter: blur(16px) saturate(180%);
             -webkit-backdrop-filter: blur(16px) saturate(180%);
             border-radius: 50px;
             padding: 6px 12px;
             display: flex;
-            align-items: center;
-            justify-content: center;
             gap: 4px;
             z-index: 2000;
             border: 0.5px solid rgba(255, 255, 255, 0.3);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-            width: auto;
-            max-width: 88%;
+        }
+
+        /* Default: Top centered (desktop) */
+        .dynamic-island {
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            flex-direction: row;
+        }
+
+        /* iPad Vertical (768px - 1024px, portrait) - LEFT SIDE */
+        @media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+            .dynamic-island {
+                top: 50%;
+                left: 16px;
+                transform: translateY(-50%);
+                flex-direction: column;
+                border-radius: 40px;
+                padding: 12px 6px;
+            }
+            .nav-item {
+                flex-direction: row !important;
+                justify-content: flex-start;
+                padding: 8px 12px !important;
+                min-width: auto !important;
+            }
+            .nav-item span {
+                margin-left: 8px;
+            }
+            .create-nav-btn {
+                flex-direction: row !important;
+                padding: 8px 12px !important;
+            }
+            .create-nav-btn span {
+                margin-left: 6px;
+            }
+        }
+
+        /* iPad Horizontal (1024px - 1366px, landscape) - BOTTOM */
+        @media (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) {
+            .dynamic-island {
+                top: auto;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                flex-direction: row;
+            }
+        }
+
+        /* Mobile: Top centered */
+        @media (max-width: 767px) {
+            .dynamic-island {
+                top: 12px;
+                left: 50%;
+                transform: translateX(-50%);
+                flex-direction: row;
+                padding: 4px 10px;
+            }
         }
 
         .nav-item {
@@ -113,7 +251,7 @@
             text-align: center;
         }
 
-        /* Create button - DESKTOP ONLY */
+        /* Create button with AI icon */
         .create-nav-btn {
             background: var(--apple-blue);
             padding: 5px 12px;
@@ -140,7 +278,7 @@
         }
 
         /* Hide create button on mobile */
-        @media (max-width: 768px) {
+        @media (max-width: 767px) {
             .create-nav-btn {
                 display: none;
             }
@@ -207,7 +345,57 @@
             margin: 0;
         }
 
-        /* OWNER DROPDOWN */
+        /* 🔘 CATEGORY ICONS */
+        .category-grid {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 30px 0 20px;
+            flex-wrap: wrap;
+        }
+
+        .cat-item { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 10px; 
+            cursor: pointer; 
+        }
+        
+        .cat-icon {
+            width: 65px; 
+            height: 65px; 
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: 0.3s;
+        }
+
+        .cat-icon svg { 
+            width: 28px; 
+            height: 28px; 
+            stroke: #000; 
+            fill: none; 
+            stroke-width: 2; 
+        }
+        
+        .cat-item span { 
+            font-size: 12px; 
+            font-weight: 500; 
+            color: #555; 
+        }
+        
+        .cat-item:hover .cat-icon { 
+            transform: translateY(-5px); 
+            background: #fff; 
+            border-color: var(--apple-blue); 
+        }
+
+        /* OWNER DROPDOWN & FILTER BAR */
         .filter-bar {
             max-width: 1400px;
             margin: 20px auto 30px;
@@ -230,7 +418,6 @@
             font-size: 1.2rem;
         }
 
-        /* Owner Dropdown */
         .owner-dropdown {
             position: relative;
             display: inline-block;
@@ -262,7 +449,7 @@
             background: white;
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            min-width: 180px;
+            min-width: 200px;
             display: none;
             z-index: 100;
             border: 1px solid #e5e5e5;
@@ -278,6 +465,7 @@
             text-decoration: none;
             color: #333;
             font-size: 0.85rem;
+            cursor: pointer;
         }
 
         .owner-menu a:hover {
@@ -314,6 +502,25 @@
             border-color: var(--apple-blue); 
         }
 
+        /* MY PROJECTS SECTION */
+        .my-projects-section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 8% 20px;
+        }
+
+        .my-projects-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .my-projects-header h3 {
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
         /* SHARED WITH YOU SECTION */
         .shared-section {
             max-width: 1400px;
@@ -337,6 +544,7 @@
             color: var(--apple-blue);
             text-decoration: none;
             font-size: 0.85rem;
+            cursor: pointer;
         }
 
         .shared-grid {
@@ -479,56 +687,6 @@
 
         .modal-content h3 { font-size: 24px; margin-bottom: 8px; }
 
-        .user-list {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-
-        .user-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px;
-            border: 1px solid #e5e5e5;
-            border-radius: 20px;
-        }
-
-        .user-email { font-weight: 600; font-size: 14px; }
-        .user-role { font-size: 12px; color: #86868b; }
-
-        .user-actions button {
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            cursor: pointer;
-            margin-left: 8px;
-        }
-        .ban-btn { background: #ff3b30; color: white; border: none; }
-        .remove-btn { background: #e5e5e5; border: none; }
-
-        .add-user-section {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        .add-user-section input {
-            flex: 1;
-            padding: 12px;
-            border: 1px solid #e5e5e5;
-            border-radius: 30px;
-            outline: none;
-        }
-        .add-user-section button {
-            padding: 12px 20px;
-            background: var(--apple-blue);
-            color: white;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-        }
-
         .create-options {
             display: flex;
             flex-direction: column;
@@ -564,6 +722,53 @@
             cursor: pointer;
         }
 
+        .user-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .user-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border: 1px solid #e5e5e5;
+            border-radius: 20px;
+        }
+
+        .user-email { font-weight: 600; font-size: 14px; }
+        .user-actions button {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            background: #e5e5e5;
+            border: none;
+        }
+
+        .add-user-section {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .add-user-section input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #e5e5e5;
+            border-radius: 30px;
+            outline: none;
+        }
+        .add-user-section button {
+            padding: 12px 20px;
+            background: var(--apple-blue);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+
         .message-item {
             padding: 12px;
             border-bottom: 1px solid #e5e5e5;
@@ -587,7 +792,7 @@
             text-align: center;
         }
 
-        /* MOBILE */
+        /* Responsive adjustments */
         @media (max-width: 768px) {
             .glass-header {
                 padding: 130px 5% 60px;
@@ -596,22 +801,19 @@
                 font-size: 2.5rem;
                 letter-spacing: -1px;
             }
-            .dynamic-island {
-                top: 12px;
-                padding: 4px 10px;
-                gap: 2px;
-                max-width: 92%;
+            .category-grid {
+                gap: 20px;
             }
-            .nav-item {
-                min-width: 42px;
-                padding: 4px 6px;
+            .cat-icon {
+                width: 50px;
+                height: 50px;
             }
-            .nav-item svg {
-                width: 14px;
-                height: 14px;
+            .cat-icon svg {
+                width: 22px;
+                height: 22px;
             }
-            .nav-item span {
-                font-size: 8px;
+            .cat-item span {
+                font-size: 10px;
             }
             .filter-bar {
                 flex-direction: column;
@@ -631,8 +833,19 @@
 </head>
 <body>
 
+    <!-- ENTRANCE ANIMATION FOR ADMIN DASHBOARD -->
+    <div class="admin-entrance" id="adminEntrance">
+        <div class="entrance-content">
+            <div class="entrance-logo">KORAHEY ACADEMY</div>
+            <div class="entrance-sub">ADMIN DASHBOARD</div>
+            <div class="entrance-dots">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </div>
+
     <div id="adminContent" style="display: none;">
-        <!-- APPLE DYNAMIC ISLAND - FIXED -->
+        <!-- DYNAMIC ISLAND - RESPONSIVE (Left on iPad vertical, Bottom on iPad horizontal) -->
         <nav class="dynamic-island">
             <div class="nav-item" onclick="goHome()">
                 <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2h-5v-7H9v7H5a2 2 0 0 1-2-2z"/></svg>
@@ -683,22 +896,22 @@
             </div>
 
             <!-- Category Icons -->
-            <div class="category-grid" style="display: flex; justify-content: center; gap: 40px; margin-bottom: 20px; flex-wrap: wrap;">
+            <div class="category-grid">
                 <div class="cat-item" onclick="filterByCategory('documents')">
-                    <div class="cat-icon" style="width: 65px; height: 65px; border-radius: 20px; background: rgba(255,255,255,0.4); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(0,0,0,0.05);">
-                        <svg viewBox="0 0 24 24" style="width: 28px; height: 28px; stroke: #000;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    <div class="cat-icon">
+                        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                     </div>
                     <span>Documents</span>
                 </div>
                 <div class="cat-item" onclick="filterByCategory('sheets')">
-                    <div class="cat-icon" style="width: 65px; height: 65px; border-radius: 20px; background: rgba(255,255,255,0.4); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(0,0,0,0.05);">
-                        <svg viewBox="0 0 24 24" style="width: 28px; height: 28px; stroke: #000;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+                    <div class="cat-icon">
+                        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
                     </div>
                     <span>Sheets</span>
                 </div>
                 <div class="cat-item" onclick="filterByCategory('schedules')">
-                    <div class="cat-icon" style="width: 65px; height: 65px; border-radius: 20px; background: rgba(255,255,255,0.4); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(0,0,0,0.05);">
-                        <svg viewBox="0 0 24 24" style="width: 28px; height: 28px; stroke: #000;"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                    <div class="cat-icon">
+                        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
                     </div>
                     <span>Schedules</span>
                 </div>
@@ -715,9 +928,9 @@
                         <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>
                     </button>
                     <div class="owner-menu" id="ownerMenu">
-                        <a href="#" onclick="filterByOwner('any'); return false;">Any owner</a>
-                        <a href="#" onclick="filterByOwner('me'); return false;">khalil mohammed (You)</a>
-                        <a href="#" onclick="filterByOwner('shared'); return false;">Shared with you</a>
+                        <a onclick="filterByOwner('any'); return false;">Any owner</a>
+                        <a onclick="filterByOwner('me'); return false;">khalil mohammed (You)</a>
+                        <a onclick="filterByOwner('shared'); return false;">Shared with you</a>
                     </div>
                 </div>
             </div>
@@ -730,11 +943,18 @@
             </div>
         </div>
 
+        <!-- My Projects Section -->
+        <div class="my-projects-section">
+            <div class="my-projects-header">
+                <h3>My Projects</h3>
+            </div>
+        </div>
+
         <!-- Shared With You Section -->
         <div class="shared-section">
             <div class="shared-header">
                 <h3>Shared with you</h3>
-                <a href="#">See all →</a>
+                <a onclick="filterByOwner('shared')">See all →</a>
             </div>
             <div class="shared-grid" id="sharedGrid">
                 <div class="shared-card" onclick="openProject(1)">
@@ -763,7 +983,7 @@
         </div>
     </div>
 
-    <!-- Modals -->
+    <!-- Create Modal -->
     <div class="modal" id="createModal">
         <div class="modal-content">
             <h3>Create new</h3>
@@ -790,6 +1010,7 @@
         </div>
     </div>
 
+    <!-- Users Modal -->
     <div class="modal" id="usersModal">
         <div class="modal-content">
             <h3>Manage Users</h3>
@@ -802,6 +1023,7 @@
         </div>
     </div>
 
+    <!-- Messages Modal -->
     <div class="modal" id="messagesModal">
         <div class="modal-content">
             <h3>Notifications</h3>
@@ -810,6 +1032,7 @@
         </div>
     </div>
 
+    <!-- Applications Modal -->
     <div class="modal" id="applicationsModal">
         <div class="modal-content">
             <h3>Applications</h3>
@@ -842,6 +1065,22 @@
         let messages = [
             { id: 1, title: 'Added to "Final Exam"', project: 'Final Exam', read: false }
         ];
+
+        // ENTRANCE ANIMATION
+        const entrance = document.getElementById('adminEntrance');
+        const adminContent = document.getElementById('adminContent');
+        
+        function showAdminContent() {
+            if (entrance) {
+                entrance.classList.add('fade-out');
+                setTimeout(() => {
+                    entrance.style.display = 'none';
+                    adminContent.style.opacity = '1';
+                }, 600);
+            } else {
+                adminContent.style.opacity = '1';
+            }
+        }
 
         function goHome() { window.location.href = 'index.html'; }
         function scrollToProjects() { document.querySelector('.recent-section').scrollIntoView({ behavior: 'smooth' }); }
@@ -954,7 +1193,7 @@
             const filtered = projects.filter(p => p.category === category);
             const grid = document.getElementById('projectsGrid');
             if (filtered.length === 0) grid.innerHTML = `<div style="text-align:center;padding:60px"><h3>No ${category} found</h3></div>`;
-            else grid.innerHTML = filtered.map(p => `<div class="liquid-card" onclick="openProject(${p.id})"><div class="card-preview ${p.type}">${getIconForType(p.type)}</div><div class="card-body"><h4>${escapeHtml(p.title)}</h4><p>Modified ${formatDate(p.date)}</p></div></div>`).join('');
+            else grid.innerHTML = filtered.map((p, i) => `<div class="liquid-card" onclick="openProject(${p.id})" style="animation-delay: ${i * 0.05}s"><div class="card-preview ${p.type}">${getIconForType(p.type)}</div><div class="card-body"><h4>${escapeHtml(p.title)}</h4><p>Modified ${formatDate(p.date)}</p></div></div>`).join('');
         }
 
         // SEARCH WITH CLEAR BUTTON
@@ -982,16 +1221,16 @@
         
         clearBtn.addEventListener('click', clearSearch);
 
-        let users = [{ email: 'student@example.com', role: 'student' }];
+        let users = [{ email: 'student@example.com' }];
         function loadUsers() {
             const list = document.getElementById('usersList');
-            list.innerHTML = users.map(u => `<div class="user-item"><div><div class="user-email">${u.email}</div><div class="user-role">${u.role}</div></div><div class="user-actions"><button class="remove-btn" onclick="removeUser('${u.email}')">Remove</button></div></div>`).join('');
+            list.innerHTML = users.map(u => `<div class="user-item"><div class="user-email">${u.email}</div><div class="user-actions"><button onclick="removeUser('${u.email}')">Remove</button></div></div>`).join('');
             document.getElementById('usersBadge').textContent = users.length;
         }
         function addUser() {
             const email = document.getElementById('newUserEmail').value;
             if (!email) return;
-            users.push({ email, role: 'student' });
+            users.push({ email });
             document.getElementById('newUserEmail').value = '';
             loadUsers();
         }
@@ -1012,16 +1251,19 @@
 
         auth.onAuthStateChanged(async (user) => {
             if (user && (user.email === ADMIN_EMAIL || (await db.collection('users').doc(user.uid).get()).data()?.isAdmin)) {
-                document.getElementById('adminContent').style.display = 'block';
+                adminContent.style.display = 'block';
                 document.getElementById('accessDenied').style.display = 'none';
                 document.getElementById('greetingText').textContent = `Hello, ${user.displayName || 'Admin'}`;
                 loadProjects();
                 updateMessagesBadge();
+                loadUsers();
+                showAdminContent();
             } else {
-                document.getElementById('adminContent').style.display = 'none';
+                adminContent.style.display = 'none';
                 document.getElementById('accessDenied').style.display = 'flex';
+                entrance.style.display = 'none';
             }
         });
     </script>
 </body>
-                                             </html>
+</html>
