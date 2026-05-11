@@ -129,12 +129,13 @@
         }
 
         /* ============================================
-           DYNAMIC ISLAND - RESPONSIVE
-           iPad Vertical: LEFT side (vertical)
-           iPad Horizontal: BOTTOM (horizontal)
+           DYNAMIC ISLAND - ALWAYS AT TOP (Desktop, iPad, Phone)
         ============================================ */
         .dynamic-island {
             position: fixed;
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%);
             background: rgba(255, 255, 255, 0.45);
             backdrop-filter: blur(16px) saturate(180%);
             -webkit-backdrop-filter: blur(16px) saturate(180%);
@@ -145,64 +146,7 @@
             z-index: 2000;
             border: 0.5px solid rgba(255, 255, 255, 0.3);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-        }
-
-        /* Default: Top centered (desktop) */
-        .dynamic-island {
-            top: 16px;
-            left: 50%;
-            transform: translateX(-50%);
             flex-direction: row;
-        }
-
-        /* iPad Vertical (768px - 1024px, portrait) - LEFT SIDE */
-        @media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
-            .dynamic-island {
-                top: 50%;
-                left: 16px;
-                transform: translateY(-50%);
-                flex-direction: column;
-                border-radius: 40px;
-                padding: 12px 6px;
-            }
-            .nav-item {
-                flex-direction: row !important;
-                justify-content: flex-start;
-                padding: 8px 12px !important;
-                min-width: auto !important;
-            }
-            .nav-item span {
-                margin-left: 8px;
-            }
-            .create-nav-btn {
-                flex-direction: row !important;
-                padding: 8px 12px !important;
-            }
-            .create-nav-btn span {
-                margin-left: 6px;
-            }
-        }
-
-        /* iPad Horizontal (1024px - 1366px, landscape) - BOTTOM */
-        @media (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) {
-            .dynamic-island {
-                top: auto;
-                bottom: 20px;
-                left: 50%;
-                transform: translateX(-50%);
-                flex-direction: row;
-            }
-        }
-
-        /* Mobile: Top centered */
-        @media (max-width: 767px) {
-            .dynamic-island {
-                top: 12px;
-                left: 50%;
-                transform: translateX(-50%);
-                flex-direction: row;
-                padding: 4px 10px;
-            }
         }
 
         .nav-item {
@@ -251,7 +195,7 @@
             text-align: center;
         }
 
-        /* Create button with AI icon */
+        /* Create button */
         .create-nav-btn {
             background: var(--apple-blue);
             padding: 5px 12px;
@@ -345,54 +289,65 @@
             margin: 0;
         }
 
-        /* 🔘 CATEGORY ICONS */
-        .category-grid {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin: 30px 0 20px;
-            flex-wrap: wrap;
+        /* CATEGORY DROPDOWN (Single dropdown above Shared with you) */
+        .category-dropdown-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 8% 20px;
         }
 
-        .cat-item { 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            gap: 10px; 
-            cursor: pointer; 
+        .category-dropdown {
+            position: relative;
+            display: inline-block;
         }
-        
-        .cat-icon {
-            width: 65px; 
-            height: 65px; 
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(10px);
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
+
+        .category-select-btn {
+            background: rgba(0, 0, 0, 0.03);
             border: 1px solid rgba(0,0,0,0.05);
-            transition: 0.3s;
+            border-radius: 40px;
+            padding: 10px 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .cat-icon svg { 
-            width: 28px; 
-            height: 28px; 
-            stroke: #000; 
-            fill: none; 
-            stroke-width: 2; 
+        .category-select-btn svg {
+            width: 14px;
+            height: 14px;
+            stroke: #555;
         }
-        
-        .cat-item span { 
-            font-size: 12px; 
-            font-weight: 500; 
-            color: #555; 
+
+        .category-menu {
+            position: absolute;
+            top: 45px;
+            left: 0;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            min-width: 180px;
+            display: none;
+            z-index: 100;
+            border: 1px solid #e5e5e5;
         }
-        
-        .cat-item:hover .cat-icon { 
-            transform: translateY(-5px); 
-            background: #fff; 
-            border-color: var(--apple-blue); 
+
+        .category-menu.active {
+            display: block;
+        }
+
+        .category-menu a {
+            display: block;
+            padding: 10px 16px;
+            text-decoration: none;
+            color: #333;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        .category-menu a:hover {
+            background: #f5f5f5;
         }
 
         /* OWNER DROPDOWN & FILTER BAR */
@@ -502,26 +457,7 @@
             border-color: var(--apple-blue); 
         }
 
-        /* MY PROJECTS SECTION */
-        .my-projects-section {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 8% 20px;
-        }
-
-        .my-projects-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .my-projects-header h3 {
-            font-weight: 600;
-            font-size: 1.2rem;
-        }
-
-        /* SHARED WITH YOU SECTION */
+        /* SHARED WITH YOU SECTION - Only ONE visible project */
         .shared-section {
             max-width: 1400px;
             margin: 0 auto;
@@ -548,8 +484,8 @@
         }
 
         .shared-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            display: flex;
+            flex-direction: column;
             gap: 16px;
         }
 
@@ -592,6 +528,18 @@
         .shared-info p {
             font-size: 0.75rem;
             color: #86868b;
+        }
+
+        /* All shared projects (hidden by default) */
+        .shared-all {
+            display: none;
+            margin-top: 16px;
+        }
+
+        .shared-all.show {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
         }
 
         /* RECENT PROJECTS GRID - SLIDE IN ANIMATION */
@@ -801,29 +749,12 @@
                 font-size: 2.5rem;
                 letter-spacing: -1px;
             }
-            .category-grid {
-                gap: 20px;
-            }
-            .cat-icon {
-                width: 50px;
-                height: 50px;
-            }
-            .cat-icon svg {
-                width: 22px;
-                height: 22px;
-            }
-            .cat-item span {
-                font-size: 10px;
-            }
             .filter-bar {
                 flex-direction: column;
                 align-items: flex-start;
             }
             .filter-pills {
                 justify-content: flex-start;
-            }
-            .shared-grid {
-                grid-template-columns: 1fr;
             }
             .recent-grid {
                 grid-template-columns: 1fr;
@@ -845,7 +776,7 @@
     </div>
 
     <div id="adminContent" style="display: none;">
-        <!-- DYNAMIC ISLAND - RESPONSIVE (Left on iPad vertical, Bottom on iPad horizontal) -->
+        <!-- DYNAMIC ISLAND - ALWAYS AT TOP -->
         <nav class="dynamic-island">
             <div class="nav-item" onclick="goHome()">
                 <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2h-5v-7H9v7H5a2 2 0 0 1-2-2z"/></svg>
@@ -894,29 +825,27 @@
                     </button>
                 </div>
             </div>
+        </header>
 
-            <!-- Category Icons -->
-            <div class="category-grid">
-                <div class="cat-item" onclick="filterByCategory('documents')">
-                    <div class="cat-icon">
-                        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    </div>
-                    <span>Documents</span>
+        <!-- CATEGORY DROPDOWN (Single dropdown above Shared with you) -->
+        <div class="category-dropdown-container">
+            <div class="category-dropdown">
+                <div class="category-select-btn" onclick="toggleCategoryMenu()">
+                    <span id="selectedCategory">All Categories</span>
+                    <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>
                 </div>
-                <div class="cat-item" onclick="filterByCategory('sheets')">
-                    <div class="cat-icon">
-                        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
-                    </div>
-                    <span>Sheets</span>
-                </div>
-                <div class="cat-item" onclick="filterByCategory('schedules')">
-                    <div class="cat-icon">
-                        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-                    </div>
-                    <span>Schedules</span>
+                <div class="category-menu" id="categoryMenu">
+                    <a onclick="selectCategory('all')">All Categories</a>
+                    <a onclick="selectCategory('documents')">Documents</a>
+                    <a onclick="selectCategory('sheets')">Sheets</a>
+                    <a onclick="selectCategory('schedules')">Schedules</a>
+                    <a onclick="selectCategory('classwork')">Classwork</a>
+                    <a onclick="selectCategory('assignments')">Assignments</a>
+                    <a onclick="selectCategory('exams')">Exams</a>
+                    <a onclick="selectCategory('homework')">Homework</a>
                 </div>
             </div>
-        </header>
+        </div>
 
         <!-- Filter Bar with Owner Dropdown -->
         <div class="filter-bar">
@@ -943,27 +872,26 @@
             </div>
         </div>
 
-        <!-- My Projects Section -->
-        <div class="my-projects-section">
-            <div class="my-projects-header">
-                <h3>My Projects</h3>
-            </div>
-        </div>
-
-        <!-- Shared With You Section -->
+        <!-- Shared With You Section - Only ONE visible project -->
         <div class="shared-section">
             <div class="shared-header">
                 <h3>Shared with you</h3>
-                <a onclick="filterByOwner('shared')">See all →</a>
+                <a onclick="showAllShared()">See all →</a>
             </div>
-            <div class="shared-grid" id="sharedGrid">
+            <div class="shared-grid">
                 <div class="shared-card" onclick="openProject(1)">
                     <div class="shared-avatar"><svg viewBox="0 0 24 24" stroke="currentColor"><path d="M4 4h16v16H4z"/></svg></div>
                     <div class="shared-info"><h4>Final Exam - Grade 12</h4><p>Shared by Teacher</p></div>
                 </div>
+            </div>
+            <div class="shared-all" id="sharedAll">
                 <div class="shared-card" onclick="openProject(2)">
                     <div class="shared-avatar"><svg viewBox="0 0 24 24" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2"/></svg></div>
                     <div class="shared-info"><h4>Weekly Schedule</h4><p>Shared by Admin</p></div>
+                </div>
+                <div class="shared-card" onclick="openProject(3)">
+                    <div class="shared-avatar"><svg viewBox="0 0 24 24" stroke="currentColor"><rect x="2" y="3" width="20" height="14" rx="2"/></svg></div>
+                    <div class="shared-info"><h4>Math Notes</h4><p>Shared by Teacher</p></div>
                 </div>
             </div>
         </div>
@@ -1004,6 +932,10 @@
                 <div class="create-option" onclick="createProject('assignment')">
                     <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                     <div class="create-option-text"><h4>Assignment</h4><span>Homework</span></div>
+                </div>
+                <div class="create-option" onclick="createProject('homework')">
+                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    <div class="create-option-text"><h4>Homework</h4><span>Create homework</span></div>
                 </div>
             </div>
             <button class="close-modal" onclick="closeModal('createModal')">Cancel</button>
@@ -1095,6 +1027,22 @@
             document.getElementById('ownerMenu').classList.toggle('active');
         }
 
+        function toggleCategoryMenu() {
+            document.getElementById('categoryMenu').classList.toggle('active');
+        }
+
+        function selectCategory(category) {
+            document.getElementById('selectedCategory').innerHTML = category.charAt(0).toUpperCase() + category.slice(1);
+            document.getElementById('categoryMenu').classList.remove('active');
+            filterByCategory(category);
+        }
+
+        function showAllShared() {
+            const allShared = document.getElementById('sharedAll');
+            allShared.classList.toggle('show');
+            event.target.textContent = allShared.classList.contains('show') ? 'See less' : 'See all →';
+        }
+
         function filterByOwner(type) {
             document.getElementById('ownerMenu').classList.remove('active');
             const btn = document.querySelector('.owner-btn');
@@ -1107,8 +1055,8 @@
         const sampleProjects = [
             { id: 1, title: 'Final Exam - Grade 12', type: 'exam', date: '2026-05-15', category: 'documents' },
             { id: 2, title: 'Weekly Class Schedule', type: 'schedule', date: '2026-05-10', category: 'schedules' },
-            { id: 3, title: 'Mathematics Notes - Chapter 5', type: 'classwork', date: '2026-05-08', category: 'documents' },
-            { id: 4, title: 'Physics Assignment', type: 'assignment', date: '2026-05-05', category: 'documents' }
+            { id: 3, title: 'Mathematics Notes - Chapter 5', type: 'classwork', date: '2026-05-08', category: 'classwork' },
+            { id: 4, title: 'Physics Assignment', type: 'assignment', date: '2026-05-05', category: 'assignments' }
         ];
 
         function loadProjects() {
@@ -1173,10 +1121,11 @@
                 case 'schedule': title = `Schedule ${new Date().toLocaleDateString()}`; break;
                 case 'classwork': title = `Classwork ${new Date().toLocaleDateString()}`; break;
                 case 'assignment': title = `Assignment ${new Date().toLocaleDateString()}`; break;
+                case 'homework': title = `Homework ${new Date().toLocaleDateString()}`; break;
             }
             messages.unshift({ id: Date.now(), title: `Added to "${title}"`, project: title, read: false });
             updateMessagesBadge();
-            projects.unshift({ id: Date.now(), title, type, date: new Date().toISOString() });
+            projects.unshift({ id: Date.now(), title, type, date: new Date().toISOString(), category: type });
             localStorage.setItem('adminProjects', JSON.stringify(projects));
             renderProjects();
             closeModal('createModal');
@@ -1190,8 +1139,13 @@
         }
 
         function filterByCategory(category) {
-            const filtered = projects.filter(p => p.category === category);
+            const filtered = projects.filter(p => p.category === category || 
+                (category === 'all' ? true : false));
             const grid = document.getElementById('projectsGrid');
+            if (category === 'all') {
+                renderProjects();
+                return;
+            }
             if (filtered.length === 0) grid.innerHTML = `<div style="text-align:center;padding:60px"><h3>No ${category} found</h3></div>`;
             else grid.innerHTML = filtered.map((p, i) => `<div class="liquid-card" onclick="openProject(${p.id})" style="animation-delay: ${i * 0.05}s"><div class="card-preview ${p.type}">${getIconForType(p.type)}</div><div class="card-body"><h4>${escapeHtml(p.title)}</h4><p>Modified ${formatDate(p.date)}</p></div></div>`).join('');
         }
@@ -1247,6 +1201,9 @@
             if (!e.target.closest('.owner-dropdown')) {
                 document.getElementById('ownerMenu').classList.remove('active');
             }
+            if (!e.target.closest('.category-dropdown')) {
+                document.getElementById('categoryMenu').classList.remove('active');
+            }
         });
 
         auth.onAuthStateChanged(async (user) => {
@@ -1266,4 +1223,4 @@
         });
     </script>
 </body>
-    </html>
+</html>
