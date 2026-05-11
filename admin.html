@@ -14,626 +14,441 @@
         :root {
             --apple-blue: #0071e3;
             --text-main: #1d1d1f;
-            --metaball-spring: cubic-bezier(0.34, 1.3, 0.55, 1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-            background: #000;
-            color: #fff;
+            background: #fff;
+            color: var(--text-main);
             overflow-x: hidden;
             min-height: 100vh;
-            transition: background 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        
-        /* Background transition to white */
-        body.loaded {
-            background: #eef2f5;
-            color: var(--text-main);
         }
 
-        /* ============================================
-           VERTICAL DYNAMIC ISLAND
-        ============================================ */
-        .dynamic-island {
-            position: fixed;
-            top: 50%;
-            left: 20px;
-            transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(20px);
-            border-radius: 50px;
-            padding: 15px 8px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            z-index: 2000;
-            border: 0.5px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            transition: background 0.5s ease;
-        }
-        
-        body.loaded .dynamic-island {
-            background: rgba(255, 255, 255, 0.85);
-            border-color: rgba(0, 0, 0, 0.05);
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 3px;
-            padding: 6px 4px;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            background: transparent;
-            width: 55px;
-            position: relative;
-        }
-
-        .nav-item svg {
-            width: 18px;
-            height: 18px;
-            stroke: #fff;
-            fill: none;
-            stroke-width: 1.8;
-            transition: stroke 0.2s;
-        }
-        
-        body.loaded .nav-item svg {
-            stroke: #1d1d1f;
-        }
-
-        .nav-item span {
-            font-size: 9px;
-            font-weight: 500;
-            color: rgba(255,255,255,0.8);
-        }
-        
-        body.loaded .nav-item span {
-            color: #1d1d1f;
-        }
-
-        .nav-item:hover {
-            background: rgba(255, 255, 255, 0.15);
-        }
-        
-        body.loaded .nav-item:hover {
-            background: rgba(0, 0, 0, 0.04);
-        }
-
-        .badge {
-            position: absolute;
-            top: 0px;
-            right: 4px;
-            background: #ff3b30;
-            color: white;
-            font-size: 8px;
-            padding: 2px 4px;
-            border-radius: 20px;
-        }
-
-        .create-nav-btn {
-            background: var(--apple-blue);
-            padding: 6px 4px;
-            border-radius: 30px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 3px;
-            cursor: pointer;
-            width: 55px;
-        }
-
-        .create-nav-btn svg {
-            width: 18px;
-            height: 18px;
-            stroke: white;
-        }
-
-        .create-nav-btn span {
-            font-size: 9px;
-            font-weight: 600;
-            color: white;
-        }
-
-        .create-nav-btn:hover {
-            background: #005bb5;
-            transform: scale(1.02);
-        }
-
-        /* AI Robot Icon */
-        .ai-nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 3px;
-            padding: 6px 4px;
-            border-radius: 30px;
-            cursor: pointer;
-            width: 55px;
-            background: transparent;
-        }
-
-        .ai-nav-item svg {
-            width: 18px;
-            height: 18px;
-            stroke: #fff;
-            fill: none;
-        }
-        
-        body.loaded .ai-nav-item svg {
-            stroke: #1d1d1f;
-        }
-
-        .ai-nav-item span {
-            font-size: 8px;
-            font-weight: 500;
-            color: rgba(255,255,255,0.8);
-        }
-        
-        body.loaded .ai-nav-item span {
-            color: #1d1d1f;
-        }
-
-        .ai-nav-item:hover {
-            background: rgba(255, 255, 255, 0.15);
-        }
-        
-        body.loaded .ai-nav-item:hover {
-            background: rgba(0, 0, 0, 0.04);
-        }
-
-        /* Korahey Academy Intro Overlay */
-        .intro-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 1s ease, visibility 1s ease;
-        }
-        
-        .intro-overlay.hide {
-            opacity: 0;
-            visibility: hidden;
-        }
-        
-        .intro-content {
+        /* 🌊 LIVE GRADIENT & LIQUID GLASS BACKGROUND */
+        .glass-header {
+            padding: 140px 5% 80px;
             text-align: center;
-        }
-        
-        .intro-logo {
-            font-size: 3.5rem;
-            font-weight: 800;
-            letter-spacing: -3px;
-            background: linear-gradient(135deg, #fff, #888);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            opacity: 0;
-            transform: scale(0.8);
-            animation: introPop 0.6s cubic-bezier(0.34, 1.2, 0.64, 1) forwards;
-        }
-        
-        .intro-sub {
-            font-size: 1.1rem;
-            color: rgba(255,255,255,0.6);
-            margin-top: 15px;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: introSlide 0.6s ease 0.4s forwards;
-        }
-        
-        @keyframes introPop {
-            0% { opacity: 0; transform: scale(0.5); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-        
-        @keyframes introSlide {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        /* PAGE CONTENT */
-        .page-content {
-            margin-left: 100px;
-            margin-right: 30px;
-            margin-top: 20px;
-            margin-bottom: 20px;
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-            border-radius: 40px;
-            min-height: calc(100vh - 40px);
-            padding: 30px;
-            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        
-        body.loaded .page-content {
             background: linear-gradient(-45deg, #ffffff, #eef8ff, #ffffff, #c2e4ff);
             background-size: 400% 400%;
             animation: liveGradient 12s ease infinite;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
-            opacity: 1;
-            transform: translateY(0);
+            border-radius: 0 0 80px 80px;
+            position: relative;
         }
-        
+
         @keyframes liveGradient {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
-        .glass-header {
-            text-align: center;
-            margin-bottom: 30px;
+        /* ============================================
+           APPLE DYNAMIC ISLAND - FIXED, CENTERED, TRANSPARENT
+        ============================================ */
+        .dynamic-island {
+            position: fixed;
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border-radius: 50px;
+            padding: 6px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            z-index: 2000;
+            border: 0.5px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            width: auto;
+            max-width: 88%;
         }
 
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            padding: 5px 10px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            background: transparent;
+            min-width: 48px;
+        }
+
+        .nav-item svg {
+            width: 18px;
+            height: 18px;
+            stroke: #1d1d1f;
+            fill: none;
+            stroke-width: 1.8;
+        }
+
+        .nav-item span {
+            font-size: 9px;
+            font-weight: 500;
+            color: #1d1d1f;
+        }
+
+        .nav-item:hover {
+            background: rgba(0, 0, 0, 0.04);
+        }
+
+        .badge {
+            position: absolute;
+            top: -2px;
+            right: 4px;
+            background: #ff3b30;
+            color: white;
+            font-size: 8px;
+            font-weight: 600;
+            padding: 2px 4px;
+            border-radius: 20px;
+            min-width: 14px;
+            text-align: center;
+        }
+
+        /* Create button - DESKTOP ONLY */
+        .create-nav-btn {
+            background: var(--apple-blue);
+            padding: 5px 12px;
+            border-radius: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-width: 48px;
+        }
+
+        .create-nav-btn svg {
+            width: 14px;
+            height: 14px;
+            stroke: white;
+        }
+
+        .create-nav-btn span {
+            font-size: 9px;
+            font-weight: 500;
+            color: white;
+        }
+
+        /* Hide create button on mobile */
+        @media (max-width: 768px) {
+            .create-nav-btn {
+                display: none;
+            }
+        }
+
+        /* 🌈 GRADIENT HELLO */
         .hello-text {
-            font-size: 3rem;
+            font-size: 4rem;
             font-weight: 800;
             letter-spacing: -2px;
-            margin-bottom: 25px;
-            transition: color 0.5s ease;
-            color: #fff;
-        }
-        
-        body.loaded .hello-text {
-            color: var(--text-main);
+            margin-bottom: 40px;
             background: linear-gradient(to right, #1d1d1f 30%, var(--apple-blue) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
+        /* 🔍 SEARCH BAR WITH CLEAR BUTTON */
         .search-container {
-            max-width: 500px;
+            max-width: 700px;
             margin: 0 auto 30px;
+            position: relative;
         }
 
-        .search-container input {
-            width: 100%;
-            padding: 14px 25px;
-            border-radius: 50px;
-            border: 1px solid rgba(255,255,255,0.2);
-            font-size: 0.95rem;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+        .search-wrapper {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(20px);
+            border-radius: 60px;
+            border: 1px solid rgba(0,0,0,0.05);
+            padding: 5px 15px;
+        }
+
+        .search-wrapper svg {
+            width: 20px;
+            height: 20px;
+            stroke: #888;
+            margin-right: 10px;
+        }
+
+        .search-wrapper input {
+            flex: 1;
+            padding: 15px 0;
+            border: none;
+            background: transparent;
+            font-size: 1rem;
             outline: none;
-            text-align: center;
-            color: #fff;
-            transition: all 0.3s;
-        }
-        
-        body.loaded .search-container input {
-            border-color: rgba(0,0,0,0.05);
-            background: rgba(255, 255, 255, 0.6);
-            color: #1d1d1f;
         }
 
-        .category-grid {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-
-        .cat-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
+        .clear-search {
+            background: none;
+            border: none;
             cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .cat-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 16px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            display: flex;
+            padding: 5px;
+            display: none;
             align-items: center;
             justify-content: center;
-            border: 1px solid rgba(255,255,255,0.1);
-            transition: 0.3s;
-        }
-        
-        body.loaded .cat-icon {
-            background: rgba(255, 255, 255, 0.4);
-            border-color: rgba(0,0,0,0.05);
         }
 
-        .cat-icon svg {
-            width: 24px;
-            height: 24px;
-            stroke: #fff;
-            fill: none;
-            stroke-width: 1.8;
-        }
-        
-        body.loaded .cat-icon svg {
-            stroke: #1d1d1f;
+        .clear-search svg {
+            width: 18px;
+            height: 18px;
+            stroke: #888;
+            margin: 0;
         }
 
-        .cat-item span {
-            font-size: 10px;
-            font-weight: 500;
-            color: rgba(255,255,255,0.7);
-        }
-        
-        body.loaded .cat-item span {
-            color: #555;
-        }
-
-        .cat-item:hover .cat-icon {
-            transform: translateY(-5px);
-            background: rgba(255,255,255,0.3);
-        }
-        
-        body.loaded .cat-item:hover .cat-icon {
-            background: #fff;
-            border-color: var(--apple-blue);
-        }
-
-        /* FILTER BAR */
+        /* OWNER DROPDOWN */
         .filter-bar {
+            max-width: 1400px;
+            margin: 20px auto 30px;
+            padding: 0 8%;
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .filter-left {
+            display: flex;
             align-items: center;
             gap: 15px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
         }
 
-        .filter-dropdown {
+        .filter-left h3 {
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        /* Owner Dropdown */
+        .owner-dropdown {
             position: relative;
+            display: inline-block;
+        }
+
+        .owner-btn {
+            background: rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0,0,0,0.05);
+            border-radius: 40px;
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 10px 18px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 40px;
-            border: 1px solid rgba(255,255,255,0.1);
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: rgba(255,255,255,0.9);
-            z-index: 100;
-        }
-        
-        body.loaded .filter-dropdown {
-            background: rgba(255, 255, 255, 0.6);
-            border-color: rgba(0,0,0,0.05);
-            color: #1d1d1f;
         }
 
-        .filter-dropdown svg {
-            width: 12px;
-            height: 12px;
-            stroke: rgba(255,255,255,0.7);
-        }
-        
-        body.loaded .filter-dropdown svg {
+        .owner-btn svg {
+            width: 14px;
+            height: 14px;
             stroke: #555;
         }
 
-        /* METABALLS DROPDOWN MENU */
-        .dropdown-menu {
+        .owner-menu {
             position: absolute;
             top: 45px;
             left: 0;
-            background: rgba(22, 22, 22, 0.95);
-            backdrop-filter: blur(30px);
-            border-radius: 20px;
-            padding: 8px 0;
-            min-width: 170px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transform: scale(0.85) translateY(-15px);
-            transition: all 0.4s var(--metaball-spring);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        body.loaded .dropdown-menu {
-            background: rgba(255, 255, 255, 0.98);
-            border-color: rgba(0,0,0,0.05);
-        }
-        
-        .filter-dropdown.active .dropdown-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: scale(1) translateY(0);
-        }
-        
-        /* Water droplet arrow */
-        .dropdown-menu::before {
-            content: '';
-            position: absolute;
-            top: -6px;
-            left: 20px;
-            width: 12px;
-            height: 12px;
-            background: rgba(22, 22, 22, 0.95);
-            border-left: 1px solid rgba(255,255,255,0.1);
-            border-top: 1px solid rgba(255,255,255,0.1);
-            transform: rotate(45deg);
-            backdrop-filter: blur(30px);
-            border-radius: 2px;
-        }
-        
-        body.loaded .dropdown-menu::before {
-            background: rgba(255, 255, 255, 0.98);
-            border-color: rgba(0,0,0,0.05);
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            min-width: 180px;
+            display: none;
+            z-index: 100;
+            border: 1px solid #e5e5e5;
         }
 
-        .dropdown-menu a {
+        .owner-menu.active {
             display: block;
-            padding: 10px 18px;
+        }
+
+        .owner-menu a {
+            display: block;
+            padding: 10px 16px;
             text-decoration: none;
-            color: rgba(255,255,255,0.8);
-            font-size: 0.8rem;
-            transition: 0.2s;
-            cursor: pointer;
-        }
-        
-        body.loaded .dropdown-menu a {
-            color: #1d1d1f;
+            color: #333;
+            font-size: 0.85rem;
         }
 
-        .dropdown-menu a:hover {
-            background: rgba(255,255,255,0.1);
-            color: #fff;
-        }
-        
-        body.loaded .dropdown-menu a:hover {
-            background: rgba(0, 0, 0, 0.05);
-            color: var(--apple-blue);
+        .owner-menu a:hover {
+            background: #f5f5f5;
         }
 
-        .sort-btn {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            padding: 10px 18px;
-            background: rgba(255, 255, 255, 0.1);
+        /* Filter Pills */
+        .filter-pills { 
+            display: flex; 
+            gap: 12px; 
+            align-items: center; 
+            flex-wrap: wrap; 
+        }
+
+        .pill {
+            padding: 8px 20px;
+            background: rgba(0, 0, 0, 0.03);
             backdrop-filter: blur(10px);
+            border: 1px solid rgba(0,0,0,0.05);
             border-radius: 40px;
-            border: 1px solid rgba(255,255,255,0.1);
-            cursor: pointer;
             font-size: 0.85rem;
             font-weight: 500;
-            color: rgba(255,255,255,0.9);
-        }
-        
-        body.loaded .sort-btn {
-            background: rgba(255, 255, 255, 0.6);
-            border-color: rgba(0,0,0,0.05);
-            color: #1d1d1f;
-        }
-
-        .sort-btn svg {
-            width: 14px;
-            height: 14px;
-            stroke: rgba(255,255,255,0.7);
-        }
-        
-        body.loaded .sort-btn svg {
-            stroke: #555;
-        }
-
-        .sort-btn.active {
-            background: var(--apple-blue);
-            color: white;
-        }
-
-        .sort-btn.active svg {
-            stroke: white;
-        }
-
-        .recent-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: rgba(255,255,255,0.9);
-        }
-        
-        body.loaded .recent-title {
-            color: #1d1d1f;
-        }
-
-        .recent-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 24px;
-        }
-
-        .project-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            border: 1px solid rgba(255,255,255,0.1);
-            overflow: hidden;
-            transition: 0.3s;
             cursor: pointer;
         }
-        
-        body.loaded .project-card {
-            background: rgba(255, 255, 255, 0.6);
-            border-color: rgba(255,255,255,0.8);
-        }
 
-        .project-card:hover {
-            transform: translateY(-5px);
-            background: rgba(255,255,255,0.2);
+        .pill:hover { 
+            background: white; 
+            border-color: var(--apple-blue); 
         }
         
-        body.loaded .project-card:hover {
-            background: rgba(255,255,255,0.9);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        .pill.active { 
+            background: var(--apple-blue); 
+            color: white; 
+            border-color: var(--apple-blue); 
         }
 
-        .card-preview {
-            height: 140px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        /* SHARED WITH YOU SECTION */
+        .shared-section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 8% 40px;
+        }
+
+        .shared-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .shared-header h3 {
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .shared-header a {
+            color: var(--apple-blue);
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        .shared-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .shared-card {
+            background: rgba(0, 0, 0, 0.02);
+            border-radius: 16px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .shared-card:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .shared-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e5e5e5;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .card-preview svg {
-            width: 45px;
-            height: 45px;
-            stroke: white;
+        .shared-avatar svg {
+            width: 20px;
+            height: 20px;
+            stroke: #666;
         }
 
-        .card-body {
-            padding: 18px;
-        }
-
-        .card-body h4 {
-            font-size: 1rem;
-            margin-bottom: 5px;
+        .shared-info h4 {
+            font-size: 0.9rem;
             font-weight: 600;
-            color: rgba(255,255,255,0.9);
-        }
-        
-        body.loaded .card-body h4 {
-            color: #1d1d1f;
         }
 
-        .card-body p {
-            font-size: 0.7rem;
-            color: rgba(255,255,255,0.5);
-        }
-        
-        body.loaded .card-body p {
+        .shared-info p {
+            font-size: 0.75rem;
             color: #86868b;
         }
 
-        .empty-state {
-            text-align: center;
-            padding: 60px;
-            color: rgba(255,255,255,0.5);
+        /* RECENT PROJECTS GRID - SLIDE IN ANIMATION */
+        .recent-section { 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            padding: 0 8% 80px; 
         }
         
-        body.loaded .empty-state {
-            color: #86868b;
+        .recent-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
         }
+
+        /* Slide-in animation */
+        .liquid-card {
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(30px);
+            border-radius: 28px;
+            border: 1px solid rgba(255,255,255,0.8);
+            overflow: hidden;
+            transition: 0.4s;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideIn 0.5s ease forwards;
+        }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .liquid-card:hover { 
+            transform: translateY(-8px) scale(1.01); 
+            background: rgba(255,255,255,0.85);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .card-preview { 
+            height: 160px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .card-preview.exam { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .card-preview.schedule { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .card-preview.classwork { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        .card-preview.assignment { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        
+        .card-preview svg {
+            width: 48px;
+            height: 48px;
+            stroke: white;
+            fill: none;
+            stroke-width: 1.5;
+        }
+        
+        .card-body { padding: 20px; }
+        .card-body h4 { font-size: 1rem; margin-bottom: 5px; font-weight: 600; }
+        .card-body p { font-size: 0.75rem; color: #86868b; }
 
         /* Modal Styles */
         .modal {
@@ -663,7 +478,6 @@
         }
 
         .modal-content h3 { font-size: 24px; margin-bottom: 8px; }
-        .modal-content p { color: #86868b; margin-bottom: 24px; }
 
         .user-list {
             display: flex;
@@ -684,12 +498,12 @@
         .user-email { font-weight: 600; font-size: 14px; }
         .user-role { font-size: 12px; color: #86868b; }
 
-        .user-actions { display: flex; gap: 10px; }
         .user-actions button {
             padding: 6px 12px;
             border-radius: 20px;
             font-size: 12px;
             cursor: pointer;
+            margin-left: 8px;
         }
         .ban-btn { background: #ff3b30; color: white; border: none; }
         .remove-btn { background: #e5e5e5; border: none; }
@@ -736,6 +550,10 @@
             border-color: var(--apple-blue);
         }
 
+        .create-option svg { width: 28px; height: 28px; stroke: var(--apple-blue); }
+        .create-option-text h4 { font-weight: 600; margin-bottom: 4px; }
+        .create-option-text span { font-size: 13px; color: #86868b; }
+
         .close-modal {
             margin-top: 20px;
             width: 100%;
@@ -751,8 +569,8 @@
             border-bottom: 1px solid #e5e5e5;
         }
         .message-title { font-weight: 600; }
-        .message-project { font-size: 12px; color: var(--apple-blue); }
 
+        /* Access Denied */
         .access-denied {
             display: flex;
             align-items: center;
@@ -760,6 +578,7 @@
             height: 100vh;
             background: linear-gradient(135deg, #fff 0%, #eef8ff 100%);
         }
+
         .access-denied-content {
             background: white;
             padding: 40px;
@@ -768,60 +587,41 @@
             text-align: center;
         }
 
-        /* MOBILE - Smaller Dynamic Island, NO Create Button */
-        @media (max-width: 900px) {
-            .dynamic-island {
-                top: auto;
-                bottom: 20px;
-                left: 50%;
-                transform: translateX(-50%);
-                flex-direction: row;
-                padding: 8px 12px;
-                gap: 4px;
-                border-radius: 40px;
-            }
-            .nav-item, .ai-nav-item {
-                width: 44px;
-                padding: 4px 2px;
-            }
-            .nav-item svg, .ai-nav-item svg {
-                width: 16px;
-                height: 16px;
-            }
-            .nav-item span, .ai-nav-item span {
-                font-size: 8px;
-            }
-            /* HIDE CREATE BUTTON ON MOBILE */
-            .create-nav-btn {
-                display: none;
-            }
-            .page-content {
-                margin: 20px 15px 80px 15px;
-                padding: 20px;
+        /* MOBILE */
+        @media (max-width: 768px) {
+            .glass-header {
+                padding: 130px 5% 60px;
             }
             .hello-text {
-                font-size: 2rem;
+                font-size: 2.5rem;
+                letter-spacing: -1px;
             }
-            .category-grid {
-                gap: 12px;
+            .dynamic-island {
+                top: 12px;
+                padding: 4px 10px;
+                gap: 2px;
+                max-width: 92%;
             }
-            .cat-icon {
-                width: 42px;
-                height: 42px;
+            .nav-item {
+                min-width: 42px;
+                padding: 4px 6px;
             }
-            .cat-icon svg {
-                width: 18px;
-                height: 18px;
+            .nav-item svg {
+                width: 14px;
+                height: 14px;
             }
-            .cat-item span {
-                font-size: 9px;
+            .nav-item span {
+                font-size: 8px;
             }
             .filter-bar {
-                justify-content: center;
+                flex-direction: column;
+                align-items: flex-start;
             }
-            .filter-dropdown, .sort-btn {
-                padding: 8px 14px;
-                font-size: 0.75rem;
+            .filter-pills {
+                justify-content: flex-start;
+            }
+            .shared-grid {
+                grid-template-columns: 1fr;
             }
             .recent-grid {
                 grid-template-columns: 1fr;
@@ -831,17 +631,9 @@
 </head>
 <body>
 
-    <!-- INTRO OVERLAY -->
-    <div class="intro-overlay" id="introOverlay">
-        <div class="intro-content">
-            <div class="intro-logo">KORAHEY ACADEMY</div>
-            <div class="intro-sub">Admin Dashboard</div>
-        </div>
-    </div>
-
-    <div id="adminContent">
-        <!-- VERTICAL DYNAMIC ISLAND -->
-        <div class="dynamic-island">
+    <div id="adminContent" style="display: none;">
+        <!-- APPLE DYNAMIC ISLAND - FIXED -->
+        <nav class="dynamic-island">
             <div class="nav-item" onclick="goHome()">
                 <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2h-5v-7H9v7H5a2 2 0 0 1-2-2z"/></svg>
                 <span>Home</span>
@@ -854,21 +646,6 @@
                 <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                 <span>Apps</span>
             </div>
-            <div class="create-nav-btn" onclick="openCreateModal()">
-                <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                <span>Create</span>
-            </div>
-            <!-- AI Robot Icon -->
-            <div class="ai-nav-item" onclick="openKoraheyAI()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                    <rect x="5" y="8" width="14" height="12" rx="2"/>
-                    <circle cx="9" cy="12" r="1.5"/>
-                    <circle cx="15" cy="12" r="1.5"/>
-                    <line x1="12" y1="16" x2="12" y2="18"/>
-                    <path d="M8 6l1-3M16 6l-1-3"/>
-                </svg>
-                <span>AI</span>
-            </div>
             <div class="nav-item" onclick="openUsersModal()">
                 <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                 <span>Users</span>
@@ -879,97 +656,110 @@
                 <span>Messages</span>
                 <span class="badge" id="messagesBadge" style="display: none;">0</span>
             </div>
-            <div class="nav-item" onclick="openSettings()">
-                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                <span>Settings</span>
+            <div class="create-nav-btn" onclick="openCreateModal()">
+                <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span>Create</span>
             </div>
-        </div>
+        </nav>
 
-        <!-- PAGE CONTENT -->
-        <div class="page-content">
-            <div class="glass-header">
-                <h1 class="hello-text" id="greetingText">Hello, Admin</h1>
+        <header class="glass-header">
+            <h1 class="hello-text" id="greetingText">Hello, Admin</h1>
 
-                <div class="search-container">
-                    <input type="text" id="searchInput" placeholder="Search...">
+            <!-- Search with Clear Button -->
+            <div class="search-container">
+                <div class="search-wrapper">
+                    <svg viewBox="0 0 24 24" stroke="currentColor">
+                        <circle cx="11" cy="11" r="8"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    <input type="text" id="searchInput" placeholder="Search projects...">
+                    <button class="clear-search" id="clearSearchBtn">
+                        <svg viewBox="0 0 24 24" stroke="currentColor">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
                 </div>
             </div>
 
-            <!-- CATEGORY ICONS -->
-            <div class="category-grid">
-                <div class="cat-item" onclick="filterByCategory('docs')">
-                    <div class="cat-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-                    <span>Docs</span>
+            <!-- Category Icons -->
+            <div class="category-grid" style="display: flex; justify-content: center; gap: 40px; margin-bottom: 20px; flex-wrap: wrap;">
+                <div class="cat-item" onclick="filterByCategory('documents')">
+                    <div class="cat-icon" style="width: 65px; height: 65px; border-radius: 20px; background: rgba(255,255,255,0.4); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(0,0,0,0.05);">
+                        <svg viewBox="0 0 24 24" style="width: 28px; height: 28px; stroke: #000;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    </div>
+                    <span>Documents</span>
                 </div>
                 <div class="cat-item" onclick="filterByCategory('sheets')">
-                    <div class="cat-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg></div>
+                    <div class="cat-icon" style="width: 65px; height: 65px; border-radius: 20px; background: rgba(255,255,255,0.4); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(0,0,0,0.05);">
+                        <svg viewBox="0 0 24 24" style="width: 28px; height: 28px; stroke: #000;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+                    </div>
                     <span>Sheets</span>
                 </div>
-                <div class="cat-item" onclick="filterByCategory('schedule')">
-                    <div class="cat-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
-                    <span>Schedule</span>
-                </div>
-                <div class="cat-item" onclick="filterByCategory('class')">
-                    <div class="cat-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
-                    <span>Class</span>
-                </div>
-                <div class="cat-item" onclick="filterByCategory('works')">
-                    <div class="cat-icon"><svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
-                    <span>Works</span>
-                </div>
-                <div class="cat-item" onclick="filterByCategory('homework')">
-                    <div class="cat-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
-                    <span>Homework</span>
-                </div>
-                <div class="cat-item" onclick="filterByCategory('exams')">
-                    <div class="cat-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="12" y2="13"/></svg></div>
-                    <span>Exams</span>
+                <div class="cat-item" onclick="filterByCategory('schedules')">
+                    <div class="cat-icon" style="width: 65px; height: 65px; border-radius: 20px; background: rgba(255,255,255,0.4); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(0,0,0,0.05);">
+                        <svg viewBox="0 0 24 24" style="width: 28px; height: 28px; stroke: #000;"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                    </div>
+                    <span>Schedules</span>
                 </div>
             </div>
+        </header>
 
-            <!-- FILTER BAR -->
-            <div class="filter-bar">
-                <div class="filter-dropdown" id="ownerDropdown">
-                    <span id="ownerText">Owner</span>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-                    <div class="dropdown-menu">
-                        <a onclick="setOwnerFilter('owner')">Owner</a>
-                        <a onclick="setOwnerFilter('me')">Me</a>
+        <!-- Filter Bar with Owner Dropdown -->
+        <div class="filter-bar">
+            <div class="filter-left">
+                <h3>Recent</h3>
+                <div class="owner-dropdown">
+                    <button class="owner-btn" onclick="toggleOwnerDropdown()">
+                        Any owner
+                        <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="owner-menu" id="ownerMenu">
+                        <a href="#" onclick="filterByOwner('any'); return false;">Any owner</a>
+                        <a href="#" onclick="filterByOwner('me'); return false;">khalil mohammed (You)</a>
+                        <a href="#" onclick="filterByOwner('shared'); return false;">Shared with you</a>
                     </div>
-                </div>
-
-                <div class="filter-dropdown" id="categoryDropdown">
-                    <span id="categoryText">All projects</span>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-                    <div class="dropdown-menu">
-                        <a onclick="setCategory('all')">All projects</a>
-                        <a onclick="setCategory('design')">Design</a>
-                        <a onclick="setCategory('education')">Education</a>
-                        <a onclick="setCategory('business')">Business</a>
-                        <a onclick="setCategory('personal')">Personal</a>
-                        <a onclick="setCategory('marketing')">Marketing</a>
-                        <a onclick="setCategory('social')">Social Media</a>
-                        <a onclick="setCategory('video')">Video</a>
-                    </div>
-                </div>
-
-                <div class="sort-btn" id="sortBtn" onclick="toggleSort()">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 3 18 9"/><polyline points="6 15 12 21 18 15"/></svg>
-                    <span id="sortText">A-Z</span>
                 </div>
             </div>
-
-            <div class="recent-title">Recent projects</div>
-            <div class="recent-grid" id="projectsGrid"></div>
+            <div class="filter-pills">
+                <button class="pill active" onclick="setFilter('all', this)">All</button>
+                <button class="pill" onclick="setFilter('exam', this)">Exams</button>
+                <button class="pill" onclick="setFilter('schedule', this)">Schedules</button>
+                <button class="pill" onclick="setFilter('classwork', this)">Classwork</button>
+                <button class="pill" onclick="setFilter('assignment', this)">Assignments</button>
+            </div>
         </div>
+
+        <!-- Shared With You Section -->
+        <div class="shared-section">
+            <div class="shared-header">
+                <h3>Shared with you</h3>
+                <a href="#">See all →</a>
+            </div>
+            <div class="shared-grid" id="sharedGrid">
+                <div class="shared-card" onclick="openProject(1)">
+                    <div class="shared-avatar"><svg viewBox="0 0 24 24" stroke="currentColor"><path d="M4 4h16v16H4z"/></svg></div>
+                    <div class="shared-info"><h4>Final Exam - Grade 12</h4><p>Shared by Teacher</p></div>
+                </div>
+                <div class="shared-card" onclick="openProject(2)">
+                    <div class="shared-avatar"><svg viewBox="0 0 24 24" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2"/></svg></div>
+                    <div class="shared-info"><h4>Weekly Schedule</h4><p>Shared by Admin</p></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Projects -->
+        <main class="recent-section">
+            <div class="recent-grid" id="projectsGrid"></div>
+        </main>
     </div>
 
     <!-- Access Denied -->
     <div id="accessDenied" class="access-denied" style="display: none;">
         <div class="access-denied-content">
             <h2>Access Denied</h2>
-            <p>You don't have permission to view this page.</p>
-            <button class="filter-dropdown" onclick="window.location.href='index.html'" style="margin-top: 20px;">Back to Home</button>
+            <p>You don't have permission.</p>
+            <button class="pill" onclick="window.location.href='index.html'" style="margin-top: 20px;">Back to Home</button>
         </div>
     </div>
 
@@ -979,10 +769,22 @@
             <h3>Create new</h3>
             <p>Choose what to create</p>
             <div class="create-options">
-                <div class="create-option" onclick="createProject('design')"><div><h4>Design</h4><span>Create a new design</span></div></div>
-                <div class="create-option" onclick="createProject('document')"><div><h4>Document</h4><span>Create a document</span></div></div>
-                <div class="create-option" onclick="createProject('presentation')"><div><h4>Presentation</h4><span>Create a presentation</span></div></div>
-                <div class="create-option" onclick="createProject('whiteboard')"><div><h4>Whiteboard</h4><span>Create a whiteboard</span></div></div>
+                <div class="create-option" onclick="createProject('exam')">
+                    <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><line x1="8" y1="9" x2="16" y2="9"/></svg>
+                    <div class="create-option-text"><h4>Exam</h4><span>Create quizzes and tests</span></div>
+                </div>
+                <div class="create-option" onclick="createProject('schedule')">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>
+                    <div class="create-option-text"><h4>Schedule</h4><span>Plan classes</span></div>
+                </div>
+                <div class="create-option" onclick="createProject('classwork')">
+                    <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/></svg>
+                    <div class="create-option-text"><h4>Classwork</h4><span>Upload lessons</span></div>
+                </div>
+                <div class="create-option" onclick="createProject('assignment')">
+                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    <div class="create-option-text"><h4>Assignment</h4><span>Homework</span></div>
+                </div>
             </div>
             <button class="close-modal" onclick="closeModal('createModal')">Cancel</button>
         </div>
@@ -993,7 +795,7 @@
             <h3>Manage Users</h3>
             <div class="user-list" id="usersList"></div>
             <div class="add-user-section">
-                <input type="email" id="newUserEmail" placeholder="Enter email">
+                <input type="email" id="newUserEmail" placeholder="Email">
                 <button onclick="addUser()">Add</button>
             </div>
             <button class="close-modal" onclick="closeModal('usersModal')">Close</button>
@@ -1011,7 +813,11 @@
     <div class="modal" id="applicationsModal">
         <div class="modal-content">
             <h3>Applications</h3>
-            <div><div class="message-item"><div class="message-title">Korahey Studio</div><div class="message-project">Design Suite</div></div></div>
+            <div>
+                <div class="message-item"><div class="message-title">Student Registration</div></div>
+                <div class="message-item"><div class="message-title">Grade Management</div></div>
+                <div class="message-item"><div class="message-title">Attendance Tracker</div></div>
+            </div>
             <button class="close-modal" onclick="closeModal('applicationsModal')">Close</button>
         </div>
     </div>
@@ -1032,98 +838,38 @@
         const ADMIN_EMAIL = "khalilmohamedaden@gmail.com";
 
         let projects = [];
-        let currentCategory = 'all';
-        let currentOwner = 'owner';
-        let sortOrder = 'asc';
+        let currentFilter = 'all';
         let messages = [
-            { id: 1, title: 'You were added to "Final Design"', project: 'Final Design', read: false }
+            { id: 1, title: 'Added to "Final Exam"', project: 'Final Exam', read: false }
         ];
 
         function goHome() { window.location.href = 'index.html'; }
-        function scrollToProjects() { document.querySelector('.recent-grid').scrollIntoView({ behavior: 'smooth' }); }
+        function scrollToProjects() { document.querySelector('.recent-section').scrollIntoView({ behavior: 'smooth' }); }
         function openCreateModal() { openModal('createModal'); }
         function openUsersModal() { loadUsers(); openModal('usersModal'); }
         function openMessagesModal() { loadMessages(); openModal('messagesModal'); }
         function openApplications() { openModal('applicationsModal'); }
-        function openKoraheyAI() { alert('Korahey AI Assistant coming soon! Ask me anything about design, documents, or school management.'); }
-        function openSettings() { alert('Settings page coming soon!'); }
-
         function openModal(id) { document.getElementById(id).classList.add('active'); }
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
-        function setOwnerFilter(owner) {
-            currentOwner = owner;
-            document.getElementById('ownerText').textContent = owner === 'owner' ? 'Owner' : 'Me';
-            document.getElementById('ownerDropdown').classList.remove('active');
+        function toggleOwnerDropdown() {
+            document.getElementById('ownerMenu').classList.toggle('active');
+        }
+
+        function filterByOwner(type) {
+            document.getElementById('ownerMenu').classList.remove('active');
+            const btn = document.querySelector('.owner-btn');
+            if (type === 'any') btn.innerHTML = 'Any owner <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>';
+            else if (type === 'me') btn.innerHTML = 'khalil mohammed (You) <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>';
+            else btn.innerHTML = 'Shared with you <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>';
             renderProjects();
         }
-
-        function setCategory(category) {
-            currentCategory = category;
-            const displayName = category === 'all' ? 'All projects' : 
-                category === 'design' ? 'Design' :
-                category === 'education' ? 'Education' :
-                category === 'business' ? 'Business' :
-                category === 'personal' ? 'Personal' :
-                category === 'marketing' ? 'Marketing' :
-                category === 'social' ? 'Social Media' : 'Video';
-            document.getElementById('categoryText').textContent = displayName;
-            document.getElementById('categoryDropdown').classList.remove('active');
-            renderProjects();
-        }
-
-        function toggleSort() {
-            sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
-            const sortText = document.getElementById('sortText');
-            const sortBtn = document.getElementById('sortBtn');
-            if (sortOrder === 'asc') {
-                sortText.textContent = 'A-Z';
-                sortBtn.classList.remove('active');
-            } else {
-                sortText.textContent = 'Z-A';
-                sortBtn.classList.add('active');
-            }
-            renderProjects();
-        }
-
-        function filterByCategory(category) {
-            const filtered = projects.filter(p => p.category === category);
-            const grid = document.getElementById('projectsGrid');
-            if (filtered.length === 0) {
-                grid.innerHTML = '<div class="empty-state"><h3>No projects found</h3></div>';
-            } else {
-                grid.innerHTML = filtered.map(project => `
-                    <div class="project-card" onclick="openProject(${project.id})">
-                        <div class="card-preview"><svg viewBox="0 0 24 24" stroke="white"><path d="M4 4h16v16H4z"/><line x1="8" y1="9" x2="16" y2="9"/></svg></div>
-                        <div class="card-body"><h4>${escapeHtml(project.title)}</h4><p>Modified ${formatDate(project.date)}</p></div>
-                    </div>
-                `).join('');
-            }
-        }
-
-        // Close dropdowns when clicking outside
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.filter-dropdown')) {
-                document.querySelectorAll('.filter-dropdown').forEach(d => d.classList.remove('active'));
-            }
-        });
-
-        document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
-            dropdown.addEventListener('click', function(e) {
-                e.stopPropagation();
-                document.querySelectorAll('.filter-dropdown').forEach(d => {
-                    if (d !== dropdown) d.classList.remove('active');
-                });
-                dropdown.classList.toggle('active');
-            });
-        });
 
         const sampleProjects = [
-            { id: 1, title: 'Marketing Strategy', type: 'design', owner: 'me', date: '2026-05-15', category: 'marketing' },
-            { id: 2, title: 'Class Schedule 2026', type: 'presentation', owner: 'other', date: '2026-05-10', category: 'education' },
-            { id: 3, title: 'Business Proposal', type: 'document', owner: 'me', date: '2026-05-08', category: 'business' },
-            { id: 4, title: 'Social Media Plan', type: 'design', owner: 'other', date: '2026-05-05', category: 'social' },
-            { id: 5, title: 'Video Script', type: 'whiteboard', owner: 'me', date: '2026-05-01', category: 'video' }
+            { id: 1, title: 'Final Exam - Grade 12', type: 'exam', date: '2026-05-15', category: 'documents' },
+            { id: 2, title: 'Weekly Class Schedule', type: 'schedule', date: '2026-05-10', category: 'schedules' },
+            { id: 3, title: 'Mathematics Notes - Chapter 5', type: 'classwork', date: '2026-05-08', category: 'documents' },
+            { id: 4, title: 'Physics Assignment', type: 'assignment', date: '2026-05-05', category: 'documents' }
         ];
 
         function loadProjects() {
@@ -1135,43 +881,106 @@
         function renderProjects() {
             const grid = document.getElementById('projectsGrid');
             const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
-            
             let filtered = projects.filter(p => p.title.toLowerCase().includes(searchTerm));
-            if (currentCategory !== 'all') filtered = filtered.filter(p => p.category === currentCategory);
-            if (currentOwner === 'me') filtered = filtered.filter(p => p.owner === 'me');
-            
-            filtered.sort((a, b) => sortOrder === 'asc' ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title));
+            if (currentFilter !== 'all') filtered = filtered.filter(p => p.type === currentFilter);
             
             if (filtered.length === 0) {
-                grid.innerHTML = '<div class="empty-state"><h3>No projects found</h3><p>Create a new project to get started</p></div>';
+                grid.innerHTML = '<div style="text-align:center;padding:60px;grid-column:1/-1"><h3>No projects found</h3><p>Try a different search</p></div>';
                 return;
             }
             
-            grid.innerHTML = filtered.map(project => `
-                <div class="project-card" onclick="openProject(${project.id})">
-                    <div class="card-preview"><svg viewBox="0 0 24 24" stroke="white"><path d="M4 4h16v16H4z"/><line x1="8" y1="9" x2="16" y2="9"/></svg></div>
-                    <div class="card-body"><h4>${escapeHtml(project.title)}</h4><p>Modified ${formatDate(project.date)}</p></div>
+            grid.innerHTML = filtered.map((project, index) => `
+                <div class="liquid-card" onclick="openProject(${project.id})" style="animation-delay: ${index * 0.05}s">
+                    <div class="card-preview ${project.type}">
+                        ${getIconForType(project.type)}
+                    </div>
+                    <div class="card-body">
+                        <h4>${escapeHtml(project.title)}</h4>
+                        <p>Modified ${formatDate(project.date)}</p>
+                    </div>
                 </div>
             `).join('');
         }
 
-        function formatDate(dateStr) {
-            const date = new Date(dateStr);
-            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        function getIconForType(type) {
+            switch(type) {
+                case 'exam': return `<svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><line x1="8" y1="9" x2="16" y2="9"/></svg>`;
+                case 'schedule': return `<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>`;
+                case 'classwork': return `<svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/></svg>`;
+                default: return `<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
+            }
         }
 
-        function escapeHtml(str) { return str.replace(/[&<>]/g, function(m) { return m === '&' ? '&amp;' : m === '<' ? '&lt;' : '&gt;'; }); }
-        function openProject(id) { alert(`Opening project ${id}\nFull editing coming soon!`); }
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+
+        function openProject(id) { alert(`Opening project ${id}`); }
 
         function createProject(type) {
-            const title = `${type.charAt(0).toUpperCase() + type.slice(1)} ${new Date().toLocaleDateString()}`;
-            messages.unshift({ id: Date.now(), title: `Created "${title}"`, project: title, read: false });
+            let title = '';
+            switch(type) {
+                case 'exam': title = `Exam ${new Date().toLocaleDateString()}`; break;
+                case 'schedule': title = `Schedule ${new Date().toLocaleDateString()}`; break;
+                case 'classwork': title = `Classwork ${new Date().toLocaleDateString()}`; break;
+                case 'assignment': title = `Assignment ${new Date().toLocaleDateString()}`; break;
+            }
+            messages.unshift({ id: Date.now(), title: `Added to "${title}"`, project: title, read: false });
             updateMessagesBadge();
-            projects.unshift({ id: Date.now(), title, type, owner: 'me', date: new Date().toISOString(), category: 'design' });
+            projects.unshift({ id: Date.now(), title, type, date: new Date().toISOString() });
             localStorage.setItem('adminProjects', JSON.stringify(projects));
             renderProjects();
             closeModal('createModal');
         }
+
+        function setFilter(type, btn) {
+            currentFilter = type;
+            document.querySelectorAll('.filter-pills .pill').forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            renderProjects();
+        }
+
+        function filterByCategory(category) {
+            const filtered = projects.filter(p => p.category === category);
+            const grid = document.getElementById('projectsGrid');
+            if (filtered.length === 0) grid.innerHTML = `<div style="text-align:center;padding:60px"><h3>No ${category} found</h3></div>`;
+            else grid.innerHTML = filtered.map(p => `<div class="liquid-card" onclick="openProject(${p.id})"><div class="card-preview ${p.type}">${getIconForType(p.type)}</div><div class="card-body"><h4>${escapeHtml(p.title)}</h4><p>Modified ${formatDate(p.date)}</p></div></div>`).join('');
+        }
+
+        // SEARCH WITH CLEAR BUTTON
+        const searchInput = document.getElementById('searchInput');
+        const clearBtn = document.getElementById('clearSearchBtn');
+        
+        function updateClearButton() {
+            if (searchInput.value.length > 0) {
+                clearBtn.style.display = 'flex';
+            } else {
+                clearBtn.style.display = 'none';
+            }
+        }
+        
+        function clearSearch() {
+            searchInput.value = '';
+            updateClearButton();
+            renderProjects();
+        }
+        
+        searchInput.addEventListener('input', () => {
+            updateClearButton();
+            renderProjects();
+        });
+        
+        clearBtn.addEventListener('click', clearSearch);
 
         let users = [{ email: 'student@example.com', role: 'student' }];
         function loadUsers() {
@@ -1182,7 +991,7 @@
         function addUser() {
             const email = document.getElementById('newUserEmail').value;
             if (!email) return;
-            users.push({ email, role: 'user' });
+            users.push({ email, role: 'student' });
             document.getElementById('newUserEmail').value = '';
             loadUsers();
         }
@@ -1190,70 +999,23 @@
 
         function loadMessages() {
             const list = document.getElementById('messagesList');
-            if (messages.length === 0) list.innerHTML = '<div class="empty-state">No messages</div>';
-            else list.innerHTML = messages.map(m => `<div class="message-item"><div class="message-title">${escapeHtml(m.title)}</div><div class="message-project">${m.project}</div></div>`).join('');
+            if (messages.length === 0) list.innerHTML = '<div style="padding:40px;text-align:center">No messages</div>';
+            else list.innerHTML = messages.map(m => `<div class="message-item"><div class="message-title">${m.title}</div></div>`).join('');
         }
-        function updateMessagesBadge() { 
-            const badge = document.getElementById('messagesBadge');
-            const unread = messages.filter(m => !m.read).length;
-            if (badge) {
-                if (unread > 0) {
-                    badge.style.display = 'inline-flex';
-                    badge.textContent = unread;
-                } else {
-                    badge.style.display = 'none';
-                }
-            }
-        }
+        function updateMessagesBadge() { document.getElementById('messagesBadge').textContent = messages.filter(m => !m.read).length; }
 
-        async function checkAdminAccess(user) {
-            if (!user) {
-                document.getElementById('adminContent').style.display = 'none';
-                document.getElementById('accessDenied').style.display = 'flex';
-                return false;
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.owner-dropdown')) {
+                document.getElementById('ownerMenu').classList.remove('active');
             }
-            
-            if (user.email === ADMIN_EMAIL) {
-                document.getElementById('adminContent').style.display = 'block';
-                document.getElementById('accessDenied').style.display = 'none';
-                const firstName = user.displayName ? user.displayName.split(' ')[0] : user.email.split('@')[0];
-                document.getElementById('greetingText').textContent = `Hello, ${firstName}`;
-                return true;
-            }
-            
-            const userDoc = await db.collection('users').doc(user.uid).get();
-            if (userDoc.exists && userDoc.data().isAdmin === true) {
-                document.getElementById('adminContent').style.display = 'block';
-                document.getElementById('accessDenied').style.display = 'none';
-                const firstName = user.displayName ? user.displayName.split(' ')[0] : user.email.split('@')[0];
-                document.getElementById('greetingText').textContent = `Hello, ${firstName}`;
-                return true;
-            }
-            
-            document.getElementById('adminContent').style.display = 'none';
-            document.getElementById('accessDenied').style.display = 'flex';
-            return false;
-        }
+        });
 
-        document.getElementById('searchInput')?.addEventListener('input', renderProjects);
-        
-        // INTRO ANIMATION & BACKGROUND TRANSITION
-        setTimeout(() => {
-            const overlay = document.getElementById('introOverlay');
-            if (overlay) {
-                overlay.classList.add('hide');
-                setTimeout(() => {
-                    overlay.style.display = 'none';
-                }, 1000);
-            }
-            document.body.classList.add('loaded');
-        }, 1200);
-        
         auth.onAuthStateChanged(async (user) => {
-            if (user) {
-                await checkAdminAccess(user);
+            if (user && (user.email === ADMIN_EMAIL || (await db.collection('users').doc(user.uid).get()).data()?.isAdmin)) {
+                document.getElementById('adminContent').style.display = 'block';
+                document.getElementById('accessDenied').style.display = 'none';
+                document.getElementById('greetingText').textContent = `Hello, ${user.displayName || 'Admin'}`;
                 loadProjects();
-                loadUsers();
                 updateMessagesBadge();
             } else {
                 document.getElementById('adminContent').style.display = 'none';
@@ -1262,4 +1024,4 @@
         });
     </script>
 </body>
-</html>
+                                             </html>
