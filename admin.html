@@ -5,835 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Korahey Admin | Dashboard</title>
     
-    <!-- Firebase SDKs -->
+    <!-- Firebase SDKs (Compat Version) -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    
-    <style>
-        :root {
-            --apple-blue: #0071e3;
-            --text-main: #1d1d1f;
-        }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-            background: #000;
-            color: var(--text-main);
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
-
-        /* ============================================
-           BACKGROUND TRANSITION: BLACK TO WHITE GRADIENT
-        ============================================ */
-        .admin-container {
-            min-height: 100vh;
-            background: #000;
-            animation: bgTransition 1.2s ease-out forwards;
-        }
-
-        @keyframes bgTransition {
-            0% {
-                background: #000;
-            }
-            100% {
-                background: linear-gradient(-45deg, #ffffff, #eef8ff, #ffffff, #c2e4ff);
-                background-size: 400% 400%;
-            }
-        }
-
-        /* After transition, add live gradient animation */
-        .admin-container.animated-bg {
-            animation: liveGradient 12s ease infinite;
-            background-size: 400% 400%;
-        }
-
-        @keyframes liveGradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Entrance animation */
-        .admin-entrance {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 1;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
-        }
-
-        .admin-entrance.fade-out {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .entrance-content {
-            text-align: center;
-            animation: entrancePop 0.8s cubic-bezier(0.34, 1.2, 0.64, 1) forwards;
-        }
-
-        @keyframes entrancePop {
-            0% {
-                opacity: 0;
-                transform: scale(0.8) translateY(30px);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
-        }
-
-        .entrance-logo {
-            font-size: 3.5rem;
-            font-weight: 800;
-            letter-spacing: -2px;
-            color: #fff;
-            margin-bottom: 20px;
-        }
-
-        .entrance-sub {
-            font-size: 0.9rem;
-            color: #aaa;
-            letter-spacing: 2px;
-        }
-
-        .entrance-dots {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 30px;
-        }
-
-        .entrance-dots span {
-            width: 8px;
-            height: 8px;
-            background: var(--apple-blue);
-            border-radius: 50%;
-            display: inline-block;
-            animation: dotPulse 1.4s ease infinite;
-        }
-
-        .entrance-dots span:nth-child(2) { animation-delay: 0.2s; }
-        .entrance-dots span:nth-child(3) { animation-delay: 0.4s; }
-
-        @keyframes dotPulse {
-            0%, 100% { opacity: 0.3; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1.2); }
-        }
-
-        /* Main content */
-        .glass-header {
-            padding: 140px 5% 80px;
-            text-align: center;
-            position: relative;
-        }
-
-        /* ============================================
-           DYNAMIC ISLAND - LEFT SIDE (iPad & PC)
-        ============================================ */
-        .dynamic-island {
-            position: fixed;
-            top: 50%;
-            left: 20px;
-            transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.65);
-            backdrop-filter: blur(16px) saturate(180%);
-            -webkit-backdrop-filter: blur(16px) saturate(180%);
-            border-radius: 40px;
-            padding: 12px 8px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            z-index: 2000;
-            border: 0.5px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            padding: 10px 12px;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            position: relative;
-            background: transparent;
-            min-width: 56px;
-        }
-
-        .nav-item svg {
-            width: 20px;
-            height: 20px;
-            stroke: rgba(255, 255, 255, 0.8);
-            fill: none;
-            stroke-width: 1.8;
-        }
-
-        .nav-item span {
-            font-size: 10px;
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .nav-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .badge {
-            position: absolute;
-            top: 4px;
-            right: 6px;
-            background: #ff3b30;
-            color: white;
-            font-size: 8px;
-            font-weight: 600;
-            padding: 2px 5px;
-            border-radius: 20px;
-            min-width: 16px;
-            text-align: center;
-        }
-
-        /* Create button with AI icon */
-        .create-nav-btn, .settings-nav-btn, .ai-nav-btn {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            padding: 10px 12px;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: all 0.2s;
-            min-width: 56px;
-        }
-
-        .create-nav-btn {
-            background: var(--apple-blue);
-            margin-top: 10px;
-        }
-
-        .create-nav-btn svg, .settings-nav-btn svg, .ai-nav-btn svg {
-            width: 18px;
-            height: 18px;
-            stroke: white;
-        }
-
-        .create-nav-btn span, .settings-nav-btn span, .ai-nav-btn span {
-            font-size: 9px;
-            font-weight: 500;
-            color: white;
-        }
-
-        .settings-nav-btn, .ai-nav-btn {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .settings-nav-btn:hover, .ai-nav-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        /* Mobile: Different position */
-        @media (max-width: 767px) {
-            .dynamic-island {
-                top: auto;
-                bottom: 20px;
-                left: 50%;
-                transform: translateX(-50%);
-                flex-direction: row;
-                padding: 8px 16px;
-                background: rgba(0, 0, 0, 0.8);
-            }
-            .nav-item {
-                padding: 6px 10px;
-                min-width: 44px;
-            }
-            .nav-item svg {
-                width: 16px;
-                height: 16px;
-            }
-            .nav-item span {
-                font-size: 8px;
-            }
-            .create-nav-btn, .settings-nav-btn, .ai-nav-btn {
-                padding: 6px 10px;
-                min-width: 44px;
-                margin-top: 0;
-            }
-        }
-
-        /* 🌈 HELLO TEXT - No comma */
-        .hello-text {
-            font-size: 4rem;
-            font-weight: 800;
-            letter-spacing: -2px;
-            margin-bottom: 40px;
-            background: linear-gradient(to right, #1d1d1f 30%, var(--apple-blue) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* 🔍 SEARCH BAR WITH MULTIPLE ICONS */
-        .search-container {
-            max-width: 800px;
-            margin: 0 auto 30px;
-            position: relative;
-        }
-
-        .search-wrapper {
-            display: flex;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(20px);
-            border-radius: 60px;
-            border: 1px solid rgba(0,0,0,0.05);
-            padding: 5px 15px;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .search-icon-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            background: rgba(0, 0, 0, 0.03);
-            padding: 8px 12px;
-            border-radius: 40px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .search-icon-wrapper:hover {
-            background: rgba(0, 0, 0, 0.08);
-        }
-
-        .search-icon-wrapper svg {
-            width: 16px;
-            height: 16px;
-            stroke: #555;
-        }
-
-        .search-icon-wrapper span {
-            font-size: 12px;
-            color: #555;
-        }
-
-        .search-input-area {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            min-width: 200px;
-        }
-
-        .search-input-area svg {
-            width: 20px;
-            height: 20px;
-            stroke: #888;
-        }
-
-        .search-input-area input {
-            flex: 1;
-            padding: 15px 0;
-            border: none;
-            background: transparent;
-            font-size: 1rem;
-            outline: none;
-        }
-
-        .clear-search {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 5px;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .clear-search svg {
-            width: 18px;
-            height: 18px;
-            stroke: #888;
-        }
-
-        /* Category Dropdown */
-        .category-dropdown {
-            margin: 20px auto;
-            max-width: 300px;
-            position: relative;
-        }
-
-        .category-select {
-            width: 100%;
-            padding: 12px 20px;
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0,0,0,0.05);
-            border-radius: 40px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .category-menu {
-            position: absolute;
-            top: 55px;
-            left: 0;
-            width: 100%;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            display: none;
-            z-index: 100;
-            overflow: hidden;
-        }
-
-        .category-menu.active {
-            display: block;
-        }
-
-        .category-menu a {
-            display: block;
-            padding: 12px 20px;
-            text-decoration: none;
-            color: #333;
-            cursor: pointer;
-        }
-
-        .category-menu a:hover {
-            background: #f5f5f5;
-        }
-
-        /* OWNER DROPDOWN & FILTER BAR */
-        .filter-bar {
-            max-width: 1400px;
-            margin: 20px auto 30px;
-            padding: 0 8%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .filter-left {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .filter-left h3 {
-            font-weight: 600;
-            font-size: 1.2rem;
-        }
-
-        .owner-dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .owner-btn {
-            background: rgba(0, 0, 0, 0.03);
-            border: 1px solid rgba(0,0,0,0.05);
-            border-radius: 40px;
-            padding: 8px 16px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .owner-btn svg {
-            width: 14px;
-            height: 14px;
-            stroke: #555;
-        }
-
-        .owner-menu {
-            position: absolute;
-            top: 45px;
-            left: 0;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            min-width: 200px;
-            display: none;
-            z-index: 100;
-            border: 1px solid #e5e5e5;
-        }
-
-        .owner-menu.active {
-            display: block;
-        }
-
-        .owner-menu a {
-            display: block;
-            padding: 10px 16px;
-            text-decoration: none;
-            color: #333;
-            font-size: 0.85rem;
-            cursor: pointer;
-        }
-
-        .owner-menu a:hover {
-            background: #f5f5f5;
-        }
-
-        /* Filter Pills */
-        .filter-pills { 
-            display: flex; 
-            gap: 12px; 
-            align-items: center; 
-            flex-wrap: wrap; 
-        }
-
-        .pill {
-            padding: 8px 20px;
-            background: rgba(0, 0, 0, 0.03);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0,0,0,0.05);
-            border-radius: 40px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            cursor: pointer;
-        }
-
-        .pill:hover { 
-            background: white; 
-            border-color: var(--apple-blue); 
-        }
-        
-        .pill.active { 
-            background: var(--apple-blue); 
-            color: white; 
-            border-color: var(--apple-blue); 
-        }
-
-        /* SHARED WITH YOU SECTION */
-        .shared-section {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 8% 40px;
-        }
-
-        .shared-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .shared-header h3 {
-            font-weight: 600;
-            font-size: 1.2rem;
-        }
-
-        .shared-header a {
-            color: var(--apple-blue);
-            text-decoration: none;
-            font-size: 0.85rem;
-            cursor: pointer;
-        }
-
-        .shared-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 16px;
-        }
-
-        .shared-card {
-            background: rgba(0, 0, 0, 0.02);
-            border-radius: 16px;
-            padding: 12px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .shared-card:hover {
-            background: rgba(0, 0, 0, 0.05);
-        }
-
-        .shared-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: #e5e5e5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .shared-avatar svg {
-            width: 20px;
-            height: 20px;
-            stroke: #666;
-        }
-
-        .shared-info h4 {
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-
-        .shared-info p {
-            font-size: 0.75rem;
-            color: #86868b;
-        }
-
-        /* Mobile: Only one shared preview */
-        @media (max-width: 768px) {
-            .shared-grid {
-                grid-template-columns: 1fr;
-            }
-            .shared-card.hide-mobile {
-                display: none;
-            }
-        }
-
-        /* RECENT PROJECTS GRID */
-        .recent-section { 
-            max-width: 1400px; 
-            margin: 0 auto; 
-            padding: 0 8% 80px; 
-        }
-        
-        .recent-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 30px;
-        }
-
-        .liquid-card {
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(30px);
-            border-radius: 28px;
-            border: 1px solid rgba(255,255,255,0.8);
-            overflow: hidden;
-            transition: 0.4s;
-            cursor: pointer;
-            opacity: 0;
-            transform: translateY(30px);
-            animation: slideIn 0.5s ease forwards;
-        }
-
-        @keyframes slideIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .liquid-card:hover { 
-            transform: translateY(-8px) scale(1.01); 
-            background: rgba(255,255,255,0.85);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-        
-        .card-preview { 
-            height: 160px; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .card-preview.exam { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
-        .card-preview.schedule { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
-        .card-preview.classwork { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
-        .card-preview.assignment { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
-        
-        .card-preview svg {
-            width: 48px;
-            height: 48px;
-            stroke: white;
-            fill: none;
-            stroke-width: 1.5;
-        }
-        
-        .card-body { padding: 20px; }
-        .card-body h4 { font-size: 1rem; margin-bottom: 5px; font-weight: 600; }
-        .card-body p { font-size: 0.75rem; color: #86868b; }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(8px);
-            z-index: 3000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal.active { display: flex; }
-
-        .modal-content {
-            background: white;
-            border-radius: 32px;
-            width: 90%;
-            max-width: 500px;
-            padding: 32px;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .modal-content h3 { font-size: 24px; margin-bottom: 8px; }
-
-        .create-options {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .create-option {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 16px;
-            border: 1px solid #e5e5e5;
-            border-radius: 20px;
-            cursor: pointer;
-        }
-
-        .create-option:hover {
-            background: #f5f9ff;
-            border-color: var(--apple-blue);
-        }
-
-        .create-option svg { width: 28px; height: 28px; stroke: var(--apple-blue); }
-        .create-option-text h4 { font-weight: 600; margin-bottom: 4px; }
-        .create-option-text span { font-size: 13px; color: #86868b; }
-
-        .close-modal {
-            margin-top: 20px;
-            width: 100%;
-            padding: 12px;
-            background: #f5f5f5;
-            border: none;
-            border-radius: 40px;
-            cursor: pointer;
-        }
-
-        .user-list {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-
-        .user-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px;
-            border: 1px solid #e5e5e5;
-            border-radius: 20px;
-        }
-
-        .user-email { font-weight: 600; font-size: 14px; }
-        .user-actions button {
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            cursor: pointer;
-            background: #e5e5e5;
-            border: none;
-        }
-
-        .add-user-section {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        .add-user-section input {
-            flex: 1;
-            padding: 12px;
-            border: 1px solid #e5e5e5;
-            border-radius: 30px;
-            outline: none;
-        }
-        .add-user-section button {
-            padding: 12px 20px;
-            background: var(--apple-blue);
-            color: white;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-        }
-
-        .message-item {
-            padding: 12px;
-            border-bottom: 1px solid #e5e5e5;
-        }
-        .message-title { font-weight: 600; }
-
-        /* Access Denied */
-        .access-denied {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background: #000;
-        }
-
-        .access-denied-content {
-            background: #111;
-            padding: 40px;
-            border-radius: 40px;
-            max-width: 400px;
-            text-align: center;
-            color: white;
-        }
-
-        @media (max-width: 768px) {
-            .glass-header {
-                padding: 100px 5% 60px;
-            }
-            .hello-text {
-                font-size: 2.5rem;
-                letter-spacing: -1px;
-            }
-            .search-wrapper {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .search-icon-wrapper {
-                justify-content: center;
-            }
-            .search-input-area {
-                padding: 10px 0;
-            }
-            .filter-bar {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-        }
-    </style>
+    <!-- External CSS Reference (Optional) or Keep Internal Below -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- ENTRANCE ANIMATION -->
+    <!-- 1. ENTRANCE ANIMATION LAYER -->
     <div class="admin-entrance" id="adminEntrance">
         <div class="entrance-content">
             <div class="entrance-logo">KORAHEY ACADEMY</div>
@@ -844,123 +26,93 @@
         </div>
     </div>
 
+    <!-- 2. MAIN APP CONTAINER -->
     <div class="admin-container" id="adminContainer">
-        <div id="adminContent" style="display: none;">
-            <!-- DYNAMIC ISLAND - LEFT SIDE (iPad & PC) -->
+        <div id="adminContent" style="display: none; opacity: 0; transition: opacity 0.8s ease;">
+            
+            <!-- 🏝️ DYNAMIC ISLAND NAVIGATION -->
             <nav class="dynamic-island">
-                <div class="nav-item" onclick="goHome()">
+                <div class="nav-item" onclick="goHome()" title="Home">
                     <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2h-5v-7H9v7H5a2 2 0 0 1-2-2z"/></svg>
                     <span>Home</span>
                 </div>
-                <div class="nav-item" onclick="scrollToProjects()">
+                <div class="nav-item" onclick="scrollToProjects()" title="Projects">
                     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
                     <span>Projects</span>
                 </div>
-                <div class="nav-item" onclick="openApplications()">
+                <div class="nav-item" onclick="openApplications()" title="Applications">
                     <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                     <span>Apps</span>
                 </div>
-                <div class="nav-item" onclick="openUsersModal()">
-                    <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <div class="nav-item" onclick="openUsersModal()" title="Users">
+                    <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
                     <span>Users</span>
                     <span class="badge" id="usersBadge" style="display: none;">0</span>
                 </div>
-                <div class="nav-item" onclick="openMessagesModal()">
+                <div class="nav-item" onclick="openMessagesModal()" title="Messages">
                     <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                    <span>Messages</span>
+                    <span>Inbox</span>
                     <span class="badge" id="messagesBadge" style="display: none;">0</span>
                 </div>
-                <div class="settings-nav-btn" onclick="openSettings()">
-                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                    <span>Settings</span>
-                </div>
+                
+                <hr style="border: 0.5px solid rgba(255,255,255,0.1); width: 60%; margin: 5px 0;">
+                
                 <div class="ai-nav-btn" onclick="openAI()">
-                    <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 1 10 10c0 5.5-4.5 10-10 10S2 17.5 2 12 6.5 2 12 2z"/><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="1"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 1 10 10c0 5.5-4.5 10-10 10S2 17.5 2 12 6.5 2 12 2z"/><circle cx="12" cy="12" r="2"/></svg>
                     <span>AI</span>
                 </div>
                 <div class="create-nav-btn" onclick="openCreateModal()">
                     <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                    <span>Create</span>
+                    <span>New</span>
                 </div>
             </nav>
 
-            <div class="glass-header">
+            <!-- 🏠 HEADER SECTION -->
+            <header class="glass-header">
                 <h1 class="hello-text" id="greetingText">Hello Admin</h1>
 
-                <!-- Search Bar with Multiple Icons -->
+                <!-- Search Interface -->
                 <div class="search-container">
                     <div class="search-wrapper">
-                        <div class="search-icon-wrapper" onclick="filterByType('docs')">
-                            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                            <span>Docs</span>
-                        </div>
-                        <div class="search-icon-wrapper" onclick="filterByType('sheets')">
-                            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>
-                            <span>Sheets</span>
-                        </div>
-                        <div class="search-icon-wrapper" onclick="filterByType('schedule')">
-                            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>
-                            <span>Schedule</span>
-                        </div>
-                        <div class="search-icon-wrapper" onclick="filterByType('classwork')">
-                            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/></svg>
-                            <span>Classwork</span>
-                        </div>
-                        <div class="search-icon-wrapper" onclick="filterByType('homework')">
-                            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                            <span>Homework</span>
-                        </div>
-                        <div class="search-icon-wrapper" onclick="filterByType('exam')">
-                            <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="12" y2="13"/></svg>
-                            <span>Exams</span>
-                        </div>
                         <div class="search-input-area">
-                            <svg viewBox="0 0 24 24" stroke="currentColor">
-                                <circle cx="11" cy="11" r="8"/>
-                                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                            </svg>
-                            <input type="text" id="searchInput" placeholder="Search projects...">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                            <input type="text" id="searchInput" placeholder="Search files, exams, or students...">
                             <button class="clear-search" id="clearSearchBtn">
-                                <svg viewBox="0 0 24 24" stroke="currentColor">
-                                    <line x1="18" y1="6" x2="6" y2="18"/>
-                                    <line x1="6" y1="6" x2="18" y2="18"/>
-                                </svg>
+                                <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Category Dropdown -->
+                <!-- Category Filters -->
                 <div class="category-dropdown">
                     <div class="category-select" onclick="toggleCategoryMenu()">
                         <span id="selectedCategory">All Categories</span>
-                        <svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                     </div>
                     <div class="category-menu" id="categoryMenu">
-                        <a onclick="selectCategory('all')">All Categories</a>
-                        <a onclick="selectCategory('documents')">Documents</a>
-                        <a onclick="selectCategory('sheets')">Sheets</a>
-                        <a onclick="selectCategory('schedules')">Schedules</a>
-                        <a onclick="selectCategory('classwork')">Classwork</a>
-                        <a onclick="selectCategory('homework')">Homework</a>
-                        <a onclick="selectCategory('exams')">Exams</a>
+                        <a onclick="selectCategory('all')">📂 All Categories</a>
+                        <a onclick="selectCategory('documents')">📄 Documents</a>
+                        <a onclick="selectCategory('schedules')">📅 Schedules</a>
+                        <a onclick="selectCategory('classwork')">🏫 Classwork</a>
+                        <a onclick="selectCategory('exams')">📝 Exams</a>
                     </div>
                 </div>
-            </div>
+            </header>
 
-            <!-- Filter Bar with Owner Dropdown -->
-            <div class="filter-bar">
+            <!-- 📊 ACTION BAR -->
+            <section class="filter-bar">
                 <div class="filter-left">
-                    <h3>Recent</h3>
+                    <h3>Recent Files</h3>
                     <div class="owner-dropdown">
                         <button class="owner-btn" onclick="toggleOwnerDropdown()">
                             Any owner
-                            <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>
+                            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                         </button>
                         <div class="owner-menu" id="ownerMenu">
-                            <a onclick="filterByOwner('any'); return false;">Any owner</a>
-                            <a onclick="filterByOwner('me'); return false;">khalil mohammed (You)</a>
-                            <a onclick="filterByOwner('shared'); return false;">Shared with you</a>
+                            <a onclick="filterByOwner('any')">Any owner</a>
+                            <a onclick="filterByOwner('me')">Owned by me</a>
+                            <a onclick="filterByOwner('shared')">Shared with me</a>
                         </div>
                     </div>
                 </div>
@@ -969,91 +121,77 @@
                     <button class="pill" onclick="setFilter('exam', this)">Exams</button>
                     <button class="pill" onclick="setFilter('schedule', this)">Schedules</button>
                     <button class="pill" onclick="setFilter('classwork', this)">Classwork</button>
-                    <button class="pill" onclick="setFilter('assignment', this)">Assignments</button>
                 </div>
-            </div>
+            </section>
 
-            <!-- Shared With You Section -->
-            <div class="shared-section">
+            <!-- 👥 SHARED SECTION -->
+            <section class="shared-section">
                 <div class="shared-header">
                     <h3>Shared with you</h3>
                     <a onclick="showAllShared()">See all →</a>
                 </div>
                 <div class="shared-grid" id="sharedGrid">
-                    <div class="shared-card" onclick="openProject(1)">
-                        <div class="shared-avatar"><svg viewBox="0 0 24 24" stroke="currentColor"><path d="M4 4h16v16H4z"/></svg></div>
-                        <div class="shared-info"><h4>Final Exam - Grade 12</h4><p>Shared by Teacher</p></div>
-                    </div>
-                    <div class="shared-card" onclick="openProject(2)">
-                        <div class="shared-avatar"><svg viewBox="0 0 24 24" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2"/></svg></div>
-                        <div class="shared-info"><h4>Weekly Schedule</h4><p>Shared by Admin</p></div>
-                    </div>
-                    <div class="shared-card hide-mobile" onclick="openProject(3)">
-                        <div class="shared-avatar"><svg viewBox="0 0 24 24" stroke="currentColor"><rect x="2" y="3" width="20" height="14" rx="2"/></svg></div>
-                        <div class="shared-info"><h4>Math Notes</h4><p>Shared by Teacher</p></div>
-                    </div>
+                    <!-- Cards injected by JS -->
                 </div>
-            </div>
+            </section>
 
-            <!-- Recent Projects -->
+            <!-- 🧱 MAIN CONTENT GRID -->
             <main class="recent-section">
-                <div class="recent-grid" id="projectsGrid"></div>
+                <div class="recent-grid" id="projectsGrid">
+                    <!-- Liquid cards injected by JS -->
+                </div>
             </main>
         </div>
     </div>
 
-    <!-- Access Denied -->
+    <!-- 🚫 ACCESS CONTROL LAYER -->
     <div id="accessDenied" class="access-denied" style="display: none;">
         <div class="access-denied-content">
-            <h2>Access Denied</h2>
-            <p>You don't have permission.</p>
-            <button class="pill" onclick="window.location.href='index.html'" style="margin-top: 20px; background: #0071e3; color: white;">Back to Home</button>
+            <div style="font-size: 50px; margin-bottom: 20px;">🔒</div>
+            <h2>Access Restricted</h2>
+            <p>You do not have administrative privileges to view this dashboard.</p>
+            <button class="pill" onclick="window.location.href='index.html'" style="margin-top: 20px; background: #0071e3; color: white; width: 100%;">Return to Portal</button>
         </div>
     </div>
 
-    <!-- Modals -->
+    <!-- 🛠️ MODAL SYSTEM -->
+    
+    <!-- Create Modal -->
     <div class="modal" id="createModal">
         <div class="modal-content">
-            <h3>Create new</h3>
-            <p>Choose what to create</p>
+            <h3>Create New</h3>
             <div class="create-options">
                 <div class="create-option" onclick="createProject('exam')">
-                    <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><line x1="8" y1="9" x2="16" y2="9"/></svg>
-                    <div class="create-option-text"><h4>Exam</h4><span>Create quizzes and tests</span></div>
+                    <div class="icon-box exam">📝</div>
+                    <div class="create-option-text"><h4>Exam</h4><span>Quizzes and tests</span></div>
                 </div>
                 <div class="create-option" onclick="createProject('schedule')">
-                    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>
-                    <div class="create-option-text"><h4>Schedule</h4><span>Plan classes</span></div>
+                    <div class="icon-box schedule">📅</div>
+                    <div class="create-option-text"><h4>Schedule</h4><span>Class timelines</span></div>
                 </div>
                 <div class="create-option" onclick="createProject('classwork')">
-                    <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/></svg>
-                    <div class="create-option-text"><h4>Classwork</h4><span>Upload lessons</span></div>
-                </div>
-                <div class="create-option" onclick="createProject('assignment')">
-                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    <div class="create-option-text"><h4>Assignment</h4><span>Homework</span></div>
-                </div>
-                <div class="create-option" onclick="createProject('homework')">
-                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    <div class="create-option-text"><h4>Homework</h4><span>Create homework</span></div>
+                    <div class="icon-box classwork">📚</div>
+                    <div class="create-option-text"><h4>Classwork</h4><span>Lesson materials</span></div>
                 </div>
             </div>
-            <button class="close-modal" onclick="closeModal('createModal')">Cancel</button>
+            <button class="close-modal" onclick="closeModal('createModal')">Dismiss</button>
         </div>
     </div>
 
+    <!-- Users Modal -->
     <div class="modal" id="usersModal">
         <div class="modal-content">
-            <h3>Manage Users</h3>
+            <h3>Staff & Students</h3>
             <div class="user-list" id="usersList"></div>
             <div class="add-user-section">
-                <input type="email" id="newUserEmail" placeholder="Email">
-                <button onclick="addUser()">Add</button>
+                <input type="email" id="newUserEmail" placeholder="User email address">
+                <button onclick="addUser()">Invite</button>
             </div>
             <button class="close-modal" onclick="closeModal('usersModal')">Close</button>
         </div>
     </div>
 
+    <!-- Inbox Modal -->
     <div class="modal" id="messagesModal">
         <div class="modal-content">
             <h3>Notifications</h3>
@@ -1062,257 +200,7 @@
         </div>
     </div>
 
-    <div class="modal" id="applicationsModal">
-        <div class="modal-content">
-            <h3>Applications</h3>
-            <div>
-                <div class="message-item"><div class="message-title">Student Registration</div></div>
-                <div class="message-item"><div class="message-title">Grade Management</div></div>
-                <div class="message-item"><div class="message-title">Attendance Tracker</div></div>
-            </div>
-            <button class="close-modal" onclick="closeModal('applicationsModal')">Close</button>
-        </div>
-    </div>
-
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyCC5oK1cMufciR1v4wLi-jfYvXa_cQBnd0",
-            authDomain: "korahey-admin.firebaseapp.com",
-            projectId: "korahey-admin",
-            storageBucket: "korahey-admin.firebasestorage.app",
-            messagingSenderId: "86298888884",
-            appId: "1:86298888884:web:f1d835de1cb9d2534d65e1"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-        const ADMIN_EMAIL = "khalilmohamedaden@gmail.com";
-
-        let projects = [];
-        let currentFilter = 'all';
-        let messages = [{ id: 1, title: 'Added to "Final Exam"', project: 'Final Exam', read: false }];
-
-        // Entrance animation
-        const entrance = document.getElementById('adminEntrance');
-        const adminContainer = document.getElementById('adminContainer');
-        const adminContent = document.getElementById('adminContent');
-        
-        function showAdminContent() {
-            if (entrance) {
-                entrance.classList.add('fade-out');
-                setTimeout(() => {
-                    entrance.style.display = 'none';
-                    adminContent.style.opacity = '1';
-                    adminContainer.classList.add('animated-bg');
-                }, 800);
-            } else {
-                adminContent.style.opacity = '1';
-                adminContainer.classList.add('animated-bg');
-            }
-        }
-
-        function goHome() { window.location.href = 'index.html'; }
-        function scrollToProjects() { document.querySelector('.recent-section').scrollIntoView({ behavior: 'smooth' }); }
-        function openSettings() { alert('Settings coming soon!'); }
-        function openAI() { alert('AI Assistant coming soon!'); }
-        function openCreateModal() { openModal('createModal'); }
-        function openUsersModal() { loadUsers(); openModal('usersModal'); }
-        function openMessagesModal() { loadMessages(); openModal('messagesModal'); }
-        function openApplications() { openModal('applicationsModal'); }
-        function openModal(id) { document.getElementById(id).classList.add('active'); }
-        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-
-        function toggleOwnerDropdown() {
-            document.getElementById('ownerMenu').classList.toggle('active');
-        }
-
-        function toggleCategoryMenu() {
-            document.getElementById('categoryMenu').classList.toggle('active');
-        }
-
-        function selectCategory(category) {
-            document.getElementById('selectedCategory').innerHTML = category.charAt(0).toUpperCase() + category.slice(1);
-            document.getElementById('categoryMenu').classList.remove('active');
-            filterByCategory(category);
-        }
-
-        function filterByOwner(type) {
-            document.getElementById('ownerMenu').classList.remove('active');
-            const btn = document.querySelector('.owner-btn');
-            if (type === 'any') btn.innerHTML = 'Any owner <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>';
-            else if (type === 'me') btn.innerHTML = 'khalil mohammed (You) <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>';
-            else btn.innerHTML = 'Shared with you <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>';
-            renderProjects();
-        }
-
-        function filterByType(type) {
-            document.getElementById('searchInput').value = type;
-            renderProjects();
-        }
-
-        function showAllShared() {
-            document.querySelectorAll('.shared-card').forEach(card => card.classList.remove('hide-mobile'));
-            event.target.style.display = 'none';
-        }
-
-        const sampleProjects = [
-            { id: 1, title: 'Final Exam - Grade 12', type: 'exam', date: '2026-05-15', category: 'documents' },
-            { id: 2, title: 'Weekly Class Schedule', type: 'schedule', date: '2026-05-10', category: 'schedules' },
-            { id: 3, title: 'Mathematics Notes - Chapter 5', type: 'classwork', date: '2026-05-08', category: 'classwork' },
-            { id: 4, title: 'Physics Assignment', type: 'assignment', date: '2026-05-05', category: 'homework' }
-        ];
-
-        function loadProjects() {
-            const saved = localStorage.getItem('adminProjects');
-            projects = saved ? JSON.parse(saved) : [...sampleProjects];
-            renderProjects();
-        }
-
-        function renderProjects() {
-            const grid = document.getElementById('projectsGrid');
-            const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
-            let filtered = projects.filter(p => p.title.toLowerCase().includes(searchTerm));
-            if (currentFilter !== 'all') filtered = filtered.filter(p => p.type === currentFilter);
-            
-            if (filtered.length === 0) {
-                grid.innerHTML = '<div style="text-align:center;padding:60px;grid-column:1/-1"><h3>No projects found</h3><p>Try a different search</p></div>';
-                return;
-            }
-            
-            grid.innerHTML = filtered.map((project, index) => `
-                <div class="liquid-card" onclick="openProject(${project.id})" style="animation-delay: ${index * 0.05}s">
-                    <div class="card-preview ${project.type}">
-                        ${getIconForType(project.type)}
-                    </div>
-                    <div class="card-body">
-                        <h4>${escapeHtml(project.title)}</h4>
-                        <p>Modified ${formatDate(project.date)}</p>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function getIconForType(type) {
-            switch(type) {
-                case 'exam': return `<svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><line x1="8" y1="9" x2="16" y2="9"/></svg>`;
-                case 'schedule': return `<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>`;
-                case 'classwork': return `<svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/></svg>`;
-                default: return `<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
-            }
-        }
-
-        function formatDate(dateStr) {
-            const date = new Date(dateStr);
-            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-        }
-
-        function escapeHtml(str) {
-            return str.replace(/[&<>]/g, function(m) {
-                if (m === '&') return '&amp;';
-                if (m === '<') return '&lt;';
-                if (m === '>') return '&gt;';
-                return m;
-            });
-        }
-
-        function openProject(id) { alert(`Opening project ${id}`); }
-
-        function createProject(type) {
-            let title = '';
-            switch(type) {
-                case 'exam': title = `Exam ${new Date().toLocaleDateString()}`; break;
-                case 'schedule': title = `Schedule ${new Date().toLocaleDateString()}`; break;
-                case 'classwork': title = `Classwork ${new Date().toLocaleDateString()}`; break;
-                case 'assignment': title = `Assignment ${new Date().toLocaleDateString()}`; break;
-                case 'homework': title = `Homework ${new Date().toLocaleDateString()}`; break;
-            }
-            messages.unshift({ id: Date.now(), title: `Added to "${title}"`, project: title, read: false });
-            updateMessagesBadge();
-            projects.unshift({ id: Date.now(), title, type, date: new Date().toISOString(), category: type });
-            localStorage.setItem('adminProjects', JSON.stringify(projects));
-            renderProjects();
-            closeModal('createModal');
-        }
-
-        function setFilter(type, btn) {
-            currentFilter = type;
-            document.querySelectorAll('.filter-pills .pill').forEach(p => p.classList.remove('active'));
-            btn.classList.add('active');
-            renderProjects();
-        }
-
-        function filterByCategory(category) {
-            const filtered = projects.filter(p => p.category === category);
-            const grid = document.getElementById('projectsGrid');
-            if (filtered.length === 0) grid.innerHTML = `<div style="text-align:center;padding:60px"><h3>No ${category} found</h3></div>`;
-            else grid.innerHTML = filtered.map((p, i) => `<div class="liquid-card" onclick="openProject(${p.id})" style="animation-delay: ${i * 0.05}s"><div class="card-preview ${p.type}">${getIconForType(p.type)}</div><div class="card-body"><h4>${escapeHtml(p.title)}</h4><p>Modified ${formatDate(p.date)}</p></div></div>`).join('');
-        }
-
-        // Search with clear button
-        const searchInput = document.getElementById('searchInput');
-        const clearBtn = document.getElementById('clearSearchBtn');
-        
-        function updateClearButton() {
-            if (searchInput.value.length > 0) clearBtn.style.display = 'flex';
-            else clearBtn.style.display = 'none';
-        }
-        
-        function clearSearch() {
-            searchInput.value = '';
-            updateClearButton();
-            renderProjects();
-        }
-        
-        searchInput.addEventListener('input', () => {
-            updateClearButton();
-            renderProjects();
-        });
-        
-        clearBtn.addEventListener('click', clearSearch);
-
-        let users = [{ email: 'student@example.com' }];
-        function loadUsers() {
-            const list = document.getElementById('usersList');
-            list.innerHTML = users.map(u => `<div class="user-item"><div class="user-email">${u.email}</div><div class="user-actions"><button onclick="removeUser('${u.email}')">Remove</button></div></div>`).join('');
-            document.getElementById('usersBadge').textContent = users.length;
-        }
-        function addUser() {
-            const email = document.getElementById('newUserEmail').value;
-            if (!email) return;
-            users.push({ email });
-            document.getElementById('newUserEmail').value = '';
-            loadUsers();
-        }
-        function removeUser(email) { users = users.filter(u => u.email !== email); loadUsers(); }
-
-        function loadMessages() {
-            const list = document.getElementById('messagesList');
-            if (messages.length === 0) list.innerHTML = '<div style="padding:40px;text-align:center">No messages</div>';
-            else list.innerHTML = messages.map(m => `<div class="message-item"><div class="message-title">${m.title}</div></div>`).join('');
-        }
-        function updateMessagesBadge() { document.getElementById('messagesBadge').textContent = messages.filter(m => !m.read).length; }
-
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.owner-dropdown')) document.getElementById('ownerMenu').classList.remove('active');
-            if (!e.target.closest('.category-dropdown')) document.getElementById('categoryMenu').classList.remove('active');
-        });
-
-        auth.onAuthStateChanged(async (user) => {
-            if (user && (user.email === ADMIN_EMAIL || (await db.collection('users').doc(user.uid).get()).data()?.isAdmin)) {
-                adminContent.style.display = 'block';
-                document.getElementById('accessDenied').style.display = 'none';
-                document.getElementById('greetingText').textContent = `Hello ${user.displayName?.split(' ')[0] || 'Admin'}`;
-                loadProjects();
-                updateMessagesBadge();
-                loadUsers();
-                showAdminContent();
-            } else {
-                adminContent.style.display = 'none';
-                document.getElementById('accessDenied').style.display = 'flex';
-                if (entrance) entrance.style.display = 'none';
-            }
-        });
-    </script>
+    <!-- Custom Scripts Reference -->
+    <script src="script.js"></script>
 </body>
-    </html>
+</html>
