@@ -121,46 +121,42 @@
         }
 
         /* ============================================
-           DYNAMIC ISLAND
-           Desktop: Vertical on LEFT side
-           iPad/Mobile: Horizontal on TOP
-           Create button ONLY on desktop (hidden on iPad/mobile)
-           Create button in DEAD CENTER
+           DYNAMIC ISLAND - BIGGER, WITH PILL HOVER ANIMATION
         ============================================ */
         .dynamic-island {
             position: fixed;
             background: rgba(255, 255, 255, 0.45);
             backdrop-filter: blur(16px) saturate(180%);
-            border-radius: 50px;
-            padding: 12px 8px;
+            border-radius: 60px;
+            padding: 16px 12px;
             display: flex;
-            gap: 6px;
+            gap: 12px;
             z-index: 2000;
             border: 0.5px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
 
         /* DESKTOP: Vertical on left side */
         @media (min-width: 1025px) {
             .dynamic-island {
                 top: 50%;
-                left: 20px;
+                left: 24px;
                 transform: translateY(-50%);
                 flex-direction: column;
-                border-radius: 40px;
-                padding: 16px 10px;
+                border-radius: 50px;
+                padding: 20px 14px;
             }
             .nav-item {
                 flex-direction: column !important;
-                padding: 10px 12px !important;
+                padding: 12px 16px !important;
             }
             .nav-item span {
-                margin-top: 4px;
-                font-size: 10px;
+                margin-top: 6px;
+                font-size: 11px;
             }
             .nav-item svg {
-                width: 22px;
-                height: 22px;
+                width: 24px;
+                height: 24px;
             }
         }
 
@@ -171,34 +167,64 @@
                 left: 50%;
                 transform: translateX(-50%);
                 flex-direction: row;
-                padding: 6px 12px;
+                padding: 10px 16px;
+                gap: 8px;
             }
             .nav-item {
                 flex-direction: column !important;
-                padding: 5px 8px !important;
+                padding: 8px 12px !important;
             }
             .nav-item span {
-                font-size: 8px;
+                font-size: 9px;
             }
             .nav-item svg {
-                width: 16px;
-                height: 16px;
-            }
-            /* Hide Create button on iPad and mobile */
-            .create-nav-btn {
-                display: none !important;
+                width: 18px;
+                height: 18px;
             }
         }
 
+        /* Dynamic Island wrapper for pill animation */
+        .dynamic-island-wrapper {
+            position: relative;
+            display: flex;
+            gap: 12px;
+        }
+
+        @media (min-width: 1025px) {
+            .dynamic-island-wrapper {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .dynamic-island-wrapper {
+                flex-direction: row;
+                gap: 8px;
+            }
+        }
+
+        /* Moving pill background */
+        .nav-pill-bg {
+            position: absolute;
+            background: rgba(0, 113, 227, 0.15);
+            border-radius: 40px;
+            transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            z-index: 0;
+            pointer-events: none;
+            backdrop-filter: blur(4px);
+        }
+
         .nav-item {
+            position: relative;
+            z-index: 1;
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px 12px;
-            border-radius: 30px;
+            gap: 10px;
+            padding: 10px 16px;
+            border-radius: 40px;
             cursor: pointer;
             transition: all 0.2s ease;
-            position: relative;
             background: transparent;
         }
 
@@ -206,6 +232,7 @@
             stroke: #1d1d1f;
             fill: none;
             stroke-width: 1.8;
+            transition: stroke 0.2s;
         }
 
         .nav-item span {
@@ -213,74 +240,75 @@
             color: #1d1d1f;
         }
 
-        .nav-item:hover {
-            background: rgba(0, 0, 0, 0.04);
-        }
-
+        /* Active/hover state handled by pill */
         .badge {
             position: absolute;
-            top: -2px;
-            right: 0px;
+            top: -4px;
+            right: 4px;
             background: #ff3b30;
             color: white;
-            font-size: 8px;
+            font-size: 9px;
             font-weight: 600;
-            padding: 2px 5px;
+            padding: 2px 6px;
             border-radius: 20px;
+            z-index: 2;
         }
 
-        /* Create button - ONLY on desktop */
-        .create-nav-btn {
+        /* Create button */
+        .create-nav-item {
             background: var(--apple-blue);
-            padding: 8px 16px;
-            border-radius: 30px;
+            border-radius: 40px;
+            padding: 10px 16px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             cursor: pointer;
             transition: all 0.2s;
         }
 
-        .create-nav-btn svg {
+        .create-nav-item svg {
             stroke: white;
-            width: 18px;
-            height: 18px;
         }
 
-        .create-nav-btn span {
+        .create-nav-item span {
             color: white;
-            font-size: 11px;
         }
 
-        .create-nav-btn:hover {
+        .create-nav-item:hover {
             background: #005bb5;
+            transform: scale(1.02);
         }
 
-        /* AI button - normal icon style */
+        /* AI button (normal style, robot icon) */
         .ai-nav-item {
+            position: relative;
+            z-index: 1;
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px 12px;
-            border-radius: 30px;
+            gap: 10px;
+            padding: 10px 16px;
+            border-radius: 40px;
             cursor: pointer;
             transition: all 0.2s ease;
             background: transparent;
         }
 
         .ai-nav-item svg {
-            width: 20px;
-            height: 20px;
             stroke: #1d1d1f;
+            fill: none;
+            stroke-width: 1.8;
         }
 
         .ai-nav-item span {
-            font-size: 11px;
             font-weight: 500;
+            color: #1d1d1f;
         }
 
-        .ai-nav-item:hover {
-            background: rgba(0, 0, 0, 0.04);
+        /* Hide create on mobile */
+        @media (max-width: 767px) {
+            .create-nav-item {
+                display: none !important;
+            }
         }
 
         /* HELLO TEXT */
@@ -342,7 +370,7 @@
             margin: 0;
         }
 
-        /* FILTER BAR - Recent + Owner Dropdown + Categories Dropdown */
+        /* FILTER BAR - Recent + Owner Dropdown + Categories Dropdown + Sort Arrows */
         .filter-bar {
             max-width: 1400px;
             margin: 20px auto 30px;
@@ -366,7 +394,49 @@
             font-size: 1.2rem;
         }
 
-        /* Dropdown styles */
+        /* Sort arrows */
+        .sort-buttons {
+            display: flex;
+            gap: 8px;
+            background: rgba(0,0,0,0.03);
+            padding: 5px 10px;
+            border-radius: 40px;
+        }
+
+        .sort-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px 8px;
+            border-radius: 30px;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            color: #555;
+        }
+
+        .sort-btn svg {
+            width: 14px;
+            height: 14px;
+            stroke: #555;
+        }
+
+        .sort-btn:hover {
+            background: rgba(0,0,0,0.05);
+        }
+
+        .sort-btn.active {
+            background: var(--apple-blue);
+            color: white;
+        }
+
+        .sort-btn.active svg {
+            stroke: white;
+        }
+
+        /* Dropdown styles with METABALL LIQUID ANIMATION */
         .dropdown {
             position: relative;
             display: inline-block;
@@ -383,6 +453,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            transition: all 0.2s;
         }
 
         .dropdown-btn svg {
@@ -391,62 +462,45 @@
             stroke: #555;
         }
 
+        .dropdown-btn:hover {
+            background: rgba(0, 0, 0, 0.06);
+        }
+
+        /* METABALL LIQUID DROPDOWN ANIMATION */
         .dropdown-menu {
             position: absolute;
             top: 45px;
             left: 0;
             background: white;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            min-width: 180px;
-            display: none;
+            border-radius: 20px;
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.9) translateY(-10px);
+            transition: all 0.35s cubic-bezier(0.34, 1.2, 0.64, 1);
             z-index: 100;
-            border: 1px solid #e5e5e5;
+            border: 1px solid rgba(0,0,0,0.08);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
         }
 
         .dropdown-menu.active {
-            display: block;
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1) translateY(0);
         }
 
         .dropdown-menu a {
             display: block;
-            padding: 10px 16px;
+            padding: 12px 20px;
             color: #333;
             font-size: 0.85rem;
             cursor: pointer;
+            transition: background 0.2s;
         }
 
         .dropdown-menu a:hover {
             background: #f5f5f5;
-        }
-
-        /* Filter Pills */
-        .filter-pills { 
-            display: flex; 
-            gap: 12px; 
-            align-items: center; 
-            flex-wrap: wrap; 
-        }
-
-        .pill {
-            padding: 8px 20px;
-            background: rgba(0, 0, 0, 0.03);
-            border: 1px solid rgba(0,0,0,0.05);
-            border-radius: 40px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            cursor: pointer;
-        }
-
-        .pill:hover { 
-            background: white; 
-            border-color: var(--apple-blue); 
-        }
-        
-        .pill.active { 
-            background: var(--apple-blue); 
-            color: white; 
-            border-color: var(--apple-blue); 
         }
 
         /* RECENT PROJECTS GRID */
@@ -680,39 +734,43 @@
 
     <div class="main-content">
         <div id="adminContent" style="display: none;">
-            <!-- DYNAMIC ISLAND -->
+            <!-- DYNAMIC ISLAND with PILL HOVER ANIMATION -->
             <nav class="dynamic-island">
-                <div class="nav-item" onclick="goHome()">
-                    <svg viewBox="0 0 24 24" width="20" height="20"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2h-5v-7H9v7H5a2 2 0 0 1-2-2z"/></svg>
-                    <span>Home</span>
-                </div>
-                <div class="nav-item" onclick="scrollToProjects()">
-                    <svg viewBox="0 0 24 24" width="20" height="20"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
-                    <span>Projects</span>
-                </div>
-                <div class="nav-item" onclick="openApplications()">
-                    <svg viewBox="0 0 24 24" width="20" height="20"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    <span>Apps</span>
-                </div>
-                <div class="nav-item" onclick="openUsersModal()">
-                    <svg viewBox="0 0 24 24" width="20" height="20"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                    <span>Users</span>
-                    <span class="badge" id="usersBadge" style="display: none;">0</span>
-                </div>
-                <div class="nav-item" onclick="openMessagesModal()">
-                    <svg viewBox="0 0 24 24" width="20" height="20"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                    <span>Messages</span>
-                    <span class="badge" id="messagesBadge" style="display: none;">0</span>
-                </div>
-                <!-- CREATE BUTTON - IN DEAD CENTER, ONLY ON DESKTOP -->
-                <div class="create-nav-btn" onclick="openCreateModal()">
-                    <svg viewBox="0 0 24 24" width="18" height="18"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                    <span>Create</span>
-                </div>
-                <!-- AI ICON - Normal icon style -->
-                <div class="ai-nav-item" onclick="openAI()">
-                    <svg viewBox="0 0 24 24" width="20" height="20"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 2"/></svg>
-                    <span>AI</span>
+                <div class="dynamic-island-wrapper" id="dynamicIslandWrapper">
+                    <div class="nav-pill-bg" id="navPillBg"></div>
+                    
+                    <div class="nav-item" data-index="0" onclick="goHome()">
+                        <svg viewBox="0 0 24 24" width="22" height="22"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2h-5v-7H9v7H5a2 2 0 0 1-2-2z"/></svg>
+                        <span>Home</span>
+                    </div>
+                    <div class="nav-item" data-index="1" onclick="scrollToProjects()">
+                        <svg viewBox="0 0 24 24" width="22" height="22"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+                        <span>Projects</span>
+                    </div>
+                    <div class="nav-item" data-index="2" onclick="openApplications()">
+                        <svg viewBox="0 0 24 24" width="22" height="22"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                        <span>Apps</span>
+                    </div>
+                    <div class="nav-item" data-index="3" onclick="openUsersModal()">
+                        <svg viewBox="0 0 24 24" width="22" height="22"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        <span>Users</span>
+                        <span class="badge" id="usersBadge" style="display: none;">0</span>
+                    </div>
+                    <div class="nav-item" data-index="4" onclick="openMessagesModal()">
+                        <svg viewBox="0 0 24 24" width="22" height="22"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                        <span>Messages</span>
+                        <span class="badge" id="messagesBadge" style="display: none;">0</span>
+                    </div>
+                    <!-- CREATE BUTTON - IN MIDDLE -->
+                    <div class="create-nav-item" onclick="openCreateModal()">
+                        <svg viewBox="0 0 24 24" width="20" height="20"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        <span>Create</span>
+                    </div>
+                    <!-- AI BUTTON - UNDER CREATE on desktop, next on mobile -->
+                    <div class="ai-nav-item" data-index="5" onclick="openAI()">
+                        <svg viewBox="0 0 24 24" width="22" height="22"><circle cx="12" cy="12" r="10"/><path d="M9 12h6M12 9v6"/><rect x="7" y="7" width="4" height="4" rx="1"/><rect x="13" y="13" width="4" height="4" rx="1"/></svg>
+                        <span>AI</span>
+                    </div>
                 </div>
             </nav>
 
@@ -737,10 +795,21 @@
                 </div>
             </header>
 
-            <!-- Filter Bar - Recent + Owner Dropdown + Categories Dropdown -->
+            <!-- Filter Bar - Recent + Sort Arrows + Owner Dropdown + Categories Dropdown -->
             <div class="filter-bar">
                 <div class="filter-left">
                     <h3>Recent</h3>
+                    <!-- Sort Arrows A-Z / Z-A -->
+                    <div class="sort-buttons">
+                        <button class="sort-btn" id="sortAZ" onclick="sortProjects('az')">
+                            <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 15 12 9 18 15"/></svg>
+                            A-Z
+                        </button>
+                        <button class="sort-btn" id="sortZA" onclick="sortProjects('za')">
+                            <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="18 9 12 15 6 9"/></svg>
+                            Z-A
+                        </button>
+                    </div>
                     <!-- Owner Dropdown -->
                     <div class="dropdown">
                         <button class="dropdown-btn" onclick="toggleDropdown('ownerMenu')">
@@ -770,13 +839,6 @@
                             <a onclick="filterByCategory('homework'); closeDropdown('categoryMenu')">Homework</a>
                         </div>
                     </div>
-                </div>
-                <div class="filter-pills">
-                    <button class="pill active" onclick="setFilter('all', this)">All</button>
-                    <button class="pill" onclick="setFilter('exam', this)">Exams</button>
-                    <button class="pill" onclick="setFilter('schedule', this)">Schedules</button>
-                    <button class="pill" onclick="setFilter('classwork', this)">Classwork</button>
-                    <button class="pill" onclick="setFilter('assignment', this)">Assignments</button>
                 </div>
             </div>
 
@@ -880,7 +942,36 @@
         let projects = [];
         let currentFilter = 'all';
         let currentCategory = 'all';
+        let currentSort = 'date'; // 'az', 'za', 'date'
         let messages = [{ id: 1, title: 'Added to "Final Exam"', project: 'Final Exam', read: false }];
+
+        // DYNAMIC ISLAND PILL ANIMATION
+        function initNavPill() {
+            const wrapper = document.getElementById('dynamicIslandWrapper');
+            const items = document.querySelectorAll('.nav-item, .ai-nav-item');
+            const pillBg = document.getElementById('navPillBg');
+            if (!pillBg || !items.length) return;
+            
+            function updatePill(element) {
+                const rect = element.getBoundingClientRect();
+                const wrapperRect = wrapper.getBoundingClientRect();
+                pillBg.style.width = `${rect.width}px`;
+                pillBg.style.height = `${rect.height}px`;
+                pillBg.style.left = `${rect.left - wrapperRect.left}px`;
+                pillBg.style.top = `${rect.top - wrapperRect.top}px`;
+            }
+            
+            items.forEach(item => {
+                item.addEventListener('mouseenter', () => {
+                    updatePill(item);
+                });
+            });
+            
+            // Set initial pill position on first item
+            if (items[0]) {
+                setTimeout(() => updatePill(items[0]), 100);
+            }
+        }
 
         const entrance = document.getElementById('adminEntrance');
         const adminContent = document.getElementById('adminContent');
@@ -891,9 +982,11 @@
                 setTimeout(() => {
                     entrance.style.display = 'none';
                     adminContent.style.opacity = '1';
+                    initNavPill();
                 }, 600);
             } else {
                 adminContent.style.opacity = '1';
+                initNavPill();
             }
         }
 
@@ -933,6 +1026,16 @@
             renderProjects();
         }
 
+        function sortProjects(type) {
+            currentSort = type;
+            // Update active button style
+            document.getElementById('sortAZ').classList.remove('active');
+            document.getElementById('sortZA').classList.remove('active');
+            if (type === 'az') document.getElementById('sortAZ').classList.add('active');
+            else document.getElementById('sortZA').classList.add('active');
+            renderProjects();
+        }
+
         const sampleProjects = [
             { id: 1, title: 'Final Exam - Grade 12', type: 'exam', date: '2026-05-15', category: 'exam' },
             { id: 2, title: 'Weekly Class Schedule', type: 'schedule', date: '2026-05-10', category: 'schedule' },
@@ -948,12 +1051,24 @@
         }
 
         function renderProjects() {
-            const grid = document.getElementById('projectsGrid');
+            let filtered = [...projects];
+            
+            // Apply search filter
             const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
-            let filtered = projects.filter(p => p.title.toLowerCase().includes(searchTerm));
+            if (searchTerm) filtered = filtered.filter(p => p.title.toLowerCase().includes(searchTerm));
+            
+            // Apply type filter
             if (currentFilter !== 'all') filtered = filtered.filter(p => p.type === currentFilter);
+            
+            // Apply category filter
             if (currentCategory !== 'all') filtered = filtered.filter(p => p.category === currentCategory);
             
+            // Apply sorting
+            if (currentSort === 'az') filtered.sort((a, b) => a.title.localeCompare(b.title));
+            else if (currentSort === 'za') filtered.sort((a, b) => b.title.localeCompare(a.title));
+            else filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            const grid = document.getElementById('projectsGrid');
             if (filtered.length === 0) {
                 grid.innerHTML = '<div style="text-align:center;padding:60px"><h3>No projects found</h3><p>Try a different search</p></div>';
                 return;
@@ -1017,8 +1132,6 @@
 
         function setFilter(type, btn) {
             currentFilter = type;
-            document.querySelectorAll('.filter-pills .pill').forEach(p => p.classList.remove('active'));
-            btn.classList.add('active');
             renderProjects();
         }
 
@@ -1040,29 +1153,36 @@
             updateClearButton();
             renderProjects();
         });
-        clearBtn.addEventListener('click', clearSearch);
+        if (clearBtn) clearBtn.addEventListener('click', clearSearch);
 
         let users = [{ email: 'student@example.com' }];
         function loadUsers() {
             const list = document.getElementById('usersList');
-            list.innerHTML = users.map(u => `<div class="user-item"><div class="user-email">${u.email}</div><div class="user-actions"><button onclick="removeUser('${u.email}')">Remove</button></div></div>`).join('');
-            document.getElementById('usersBadge').textContent = users.length;
+            if (list) {
+                list.innerHTML = users.map(u => `<div class="user-item"><div class="user-email">${u.email}</div><div class="user-actions"><button onclick="removeUser('${u.email}')">Remove</button></div></div>`).join('');
+                document.getElementById('usersBadge').textContent = users.length;
+            }
         }
         function addUser() {
-            const email = document.getElementById('newUserEmail').value;
+            const email = document.getElementById('newUserEmail')?.value;
             if (!email) return;
             users.push({ email });
-            document.getElementById('newUserEmail').value = '';
+            if (document.getElementById('newUserEmail')) document.getElementById('newUserEmail').value = '';
             loadUsers();
         }
         function removeUser(email) { users = users.filter(u => u.email !== email); loadUsers(); }
 
         function loadMessages() {
             const list = document.getElementById('messagesList');
-            if (messages.length === 0) list.innerHTML = '<div style="padding:40px;text-align:center">No messages</div>';
-            else list.innerHTML = messages.map(m => `<div class="message-item"><div class="message-title">${m.title}</div></div>`).join('');
+            if (list) {
+                if (messages.length === 0) list.innerHTML = '<div style="padding:40px;text-align:center">No messages</div>';
+                else list.innerHTML = messages.map(m => `<div class="message-item"><div class="message-title">${m.title}</div></div>`).join('');
+            }
         }
-        function updateMessagesBadge() { document.getElementById('messagesBadge').textContent = messages.filter(m => !m.read).length; }
+        function updateMessagesBadge() { 
+            const badge = document.getElementById('messagesBadge');
+            if (badge) badge.textContent = messages.filter(m => !m.read).length;
+        }
 
         document.addEventListener('click', function(e) {
             if (!e.target.closest('.dropdown')) {
@@ -1072,19 +1192,22 @@
 
         auth.onAuthStateChanged(async (user) => {
             if (user && (user.email === ADMIN_EMAIL || (await db.collection('users').doc(user.uid).get()).data()?.isAdmin)) {
-                adminContent.style.display = 'block';
-                document.getElementById('accessDenied').style.display = 'none';
-                document.getElementById('greetingText').textContent = `Hello, ${user.displayName?.split(' ')[0] || 'Admin'}`;
+                if (adminContent) adminContent.style.display = 'block';
+                const accessDenied = document.getElementById('accessDenied');
+                if (accessDenied) accessDenied.style.display = 'none';
+                const greeting = document.getElementById('greetingText');
+                if (greeting) greeting.textContent = `Hello, ${user.displayName?.split(' ')[0] || 'Admin'}`;
                 loadProjects();
                 updateMessagesBadge();
                 loadUsers();
                 showAdminContent();
             } else {
-                adminContent.style.display = 'none';
-                document.getElementById('accessDenied').style.display = 'flex';
-                entrance.style.display = 'none';
+                if (adminContent) adminContent.style.display = 'none';
+                const accessDenied = document.getElementById('accessDenied');
+                if (accessDenied) accessDenied.style.display = 'flex';
+                if (entrance) entrance.style.display = 'none';
             }
         });
     </script>
 </body>
-                            </html>
+</html>
