@@ -202,7 +202,7 @@
             }
         }
 
-        .nav-item, .create-nav-item, .ai-nav-item {
+        .nav-item, .ai-nav-item {
             position: relative;
             display: flex;
             align-items: center;
@@ -220,21 +220,78 @@
             stroke-width: 1.8;
         }
 
-        .create-nav-item svg {
-            stroke: white;
-        }
-
         .nav-item span, .ai-nav-item span {
             font-weight: 500;
             color: #1d1d1f;
         }
 
-        .create-nav-item span {
-            color: white;
-        }
-
         .nav-item:hover, .ai-nav-item:hover {
             transform: scale(1.05);
+            background: rgba(0,0,0,0.04);
+        }
+
+        /* CREATE BUTTON - LIKE YOUR SCREENSHOT (Blue pill, white text, centered) */
+        .create-nav-item {
+            background: var(--apple-blue);
+            padding: 10px 16px;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .create-nav-item svg {
+            stroke: white;
+            width: 20px;
+            height: 20px;
+        }
+
+        .create-nav-item span {
+            color: white;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .create-nav-item:hover {
+            background: #005bb5;
+            transform: scale(1.02);
+        }
+
+        @media (min-width: 1025px) {
+            .create-nav-item {
+                flex-direction: column;
+                padding: 12px 16px;
+            }
+            .create-nav-item span {
+                margin-top: 6px;
+                font-size: 11px;
+            }
+            .create-nav-item svg {
+                width: 22px;
+                height: 22px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .create-nav-item {
+                flex-direction: column;
+                padding: 8px 12px;
+            }
+            .create-nav-item span {
+                font-size: 9px;
+            }
+            .create-nav-item svg {
+                width: 16px;
+                height: 16px;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .create-nav-item {
+                display: none !important;
+            }
         }
 
         .badge {
@@ -248,21 +305,6 @@
             padding: 2px 6px;
             border-radius: 20px;
             z-index: 2;
-        }
-
-        .create-nav-item {
-            background: var(--apple-blue);
-        }
-
-        .create-nav-item:hover {
-            background: #005bb5;
-            transform: scale(1.02);
-        }
-
-        @media (max-width: 767px) {
-            .create-nav-item {
-                display: none !important;
-            }
         }
 
         /* HELLO TEXT */
@@ -424,9 +466,7 @@
             background: rgba(0,0,0,0.08);
         }
 
-        /* ============================================
-           DROPDOWN - OPENS DOWNWARD WITH PROPER SPACING
-        ============================================ */
+        /* DROPDOWN - Opens downward, no cutoff */
         .dropdown {
             position: relative;
             display: inline-block;
@@ -456,7 +496,6 @@
             background: rgba(0, 0, 0, 0.06);
         }
 
-        /* Dropdown opens downward */
         .dropdown-menu {
             position: absolute;
             top: 100%;
@@ -574,7 +613,7 @@
             font-size: 0.9rem;
         }
 
-        /* Modal Styles */
+        /* Modals */
         .modal {
             display: none;
             position: fixed;
@@ -707,11 +746,6 @@
             text-align: center;
         }
 
-        /* Add bottom margin to prevent dropdown cutoff */
-        .filter-right {
-            margin-bottom: 20px;
-        }
-
         @media (max-width: 768px) {
             .glass-header {
                 padding: 100px 5% 30px;
@@ -739,7 +773,6 @@
             }
             .filter-right {
                 justify-content: space-between;
-                margin-bottom: 0;
             }
             .recent-grid {
                 grid-template-columns: 1fr;
@@ -777,6 +810,7 @@
                         <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                         <span>Apps</span>
                     </div>
+                    <!-- CREATE BUTTON - EXACTLY LIKE YOUR SCREENSHOT -->
                     <div class="create-nav-item" onclick="openCreateModal()">
                         <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                         <span>Create</span>
@@ -862,7 +896,6 @@
                     <h3>Recent</h3>
                 </div>
                 <div class="filter-right">
-                    <!-- Owner Dropdown -->
                     <div class="dropdown">
                         <button class="dropdown-btn" onclick="toggleDropdown('ownerMenu')">
                             Any owner
@@ -874,7 +907,6 @@
                             <a onclick="filterByOwner('shared'); closeDropdown('ownerMenu')">Shared with you</a>
                         </div>
                     </div>
-                    <!-- Categories Dropdown -->
                     <div class="dropdown">
                         <button class="dropdown-btn" onclick="toggleDropdown('categoryMenu')">
                             All Categories
@@ -1268,5 +1300,7 @@
             }
         });
     </script>
+</body>
+</html>
 </body>
 </html>
