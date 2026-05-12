@@ -121,7 +121,7 @@
         }
 
         /* ============================================
-           DYNAMIC ISLAND - CLEAN, NO PILL ANIMATION
+           DYNAMIC ISLAND
         ============================================ */
         .dynamic-island {
             position: fixed;
@@ -136,7 +136,6 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
 
-        /* DESKTOP: Vertical on left side */
         @media (min-width: 1025px) {
             .dynamic-island {
                 top: 50%;
@@ -161,7 +160,6 @@
             }
         }
 
-        /* TABLET & MOBILE: Horizontal on top */
         @media (max-width: 1024px) {
             .dynamic-island {
                 top: 16px;
@@ -252,34 +250,22 @@
             z-index: 2;
         }
 
-        /* SMALLER CREATE BUTTON */
         .create-nav-item {
             background: var(--apple-blue);
-            padding: 6px 12px !important;
-        }
-
-        .create-nav-item svg {
-            width: 16px !important;
-            height: 16px !important;
-        }
-
-        .create-nav-item span {
-            font-size: 10px;
         }
 
         .create-nav-item:hover {
             background: #005bb5;
-            transform: scale(1.05);
+            transform: scale(1.02);
         }
 
-        /* Hide create on mobile */
         @media (max-width: 767px) {
             .create-nav-item {
                 display: none !important;
             }
         }
 
-        /* HELLO TEXT - NO COMMA */
+        /* HELLO TEXT */
         .hello-text {
             font-size: 3.5rem;
             font-weight: 800;
@@ -338,10 +324,7 @@
             margin: 0;
         }
 
-        /* ============================================
-           CATEGORY ICONS - EXACTLY LIKE DYNAMIC ISLAND
-           Clean, transparent, dark stroke, subtle hover
-        ============================================ */
+        /* CATEGORY ICONS - Clean, no blue tint on hover */
         .category-icons {
             display: flex;
             justify-content: center;
@@ -375,8 +358,7 @@
         .category-icon-card span {
             font-size: 11px;
             font-weight: 500;
-            color: #1d1d1f;
-            opacity: 0.7;
+            color: #555;
             transition: all 0.2s;
         }
 
@@ -384,13 +366,14 @@
             transform: translateY(-2px);
         }
 
-        .category-icon-card:hover svg {
+        /* Active category styling - shows which one is selected */
+        .category-icon-card.active svg {
             stroke: var(--apple-blue);
         }
 
-        .category-icon-card:hover span {
-            opacity: 1;
+        .category-icon-card.active span {
             color: var(--apple-blue);
+            font-weight: 600;
         }
 
         /* FILTER BAR */
@@ -417,7 +400,6 @@
             flex-wrap: wrap;
         }
 
-        /* SORT BUTTON */
         .sort-btn {
             background: rgba(0, 0, 0, 0.03);
             border: 1px solid rgba(0,0,0,0.05);
@@ -443,7 +425,7 @@
             background: rgba(0,0,0,0.08);
         }
 
-        /* DROPDOWN - OPENING DOWNWARD */
+        /* DROPDOWN - Fixed cutoff, opens downward */
         .dropdown {
             position: relative;
             display: inline-block;
@@ -475,8 +457,9 @@
 
         .dropdown-menu {
             position: absolute;
-            top: 45px;
+            top: 100%;
             left: 0;
+            margin-top: 8px;
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(20px);
             border-radius: 20px;
@@ -572,6 +555,23 @@
         .card-body { padding: 20px; }
         .card-body h4 { font-size: 1rem; margin-bottom: 5px; font-weight: 600; }
         .card-body p { font-size: 0.75rem; color: #86868b; }
+
+        /* Empty State - Centered */
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            grid-column: 1 / -1;
+        }
+        .empty-state h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 8px;
+        }
+        .empty-state p {
+            color: #86868b;
+            font-size: 0.9rem;
+        }
 
         /* Modal Styles */
         .modal {
@@ -690,7 +690,6 @@
         }
         .message-title { font-weight: 600; }
 
-        /* Access Denied */
         .access-denied {
             display: flex;
             align-items: center;
@@ -801,7 +800,6 @@
             <header class="glass-header">
                 <h1 class="hello-text" id="greetingText">Hello Admin</h1>
 
-                <!-- Search Bar -->
                 <div class="search-container">
                     <div class="search-wrapper">
                         <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2">
@@ -818,33 +816,33 @@
                     </div>
                 </div>
 
-                <!-- CATEGORY ICONS - EXACTLY LIKE DYNAMIC ISLAND -->
+                <!-- CATEGORY ICONS - Shows active state -->
                 <div class="category-icons">
-                    <div class="category-icon-card" onclick="filterByCategory('documents')">
+                    <div class="category-icon-card" data-cat="documents" onclick="filterByCategory('documents', this)">
                         <svg viewBox="0 0 24 24" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                         <span>Documents</span>
                     </div>
-                    <div class="category-icon-card" onclick="filterByCategory('sheets')">
+                    <div class="category-icon-card" data-cat="sheets" onclick="filterByCategory('sheets', this)">
                         <svg viewBox="0 0 24 24" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>
                         <span>Sheets</span>
                     </div>
-                    <div class="category-icon-card" onclick="filterByCategory('schedule')">
+                    <div class="category-icon-card" data-cat="schedule" onclick="filterByCategory('schedule', this)">
                         <svg viewBox="0 0 24 24" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>
                         <span>Schedules</span>
                     </div>
-                    <div class="category-icon-card" onclick="filterByCategory('assignment')">
+                    <div class="category-icon-card" data-cat="assignment" onclick="filterByCategory('assignment', this)">
                         <svg viewBox="0 0 24 24" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                         <span>Assignments</span>
                     </div>
-                    <div class="category-icon-card" onclick="filterByCategory('exam')">
+                    <div class="category-icon-card" data-cat="exam" onclick="filterByCategory('exam', this)">
                         <svg viewBox="0 0 24 24" stroke="currentColor"><path d="M4 4h16v16H4z"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="12" y2="13"/></svg>
                         <span>Exams</span>
                     </div>
-                    <div class="category-icon-card" onclick="filterByCategory('classwork')">
+                    <div class="category-icon-card" data-cat="classwork" onclick="filterByCategory('classwork', this)">
                         <svg viewBox="0 0 24 24" stroke="currentColor"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/></svg>
                         <span>Classwork</span>
                     </div>
-                    <div class="category-icon-card" onclick="filterByCategory('homework')">
+                    <div class="category-icon-card" data-cat="homework" onclick="filterByCategory('homework', this)">
                         <svg viewBox="0 0 24 24" stroke="currentColor"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"/><polyline points="12 6 12 12 16 14"/></svg>
                         <span>Homework</span>
                     </div>
@@ -874,14 +872,14 @@
                             <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>
                         </button>
                         <div class="dropdown-menu" id="categoryMenu">
-                            <a onclick="filterByCategory('all'); closeDropdown('categoryMenu')">All Categories</a>
-                            <a onclick="filterByCategory('documents'); closeDropdown('categoryMenu')">Documents</a>
-                            <a onclick="filterByCategory('sheets'); closeDropdown('categoryMenu')">Sheets</a>
-                            <a onclick="filterByCategory('schedule'); closeDropdown('categoryMenu')">Schedules</a>
-                            <a onclick="filterByCategory('assignment'); closeDropdown('categoryMenu')">Assignments</a>
-                            <a onclick="filterByCategory('exam'); closeDropdown('categoryMenu')">Exams</a>
-                            <a onclick="filterByCategory('classwork'); closeDropdown('categoryMenu')">Classwork</a>
-                            <a onclick="filterByCategory('homework'); closeDropdown('categoryMenu')">Homework</a>
+                            <a onclick="filterByCategoryDropdown('all'); closeDropdown('categoryMenu')">All Categories</a>
+                            <a onclick="filterByCategoryDropdown('documents'); closeDropdown('categoryMenu')">Documents</a>
+                            <a onclick="filterByCategoryDropdown('sheets'); closeDropdown('categoryMenu')">Sheets</a>
+                            <a onclick="filterByCategoryDropdown('schedule'); closeDropdown('categoryMenu')">Schedules</a>
+                            <a onclick="filterByCategoryDropdown('assignment'); closeDropdown('categoryMenu')">Assignments</a>
+                            <a onclick="filterByCategoryDropdown('exam'); closeDropdown('categoryMenu')">Exams</a>
+                            <a onclick="filterByCategoryDropdown('classwork'); closeDropdown('categoryMenu')">Classwork</a>
+                            <a onclick="filterByCategoryDropdown('homework'); closeDropdown('categoryMenu')">Homework</a>
                         </div>
                     </div>
                     <button class="sort-btn" id="sortBtn" onclick="toggleSort()">
@@ -1000,7 +998,7 @@
 
         const entrance = document.getElementById('adminEntrance');
         const adminContent = document.getElementById('adminContent');
-        
+
         function showAdminContent() {
             if (entrance) {
                 entrance.classList.add('fade-out');
@@ -1045,10 +1043,42 @@
             closeDropdown('ownerMenu');
         }
 
-        function filterByCategory(category) {
+        function filterByCategory(category, element) {
             currentCategory = category;
+            // Update active state on icons
+            document.querySelectorAll('.category-icon-card').forEach(el => {
+                el.classList.remove('active');
+            });
+            if (element) element.classList.add('active');
+            
+            // Update dropdown button text
+            const catBtn = document.querySelector('#categoryMenu').previousElementSibling;
+            if (category === 'all') catBtn.innerHTML = 'All Categories <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>';
+            else catBtn.innerHTML = category.charAt(0).toUpperCase() + category.slice(1) + ' <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>';
+            
             renderProjects();
-            closeDropdown('categoryMenu');
+        }
+
+        function filterByCategoryDropdown(category) {
+            currentCategory = category;
+            // Update active state on icons
+            document.querySelectorAll('.category-icon-card').forEach(el => {
+                if (el.getAttribute('data-cat') === category) {
+                    el.classList.add('active');
+                } else {
+                    el.classList.remove('active');
+                }
+            });
+            if (category === 'all') {
+                document.querySelectorAll('.category-icon-card').forEach(el => el.classList.remove('active'));
+            }
+            
+            // Update dropdown button text
+            const catBtn = document.querySelector('#categoryMenu').previousElementSibling;
+            if (category === 'all') catBtn.innerHTML = 'All Categories <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>';
+            else catBtn.innerHTML = category.charAt(0).toUpperCase() + category.slice(1) + ' <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>';
+            
+            renderProjects();
         }
 
         function toggleSort() {
@@ -1092,7 +1122,7 @@
             
             const grid = document.getElementById('projectsGrid');
             if (filtered.length === 0) {
-                grid.innerHTML = '<div style="text-align:center;padding:60px"><h3>No projects found</h3><p>Try a different search</p></div>';
+                grid.innerHTML = '<div class="empty-state"><h3>No projects found</h3><p>Try a different search</p></div>';
                 return;
             }
             
@@ -1157,7 +1187,6 @@
             closeModal('createModal');
         }
 
-        // Search
         const searchInput = document.getElementById('searchInput');
         const clearBtn = document.getElementById('clearSearchBtn');
         
@@ -1234,4 +1263,5 @@
         });
     </script>
 </body>
+</html>
 </html>
