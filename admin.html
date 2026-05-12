@@ -339,8 +339,8 @@
         }
 
         /* ============================================
-           CATEGORY ICONS - LIKE DYNAMIC ISLAND ICONS
-           Clean, no background, subtle hover
+           CATEGORY ICONS - EXACTLY LIKE DYNAMIC ISLAND
+           Clean, transparent, dark stroke, subtle hover
         ============================================ */
         .category-icons {
             display: flex;
@@ -366,15 +366,18 @@
         .category-icon-card svg {
             width: 22px;
             height: 22px;
-            stroke: #777;
+            stroke: #1d1d1f;
+            stroke-width: 1.8;
+            fill: none;
             transition: all 0.2s;
         }
 
         .category-icon-card span {
             font-size: 11px;
             font-weight: 500;
-            color: #777;
-            transition: color 0.2s;
+            color: #1d1d1f;
+            opacity: 0.7;
+            transition: all 0.2s;
         }
 
         .category-icon-card:hover {
@@ -386,6 +389,7 @@
         }
 
         .category-icon-card:hover span {
+            opacity: 1;
             color: var(--apple-blue);
         }
 
@@ -439,7 +443,7 @@
             background: rgba(0,0,0,0.08);
         }
 
-        /* DROPDOWN - OPENING DOWNWARD, NO CUTOFF */
+        /* DROPDOWN - OPENING DOWNWARD */
         .dropdown {
             position: relative;
             display: inline-block;
@@ -469,7 +473,6 @@
             background: rgba(0, 0, 0, 0.06);
         }
 
-        /* DROPDOWN OPENS DOWNWARD */
         .dropdown-menu {
             position: absolute;
             top: 45px;
@@ -768,7 +771,6 @@
                         <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                         <span>Apps</span>
                     </div>
-                    <!-- SMALLER CREATE BUTTON -->
                     <div class="create-nav-item" onclick="openCreateModal()">
                         <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                         <span>Create</span>
@@ -816,7 +818,7 @@
                     </div>
                 </div>
 
-                <!-- CATEGORY ICONS - Like Dynamic Island -->
+                <!-- CATEGORY ICONS - EXACTLY LIKE DYNAMIC ISLAND -->
                 <div class="category-icons">
                     <div class="category-icon-card" onclick="filterByCategory('documents')">
                         <svg viewBox="0 0 24 24" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
@@ -1022,7 +1024,6 @@
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
         function toggleDropdown(id) {
-            // Close other dropdowns
             document.querySelectorAll('.dropdown-menu').forEach(menu => {
                 if (menu.id !== id) menu.classList.remove('active');
             });
@@ -1232,7 +1233,5 @@
             }
         });
     </script>
-</body>
-</html>
 </body>
 </html>
