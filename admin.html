@@ -355,30 +355,30 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             padding: 8px 16px;
             cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             background: transparent;
             border-radius: 40px;
         }
 
         .category-icon-card svg {
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
             stroke: #777;
-            transition: all 0.25s;
+            transition: all 0.2s;
         }
 
         .category-icon-card span {
             font-size: 11px;
             font-weight: 500;
             color: #777;
-            transition: color 0.25s;
+            transition: color 0.2s;
         }
 
         .category-icon-card:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
         }
 
         .category-icon-card:hover svg {
@@ -439,7 +439,7 @@
             background: rgba(0,0,0,0.08);
         }
 
-        /* Dropdown styles */
+        /* DROPDOWN - OPENING DOWNWARD, NO CUTOFF */
         .dropdown {
             position: relative;
             display: inline-block;
@@ -469,22 +469,22 @@
             background: rgba(0, 0, 0, 0.06);
         }
 
-        /* DROPDOWN OPENS UPWARD */
+        /* DROPDOWN OPENS DOWNWARD */
         .dropdown-menu {
             position: absolute;
-            bottom: 45px;
+            top: 45px;
             left: 0;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(20px);
             border-radius: 20px;
             min-width: 200px;
             opacity: 0;
             visibility: hidden;
-            transform: scale(0.9) translateY(10px);
-            transition: all 0.35s cubic-bezier(0.34, 1.2, 0.64, 1);
-            z-index: 100;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 -10px 30px rgba(0,0,0,0.1);
+            transform: scale(0.95) translateY(-10px);
+            transition: all 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
+            z-index: 1000;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
             overflow: hidden;
         }
 
@@ -719,8 +719,8 @@
                 padding: 6px 12px;
             }
             .category-icon-card svg {
-                width: 20px;
-                height: 20px;
+                width: 18px;
+                height: 18px;
             }
             .category-icon-card span {
                 font-size: 9px;
@@ -816,7 +816,7 @@
                     </div>
                 </div>
 
-                <!-- CATEGORY ICONS - Clean, like Dynamic Island icons -->
+                <!-- CATEGORY ICONS - Like Dynamic Island -->
                 <div class="category-icons">
                     <div class="category-icon-card" onclick="filterByCategory('documents')">
                         <svg viewBox="0 0 24 24" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
@@ -1022,6 +1022,7 @@
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
         function toggleDropdown(id) {
+            // Close other dropdowns
             document.querySelectorAll('.dropdown-menu').forEach(menu => {
                 if (menu.id !== id) menu.classList.remove('active');
             });
@@ -1231,5 +1232,7 @@
             }
         });
     </script>
+</body>
+</html>
 </body>
 </html>
