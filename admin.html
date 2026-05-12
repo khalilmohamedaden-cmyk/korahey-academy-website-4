@@ -105,7 +105,7 @@
             transition: opacity 0.5s ease;
         }
 
-        /* LIVE GRADIENT BACKGROUND */
+        /* LIQUID GLASS LIVE GRADIENT BACKGROUND */
         .glass-header {
             padding: 100px 5% 40px;
             text-align: center;
@@ -120,8 +120,15 @@
             100% { background-position: 0% 50%; }
         }
 
+        /* LIQUID GLASS EFFECT FOR ALL ELEMENTS */
+        .liquid-glass {
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(16px) saturate(180%);
+            border: 0.5px solid rgba(255, 255, 255, 0.3);
+        }
+
         /* ============================================
-           DYNAMIC ISLAND - LIQUID GLASS, BIGGER, PILL HOVER
+           DYNAMIC ISLAND - LIQUID GLASS, TRANSPARENT PILL
         ============================================ */
         .dynamic-island {
             position: fixed;
@@ -184,7 +191,6 @@
             }
         }
 
-        /* Dynamic Island wrapper */
         .dynamic-island-wrapper {
             position: relative;
             display: flex;
@@ -205,16 +211,16 @@
             }
         }
 
-        /* LIQUID GLASS PILL BACKGROUND */
+        /* LIQUID GLASS TRANSPARENT PILL (NOT BLUE) */
         .nav-pill-bg {
             position: absolute;
-            background: rgba(0, 113, 227, 0.2);
+            background: rgba(255, 255, 255, 0.25);
             border-radius: 40px;
             transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             z-index: 0;
             pointer-events: none;
             backdrop-filter: blur(8px);
-            border: 0.5px solid rgba(255, 255, 255, 0.5);
+            border: 0.5px solid rgba(255, 255, 255, 0.4);
         }
 
         .nav-item, .create-nav-item, .ai-nav-item {
@@ -338,7 +344,7 @@
             margin: 0;
         }
 
-        /* FILTER BAR - Recent left, Sort buttons right */
+        /* FILTER BAR - Recent on LEFT, Dropdowns on RIGHT */
         .filter-bar {
             max-width: 1400px;
             margin: 20px auto 30px;
@@ -350,39 +356,31 @@
             gap: 20px;
         }
 
-        .filter-left {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
         .filter-left h3 {
             font-weight: 600;
             font-size: 1.2rem;
         }
 
-        /* Sort buttons on the RIGHT */
-        .sort-buttons {
-            display: flex;
-            gap: 8px;
-            background: rgba(0,0,0,0.03);
-            padding: 5px 10px;
-            border-radius: 40px;
-        }
-
-        .sort-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 6px 12px;
-            border-radius: 30px;
-            transition: 0.2s;
+        .filter-right {
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: 12px;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        /* SORT BUTTON - Single toggle button */
+        .sort-btn {
+            background: rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0,0,0,0.05);
+            border-radius: 40px;
+            padding: 8px 20px;
+            font-size: 0.85rem;
             font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
             color: #555;
         }
 
@@ -393,19 +391,10 @@
         }
 
         .sort-btn:hover {
-            background: rgba(0,0,0,0.05);
+            background: rgba(0,0,0,0.08);
         }
 
-        .sort-btn.active {
-            background: var(--apple-blue);
-            color: white;
-        }
-
-        .sort-btn.active svg {
-            stroke: white;
-        }
-
-        /* Dropdown styles with METABALL LIQUID ANIMATION */
+        /* Dropdown styles with LIQUID GLASS METABALL ANIMATION */
         .dropdown {
             position: relative;
             display: inline-block;
@@ -435,12 +424,13 @@
             background: rgba(0, 0, 0, 0.06);
         }
 
-        /* METABALL LIQUID DROPDOWN ANIMATION */
+        /* LIQUID GLASS METABALL DROPDOWN */
         .dropdown-menu {
             position: absolute;
             top: 45px;
             left: 0;
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
             border-radius: 20px;
             min-width: 200px;
             opacity: 0;
@@ -448,7 +438,7 @@
             transform: scale(0.9) translateY(-10px);
             transition: all 0.35s cubic-bezier(0.34, 1.2, 0.64, 1);
             z-index: 100;
-            border: 1px solid rgba(0,0,0,0.08);
+            border: 1px solid rgba(255, 255, 255, 0.5);
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             overflow: hidden;
         }
@@ -469,7 +459,7 @@
         }
 
         .dropdown-menu a:hover {
-            background: #f5f5f5;
+            background: rgba(0, 0, 0, 0.05);
         }
 
         /* RECENT PROJECTS GRID */
@@ -485,6 +475,7 @@
             gap: 30px;
         }
 
+        /* LIQUID GLASS CARDS */
         .liquid-card {
             background: rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(30px);
@@ -678,11 +669,8 @@
                 flex-direction: column;
                 align-items: stretch;
             }
-            .filter-left {
+            .filter-right {
                 justify-content: space-between;
-            }
-            .sort-buttons {
-                align-self: flex-end;
             }
             .recent-grid {
                 grid-template-columns: 1fr;
@@ -705,7 +693,7 @@
 
     <div class="main-content">
         <div id="adminContent" style="display: none;">
-            <!-- DYNAMIC ISLAND with LIQUID GLASS PILL HOVER -->
+            <!-- DYNAMIC ISLAND - ORDER: Home, Projects, Apps, CREATE (middle), AI, Users, Messages -->
             <nav class="dynamic-island">
                 <div class="dynamic-island-wrapper" id="dynamicIslandWrapper">
                     <div class="nav-pill-bg" id="navPillBg"></div>
@@ -722,32 +710,31 @@
                         <svg viewBox="0 0 24 24" width="22" height="22"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                         <span>Apps</span>
                     </div>
-                    <div class="nav-item" data-index="3" onclick="openUsersModal()">
-                        <svg viewBox="0 0 24 24" width="22" height="22"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                        <span>Users</span>
-                        <span class="badge" id="usersBadge" style="display: none;">0</span>
-                    </div>
-                    <div class="nav-item" data-index="4" onclick="openMessagesModal()">
-                        <svg viewBox="0 0 24 24" width="22" height="22"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                        <span>Messages</span>
-                        <span class="badge" id="messagesBadge" style="display: none;">0</span>
-                    </div>
                     <!-- CREATE BUTTON - IN THE MIDDLE -->
-                    <div class="create-nav-item" data-index="5" onclick="openCreateModal()">
+                    <div class="create-nav-item" data-index="3" onclick="openCreateModal()">
                         <svg viewBox="0 0 24 24" width="20" height="20"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                         <span>Create</span>
                     </div>
-                    <!-- AI BUTTON WITH ROBOT ICON -->
-                    <div class="ai-nav-item" data-index="6" onclick="openAI()">
+                    <!-- AI BUTTON - UNDER CREATE on desktop, next on mobile -->
+                    <div class="ai-nav-item" data-index="4" onclick="openAI()">
                         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor">
                             <rect x="4" y="8" width="16" height="12" rx="2"/>
                             <circle cx="9" cy="13" r="1.5" fill="currentColor" stroke="none"/>
                             <circle cx="15" cy="13" r="1.5" fill="currentColor" stroke="none"/>
                             <line x1="8" y1="6" x2="16" y2="6"/>
                             <line x1="10" y1="3" x2="14" y2="3"/>
-                            <line x1="7" y1="18" x2="17" y2="18"/>
                         </svg>
                         <span>AI</span>
+                    </div>
+                    <div class="nav-item" data-index="5" onclick="openUsersModal()">
+                        <svg viewBox="0 0 24 24" width="22" height="22"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        <span>Users</span>
+                        <span class="badge" id="usersBadge" style="display: none;">0</span>
+                    </div>
+                    <div class="nav-item" data-index="6" onclick="openMessagesModal()">
+                        <svg viewBox="0 0 24 24" width="22" height="22"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                        <span>Messages</span>
+                        <span class="badge" id="messagesBadge" style="display: none;">0</span>
                     </div>
                 </div>
             </nav>
@@ -773,10 +760,12 @@
                 </div>
             </header>
 
-            <!-- Filter Bar - Recent + Owner + Categories on LEFT, Sort on RIGHT -->
+            <!-- Filter Bar - Recent on LEFT, Dropdowns + Sort on RIGHT -->
             <div class="filter-bar">
                 <div class="filter-left">
                     <h3>Recent</h3>
+                </div>
+                <div class="filter-right">
                     <!-- Owner Dropdown -->
                     <div class="dropdown">
                         <button class="dropdown-btn" onclick="toggleDropdown('ownerMenu')">
@@ -806,16 +795,10 @@
                             <a onclick="filterByCategory('homework'); closeDropdown('categoryMenu')">Homework</a>
                         </div>
                     </div>
-                </div>
-                <!-- Sort Buttons on the RIGHT -->
-                <div class="sort-buttons">
-                    <button class="sort-btn" id="sortAZ" onclick="sortProjects('az')">
+                    <!-- Sort Button - Toggle A-Z / Z-A -->
+                    <button class="sort-btn" id="sortBtn" onclick="toggleSort()">
                         <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 15 12 9 18 15"/></svg>
                         A-Z
-                    </button>
-                    <button class="sort-btn" id="sortZA" onclick="sortProjects('za')">
-                        <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="18 9 12 15 6 9"/></svg>
-                        Z-A
                     </button>
                 </div>
             </div>
@@ -832,7 +815,7 @@
         <div class="access-denied-content">
             <h2>Access Denied</h2>
             <p>You don't have permission.</p>
-            <button class="pill" onclick="window.location.href='index.html'" style="margin-top: 20px;">Back to Home</button>
+            <button class="sort-btn" onclick="window.location.href='index.html'" style="margin-top: 20px;">Back to Home</button>
         </div>
     </div>
 
@@ -916,7 +899,7 @@
 
         let projects = [];
         let currentCategory = 'all';
-        let currentSort = 'date';
+        let currentSort = 'az'; // 'az' or 'za'
         let messages = [{ id: 1, title: 'Added to "Final Exam"', project: 'Final Exam', read: false }];
 
         // DYNAMIC ISLAND LIQUID GLASS PILL ANIMATION
@@ -941,7 +924,6 @@
                 });
             });
             
-            // Set initial pill position
             if (items[0]) {
                 setTimeout(() => updatePill(items[0]), 100);
             }
@@ -975,13 +957,17 @@
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
         function toggleDropdown(id) {
+            // Close all other dropdowns first
+            document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                if (menu.id !== id) menu.classList.remove('active');
+            });
             const menu = document.getElementById(id);
             menu.classList.toggle('active');
         }
 
         function closeDropdown(id) {
             const menu = document.getElementById(id);
-            menu.classList.remove('active');
+            if (menu) menu.classList.remove('active');
         }
 
         function filterByOwner(type) {
@@ -990,6 +976,7 @@
             else if (type === 'me') btn.innerHTML = 'khalil mohammed (You) <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>';
             else btn.innerHTML = 'Shared with you <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>';
             renderProjects();
+            closeDropdown('ownerMenu');
         }
 
         function filterByCategory(category) {
@@ -998,14 +985,18 @@
             if (category === 'all') btn.innerHTML = 'All Categories <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>';
             else btn.innerHTML = category.charAt(0).toUpperCase() + category.slice(1) + ' <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>';
             renderProjects();
+            closeDropdown('categoryMenu');
         }
 
-        function sortProjects(type) {
-            currentSort = type;
-            document.getElementById('sortAZ').classList.remove('active');
-            document.getElementById('sortZA').classList.remove('active');
-            if (type === 'az') document.getElementById('sortAZ').classList.add('active');
-            else document.getElementById('sortZA').classList.add('active');
+        function toggleSort() {
+            const sortBtn = document.getElementById('sortBtn');
+            if (currentSort === 'az') {
+                currentSort = 'za';
+                sortBtn.innerHTML = '<svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="18 9 12 15 6 9"/></svg> Z-A';
+            } else {
+                currentSort = 'az';
+                sortBtn.innerHTML = '<svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 15 12 9 18 15"/></svg> A-Z';
+            }
             renderProjects();
         }
 
@@ -1032,8 +1023,7 @@
             if (currentCategory !== 'all') filtered = filtered.filter(p => p.category === currentCategory);
             
             if (currentSort === 'az') filtered.sort((a, b) => a.title.localeCompare(b.title));
-            else if (currentSort === 'za') filtered.sort((a, b) => b.title.localeCompare(a.title));
-            else filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+            else filtered.sort((a, b) => b.title.localeCompare(a.title));
             
             const grid = document.getElementById('projectsGrid');
             if (filtered.length === 0) {
