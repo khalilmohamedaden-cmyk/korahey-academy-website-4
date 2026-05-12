@@ -324,7 +324,7 @@
             margin: 0;
         }
 
-        /* CATEGORY ICONS - Clean, no blue tint on hover */
+        /* CATEGORY ICONS */
         .category-icons {
             display: flex;
             justify-content: center;
@@ -425,7 +425,7 @@
         }
 
         /* ============================================
-           DROPDOWN - OPENS UPWARD TO PREVENT CUTOFF
+           DROPDOWN - OPENS DOWNWARD WITH PROPER SPACING
         ============================================ */
         .dropdown {
             position: relative;
@@ -456,23 +456,23 @@
             background: rgba(0, 0, 0, 0.06);
         }
 
-        /* DROPDOWN OPENS UPWARD (bottom to top) */
+        /* Dropdown opens downward */
         .dropdown-menu {
             position: absolute;
-            bottom: 100%;
+            top: 100%;
             left: 0;
-            margin-bottom: 8px;
+            margin-top: 8px;
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(20px);
             border-radius: 20px;
             min-width: 200px;
             opacity: 0;
             visibility: hidden;
-            transform: scale(0.95) translateY(10px);
+            transform: scale(0.95) translateY(-10px);
             transition: all 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
             z-index: 1000;
             border: 1px solid rgba(0, 0, 0, 0.08);
-            box-shadow: 0 -15px 35px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
             overflow: hidden;
         }
 
@@ -707,6 +707,11 @@
             text-align: center;
         }
 
+        /* Add bottom margin to prevent dropdown cutoff */
+        .filter-right {
+            margin-bottom: 20px;
+        }
+
         @media (max-width: 768px) {
             .glass-header {
                 padding: 100px 5% 30px;
@@ -734,6 +739,7 @@
             }
             .filter-right {
                 justify-content: space-between;
+                margin-bottom: 0;
             }
             .recent-grid {
                 grid-template-columns: 1fr;
@@ -820,31 +826,31 @@
                 <!-- CATEGORY ICONS -->
                 <div class="category-icons">
                     <div class="category-icon-card" data-cat="documents" onclick="filterByCategory('documents', this)">
-                        <svg viewBox="0 0 24 24" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                         <span>Documents</span>
                     </div>
                     <div class="category-icon-card" data-cat="sheets" onclick="filterByCategory('sheets', this)">
-                        <svg viewBox="0 0 24 24" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>
+                        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>
                         <span>Sheets</span>
                     </div>
                     <div class="category-icon-card" data-cat="schedule" onclick="filterByCategory('schedule', this)">
-                        <svg viewBox="0 0 24 24" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>
+                        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>
                         <span>Schedules</span>
                     </div>
                     <div class="category-icon-card" data-cat="assignment" onclick="filterByCategory('assignment', this)">
-                        <svg viewBox="0 0 24 24" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                         <span>Assignments</span>
                     </div>
                     <div class="category-icon-card" data-cat="exam" onclick="filterByCategory('exam', this)">
-                        <svg viewBox="0 0 24 24" stroke="currentColor"><path d="M4 4h16v16H4z"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="12" y2="13"/></svg>
+                        <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="12" y2="13"/></svg>
                         <span>Exams</span>
                     </div>
                     <div class="category-icon-card" data-cat="classwork" onclick="filterByCategory('classwork', this)">
-                        <svg viewBox="0 0 24 24" stroke="currentColor"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/></svg>
+                        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/></svg>
                         <span>Classwork</span>
                     </div>
                     <div class="category-icon-card" data-cat="homework" onclick="filterByCategory('homework', this)">
-                        <svg viewBox="0 0 24 24" stroke="currentColor"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"/><polyline points="12 6 12 12 16 14"/></svg>
+                        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"/><polyline points="12 6 12 12 16 14"/></svg>
                         <span>Homework</span>
                     </div>
                 </div>
@@ -856,11 +862,11 @@
                     <h3>Recent</h3>
                 </div>
                 <div class="filter-right">
-                    <!-- Owner Dropdown - OPENS UPWARD -->
+                    <!-- Owner Dropdown -->
                     <div class="dropdown">
                         <button class="dropdown-btn" onclick="toggleDropdown('ownerMenu')">
                             Any owner
-                            <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>
+                            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
                         </button>
                         <div class="dropdown-menu" id="ownerMenu">
                             <a onclick="filterByOwner('any'); closeDropdown('ownerMenu')">Any owner</a>
@@ -868,11 +874,11 @@
                             <a onclick="filterByOwner('shared'); closeDropdown('ownerMenu')">Shared with you</a>
                         </div>
                     </div>
-                    <!-- Categories Dropdown - OPENS UPWARD -->
+                    <!-- Categories Dropdown -->
                     <div class="dropdown">
                         <button class="dropdown-btn" onclick="toggleDropdown('categoryMenu')">
                             All Categories
-                            <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>
+                            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
                         </button>
                         <div class="dropdown-menu" id="categoryMenu">
                             <a onclick="filterByCategoryDropdown('all'); closeDropdown('categoryMenu')">All Categories</a>
@@ -886,7 +892,7 @@
                         </div>
                     </div>
                     <button class="sort-btn" id="sortBtn" onclick="toggleSort()">
-                        <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 15 12 9 18 15"/></svg>
+                        <svg viewBox="0 0 24 24"><polyline points="6 15 12 9 18 15"/></svg>
                         A-Z
                     </button>
                 </div>
@@ -1039,9 +1045,9 @@
 
         function filterByOwner(type) {
             const btn = document.querySelector('#ownerMenu').previousElementSibling;
-            if (type === 'any') btn.innerHTML = 'Any owner <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>';
-            else if (type === 'me') btn.innerHTML = 'khalil mohammed (You) <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>';
-            else btn.innerHTML = 'Shared with you <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>';
+            if (type === 'any') btn.innerHTML = 'Any owner <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
+            else if (type === 'me') btn.innerHTML = 'khalil mohammed (You) <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
+            else btn.innerHTML = 'Shared with you <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
             renderProjects();
             closeDropdown('ownerMenu');
         }
@@ -1054,8 +1060,8 @@
             if (element) element.classList.add('active');
             
             const catBtn = document.querySelector('#categoryMenu').previousElementSibling;
-            if (category === 'all') catBtn.innerHTML = 'All Categories <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>';
-            else catBtn.innerHTML = category.charAt(0).toUpperCase() + category.slice(1) + ' <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>';
+            if (category === 'all') catBtn.innerHTML = 'All Categories <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
+            else catBtn.innerHTML = category.charAt(0).toUpperCase() + category.slice(1) + ' <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
             
             renderProjects();
         }
@@ -1074,8 +1080,8 @@
             }
             
             const catBtn = document.querySelector('#categoryMenu').previousElementSibling;
-            if (category === 'all') catBtn.innerHTML = 'All Categories <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>';
-            else catBtn.innerHTML = category.charAt(0).toUpperCase() + category.slice(1) + ' <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>';
+            if (category === 'all') catBtn.innerHTML = 'All Categories <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
+            else catBtn.innerHTML = category.charAt(0).toUpperCase() + category.slice(1) + ' <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
             
             renderProjects();
             closeDropdown('categoryMenu');
@@ -1085,10 +1091,10 @@
             const sortBtn = document.getElementById('sortBtn');
             if (currentSort === 'az') {
                 currentSort = 'za';
-                sortBtn.innerHTML = '<svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="18 9 12 15 6 9"/></svg> Z-A';
+                sortBtn.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="18 9 12 15 6 9"/></svg> Z-A';
             } else {
                 currentSort = 'az';
-                sortBtn.innerHTML = '<svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 15 12 9 18 15"/></svg> A-Z';
+                sortBtn.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="6 15 12 9 18 15"/></svg> A-Z';
             }
             renderProjects();
         }
