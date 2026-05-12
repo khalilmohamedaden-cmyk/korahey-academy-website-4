@@ -366,7 +366,6 @@
             transform: translateY(-2px);
         }
 
-        /* Active category styling - shows which one is selected */
         .category-icon-card.active svg {
             stroke: var(--apple-blue);
         }
@@ -425,7 +424,9 @@
             background: rgba(0,0,0,0.08);
         }
 
-        /* DROPDOWN - Fixed cutoff, opens downward */
+        /* ============================================
+           DROPDOWN - OPENS UPWARD TO PREVENT CUTOFF
+        ============================================ */
         .dropdown {
             position: relative;
             display: inline-block;
@@ -455,22 +456,23 @@
             background: rgba(0, 0, 0, 0.06);
         }
 
+        /* DROPDOWN OPENS UPWARD (bottom to top) */
         .dropdown-menu {
             position: absolute;
-            top: 100%;
+            bottom: 100%;
             left: 0;
-            margin-top: 8px;
+            margin-bottom: 8px;
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(20px);
             border-radius: 20px;
             min-width: 200px;
             opacity: 0;
             visibility: hidden;
-            transform: scale(0.95) translateY(-10px);
+            transform: scale(0.95) translateY(10px);
             transition: all 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
             z-index: 1000;
             border: 1px solid rgba(0, 0, 0, 0.08);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            box-shadow: 0 -15px 35px rgba(0,0,0,0.1);
             overflow: hidden;
         }
 
@@ -556,7 +558,6 @@
         .card-body h4 { font-size: 1rem; margin-bottom: 5px; font-weight: 600; }
         .card-body p { font-size: 0.75rem; color: #86868b; }
 
-        /* Empty State - Centered */
         .empty-state {
             text-align: center;
             padding: 80px 20px;
@@ -816,7 +817,7 @@
                     </div>
                 </div>
 
-                <!-- CATEGORY ICONS - Shows active state -->
+                <!-- CATEGORY ICONS -->
                 <div class="category-icons">
                     <div class="category-icon-card" data-cat="documents" onclick="filterByCategory('documents', this)">
                         <svg viewBox="0 0 24 24" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
@@ -855,6 +856,7 @@
                     <h3>Recent</h3>
                 </div>
                 <div class="filter-right">
+                    <!-- Owner Dropdown - OPENS UPWARD -->
                     <div class="dropdown">
                         <button class="dropdown-btn" onclick="toggleDropdown('ownerMenu')">
                             Any owner
@@ -866,6 +868,7 @@
                             <a onclick="filterByOwner('shared'); closeDropdown('ownerMenu')">Shared with you</a>
                         </div>
                     </div>
+                    <!-- Categories Dropdown - OPENS UPWARD -->
                     <div class="dropdown">
                         <button class="dropdown-btn" onclick="toggleDropdown('categoryMenu')">
                             All Categories
@@ -1045,13 +1048,11 @@
 
         function filterByCategory(category, element) {
             currentCategory = category;
-            // Update active state on icons
             document.querySelectorAll('.category-icon-card').forEach(el => {
                 el.classList.remove('active');
             });
             if (element) element.classList.add('active');
             
-            // Update dropdown button text
             const catBtn = document.querySelector('#categoryMenu').previousElementSibling;
             if (category === 'all') catBtn.innerHTML = 'All Categories <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>';
             else catBtn.innerHTML = category.charAt(0).toUpperCase() + category.slice(1) + ' <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>';
@@ -1061,7 +1062,6 @@
 
         function filterByCategoryDropdown(category) {
             currentCategory = category;
-            // Update active state on icons
             document.querySelectorAll('.category-icon-card').forEach(el => {
                 if (el.getAttribute('data-cat') === category) {
                     el.classList.add('active');
@@ -1073,12 +1073,12 @@
                 document.querySelectorAll('.category-icon-card').forEach(el => el.classList.remove('active'));
             }
             
-            // Update dropdown button text
             const catBtn = document.querySelector('#categoryMenu').previousElementSibling;
             if (category === 'all') catBtn.innerHTML = 'All Categories <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>';
             else catBtn.innerHTML = category.charAt(0).toUpperCase() + category.slice(1) + ' <svg viewBox="0 0 24 24" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>';
             
             renderProjects();
+            closeDropdown('categoryMenu');
         }
 
         function toggleSort() {
@@ -1263,5 +1263,4 @@
         });
     </script>
 </body>
-</html>
 </html>
