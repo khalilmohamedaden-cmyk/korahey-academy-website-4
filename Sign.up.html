@@ -43,6 +43,7 @@
         .signup-btn {
             width: 100%; padding: 14px; background: #fff; border: none;
             border-radius: 100px; font-weight: 600; cursor: pointer; margin-top: 10px;
+            color: #000;
         }
         .divider { display: flex; align-items: center; gap: 15px; margin: 25px 0; color: var(--text-dim); }
         .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.1); }
@@ -165,9 +166,6 @@
     </div>
 
     <script>
-        // ============================================
-        // FIREBASE CONFIGURATION - YOUR ACTUAL CONFIG
-        // ============================================
         const firebaseConfig = {
             apiKey: "AIzaSyCC5oK1cMufciR1v4wLi-jfYvXa_cQBnd0",
             authDomain: "korahey-admin.firebaseapp.com",
@@ -177,11 +175,9 @@
             appId: "1:86298888884:web:f1d835de1cb9d2534d65e1"
         };
 
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
-
         const googleProvider = new firebase.auth.GoogleAuthProvider();
 
         const transitionOverlay = document.getElementById('pageTransition');
@@ -232,7 +228,11 @@
                 await db.collection('users').doc(userCredential.user.uid).set({
                     email: email,
                     name: fullName,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    isAdmin: false,
+                    isBanned: false,
+                    ipBanned: false,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    lastLogin: firebase.firestore.FieldValue.serverTimestamp()
                 });
                 
                 showSuccess('Account created successfully! Redirecting...');
@@ -248,7 +248,27 @@
 
         async function signInWithGoogle() {
             try {
-                await auth.signInWithPopup(googleProvider);
+                const result = await auth.signInWithPopup(googleProvider);
+                const user = result.user;
+                
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                
+                if (!userDoc.exists) {
+                    await db.collection('users').doc(user.uid).set({
+                        email: user.email,
+                        name: user.displayName || user.email.split('@')[0],
+                        isAdmin: false,
+                        isBanned: false,
+                        ipBanned: false,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                } else {
+                    await db.collection('users').doc(user.uid).update({
+                        lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }
+                
                 window.location.href = 'index.html';
             } catch (error) {
                 showError(error.message);
