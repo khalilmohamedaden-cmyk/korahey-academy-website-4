@@ -26,8 +26,10 @@
         .left-side { flex: 1; display: flex; align-items: center; justify-content: center; background: #000; z-index: 10; }
         .login-card {
             width: 100%; max-width: 420px; padding: 50px 40px;
-            background: rgba(15, 15, 15, 0.6); backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border); border-radius: 40px;
+            background: rgba(15, 15, 15, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 40px;
         }
         .login-header { text-align: center; margin-bottom: 35px; }
         .login-header h1 { font-size: 2.5rem; font-weight: 700; letter-spacing: -1px; background: linear-gradient(135deg, #fff 0%, #999 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
@@ -35,15 +37,23 @@
         .input-group { margin-bottom: 20px; }
         .input-group label { display: block; font-size: 0.8rem; margin-bottom: 8px; color: rgba(255,255,255,0.7); }
         .input-group input {
-            width: 100%; padding: 14px 18px; background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1); border-radius: 16px;
-            color: #fff; font-size: 1rem;
+            width: 100%; padding: 14px 18px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            color: #fff;
+            font-size: 1rem;
         }
         .input-group input:focus { outline: none; border-color: rgba(255,255,255,0.4); }
         .login-btn {
             width: 100%; padding: 14px; background: #fff; border: none;
             border-radius: 100px; font-weight: 600; cursor: pointer; margin-top: 10px;
             color: #000;
+            font-size: 1rem;
+        }
+        .login-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
         .divider { display: flex; align-items: center; gap: 15px; margin: 25px 0; color: var(--text-dim); }
         .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.1); }
@@ -65,14 +75,12 @@
         @keyframes scrollDown { 0% { transform: translateY(-30%); } 100% { transform: translateY(0); } }
         .column img {
             width: 100%; height: 380px; object-fit: cover; border-radius: 28px;
-            opacity: 0.4; transition: all 0.4s ease; filter: grayscale(30%);
+            opacity: 0.4; transition: all 0.4s ease;
             cursor: pointer;
         }
         .column img:hover {
             opacity: 1;
-            filter: grayscale(0%);
             transform: scale(1.02);
-            box-shadow: 0 0 25px rgba(255,255,255,0.3);
         }
         .right-side::before, .right-side::after { content: ''; position: absolute; left: 0; width: 100%; height: 100px; pointer-events: none; }
         .right-side::before { top: 0; background: linear-gradient(to bottom, #000, transparent); }
@@ -89,13 +97,12 @@
         .school-name-animation { text-align: center; transform: scale(0.8); opacity: 0; animation: popIn 0.6s cubic-bezier(0.34, 1.2, 0.64, 1) forwards; }
         @keyframes popIn {
             0% { transform: scale(0.5); opacity: 0; }
-            50% { transform: scale(1.1); }
             100% { transform: scale(1); opacity: 1; }
         }
         .school-name-animation h1 { font-size: 3rem; font-weight: 800; letter-spacing: -2px; background: linear-gradient(135deg, #fff 0%, #888 50%, #fff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; }
         .school-name-animation .tagline { font-size: 0.9rem; color: rgba(255,255,255,0.5); letter-spacing: 2px; font-weight: 500; }
         
-        .error-message { color: #ff6b6b; font-size: 0.8rem; margin-top: 5px; display: none; text-align: center; }
+        .error-message { color: #ff6b6b; font-size: 0.8rem; margin-top: 5px; display: none; text-align: center; padding: 10px; background: rgba(255,0,0,0.1); border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -126,13 +133,13 @@
                     <input type="password" id="password" placeholder="Enter your password">
                 </div>
                 <div class="forgot-password">
-                    <a onclick="resetPassword()">Forgot Password?</a>
+                    <a id="forgotPassword">Forgot Password?</a>
                 </div>
-                <button class="login-btn" onclick="signInWithEmail()">Log In</button>
+                <button class="login-btn" id="loginBtn">Log In</button>
                 
                 <div class="divider">OR</div>
                 
-                <button class="google-btn" onclick="signInWithGoogle()">
+                <button class="google-btn" id="googleBtn">
                     <svg width="18" height="18" viewBox="0 0 24 24">
                         <path fill="#fff" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                         <path fill="#fff" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -143,7 +150,7 @@
                 </button>
                 
                 <div class="signup-link">
-                    Don't have an account? <a onclick="goToSignUp()">Sign Up</a>
+                    Don't have an account? <a id="signupLink">Sign Up</a>
                 </div>
             </div>
         </div>
@@ -161,121 +168,183 @@
     </div>
 
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyCC5oK1cMufciR1v4wLi-jfYvXa_cQBnd0",
-            authDomain: "korahey-admin.firebaseapp.com",
-            projectId: "korahey-admin",
-            storageBucket: "korahey-admin.firebasestorage.app",
-            messagingSenderId: "86298888884",
-            appId: "1:86298888884:web:f1d835de1cb9d2534d65e1"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-        const googleProvider = new firebase.auth.GoogleAuthProvider();
-
-        function goToSignUp() {
-            window.location.href = 'Sign.up.html';
-        }
-
-        function showError(message) {
-            const errorDiv = document.getElementById('errorMessage');
-            errorDiv.textContent = message;
-            errorDiv.style.display = 'block';
-            setTimeout(() => { errorDiv.style.display = 'none'; }, 5000);
-        }
-
-        async function signInWithEmail() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+        document.addEventListener('DOMContentLoaded', function() {
             
-            if (!email || !password) {
-                showError('Please enter email and password');
-                return;
+            const firebaseConfig = {
+                apiKey: "AIzaSyCC5oK1cMufciR1v4wLi-jfYvXa_cQBnd0",
+                authDomain: "korahey-admin.firebaseapp.com",
+                projectId: "korahey-admin",
+                storageBucket: "korahey-admin.firebasestorage.app",
+                messagingSenderId: "86298888884",
+                appId: "1:86298888884:web:f1d835de1cb9d2534d65e1"
+            };
+
+            // Initialize Firebase if not already initialized
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
             }
             
-            try {
-                const userCredential = await auth.signInWithEmailAndPassword(email, password);
-                const user = userCredential.user;
+            const auth = firebase.auth();
+            const db = firebase.firestore();
+            const googleProvider = new firebase.auth.GoogleAuthProvider();
+
+            const loginBtn = document.getElementById('loginBtn');
+            const googleBtn = document.getElementById('googleBtn');
+            const signupLink = document.getElementById('signupLink');
+            const forgotLink = document.getElementById('forgotPassword');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const errorDiv = document.getElementById('errorMessage');
+
+            function showError(message) {
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+                setTimeout(() => { errorDiv.style.display = 'none'; }, 5000);
+            }
+
+            function setLoading(loading) {
+                if (loginBtn) {
+                    loginBtn.disabled = loading;
+                    loginBtn.textContent = loading ? 'Logging in...' : 'Log In';
+                }
+            }
+
+            async function signInWithEmail() {
+                const email = emailInput.value.trim();
+                const password = passwordInput.value;
                 
-                // Check if user is banned
-                const userDoc = await db.collection('users').doc(user.uid).get();
-                if (userDoc.exists && userDoc.data().isBanned) {
-                    await auth.signOut();
-                    showError('Your account has been banned. Please contact support.');
+                if (!email || !password) {
+                    showError('Please enter email and password');
                     return;
                 }
                 
-                // Update last login
-                await db.collection('users').doc(user.uid).update({
-                    lastLogin: firebase.firestore.FieldValue.serverTimestamp()
-                });
+                setLoading(true);
                 
-                window.location.href = 'index.html';
-            } catch (error) {
-                if (error.code === 'auth/user-not-found') {
-                    showError('No account found with this email. Please sign up first.');
-                } else if (error.code === 'auth/wrong-password') {
-                    showError('Incorrect password. Please try again.');
-                } else {
+                try {
+                    const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                    const user = userCredential.user;
+                    
+                    // Check if user is banned
+                    const userDoc = await db.collection('users').doc(user.uid).get();
+                    if (userDoc.exists && userDoc.data().isBanned === true) {
+                        await auth.signOut();
+                        showError('Your account has been banned. Contact support.');
+                        setLoading(false);
+                        return;
+                    }
+                    
+                    // Update last login
+                    await db.collection('users').doc(user.uid).update({
+                        lastLogin: new Date()
+                    });
+                    
+                    // Redirect to home page
+                    window.location.href = 'index.html';
+                    
+                } catch (error) {
+                    console.error('Login error:', error);
+                    if (error.code === 'auth/user-not-found') {
+                        showError('No account found with this email. Please sign up first.');
+                    } else if (error.code === 'auth/wrong-password') {
+                        showError('Incorrect password. Please try again.');
+                    } else if (error.code === 'auth/invalid-email') {
+                        showError('Invalid email format.');
+                    } else {
+                        showError(error.message);
+                    }
+                } finally {
+                    setLoading(false);
+                }
+            }
+
+            async function signInWithGoogle() {
+                setLoading(true);
+                try {
+                    const result = await auth.signInWithPopup(googleProvider);
+                    const user = result.user;
+                    
+                    const userDoc = await db.collection('users').doc(user.uid).get();
+                    
+                    if (userDoc.exists && userDoc.data().isBanned === true) {
+                        await auth.signOut();
+                        showError('Your account has been banned. Contact support.');
+                        setLoading(false);
+                        return;
+                    }
+                    
+                    if (!userDoc.exists) {
+                        await db.collection('users').doc(user.uid).set({
+                            email: user.email,
+                            name: user.displayName || user.email.split('@')[0],
+                            isAdmin: user.email === 'khalilmohamedaden@gmail.com',
+                            isBanned: false,
+                            ipBanned: false,
+                            createdAt: new Date(),
+                            lastLogin: new Date()
+                        });
+                    } else {
+                        await db.collection('users').doc(user.uid).update({
+                            lastLogin: new Date()
+                        });
+                    }
+                    
+                    window.location.href = 'index.html';
+                    
+                } catch (error) {
+                    console.error('Google signin error:', error);
+                    showError(error.message);
+                } finally {
+                    setLoading(false);
+                }
+            }
+
+            async function resetPassword() {
+                const email = emailInput.value.trim();
+                if (!email) {
+                    showError('Please enter your email address to reset password');
+                    return;
+                }
+                try {
+                    await auth.sendPasswordResetEmail(email);
+                    showError('Password reset email sent! Check your inbox.');
+                } catch (error) {
                     showError(error.message);
                 }
             }
-        }
 
-        async function signInWithGoogle() {
-            try {
-                const result = await auth.signInWithPopup(googleProvider);
-                const user = result.user;
-                
-                const userDoc = await db.collection('users').doc(user.uid).get();
-                
-                if (userDoc.exists && userDoc.data().isBanned) {
-                    await auth.signOut();
-                    showError('Your account has been banned. Please contact support.');
-                    return;
-                }
-                
-                if (!userDoc.exists) {
-                    await db.collection('users').doc(user.uid).set({
-                        email: user.email,
-                        name: user.displayName || user.email.split('@')[0],
-                        isAdmin: user.email === 'khalilmohamedaden@gmail.com',
-                        isBanned: false,
-                        ipBanned: false,
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                        lastLogin: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                } else {
-                    await db.collection('users').doc(user.uid).update({
-                        lastLogin: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                }
-                
-                window.location.href = 'index.html';
-            } catch (error) {
-                showError(error.message);
+            function goToSignUp() {
+                window.location.href = 'Sign.up.html';
             }
-        }
 
-        async function resetPassword() {
-            const email = document.getElementById('email').value;
-            if (!email) {
-                showError('Please enter your email address to reset password');
-                return;
-            }
-            try {
-                await auth.sendPasswordResetEmail(email);
-                showError('Password reset email sent! Check your inbox.');
-            } catch (error) {
-                showError(error.message);
-            }
-        }
+            // Add event listeners
+            if (loginBtn) loginBtn.addEventListener('click', signInWithEmail);
+            if (googleBtn) googleBtn.addEventListener('click', signInWithGoogle);
+            if (signupLink) signupLink.addEventListener('click', goToSignUp);
+            if (forgotLink) forgotLink.addEventListener('click', resetPassword);
 
-        setTimeout(() => {
-            document.getElementById('pageTransition').classList.add('fade-out');
-        }, 800);
+            // Enter key to submit
+            if (passwordInput) {
+                passwordInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        signInWithEmail();
+                    }
+                });
+            }
+            if (emailInput) {
+                emailInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        signInWithEmail();
+                    }
+                });
+            }
+
+            // Hide transition after delay
+            setTimeout(() => {
+                const transition = document.getElementById('pageTransition');
+                if (transition) transition.classList.add('fade-out');
+            }, 800);
+            
+        });
     </script>
 </body>
 </html>
