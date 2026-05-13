@@ -1274,7 +1274,6 @@
         let currentSort = 'az';
         let messages = [{ id: 1, title: 'Welcome to Admin Dashboard', read: false }];
         let selectedUserId = null;
-        let onlineUsers = new Set();
 
         // Sample projects
         const sampleProjects = [
@@ -1460,15 +1459,66 @@
         }
 
         async function selectUser(id) { selectedUserId = id; await renderUserList(); }
-        async function makeAdmin(id) { try { await db.collection('users').doc(id).update({ isAdmin: true }); alert('User is now an admin'); await renderUserList(); } catch(e) { alert('Error: ' + e.message); } }
-        async function removeAdmin(id) { const doc = await db.collection('users').doc(id).get(); if(doc.data().email === HEAD_ADMIN_EMAIL) { alert('Cannot remove head admin'); return; } await db.collection('users').doc(id).update({ isAdmin: false }); alert('Admin privileges removed'); await renderUserList(); }
-        async function banUser(id) { await db.collection('users').doc(id).update({ isBanned: true }); alert('User banned'); await renderUserList(); }
-        async function unbanUser(id) { await db.collection('users').doc(id).update({ isBanned: false }); alert('User unbanned'); await renderUserList(); }
-        async function banIp(id) { await db.collection('users').doc(id).update({ ipBanned: true }); alert('IP banned'); await renderUserList(); }
-        async function unbanIp(id) { await db.collection('users').doc(id).update({ ipBanned: false }); alert('IP ban removed'); await renderUserList(); }
+        
+        async function makeAdmin(id) { 
+            try { 
+                await db.collection('users').doc(id).update({ isAdmin: true }); 
+                alert('User is now an admin'); 
+                await renderUserList(); // Refresh the list
+                if(selectedUserId === id) await renderUserDetails(id); // Refresh details if same user
+            } catch(e) { alert('Error: ' + e.message); } 
+        }
+        
+        async function removeAdmin(id) { 
+            const doc = await db.collection('users').doc(id).get(); 
+            if(doc.data().email === HEAD_ADMIN_EMAIL) { 
+                alert('Cannot remove head admin'); 
+                return; 
+            } 
+            await db.collection('users').doc(id).update({ isAdmin: false }); 
+            alert('Admin privileges removed'); 
+            await renderUserList(); // Refresh the list
+            if(selectedUserId === id) await renderUserDetails(id); // Refresh details if same user
+        }
+        
+        async function banUser(id) { 
+            await db.collection('users').doc(id).update({ isBanned: true }); 
+            alert('User banned'); 
+            await renderUserList(); // Refresh the list
+            if(selectedUserId === id) await renderUserDetails(id); // Refresh details if same user
+        }
+        
+        async function unbanUser(id) { 
+            await db.collection('users').doc(id).update({ isBanned: false }); 
+            alert('User unbanned'); 
+            await renderUserList(); // Refresh the list
+            if(selectedUserId === id) await renderUserDetails(id); // Refresh details if same user
+        }
+        
+        async function banIp(id) { 
+            await db.collection('users').doc(id).update({ ipBanned: true }); 
+            alert('IP banned'); 
+            await renderUserList(); // Refresh the list
+            if(selectedUserId === id) await renderUserDetails(id); // Refresh details if same user
+        }
+        
+        async function unbanIp(id) { 
+            await db.collection('users').doc(id).update({ ipBanned: false }); 
+            alert('IP ban removed'); 
+            await renderUserList(); // Refresh the list
+            if(selectedUserId === id) await renderUserDetails(id); // Refresh details if same user
+        }
 
-        function openUserManagementPanel() { document.getElementById('userPanelModal').classList.add('active'); renderUserList(); }
-        function closeUserManagementPanel() { document.getElementById('userPanelModal').classList.remove('active'); selectedUserId = null; }
+        function openUserManagementPanel() { 
+            document.getElementById('userPanelModal').classList.add('active'); 
+            renderUserList(); 
+        }
+        
+        function closeUserManagementPanel() { 
+            document.getElementById('userPanelModal').classList.remove('active'); 
+            selectedUserId = null; 
+            renderUserList(); // Refresh when closing to ensure data is current
+        }
         
         if(document.getElementById('userSearchInput')) {
             document.getElementById('userSearchInput').addEventListener('input', () => renderUserList());
