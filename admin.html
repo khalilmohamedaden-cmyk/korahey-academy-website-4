@@ -1126,7 +1126,7 @@
                     <input type="text" id="userSearchInput" placeholder="Search users...">
                 </div>
                 <div class="users-scroll" id="usersListPanel">
-                    <!-- Users will be populated here -->
+                    <div style="text-align: center; padding: 40px;">Loading users...</div>
                 </div>
             </div>
 
@@ -1224,31 +1224,50 @@
         let currentSort = 'az';
         let messages = [{ id: 1, title: 'Added to "Final Exam"', project: 'Final Exam', read: false }];
         
-        // User data - only emails
-        let users = [
-            { id: 'user1', email: 'student1@example.com', isAdmin: false, isBanned: false, ipBanned: false, joinDate: '2025-01-15', lastActive: '2026-05-10', avatarInitial: 'S1' },
-            { id: 'user2', email: 'student2@example.com', isAdmin: false, isBanned: false, ipBanned: false, joinDate: '2025-02-20', lastActive: '2026-05-12', avatarInitial: 'S2' },
-            { id: 'user3', email: 'khalilmohamedaden@gmail.com', isAdmin: true, isBanned: false, ipBanned: false, joinDate: '2024-01-01', lastActive: '2026-05-13', avatarInitial: 'KM' }
-        ];
-        
         let selectedUserId = null;
 
-        // User Management Functions
-        function openUserManagementPanel() {
-            const panel = document.getElementById('userPanelModal');
-            panel.classList.add('active');
-            renderUserList();
+        // ============================================
+        // FIREBASE USER MANAGEMENT
+        // ============================================
+        
+        // Fetch all users from Firestore
+        async function fetchUsers() {
+            try {
+                const usersSnapshot = await db.collection('users').get();
+                const usersList = [];
+                usersSnapshot.forEach(doc => {
+                    const userData = doc.data();
+                    usersList.push({
+                        id: doc.id,
+                        email: userData.email,
+                        isAdmin: userData.isAdmin || false,
+                        isBanned: userData.isBanned || false,
+                        ipBanned: userData.ipBanned || false,
+                        joinDate: userData.createdAt ? new Date(userData.createdAt.toDate()).toLocaleDateString() : 'Unknown',
+                        lastActive: userData.lastLogin ? new Date(userData.lastLogin.toDate()).toLocaleDateString() : 'Unknown',
+                        avatarInitial: userData.email ? userData.email.charAt(0).toUpperCase() : 'U'
+                    });
+                });
+                return usersList;
+            } catch (error) {
+                console.error('Error fetching users:', error);
+                return [];
+            }
         }
 
-        function closeUserManagementPanel() {
-            const panel = document.getElementById('userPanelModal');
-            panel.classList.remove('active');
-        }
-
-        function renderUserList() {
+        // Render user list from Firebase
+        async function renderUserList() {
             const searchTerm = document.getElementById('userSearchInput')?.value.toLowerCase() || '';
+            const users = await fetchUsers();
             const filteredUsers = users.filter(u => u.email.toLowerCase().includes(searchTerm));
             const container = document.getElementById('usersListPanel');
+            
+            document.getElementById('usersBadge').textContent = users.length;
+            
+            if (filteredUsers.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;">No users found</div>';
+                return;
+            }
             
             container.innerHTML = filteredUsers.map(user => `
                 <div class="user-list-item" onclick="selectUser('${user.id}')" data-user-id="${user.id}">
@@ -1260,8 +1279,6 @@
                 </div>
             `).join('');
             
-            document.getElementById('usersBadge').textContent = users.length;
-            
             if (selectedUserId) {
                 document.querySelectorAll('.user-list-item').forEach(el => {
                     if (el.dataset.userId === selectedUserId) {
@@ -1272,21 +1289,20 @@
             }
         }
 
-        function selectUser(userId) {
-            selectedUserId = userId;
-            renderUserList();
-            renderUserDetails(userId);
-        }
-
-        function renderUserDetails(userId) {
-            const user = users.find(u => u.id === userId);
-            if (!user) return;
+        // Render user details
+        async function renderUserDetails(userId) {
+            const userDoc = await db.collection('users').doc(userId).get();
+            if (!userDoc.exists) return;
             
+            const user = userDoc.data();
             const isSuperAdmin = user.email === ADMIN_EMAIL;
+            const joinDate = user.createdAt ? new Date(user.createdAt.toDate()).toLocaleDateString() : 'Unknown';
+            const lastActive = user.lastLogin ? new Date(user.lastLogin.toDate()).toLocaleDateString() : 'Unknown';
+            const avatarInitial = user.email ? user.email.charAt(0).toUpperCase() : 'U';
             
             const detailHtml = `
                 <div class="user-profile-section">
-                    <div class="user-profile-avatar">${user.avatarInitial}</div>
+                    <div class="user-profile-avatar">${avatarInitial}</div>
                     <div class="user-profile-email">${escapeHtml(user.email)}</div>
                     ${user.isAdmin ? '<span class="admin-badge" style="display: inline-block;">ADMIN</span>' : ''}
                 </div>
@@ -1301,11 +1317,11 @@
                     </div>
                     <div class="info-row">
                         <span class="info-label">Join Date</span>
-                        <span class="info-value">${user.joinDate}</span>
+                        <span class="info-value">${joinDate}</span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">Last Active</span>
-                        <span class="info-value">${user.lastActive}</span>
+                        <span class="info-value">${lastActive}</span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">Status</span>
@@ -1317,78 +1333,134 @@
                     </div>
                 </div>
                 <div class="action-buttons">
-                    ${!isSuperAdmin && !user.isAdmin ? `<button class="action-btn make-admin" onclick="makeAdmin('${user.id}')">Make Admin</button>` : ''}
-                    ${!isSuperAdmin && user.isAdmin ? `<button class="action-btn remove-admin" onclick="removeAdmin('${user.id}')">Remove Admin</button>` : ''}
-                    <button class="action-btn ban" onclick="${user.isBanned ? `unbanUser('${user.id}')` : `banUser('${user.id}')`}">${user.isBanned ? 'Unban User' : 'Ban User'}</button>
-                    <button class="action-btn ip-ban" onclick="${user.ipBanned ? `unbanIp('${user.id}')` : `banIp('${user.id}')`}">${user.ipBanned ? 'Remove IP Ban' : 'IP Ban'}</button>
+                    ${!isSuperAdmin && !user.isAdmin ? `<button class="action-btn make-admin" onclick="makeAdmin('${userId}')">Make Admin</button>` : ''}
+                    ${!isSuperAdmin && user.isAdmin ? `<button class="action-btn remove-admin" onclick="removeAdmin('${userId}')">Remove Admin</button>` : ''}
+                    <button class="action-btn ban" onclick="${user.isBanned ? `unbanUser('${userId}')` : `banUser('${userId}')`}">${user.isBanned ? 'Unban User' : 'Ban User'}</button>
+                    <button class="action-btn ip-ban" onclick="${user.ipBanned ? `unbanIp('${userId}')` : `banIp('${userId}')`}">${user.ipBanned ? 'Remove IP Ban' : 'IP Ban'}</button>
                 </div>
             `;
             
             document.getElementById('userDetailContent').innerHTML = detailHtml;
         }
 
-        function makeAdmin(userId) {
-            const user = users.find(u => u.id === userId);
-            if (user && !user.isAdmin) {
-                user.isAdmin = true;
-                renderUserList();
-                renderUserDetails(userId);
-                alert(`${user.email} is now an admin!`);
+        async function selectUser(userId) {
+            selectedUserId = userId;
+            await renderUserList();
+            await renderUserDetails(userId);
+        }
+
+        async function makeAdmin(userId) {
+            await db.collection('users').doc(userId).update({
+                isAdmin: true,
+                role: 'admin',
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            alert('User is now an admin!');
+            await renderUserList();
+            if (selectedUserId === userId) await renderUserDetails(userId);
+        }
+
+        async function removeAdmin(userId) {
+            const userDoc = await db.collection('users').doc(userId).get();
+            if (userDoc.data().email === ADMIN_EMAIL) {
+                alert('Cannot remove super admin privileges');
+                return;
+            }
+            await db.collection('users').doc(userId).update({
+                isAdmin: false,
+                role: 'user',
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            alert('Admin privileges removed');
+            await renderUserList();
+            if (selectedUserId === userId) await renderUserDetails(userId);
+        }
+
+        async function banUser(userId) {
+            await db.collection('users').doc(userId).update({
+                isBanned: true,
+                bannedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                bannedBy: auth.currentUser?.email
+            });
+            alert('User has been banned');
+            await renderUserList();
+            if (selectedUserId === userId) await renderUserDetails(userId);
+        }
+
+        async function unbanUser(userId) {
+            await db.collection('users').doc(userId).update({
+                isBanned: false,
+                unbannedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            alert('User has been unbanned');
+            await renderUserList();
+            if (selectedUserId === userId) await renderUserDetails(userId);
+        }
+
+        async function banIp(userId) {
+            await db.collection('users').doc(userId).update({
+                ipBanned: true,
+                ipBannedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            alert('IP Ban applied');
+            await renderUserList();
+            if (selectedUserId === userId) await renderUserDetails(userId);
+        }
+
+        async function unbanIp(userId) {
+            await db.collection('users').doc(userId).update({
+                ipBanned: false
+            });
+            alert('IP Ban removed');
+            await renderUserList();
+            if (selectedUserId === userId) await renderUserDetails(userId);
+        }
+
+        function openUserManagementPanel() {
+            const panel = document.getElementById('userPanelModal');
+            panel.classList.add('active');
+            renderUserList();
+        }
+
+        function closeUserManagementPanel() {
+            const panel = document.getElementById('userPanelModal');
+            panel.classList.remove('active');
+        }
+
+        // Save user to Firestore when they log in
+        async function saveUserToFirestore(user) {
+            if (!user) return;
+            
+            const userRef = db.collection('users').doc(user.uid);
+            const userDoc = await userRef.get();
+            
+            if (!userDoc.exists) {
+                // New user - create record
+                await userRef.set({
+                    email: user.email,
+                    uid: user.uid,
+                    isAdmin: user.email === ADMIN_EMAIL,
+                    isBanned: false,
+                    ipBanned: false,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            } else {
+                // Existing user - update last login
+                await userRef.update({
+                    lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+                });
             }
         }
 
-        function removeAdmin(userId) {
-            const user = users.find(u => u.id === userId);
-            if (user && user.isAdmin && user.email !== ADMIN_EMAIL) {
-                user.isAdmin = false;
-                renderUserList();
-                renderUserDetails(userId);
-                alert(`${user.email} is no longer an admin.`);
-            }
+        // Check if user is banned before allowing access
+        async function isUserBanned(user) {
+            if (!user) return false;
+            const userDoc = await db.collection('users').doc(user.uid).get();
+            return userDoc.exists && userDoc.data().isBanned === true;
         }
 
-        function banUser(userId) {
-            const user = users.find(u => u.id === userId);
-            if (user) {
-                user.isBanned = true;
-                renderUserList();
-                renderUserDetails(userId);
-                alert(`${user.email} has been banned.`);
-            }
-        }
-
-        function unbanUser(userId) {
-            const user = users.find(u => u.id === userId);
-            if (user) {
-                user.isBanned = false;
-                renderUserList();
-                renderUserDetails(userId);
-                alert(`${user.email} has been unbanned.`);
-            }
-        }
-
-        function banIp(userId) {
-            const user = users.find(u => u.id === userId);
-            if (user) {
-                user.ipBanned = true;
-                renderUserList();
-                renderUserDetails(userId);
-                alert(`IP Ban applied to ${user.email}.`);
-            }
-        }
-
-        function unbanIp(userId) {
-            const user = users.find(u => u.id === userId);
-            if (user) {
-                user.ipBanned = false;
-                renderUserList();
-                renderUserDetails(userId);
-                alert(`IP Ban removed for ${user.email}.`);
-            }
-        }
-
-        // Search input listener
-        document.getElementById('userSearchInput')?.addEventListener('input', renderUserList);
+        document.getElementById('userSearchInput')?.addEventListener('input', () => renderUserList());
 
         function goHome() { window.location.href = 'index.html'; }
         function scrollToProjects() { document.querySelector('.recent-section').scrollIntoView({ behavior: 'smooth' }); }
@@ -1614,14 +1686,37 @@
             }
         }
 
+        // AUTH STATE LISTENER - Saves user to Firestore and checks bans
         auth.onAuthStateChanged(async (user) => {
-            if (user && (user.email === ADMIN_EMAIL || (await db.collection('users').doc(user.uid).get()).data()?.isAdmin)) {
-                adminContent.style.display = 'block';
-                document.getElementById('accessDenied').style.display = 'none';
-                document.getElementById('greetingText').innerHTML = `Hello ${user.displayName?.split(' ')[0] || 'Admin'}`;
-                loadProjects();
-                updateMessagesBadge();
-                showAdminContent();
+            if (user) {
+                // Save or update user in Firestore
+                await saveUserToFirestore(user);
+                
+                // Check if user is banned
+                const banned = await isUserBanned(user);
+                if (banned) {
+                    await auth.signOut();
+                    alert('Your account has been banned. Contact support for more information.');
+                    window.location.href = 'index.html';
+                    return;
+                }
+                
+                // Check if user is admin
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                const isAdmin = userDoc.exists && (userDoc.data().isAdmin === true || user.email === ADMIN_EMAIL);
+                
+                if (isAdmin) {
+                    adminContent.style.display = 'block';
+                    document.getElementById('accessDenied').style.display = 'none';
+                    document.getElementById('greetingText').innerHTML = `Hello ${user.displayName?.split(' ')[0] || 'Admin'}`;
+                    loadProjects();
+                    updateMessagesBadge();
+                    showAdminContent();
+                } else {
+                    adminContent.style.display = 'none';
+                    document.getElementById('accessDenied').style.display = 'flex';
+                    if (entrance) entrance.style.display = 'none';
+                }
             } else {
                 adminContent.style.display = 'none';
                 document.getElementById('accessDenied').style.display = 'flex';
@@ -1630,4 +1725,5 @@
         });
     </script>
 </body>
+</html>
 </html>
