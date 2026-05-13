@@ -142,7 +142,7 @@
         
         .auth-btn:hover { color: #fff; }
 
-        /* Hero Buttons with Animated Pill - FIXED */
+        /* Hero Buttons with Animated Pill */
         .hero-btns-group {
             position: relative;
             display: inline-flex;
@@ -334,6 +334,40 @@
         .footer-copyright { color: var(--text-dim); font-size: 0.85rem; margin-bottom: 10px; }
         .footer-made { color: var(--text-dim); font-size: 0.8rem; opacity: 0.7; }
 
+        /* Ban Message */
+        .ban-message {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 20000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+        }
+        .ban-message-content {
+            background: #1a1a1a;
+            padding: 50px;
+            border-radius: 30px;
+            max-width: 500px;
+            border: 1px solid #ff3b30;
+        }
+        .ban-message h2 { color: #ff3b30; margin-bottom: 20px; font-size: 2rem; }
+        .ban-message p { color: #ccc; margin-bottom: 30px; line-height: 1.6; }
+        .ban-message button {
+            background: #ff3b30;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
         @media (max-width: 1000px) {
             .hero h1 { font-size: 2.8rem; letter-spacing: -1px; }
             .massive-title { font-size: 2.2rem; }
@@ -411,6 +445,14 @@
         </div>
     </nav>
 
+    <div id="banOverlay" style="display: none;" class="ban-message">
+        <div class="ban-message-content">
+            <h2>⛔ Account Banned</h2>
+            <p>Your account has been banned from Korahey Academy. Please contact support for more information.</p>
+            <button onclick="logoutAndRedirect()">Sign Out</button>
+        </div>
+    </div>
+
     <header class="hero" id="home">
         <div class="hero-image-slider">
             <img src="slided1.png" class="active">
@@ -423,7 +465,6 @@
             <h1 class="reveal">Passion for Success</h1>
             <p class="hero-description reveal">Building a foundation for leadership and academic mastery.</p>
             <div class="hero-btns-wrapper reveal">
-                <!-- Hero Buttons with Animated Pill -->
                 <div class="hero-btns-group" id="heroBtnsGroup">
                     <div class="hero-pill join-active" id="heroPill"></div>
                     <button class="btn-hero active" id="heroJoinBtn">Join Us</button>
@@ -522,7 +563,6 @@
     <footer><div class="footer-content"><div class="footer-logo">Korahey Academy</div><div class="footer-copyright">© 2026 Khalil · Official site for Korahey Academy</div><div class="footer-made">Made by Khalil</div></div></footer>
 
     <script>
-        // Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyCC5oK1cMufciR1v4wLi-jfYvXa_cQBnd0",
             authDomain: "korahey-admin.firebaseapp.com",
@@ -548,69 +588,62 @@
         const dropdownUserName = document.getElementById('dropdownUserName');
         const dropdownUserEmail = document.getElementById('dropdownUserEmail');
         const adminDropdownItem = document.getElementById('adminDropdownItem');
+        const banOverlay = document.getElementById('banOverlay');
 
-        // Hero Buttons Pill Animation
         const heroPill = document.getElementById('heroPill');
         const heroJoinBtn = document.getElementById('heroJoinBtn');
         const heroLearnBtn = document.getElementById('heroLearnBtn');
-        
-        // Footer Buttons Pill Animation
         const footerPill = document.getElementById('footerPill');
         const footerJoinBtn = document.getElementById('footerJoinBtn');
         const footerLearnBtn = document.getElementById('footerLearnBtn');
 
-        // Setup hero pill animation
         function setupHeroPill() {
             if (!heroJoinBtn || !heroLearnBtn || !heroPill) return;
-            
             heroJoinBtn.addEventListener('mouseenter', () => {
                 heroPill.classList.remove('learn-active');
                 heroPill.classList.add('join-active');
             });
-            
             heroLearnBtn.addEventListener('mouseenter', () => {
                 heroPill.classList.remove('join-active');
                 heroPill.classList.add('learn-active');
             });
         }
         
-        // Setup footer pill animation
         function setupFooterPill() {
             if (!footerJoinBtn || !footerLearnBtn || !footerPill) return;
-            
             footerJoinBtn.addEventListener('mouseenter', () => {
                 footerPill.classList.remove('learn-active');
                 footerPill.classList.add('join-active');
             });
-            
             footerLearnBtn.addEventListener('mouseenter', () => {
                 footerPill.classList.remove('join-active');
                 footerPill.classList.add('learn-active');
             });
         }
 
-        // Setup auth pill animation
         function setupAuthPill() {
             if (!signUpBtn || !logInBtn || !authPill) return;
-            
             signUpBtn.addEventListener('mouseenter', () => {
                 authPill.classList.remove('login-active');
                 authPill.classList.add('signup-active');
             });
-            
             logInBtn.addEventListener('mouseenter', () => {
                 authPill.classList.remove('signup-active');
                 authPill.classList.add('login-active');
             });
         }
 
-        // Navigation
         function goToSignUp() { window.location.href = 'Sign.up.html'; }
         function goToLogIn() { window.location.href = 'Log.in.html'; }
         function goToAdminDashboard() { window.location.href = 'admin.html'; }
         function openMyAccount() { alert('My Account page coming soon!'); }
+        
+        function logoutAndRedirect() {
+            auth.signOut().then(() => {
+                window.location.href = 'index.html';
+            });
+        }
 
-        // Attach button events
         if (signUpBtn) signUpBtn.addEventListener('click', goToSignUp);
         if (logInBtn) logInBtn.addEventListener('click', goToLogIn);
         if (heroJoinBtn) heroJoinBtn.addEventListener('click', goToSignUp);
@@ -635,9 +668,23 @@
             if (adminDropdownItem) adminDropdownItem.style.display = isAdmin ? 'block' : 'none';
         }
 
-        // Auth state listener
+        // Auth state listener with BAN CHECK
         auth.onAuthStateChanged(async (user) => {
             if (user) {
+                // Check if user is banned
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                const userData = userDoc.data();
+                
+                if (userData && userData.isBanned === true) {
+                    // Show ban message and hide everything
+                    if (banOverlay) banOverlay.style.display = 'flex';
+                    if (authWrapper) authWrapper.style.display = 'none';
+                    if (profileSection) profileSection.style.display = 'none';
+                    return;
+                }
+                
+                // User is not banned - show normal UI
+                if (banOverlay) banOverlay.style.display = 'none';
                 if (authWrapper) authWrapper.style.display = 'none';
                 if (profileSection) profileSection.style.display = 'flex';
                 if (userAvatar) {
@@ -653,6 +700,7 @@
                     ...(user.email === ADMIN_EMAIL && { isAdmin: true, role: 'super_admin' })
                 }, { merge: true });
             } else {
+                if (banOverlay) banOverlay.style.display = 'none';
                 if (profileSection) profileSection.style.display = 'none';
                 if (authWrapper) {
                     authWrapper.style.display = 'flex';
@@ -700,7 +748,6 @@
             });
         }
 
-        // Initialize
         window.addEventListener('load', () => {
             setupHeroPill();
             setupFooterPill();
