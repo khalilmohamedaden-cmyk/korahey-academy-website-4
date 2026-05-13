@@ -423,21 +423,10 @@
             margin: 20px auto 30px;
             padding: 0 8%;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
             flex-wrap: wrap;
             gap: 20px;
-        }
-
-        .filter-left {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .filter-left h3 {
-            font-weight: 600;
-            font-size: 1.2rem;
         }
 
         .filter-right {
@@ -445,6 +434,42 @@
             align-items: center;
             gap: 15px;
             flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0,0,0,0.05);
+            border-radius: 40px;
+            padding: 4px 8px 4px 16px;
+        }
+
+        .filter-group span {
+            font-size: 0.85rem;
+            color: #555;
+        }
+
+        .pill-btn {
+            background: transparent;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            color: #555;
+        }
+
+        .pill-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .pill-btn.active {
+            background: var(--apple-blue);
+            color: white;
         }
 
         .sort-btn {
@@ -472,77 +497,7 @@
             background: rgba(0,0,0,0.08);
         }
 
-        /* DROPDOWN */
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .dropdown-btn {
-            background: rgba(0, 0, 0, 0.03);
-            border: 1px solid rgba(0,0,0,0.05);
-            border-radius: 40px;
-            padding: 8px 16px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s;
-        }
-
-        .dropdown-btn svg {
-            width: 14px;
-            height: 14px;
-            stroke: #555;
-        }
-
-        .dropdown-btn:hover {
-            background: rgba(0, 0, 0, 0.06);
-        }
-
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            margin-top: 8px;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            min-width: 200px;
-            opacity: 0;
-            visibility: hidden;
-            transform: scale(0.95) translateY(-10px);
-            transition: all 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
-            z-index: 1000;
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-
-        .dropdown-menu.active {
-            opacity: 1;
-            visibility: visible;
-            transform: scale(1) translateY(0);
-        }
-
-        .dropdown-menu a {
-            display: block;
-            padding: 12px 20px;
-            color: #333;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .dropdown-menu a:hover {
-            background: rgba(0, 0, 0, 0.05);
-        }
-
-        /* ============================================
-           USER MANAGEMENT PANEL
-        ============================================ */
+        /* USER MANAGEMENT PANEL */
         .user-panel-modal {
             display: none;
             position: fixed;
@@ -577,10 +532,40 @@
             box-shadow: 0 25px 50px rgba(0,0,0,0.2);
             transform: scale(0.95);
             transition: transform 0.3s ease;
+            position: relative;
         }
 
         .user-panel-modal.active .user-panel {
             transform: scale(1);
+        }
+
+        /* Close button outside the panel */
+        .panel-close-btn {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 44px;
+            height: 44px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 1px solid rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+
+        .panel-close-btn:hover {
+            transform: scale(1.05);
+            background: #f5f5f5;
+        }
+
+        .panel-close-btn span {
+            font-size: 24px;
+            color: #666;
         }
 
         .user-list-panel {
@@ -601,26 +586,6 @@
         .user-list-header h2 {
             font-size: 1.5rem;
             font-weight: 600;
-        }
-
-        .close-panel {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: #666;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-        }
-
-        .close-panel:hover {
-            background: rgba(0,0,0,0.08);
-            transform: scale(1.05);
         }
 
         .user-search {
@@ -667,17 +632,6 @@
 
         .user-list-item.active {
             background: rgba(0, 113, 227, 0.1);
-        }
-
-        .online-indicator {
-            position: absolute;
-            bottom: 2px;
-            right: 12px;
-            width: 10px;
-            height: 10px;
-            background: #4cd964;
-            border-radius: 50%;
-            border: 2px solid white;
         }
 
         .user-list-avatar {
@@ -792,46 +746,67 @@
             color: #1d1d1f;
         }
 
-        .action-buttons {
+        /* PILL BUTTONS GROUP for actions */
+        .action-pill-group {
             display: flex;
             gap: 12px;
             flex-wrap: wrap;
             margin-top: 20px;
             padding: 0 24px 24px;
+            justify-content: center;
         }
 
-        .action-btn {
-            padding: 10px 20px;
-            border-radius: 40px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: none;
+        .action-pill {
+            position: relative;
+            display: inline-flex;
+            background: rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0,0,0,0.05);
+            border-radius: 100px;
+            overflow: hidden;
         }
 
-        .action-btn.make-admin {
+        .action-pill-inner {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            height: calc(100% - 4px);
             background: var(--apple-blue);
+            border-radius: 100px;
+            transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .action-pill-btn {
+            position: relative;
+            z-index: 2;
+            background: transparent;
+            border: none;
+            padding: 10px 28px;
+            cursor: pointer;
+            font-weight: 600;
+            border-radius: 100px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            color: #555;
+        }
+
+        .action-pill-btn.active {
             color: white;
         }
 
-        .action-btn.remove-admin {
-            background: #ff9800;
-            color: white;
+        .action-pill-btn:hover {
+            color: #1d1d1f;
         }
 
-        .action-btn.ban {
+        /* Ban pill specific */
+        .action-pill.ban-pill .action-pill-inner {
             background: #ff3b30;
-            color: white;
         }
 
-        .action-btn.ip-ban {
-            background: #555;
-            color: white;
-        }
-
-        .action-btn:hover {
-            transform: scale(1.02);
-            opacity: 0.9;
+        /* Remove Admin pill specific */
+        .action-pill.remove-pill .action-pill-inner {
+            background: #ff9800;
         }
 
         /* RECENT PROJECTS GRID */
@@ -981,8 +956,6 @@
         }
 
         .create-option svg { width: 28px; height: 28px; stroke: var(--apple-blue); }
-        .create-option-text h4 { font-weight: 600; margin-bottom: 4px; }
-        .create-option-text span { font-size: 13px; color: #86868b; }
 
         .close-modal {
             margin-top: 20px;
@@ -994,11 +967,42 @@
             cursor: pointer;
         }
 
-        .user-list, .message-item {
+        .message-item {
             padding: 12px;
             border-bottom: 1px solid #e5e5e5;
         }
         .message-title { font-weight: 600; }
+
+        /* Custom Toast Notification */
+        .toast-notification {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(30, 30, 35, 0.95);
+            backdrop-filter: blur(20px);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            z-index: 10000;
+            transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .toast-notification.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast-notification.success {
+            background: rgba(46, 125, 50, 0.95);
+        }
+
+        .toast-notification.error {
+            background: rgba(211, 47, 47, 0.95);
+        }
 
         @media (max-width: 768px) {
             .glass-header { padding: 100px 5% 30px; }
@@ -1007,12 +1011,14 @@
             .category-icon-card { padding: 6px 12px; }
             .category-icon-card svg { width: 18px; height: 18px; }
             .category-icon-card span { font-size: 9px; }
-            .filter-bar { flex-direction: column; align-items: stretch; }
-            .filter-right { justify-content: space-between; }
+            .filter-bar { justify-content: center; }
+            .filter-right { justify-content: center; }
             .recent-grid { grid-template-columns: 1fr; }
             .user-panel { flex-direction: column; width: 95%; height: 90%; }
             .user-list-panel { width: 100%; height: 45%; border-right: none; border-bottom: 1px solid rgba(0,0,0,0.1); }
             .user-detail-panel { width: 100%; height: 55%; }
+            .panel-close-btn { top: -15px; right: -15px; width: 36px; height: 36px; }
+            .action-pill-btn { padding: 8px 20px; font-size: 0.8rem; }
         }
     </style>
 </head>
@@ -1028,6 +1034,9 @@
             </div>
         </div>
     </div>
+
+    <!-- Custom Toast Notification -->
+    <div id="toastNotification" class="toast-notification"></div>
 
     <div class="main-content">
         <div id="adminContent" style="display: none;">
@@ -1127,39 +1136,24 @@
                 </div>
             </header>
 
-            <!-- Filter Bar -->
+            <!-- Filter Bar - Owner and Category next to A-Z -->
             <div class="filter-bar">
-                <div class="filter-left">
-                    <h3>Recent</h3>
-                    <div class="dropdown">
-                        <button class="dropdown-btn" onclick="toggleDropdown('ownerMenu')">
-                            Any owner
-                            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-                        </button>
-                        <div class="dropdown-menu" id="ownerMenu">
-                            <a onclick="filterByOwner('any'); closeDropdown('ownerMenu')">Any owner</a>
-                            <a onclick="filterByOwner('me'); closeDropdown('ownerMenu')">khalil mohammed (You)</a>
-                            <a onclick="filterByOwner('shared'); closeDropdown('ownerMenu')">Shared with you</a>
-                        </div>
-                    </div>
-                    <div class="dropdown">
-                        <button class="dropdown-btn" onclick="toggleDropdown('categoryMenu')">
-                            All Categories
-                            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-                        </button>
-                        <div class="dropdown-menu" id="categoryMenu">
-                            <a onclick="filterByCategoryDropdown('all'); closeDropdown('categoryMenu')">All Categories</a>
-                            <a onclick="filterByCategoryDropdown('documents'); closeDropdown('categoryMenu')">Documents</a>
-                            <a onclick="filterByCategoryDropdown('sheets'); closeDropdown('categoryMenu')">Sheets</a>
-                            <a onclick="filterByCategoryDropdown('schedule'); closeDropdown('categoryMenu')">Schedules</a>
-                            <a onclick="filterByCategoryDropdown('assignment'); closeDropdown('categoryMenu')">Assignments</a>
-                            <a onclick="filterByCategoryDropdown('exam'); closeDropdown('categoryMenu')">Exams</a>
-                            <a onclick="filterByCategoryDropdown('classwork'); closeDropdown('categoryMenu')">Classwork</a>
-                            <a onclick="filterByCategoryDropdown('homework'); closeDropdown('categoryMenu')">Homework</a>
-                        </div>
-                    </div>
-                </div>
                 <div class="filter-right">
+                    <div class="filter-group">
+                        <span>Owner:</span>
+                        <button class="pill-btn" id="ownerAnyBtn" onclick="setOwnerFilter('any')">Any</button>
+                        <button class="pill-btn" id="ownerMeBtn" onclick="setOwnerFilter('me')">Me</button>
+                        <button class="pill-btn" id="ownerSharedBtn" onclick="setOwnerFilter('shared')">Shared</button>
+                    </div>
+                    <div class="filter-group">
+                        <span>Category:</span>
+                        <button class="pill-btn active" id="catAllBtn" onclick="setCategoryFilter('all')">All</button>
+                        <button class="pill-btn" id="catExamBtn" onclick="setCategoryFilter('exam')">Exams</button>
+                        <button class="pill-btn" id="catScheduleBtn" onclick="setCategoryFilter('schedule')">Schedules</button>
+                        <button class="pill-btn" id="catClassworkBtn" onclick="setCategoryFilter('classwork')">Classwork</button>
+                        <button class="pill-btn" id="catAssignmentBtn" onclick="setCategoryFilter('assignment')">Assignments</button>
+                        <button class="pill-btn" id="catHomeworkBtn" onclick="setCategoryFilter('homework')">Homework</button>
+                    </div>
                     <button class="sort-btn" id="sortBtn" onclick="toggleSort()">
                         <svg viewBox="0 0 24 24"><polyline points="6 15 12 9 18 15"/></svg>
                         A-Z
@@ -1174,13 +1168,15 @@
         </div>
     </div>
 
-    <!-- USER MANAGEMENT PANEL -->
+    <!-- USER MANAGEMENT PANEL - with single close button outside -->
     <div class="user-panel-modal" id="userPanelModal">
         <div class="user-panel">
+            <div class="panel-close-btn" onclick="closeUserManagementPanel()">
+                <span>✕</span>
+            </div>
             <div class="user-list-panel">
                 <div class="user-list-header">
                     <h2>User Management</h2>
-                    <button class="close-panel" onclick="closeUserManagementPanel()">✕</button>
                 </div>
                 <div class="user-search">
                     <input type="text" id="userSearchInput" placeholder="Search users...">
@@ -1188,9 +1184,6 @@
                 <div class="users-scroll" id="usersListPanel"></div>
             </div>
             <div class="user-detail-panel" id="userDetailPanel">
-                <div class="user-detail-header">
-                    <button class="close-panel" onclick="closeUserManagementPanel()">✕</button>
-                </div>
                 <div id="userDetailContent">
                     <div style="text-align: center; padding: 60px; color: #666;">Select a user to view details</div>
                 </div>
@@ -1271,17 +1264,29 @@
 
         let projects = [];
         let currentCategory = 'all';
+        let currentOwnerFilter = 'any';
         let currentSort = 'az';
         let messages = [{ id: 1, title: 'Welcome to Admin Dashboard', read: false }];
         let selectedUserId = null;
 
+        // Toast notification function
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toastNotification');
+            toast.textContent = message;
+            toast.className = `toast-notification ${type}`;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
         // Sample projects
         const sampleProjects = [
-            { id: 1, title: 'Final Exam - Grade 12', type: 'exam', date: new Date().toISOString(), category: 'exam' },
-            { id: 2, title: 'Weekly Class Schedule', type: 'schedule', date: new Date().toISOString(), category: 'schedule' },
-            { id: 3, title: 'Mathematics Notes', type: 'classwork', date: new Date().toISOString(), category: 'classwork' },
-            { id: 4, title: 'Physics Assignment', type: 'assignment', date: new Date().toISOString(), category: 'assignment' },
-            { id: 5, title: 'Algebra Homework', type: 'homework', date: new Date().toISOString(), category: 'homework' }
+            { id: 1, title: 'Final Exam - Grade 12', type: 'exam', date: new Date().toISOString(), category: 'exam', owner: 'me' },
+            { id: 2, title: 'Weekly Class Schedule', type: 'schedule', date: new Date().toISOString(), category: 'schedule', owner: 'me' },
+            { id: 3, title: 'Mathematics Notes', type: 'classwork', date: new Date().toISOString(), category: 'classwork', owner: 'shared' },
+            { id: 4, title: 'Physics Assignment', type: 'assignment', date: new Date().toISOString(), category: 'assignment', owner: 'me' },
+            { id: 5, title: 'Algebra Homework', type: 'homework', date: new Date().toISOString(), category: 'homework', owner: 'shared' }
         ];
 
         function loadProjects() { 
@@ -1292,11 +1297,23 @@
 
         function renderProjects() {
             let filtered = [...projects];
+            
+            // Filter by owner
+            if (currentOwnerFilter === 'me') {
+                filtered = filtered.filter(p => p.owner === 'me');
+            } else if (currentOwnerFilter === 'shared') {
+                filtered = filtered.filter(p => p.owner === 'shared');
+            }
+            
+            // Filter by category
             const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
             if(searchTerm) filtered = filtered.filter(p => p.title.toLowerCase().includes(searchTerm));
             if(currentCategory !== 'all') filtered = filtered.filter(p => p.category === currentCategory);
+            
+            // Sort
             if(currentSort === 'az') filtered.sort((a,b) => a.title.localeCompare(b.title));
             else filtered.sort((a,b) => b.title.localeCompare(a.title));
+            
             const grid = document.getElementById('projectsGrid');
             if(filtered.length === 0) { 
                 grid.innerHTML = '<div class="empty-state"><h3>No projects found</h3><p>Try a different search or create a new project</p></div>'; 
@@ -1322,55 +1339,66 @@
             let title = `${type.charAt(0).toUpperCase() + type.slice(1)} ${new Date().toLocaleDateString()}`;
             messages.unshift({ id: Date.now(), title: `Added to "${title}"`, read: false });
             updateMessagesBadge();
-            projects.unshift({ id: Date.now(), title, type, date: new Date().toISOString(), category: type });
+            projects.unshift({ id: Date.now(), title, type, date: new Date().toISOString(), category: type, owner: 'me' });
             localStorage.setItem('adminProjects', JSON.stringify(projects));
             renderProjects();
             closeModal('createModal');
-            alert(`Created new ${type}: ${title}`);
+            showToast(`Created new ${type}: ${title}`, 'success');
         }
 
         function toggleSort() {
             const btn = document.getElementById('sortBtn');
-            if(currentSort === 'az') { currentSort = 'za'; btn.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="18 9 12 15 6 9"/></svg> Z-A'; }
-            else { currentSort = 'az'; btn.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="6 15 12 9 18 15"/></svg> A-Z'; }
+            if(currentSort === 'az') { 
+                currentSort = 'za'; 
+                btn.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="18 9 12 15 6 9"/></svg> Z-A'; 
+            } else { 
+                currentSort = 'az'; 
+                btn.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="6 15 12 9 18 15"/></svg> A-Z'; 
+            }
+            renderProjects();
+        }
+
+        // Owner filter functions
+        function setOwnerFilter(filter) {
+            currentOwnerFilter = filter;
+            document.getElementById('ownerAnyBtn').classList.remove('active');
+            document.getElementById('ownerMeBtn').classList.remove('active');
+            document.getElementById('ownerSharedBtn').classList.remove('active');
+            if (filter === 'any') document.getElementById('ownerAnyBtn').classList.add('active');
+            else if (filter === 'me') document.getElementById('ownerMeBtn').classList.add('active');
+            else if (filter === 'shared') document.getElementById('ownerSharedBtn').classList.add('active');
+            renderProjects();
+        }
+
+        // Category filter functions
+        function setCategoryFilter(category) {
+            currentCategory = category;
+            document.getElementById('catAllBtn').classList.remove('active');
+            document.getElementById('catExamBtn').classList.remove('active');
+            document.getElementById('catScheduleBtn').classList.remove('active');
+            document.getElementById('catClassworkBtn').classList.remove('active');
+            document.getElementById('catAssignmentBtn').classList.remove('active');
+            document.getElementById('catHomeworkBtn').classList.remove('active');
+            
+            if (category === 'all') document.getElementById('catAllBtn').classList.add('active');
+            else if (category === 'exam') document.getElementById('catExamBtn').classList.add('active');
+            else if (category === 'schedule') document.getElementById('catScheduleBtn').classList.add('active');
+            else if (category === 'classwork') document.getElementById('catClassworkBtn').classList.add('active');
+            else if (category === 'assignment') document.getElementById('catAssignmentBtn').classList.add('active');
+            else if (category === 'homework') document.getElementById('catHomeworkBtn').classList.add('active');
+            
+            // Also update category icons
+            document.querySelectorAll('.category-icon-card').forEach(c => c.classList.remove('active'));
+            if (category !== 'all') {
+                const icon = document.querySelector(`.category-icon-card[data-cat="${category}"]`);
+                if (icon) icon.classList.add('active');
+            }
             renderProjects();
         }
 
         function filterByCategory(category, el) {
-            currentCategory = category;
-            document.querySelectorAll('.category-icon-card').forEach(c => c.classList.remove('active'));
-            if(el) el.classList.add('active');
-            const btn = document.querySelector('#categoryMenu')?.previousElementSibling;
-            if(btn) btn.innerHTML = (category === 'all' ? 'All Categories' : category.charAt(0).toUpperCase() + category.slice(1)) + ' <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
-            renderProjects();
+            setCategoryFilter(category);
         }
-
-        function filterByCategoryDropdown(category) {
-            currentCategory = category;
-            document.querySelectorAll('.category-icon-card').forEach(c => { if(c.dataset.cat === category) c.classList.add('active'); else c.classList.remove('active'); });
-            if(category === 'all') document.querySelectorAll('.category-icon-card').forEach(c => c.classList.remove('active'));
-            const btn = document.querySelector('#categoryMenu')?.previousElementSibling;
-            if(btn) btn.innerHTML = (category === 'all' ? 'All Categories' : category.charAt(0).toUpperCase() + category.slice(1)) + ' <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
-            renderProjects(); 
-            closeDropdown('categoryMenu');
-        }
-
-        function filterByOwner(type) {
-            const btn = document.querySelector('#ownerMenu')?.previousElementSibling;
-            if(btn) {
-                if(type === 'any') btn.innerHTML = 'Any owner <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
-                else if(type === 'me') btn.innerHTML = 'khalil mohammed (You) <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
-                else btn.innerHTML = 'Shared with you <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
-            }
-            renderProjects(); 
-            closeDropdown('ownerMenu');
-        }
-
-        function toggleDropdown(id) { 
-            document.querySelectorAll('.dropdown-menu').forEach(m => { if(m.id !== id) m.classList.remove('active'); }); 
-            document.getElementById(id).classList.toggle('active'); 
-        }
-        function closeDropdown(id) { document.getElementById(id)?.classList.remove('active'); }
 
         // ============ USER MANAGEMENT FUNCTIONS ============
         async function fetchUsers() {
@@ -1385,7 +1413,6 @@
                         name: data.name || (data.email ? data.email.split('@')[0] : 'User'),
                         isAdmin: data.isAdmin || false,
                         isBanned: data.isBanned || false,
-                        ipBanned: data.ipBanned || false,
                         avatarInitial: (data.name || (data.email ? data.email.charAt(0).toUpperCase() : 'U'))
                     });
                 });
@@ -1432,6 +1459,7 @@
                 const user = doc.data();
                 const isHeadAdmin = user.email === HEAD_ADMIN_EMAIL;
                 const name = user.name || (user.email ? user.email.split('@')[0] : 'User');
+                const isBanned = user.isBanned || false;
                 
                 document.getElementById('userDetailContent').innerHTML = `
                     <div class="user-profile-section">
@@ -1443,16 +1471,36 @@
                     <div class="user-info-grid">
                         <div class="info-row"><span class="info-label">Email</span><span class="info-value">${escapeHtml(user.email || 'No email')}</span></div>
                         <div class="info-row"><span class="info-label">Role</span><span class="info-value">${user.isAdmin ? 'Admin' : 'User'}</span></div>
-                        <div class="info-row"><span class="info-label">Status</span><span class="info-value">${user.isBanned ? 'Banned' : 'Active'}</span></div>
-                        <div class="info-row"><span class="info-label">IP Banned</span><span class="info-value">${user.ipBanned ? 'Yes' : 'No'}</span></div>
+                        <div class="info-row"><span class="info-label">Status</span><span class="info-value">${isBanned ? 'Banned' : 'Active'}</span></div>
                     </div>
-                    <div class="action-buttons">
-                        ${!isHeadAdmin && !user.isAdmin ? '<button class="action-btn make-admin" onclick="makeAdmin(\''+userId+'\')">Make Admin</button>' : ''}
-                        ${!isHeadAdmin && user.isAdmin ? '<button class="action-btn remove-admin" onclick="removeAdmin(\''+userId+'\')">Remove Admin</button>' : ''}
-                        <button class="action-btn ban" onclick="${user.isBanned ? `unbanUser('${userId}')` : `banUser('${userId}')`}">${user.isBanned ? 'Unban User' : 'Ban User'}</button>
-                        <button class="action-btn ip-ban" onclick="${user.ipBanned ? `unbanIp('${userId}')` : `banIp('${userId}')`}">${user.ipBanned ? 'Remove IP Ban' : 'IP Ban'}</button>
+                    <div class="action-pill-group">
+                        ${!isHeadAdmin ? `
+                        <div class="action-pill" id="adminPill">
+                            <div class="action-pill-inner" id="adminPillInner" style="width: 50%; transform: translateX(${user.isAdmin ? '0%' : '100%'});"></div>
+                            <button class="action-pill-btn" id="makeAdminBtn" onclick="toggleAdmin('${userId}', ${user.isAdmin})" style="${user.isAdmin ? 'color: white;' : ''}">Make Admin</button>
+                            <button class="action-pill-btn" id="removeAdminBtn" onclick="toggleAdmin('${userId}', ${user.isAdmin})" style="${!user.isAdmin ? 'color: white;' : ''}">Remove Admin</button>
+                        </div>
+                        ` : '<div style="text-align:center; padding:10px; color:#999;">Head Admin - Cannot be modified</div>'}
+                        
+                        <div class="action-pill ban-pill" id="banPill">
+                            <div class="action-pill-inner" id="banPillInner" style="width: 50%; transform: translateX(${isBanned ? '0%' : '100%'});"></div>
+                            <button class="action-pill-btn" id="banBtn" onclick="toggleBan('${userId}', ${isBanned})" style="${isBanned ? 'color: white;' : ''}">Ban User</button>
+                            <button class="action-pill-btn" id="unbanBtn" onclick="toggleBan('${userId}', ${isBanned})" style="${!isBanned ? 'color: white;' : ''}">Unban User</button>
+                        </div>
                     </div>
                 `;
+                
+                // Update pill positions
+                if (!isHeadAdmin) {
+                    const adminPillInner = document.getElementById('adminPillInner');
+                    if (adminPillInner) {
+                        adminPillInner.style.transform = user.isAdmin ? 'translateX(0%)' : 'translateX(100%)';
+                    }
+                }
+                const banPillInner = document.getElementById('banPillInner');
+                if (banPillInner) {
+                    banPillInner.style.transform = isBanned ? 'translateX(0%)' : 'translateX(100%)';
+                }
             } catch(e) {
                 console.log("Error rendering user details", e);
             }
@@ -1460,53 +1508,45 @@
 
         async function selectUser(id) { selectedUserId = id; await renderUserList(); }
         
-        async function makeAdmin(id) { 
-            try { 
-                await db.collection('users').doc(id).update({ isAdmin: true }); 
-                alert('User is now an admin'); 
-                await renderUserList(); // Refresh the list
-                if(selectedUserId === id) await renderUserDetails(id); // Refresh details if same user
-            } catch(e) { alert('Error: ' + e.message); } 
+        async function toggleAdmin(id, isCurrentlyAdmin) {
+            if (isCurrentlyAdmin) {
+                try {
+                    const doc = await db.collection('users').doc(id).get();
+                    if(doc.data().email === HEAD_ADMIN_EMAIL) { 
+                        showToast('Cannot remove head admin', 'error');
+                        return; 
+                    }
+                    await db.collection('users').doc(id).update({ isAdmin: false });
+                    showToast('Admin privileges removed', 'success');
+                    await renderUserList();
+                    if(selectedUserId === id) await renderUserDetails(id);
+                } catch(e) { showToast('Error: ' + e.message, 'error'); }
+            } else {
+                try {
+                    await db.collection('users').doc(id).update({ isAdmin: true });
+                    showToast('User is now an admin', 'success');
+                    await renderUserList();
+                    if(selectedUserId === id) await renderUserDetails(id);
+                } catch(e) { showToast('Error: ' + e.message, 'error'); }
+            }
         }
         
-        async function removeAdmin(id) { 
-            const doc = await db.collection('users').doc(id).get(); 
-            if(doc.data().email === HEAD_ADMIN_EMAIL) { 
-                alert('Cannot remove head admin'); 
-                return; 
-            } 
-            await db.collection('users').doc(id).update({ isAdmin: false }); 
-            alert('Admin privileges removed'); 
-            await renderUserList(); // Refresh the list
-            if(selectedUserId === id) await renderUserDetails(id); // Refresh details if same user
-        }
-        
-        async function banUser(id) { 
-            await db.collection('users').doc(id).update({ isBanned: true }); 
-            alert('User banned'); 
-            await renderUserList(); // Refresh the list
-            if(selectedUserId === id) await renderUserDetails(id); // Refresh details if same user
-        }
-        
-        async function unbanUser(id) { 
-            await db.collection('users').doc(id).update({ isBanned: false }); 
-            alert('User unbanned'); 
-            await renderUserList(); // Refresh the list
-            if(selectedUserId === id) await renderUserDetails(id); // Refresh details if same user
-        }
-        
-        async function banIp(id) { 
-            await db.collection('users').doc(id).update({ ipBanned: true }); 
-            alert('IP banned'); 
-            await renderUserList(); // Refresh the list
-            if(selectedUserId === id) await renderUserDetails(id); // Refresh details if same user
-        }
-        
-        async function unbanIp(id) { 
-            await db.collection('users').doc(id).update({ ipBanned: false }); 
-            alert('IP ban removed'); 
-            await renderUserList(); // Refresh the list
-            if(selectedUserId === id) await renderUserDetails(id); // Refresh details if same user
+        async function toggleBan(id, isCurrentlyBanned) {
+            if (isCurrentlyBanned) {
+                try {
+                    await db.collection('users').doc(id).update({ isBanned: false });
+                    showToast('User has been unbanned', 'success');
+                    await renderUserList();
+                    if(selectedUserId === id) await renderUserDetails(id);
+                } catch(e) { showToast('Error: ' + e.message, 'error'); }
+            } else {
+                try {
+                    await db.collection('users').doc(id).update({ isBanned: true });
+                    showToast('User has been banned', 'success');
+                    await renderUserList();
+                    if(selectedUserId === id) await renderUserDetails(id);
+                } catch(e) { showToast('Error: ' + e.message, 'error'); }
+            }
         }
 
         function openUserManagementPanel() { 
@@ -1517,7 +1557,6 @@
         function closeUserManagementPanel() { 
             document.getElementById('userPanelModal').classList.remove('active'); 
             selectedUserId = null; 
-            renderUserList(); // Refresh when closing to ensure data is current
         }
         
         if(document.getElementById('userSearchInput')) {
@@ -1530,7 +1569,7 @@
         function openCreateModal() { openModal('createModal'); }
         function openMessagesModal() { loadMessages(); openModal('messagesModal'); }
         function openApplications() { openModal('applicationsModal'); }
-        function openAI() { alert('AI Assistant coming soon!'); }
+        function openAI() { showToast('AI Assistant coming soon!', 'success'); }
         function openModal(id) { document.getElementById(id).classList.add('active'); }
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
@@ -1548,8 +1587,6 @@
         if(searchInput) searchInput.addEventListener('input', () => { updateClear(); renderProjects(); });
         if(clearBtn) clearBtn.addEventListener('click', clearSearch);
 
-        document.addEventListener('click', e => { if(!e.target.closest('.dropdown')) document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('active')); });
-
         // ============ AUTH CHECK ============
         const entrance = document.getElementById('adminEntrance');
         const adminContent = document.getElementById('adminContent');
@@ -1560,14 +1597,11 @@
         }, 2000);
 
         auth.onAuthStateChanged(async (user) => {
-            console.log("Auth check - User:", user ? user.email : "No user");
-            
             if (user) {
                 try {
                     const userDoc = await db.collection('users').doc(user.uid).get();
                     const userData = userDoc.data();
                     
-                    // Check if banned
                     if (userData && userData.isBanned === true) {
                         await auth.signOut();
                         if (adminContent) adminContent.style.display = 'none';
@@ -1579,17 +1613,11 @@
                         return;
                     }
                     
-                    // Check if head admin (by email) OR admin from Firestore
                     const isHeadAdmin = user.email === HEAD_ADMIN_EMAIL;
                     const isFirestoreAdmin = userData && userData.isAdmin === true;
                     const isAdmin = isHeadAdmin || isFirestoreAdmin;
                     
-                    console.log("Is Head Admin:", isHeadAdmin);
-                    console.log("Is Firestore Admin:", isFirestoreAdmin);
-                    console.log("Is Admin:", isAdmin);
-                    
                     if (isAdmin) {
-                        // Update head admin in Firestore if needed
                         if (isHeadAdmin && !isFirestoreAdmin) {
                             await db.collection('users').doc(user.uid).set({
                                 isAdmin: true,
