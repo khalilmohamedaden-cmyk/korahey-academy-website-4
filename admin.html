@@ -417,7 +417,7 @@
             font-weight: 600;
         }
 
-        /* FILTER BAR */
+        /* FILTER BAR - with dropdowns */
         .filter-bar {
             max-width: 1400px;
             margin: 20px auto 30px;
@@ -436,40 +436,74 @@
             flex-wrap: wrap;
         }
 
-        .filter-group {
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        /* Dropdown Styles with Metalball Animation */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-btn {
             background: rgba(0, 0, 0, 0.03);
             border: 1px solid rgba(0,0,0,0.05);
             border-radius: 40px;
-            padding: 4px 8px 4px 16px;
-        }
-
-        .filter-group span {
-            font-size: 0.85rem;
-            color: #555;
-        }
-
-        .pill-btn {
-            background: transparent;
-            border: none;
-            padding: 6px 16px;
-            border-radius: 40px;
-            cursor: pointer;
+            padding: 8px 20px;
             font-size: 0.85rem;
             font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
             transition: all 0.2s;
             color: #555;
         }
 
-        .pill-btn:hover {
-            background: rgba(0, 0, 0, 0.05);
+        .dropdown-btn svg {
+            width: 14px;
+            height: 14px;
+            stroke: #555;
+            transition: transform 0.3s ease;
         }
 
-        .pill-btn.active {
-            background: var(--apple-blue);
-            color: white;
+        .dropdown-btn:hover {
+            background: rgba(0, 0, 0, 0.06);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 12px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.9) translateY(-10px);
+            transition: all 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
+            z-index: 1000;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .dropdown-menu.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1) translateY(0);
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 12px 20px;
+            color: #333;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .dropdown-menu a:hover {
+            background: rgba(0, 0, 0, 0.05);
         }
 
         .sort-btn {
@@ -749,7 +783,7 @@
         /* PILL BUTTONS GROUP for actions */
         .action-pill-group {
             display: flex;
-            gap: 12px;
+            gap: 20px;
             flex-wrap: wrap;
             margin-top: 20px;
             padding: 0 24px 24px;
@@ -759,22 +793,27 @@
         .action-pill {
             position: relative;
             display: inline-flex;
-            background: rgba(0, 0, 0, 0.03);
-            border: 1px solid rgba(0,0,0,0.05);
+            background: rgba(0, 0, 0, 0.05);
             border-radius: 100px;
             overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.08);
         }
 
         .action-pill-inner {
             position: absolute;
             top: 2px;
             left: 2px;
+            width: calc(50% - 2px);
             height: calc(100% - 4px);
             background: var(--apple-blue);
             border-radius: 100px;
             transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             z-index: 1;
             pointer-events: none;
+        }
+
+        .action-pill.ban-pill .action-pill-inner {
+            background: #ff3b30;
         }
 
         .action-pill-btn {
@@ -787,7 +826,7 @@
             font-weight: 600;
             border-radius: 100px;
             font-size: 0.9rem;
-            transition: all 0.2s;
+            transition: color 0.2s;
             color: #555;
         }
 
@@ -795,18 +834,14 @@
             color: white;
         }
 
-        .action-pill-btn:hover {
-            color: #1d1d1f;
-        }
-
-        /* Ban pill specific */
-        .action-pill.ban-pill .action-pill-inner {
-            background: #ff3b30;
-        }
-
-        /* Remove Admin pill specific */
-        .action-pill.remove-pill .action-pill-inner {
-            background: #ff9800;
+        .head-admin-message {
+            text-align: center;
+            padding: 20px;
+            color: #ff9800;
+            background: rgba(255,152,0,0.1);
+            border-radius: 20px;
+            margin: 20px;
+            font-weight: 500;
         }
 
         /* RECENT PROJECTS GRID */
@@ -1136,24 +1171,41 @@
                 </div>
             </header>
 
-            <!-- Filter Bar - Owner and Category next to A-Z -->
+            <!-- Filter Bar - Dropdowns for Owner and Category -->
             <div class="filter-bar">
                 <div class="filter-right">
-                    <div class="filter-group">
-                        <span>Owner:</span>
-                        <button class="pill-btn" id="ownerAnyBtn" onclick="setOwnerFilter('any')">Any</button>
-                        <button class="pill-btn" id="ownerMeBtn" onclick="setOwnerFilter('me')">Me</button>
-                        <button class="pill-btn" id="ownerSharedBtn" onclick="setOwnerFilter('shared')">Shared</button>
+                    <!-- Owner Dropdown -->
+                    <div class="dropdown">
+                        <button class="dropdown-btn" onclick="toggleDropdown('ownerMenu')">
+                            <span id="ownerSelected">Any owner</span>
+                            <svg viewBox="0 0 24 24" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button>
+                        <div class="dropdown-menu" id="ownerMenu">
+                            <a onclick="setOwnerFilter('any'); closeDropdown('ownerMenu')">Any owner</a>
+                            <a onclick="setOwnerFilter('me'); closeDropdown('ownerMenu')">khalil mohammed (You)</a>
+                            <a onclick="setOwnerFilter('shared'); closeDropdown('ownerMenu')">Shared with you</a>
+                        </div>
                     </div>
-                    <div class="filter-group">
-                        <span>Category:</span>
-                        <button class="pill-btn active" id="catAllBtn" onclick="setCategoryFilter('all')">All</button>
-                        <button class="pill-btn" id="catExamBtn" onclick="setCategoryFilter('exam')">Exams</button>
-                        <button class="pill-btn" id="catScheduleBtn" onclick="setCategoryFilter('schedule')">Schedules</button>
-                        <button class="pill-btn" id="catClassworkBtn" onclick="setCategoryFilter('classwork')">Classwork</button>
-                        <button class="pill-btn" id="catAssignmentBtn" onclick="setCategoryFilter('assignment')">Assignments</button>
-                        <button class="pill-btn" id="catHomeworkBtn" onclick="setCategoryFilter('homework')">Homework</button>
+
+                    <!-- Category Dropdown -->
+                    <div class="dropdown">
+                        <button class="dropdown-btn" onclick="toggleDropdown('categoryMenu')">
+                            <span id="categorySelected">All Categories</span>
+                            <svg viewBox="0 0 24 24" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button>
+                        <div class="dropdown-menu" id="categoryMenu">
+                            <a onclick="setCategoryFilter('all'); closeDropdown('categoryMenu')">All Categories</a>
+                            <a onclick="setCategoryFilter('documents'); closeDropdown('categoryMenu')">Documents</a>
+                            <a onclick="setCategoryFilter('sheets'); closeDropdown('categoryMenu')">Sheets</a>
+                            <a onclick="setCategoryFilter('schedule'); closeDropdown('categoryMenu')">Schedules</a>
+                            <a onclick="setCategoryFilter('assignment'); closeDropdown('categoryMenu')">Assignments</a>
+                            <a onclick="setCategoryFilter('exam'); closeDropdown('categoryMenu')">Exams</a>
+                            <a onclick="setCategoryFilter('classwork'); closeDropdown('categoryMenu')">Classwork</a>
+                            <a onclick="setCategoryFilter('homework'); closeDropdown('categoryMenu')">Homework</a>
+                        </div>
                     </div>
+
+                    <!-- Sort Button -->
                     <button class="sort-btn" id="sortBtn" onclick="toggleSort()">
                         <svg viewBox="0 0 24 24"><polyline points="6 15 12 9 18 15"/></svg>
                         A-Z
@@ -1168,7 +1220,7 @@
         </div>
     </div>
 
-    <!-- USER MANAGEMENT PANEL - with single close button outside -->
+    <!-- USER MANAGEMENT PANEL -->
     <div class="user-panel-modal" id="userPanelModal">
         <div class="user-panel">
             <div class="panel-close-btn" onclick="closeUserManagementPanel()">
@@ -1361,31 +1413,19 @@
         // Owner filter functions
         function setOwnerFilter(filter) {
             currentOwnerFilter = filter;
-            document.getElementById('ownerAnyBtn').classList.remove('active');
-            document.getElementById('ownerMeBtn').classList.remove('active');
-            document.getElementById('ownerSharedBtn').classList.remove('active');
-            if (filter === 'any') document.getElementById('ownerAnyBtn').classList.add('active');
-            else if (filter === 'me') document.getElementById('ownerMeBtn').classList.add('active');
-            else if (filter === 'shared') document.getElementById('ownerSharedBtn').classList.add('active');
+            const ownerSelected = document.getElementById('ownerSelected');
+            if (filter === 'any') ownerSelected.textContent = 'Any owner';
+            else if (filter === 'me') ownerSelected.textContent = 'khalil mohammed (You)';
+            else if (filter === 'shared') ownerSelected.textContent = 'Shared with you';
             renderProjects();
         }
 
         // Category filter functions
         function setCategoryFilter(category) {
             currentCategory = category;
-            document.getElementById('catAllBtn').classList.remove('active');
-            document.getElementById('catExamBtn').classList.remove('active');
-            document.getElementById('catScheduleBtn').classList.remove('active');
-            document.getElementById('catClassworkBtn').classList.remove('active');
-            document.getElementById('catAssignmentBtn').classList.remove('active');
-            document.getElementById('catHomeworkBtn').classList.remove('active');
-            
-            if (category === 'all') document.getElementById('catAllBtn').classList.add('active');
-            else if (category === 'exam') document.getElementById('catExamBtn').classList.add('active');
-            else if (category === 'schedule') document.getElementById('catScheduleBtn').classList.add('active');
-            else if (category === 'classwork') document.getElementById('catClassworkBtn').classList.add('active');
-            else if (category === 'assignment') document.getElementById('catAssignmentBtn').classList.add('active');
-            else if (category === 'homework') document.getElementById('catHomeworkBtn').classList.add('active');
+            const categorySelected = document.getElementById('categorySelected');
+            if (category === 'all') categorySelected.textContent = 'All Categories';
+            else categorySelected.textContent = category.charAt(0).toUpperCase() + category.slice(1);
             
             // Also update category icons
             document.querySelectorAll('.category-icon-card').forEach(c => c.classList.remove('active'));
@@ -1400,7 +1440,35 @@
             setCategoryFilter(category);
         }
 
+        // Dropdown functions
+        function toggleDropdown(id) {
+            document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                if (menu.id !== id) menu.classList.remove('active');
+            });
+            document.getElementById(id).classList.toggle('active');
+        }
+
+        function closeDropdown(id) {
+            document.getElementById(id)?.classList.remove('active');
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.dropdown')) {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.classList.remove('active');
+                });
+            }
+        });
+
         // ============ USER MANAGEMENT FUNCTIONS ============
+        function getInitials(name) {
+            if (!name) return 'U';
+            const parts = name.trim().split(' ');
+            if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+            return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+        }
+
         async function fetchUsers() {
             try {
                 const snapshot = await db.collection('users').get();
@@ -1413,7 +1481,7 @@
                         name: data.name || (data.email ? data.email.split('@')[0] : 'User'),
                         isAdmin: data.isAdmin || false,
                         isBanned: data.isBanned || false,
-                        avatarInitial: (data.name || (data.email ? data.email.charAt(0).toUpperCase() : 'U'))
+                        avatarInitial: getInitials(data.name || (data.email ? data.email.split('@')[0] : 'User'))
                     });
                 });
                 if(document.getElementById('usersBadge')) document.getElementById('usersBadge').textContent = users.length;
@@ -1460,47 +1528,49 @@
                 const isHeadAdmin = user.email === HEAD_ADMIN_EMAIL;
                 const name = user.name || (user.email ? user.email.split('@')[0] : 'User');
                 const isBanned = user.isBanned || false;
+                const isAdmin = user.isAdmin || false;
+                
+                if (isHeadAdmin) {
+                    document.getElementById('userDetailContent').innerHTML = `
+                        <div class="user-profile-section">
+                            <div class="user-profile-avatar">${getInitials(name)}</div>
+                            <div class="user-profile-name">${escapeHtml(name)}</div>
+                            <div class="user-profile-email">${escapeHtml(user.email || 'No email')}</div>
+                            <span class="admin-badge">HEAD ADMIN</span>
+                        </div>
+                        <div class="head-admin-message">
+                            ⚡ Head Admin - Cannot be modified
+                        </div>
+                    `;
+                    return;
+                }
                 
                 document.getElementById('userDetailContent').innerHTML = `
                     <div class="user-profile-section">
-                        <div class="user-profile-avatar">${name.charAt(0).toUpperCase()}</div>
+                        <div class="user-profile-avatar">${getInitials(name)}</div>
                         <div class="user-profile-name">${escapeHtml(name)}</div>
                         <div class="user-profile-email">${escapeHtml(user.email || 'No email')}</div>
-                        ${user.isAdmin ? '<span class="admin-badge">ADMIN</span>' : ''}
+                        ${isAdmin ? '<span class="admin-badge">ADMIN</span>' : ''}
                     </div>
                     <div class="user-info-grid">
                         <div class="info-row"><span class="info-label">Email</span><span class="info-value">${escapeHtml(user.email || 'No email')}</span></div>
-                        <div class="info-row"><span class="info-label">Role</span><span class="info-value">${user.isAdmin ? 'Admin' : 'User'}</span></div>
+                        <div class="info-row"><span class="info-label">Role</span><span class="info-value">${isAdmin ? 'Admin' : 'User'}</span></div>
                         <div class="info-row"><span class="info-label">Status</span><span class="info-value">${isBanned ? 'Banned' : 'Active'}</span></div>
                     </div>
                     <div class="action-pill-group">
-                        ${!isHeadAdmin ? `
                         <div class="action-pill" id="adminPill">
-                            <div class="action-pill-inner" id="adminPillInner" style="width: 50%; transform: translateX(${user.isAdmin ? '0%' : '100%'});"></div>
-                            <button class="action-pill-btn" id="makeAdminBtn" onclick="toggleAdmin('${userId}', ${user.isAdmin})" style="${user.isAdmin ? 'color: white;' : ''}">Make Admin</button>
-                            <button class="action-pill-btn" id="removeAdminBtn" onclick="toggleAdmin('${userId}', ${user.isAdmin})" style="${!user.isAdmin ? 'color: white;' : ''}">Remove Admin</button>
+                            <div class="action-pill-inner" id="adminPillInner" style="transform: translateX(${isAdmin ? '0%' : '100%'});"></div>
+                            <button class="action-pill-btn ${isAdmin ? 'active' : ''}" id="makeAdminBtn" onclick="toggleAdmin('${userId}', ${isAdmin})">Make Admin</button>
+                            <button class="action-pill-btn ${!isAdmin ? 'active' : ''}" id="removeAdminBtn" onclick="toggleAdmin('${userId}', ${isAdmin})">Remove Admin</button>
                         </div>
-                        ` : '<div style="text-align:center; padding:10px; color:#999;">Head Admin - Cannot be modified</div>'}
                         
                         <div class="action-pill ban-pill" id="banPill">
-                            <div class="action-pill-inner" id="banPillInner" style="width: 50%; transform: translateX(${isBanned ? '0%' : '100%'});"></div>
-                            <button class="action-pill-btn" id="banBtn" onclick="toggleBan('${userId}', ${isBanned})" style="${isBanned ? 'color: white;' : ''}">Ban User</button>
-                            <button class="action-pill-btn" id="unbanBtn" onclick="toggleBan('${userId}', ${isBanned})" style="${!isBanned ? 'color: white;' : ''}">Unban User</button>
+                            <div class="action-pill-inner" id="banPillInner" style="transform: translateX(${isBanned ? '0%' : '100%'});"></div>
+                            <button class="action-pill-btn ${isBanned ? 'active' : ''}" id="banBtn" onclick="toggleBan('${userId}', ${isBanned})">Ban User</button>
+                            <button class="action-pill-btn ${!isBanned ? 'active' : ''}" id="unbanBtn" onclick="toggleBan('${userId}', ${isBanned})">Unban User</button>
                         </div>
                     </div>
                 `;
-                
-                // Update pill positions
-                if (!isHeadAdmin) {
-                    const adminPillInner = document.getElementById('adminPillInner');
-                    if (adminPillInner) {
-                        adminPillInner.style.transform = user.isAdmin ? 'translateX(0%)' : 'translateX(100%)';
-                    }
-                }
-                const banPillInner = document.getElementById('banPillInner');
-                if (banPillInner) {
-                    banPillInner.style.transform = isBanned ? 'translateX(0%)' : 'translateX(100%)';
-                }
             } catch(e) {
                 console.log("Error rendering user details", e);
             }
