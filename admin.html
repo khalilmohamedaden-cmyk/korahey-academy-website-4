@@ -774,6 +774,7 @@
             color: #1d1d1f;
         }
 
+        /* Single Pill Button for Admin */
         .action-pill-group {
             display: flex;
             gap: 20px;
@@ -783,54 +784,53 @@
             justify-content: center;
         }
 
-        .hero-btns-group-admin {
+        .single-pill {
             position: relative;
             display: inline-flex;
             background: rgba(0, 0, 0, 0.03);
             padding: 5px;
             border-radius: 100px;
             border: 1px solid rgba(0,0,0,0.08);
+            overflow: hidden;
+            cursor: pointer;
         }
 
-        .hero-pill-admin {
+        .single-pill-inner {
             position: absolute;
             top: 5px;
             left: 5px;
-            width: calc(50% - 5px);
+            width: calc(100% - 10px);
             height: calc(100% - 10px);
             background: var(--apple-blue);
             backdrop-filter: blur(15px);
             border-radius: 100px;
-            transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             z-index: 1;
             pointer-events: none;
         }
 
-        .hero-pill-admin.ban-pill {
+        .single-pill-inner.ban-mode {
             background: #ff3b30;
         }
 
-        .btn-admin {
+        .single-pill-text {
             position: relative;
             z-index: 2;
             background: transparent;
             border: none;
-            color: #555;
+            color: white;
             padding: 10px 28px;
             cursor: pointer;
             font-weight: 600;
             border-radius: 100px;
-            min-width: 120px;
+            min-width: 140px;
             font-size: 0.9rem;
-            transition: color 0.2s;
+            transition: all 0.2s;
+            text-align: center;
         }
 
-        .btn-admin.active {
-            color: white;
-        }
-
-        .btn-admin:hover {
-            color: #1d1d1f;
+        .single-pill-text:hover {
+            opacity: 0.9;
         }
 
         .head-admin-message {
@@ -1029,6 +1029,7 @@
             .user-list-panel { width: 100%; height: 45%; border-right: none; border-bottom: 1px solid rgba(0,0,0,0.1); }
             .user-detail-panel { width: 100%; height: 55%; }
             .panel-close-wrapper { top: -40px; right: 0; }
+            .single-pill-text { padding: 8px 20px; min-width: 120px; font-size: 0.8rem; }
         }
     </style>
 </head>
@@ -1186,7 +1187,7 @@
         </div>
     </div>
 
-    <!-- USER MANAGEMENT PANEL - X button OUTSIDE the box -->
+    <!-- USER MANAGEMENT PANEL -->
     <div class="user-panel-modal" id="userPanelModal">
         <div class="user-panel">
             <div class="panel-close-wrapper">
@@ -1508,49 +1509,18 @@
                         <div class="info-row"><span class="info-label">Status</span><span class="info-value">${isBanned ? 'Banned' : 'Active'}</span></div>
                     </div>
                     <div class="action-pill-group">
-                        <div class="hero-btns-group-admin" id="adminPillGroup">
-                            <div class="hero-pill-admin" id="adminPillInner" style="transform: translateX(${isAdmin ? '0%' : '100%'});"></div>
-                            <button class="btn-admin ${isAdmin ? 'active' : ''}" onmouseenter="moveAdminPill(true)" onmouseleave="resetAdminPill(${isAdmin})" onclick="toggleAdmin('${userId}', ${isAdmin})">Make Admin</button>
-                            <button class="btn-admin ${!isAdmin ? 'active' : ''}" onmouseenter="moveAdminPill(false)" onmouseleave="resetAdminPill(${isAdmin})" onclick="toggleAdmin('${userId}', ${isAdmin})">Remove Admin</button>
+                        <div class="single-pill" onclick="toggleAdmin('${userId}', ${isAdmin})">
+                            <div class="single-pill-inner" style="transform: scaleX(1);"></div>
+                            <div class="single-pill-text">${isAdmin ? 'Remove Admin' : 'Make Admin'}</div>
                         </div>
-                        
-                        <div class="hero-btns-group-admin" id="banPillGroup">
-                            <div class="hero-pill-admin ban-pill" id="banPillInner" style="transform: translateX(${isBanned ? '0%' : '100%'});"></div>
-                            <button class="btn-admin ${isBanned ? 'active' : ''}" onmouseenter="moveBanPill(true)" onmouseleave="resetBanPill(${isBanned})" onclick="toggleBan('${userId}', ${isBanned})">Ban User</button>
-                            <button class="btn-admin ${!isBanned ? 'active' : ''}" onmouseenter="moveBanPill(false)" onmouseleave="resetBanPill(${isBanned})" onclick="toggleBan('${userId}', ${isBanned})">Unban User</button>
+                        <div class="single-pill" onclick="toggleBan('${userId}', ${isBanned})">
+                            <div class="single-pill-inner ban-mode" style="transform: scaleX(1);"></div>
+                            <div class="single-pill-text">${isBanned ? 'Unban User' : 'Ban User'}</div>
                         </div>
                     </div>
                 `;
             } catch(e) {
                 console.log("Error rendering user details", e);
-            }
-        }
-
-        function moveAdminPill(toMake) {
-            const pill = document.getElementById('adminPillInner');
-            if (pill) {
-                pill.style.transform = toMake ? 'translateX(0%)' : 'translateX(100%)';
-            }
-        }
-
-        function resetAdminPill(isAdmin) {
-            const pill = document.getElementById('adminPillInner');
-            if (pill) {
-                pill.style.transform = isAdmin ? 'translateX(0%)' : 'translateX(100%)';
-            }
-        }
-
-        function moveBanPill(toBan) {
-            const pill = document.getElementById('banPillInner');
-            if (pill) {
-                pill.style.transform = toBan ? 'translateX(0%)' : 'translateX(100%)';
-            }
-        }
-
-        function resetBanPill(isBanned) {
-            const pill = document.getElementById('banPillInner');
-            if (pill) {
-                pill.style.transform = isBanned ? 'translateX(0%)' : 'translateX(100%)';
             }
         }
 
