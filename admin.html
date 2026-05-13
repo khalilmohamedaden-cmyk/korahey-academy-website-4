@@ -548,7 +548,6 @@
             backdrop-filter: blur(20px);
             border-radius: 32px;
             display: flex;
-            /* FIX: Set overflow to visible so the X button shows outside */
             overflow: visible;
             border: 1px solid rgba(255,255,255,0.3);
             box-shadow: 0 25px 50px rgba(0,0,0,0.2);
@@ -557,7 +556,6 @@
             position: relative;
         }
 
-        /* FIX: Internal rounding since parent is now overflow:visible */
         .user-list-panel, .user-detail-panel {
             overflow: hidden;
             border-radius: 32px;
@@ -570,7 +568,6 @@
         /* X Button - OUTSIDE the box */
         .panel-close-wrapper {
             position: absolute;
-            /* FIX: Adjusted position to sit nicely outside */
             top: -20px;
             right: -20px;
             z-index: 100;
@@ -812,9 +809,6 @@
         .hero-pill-admin.ban-pill {
             background: #ff3b30;
         }
-
-        .hero-pill-admin.make-active { transform: translateX(0); }
-        .hero-pill-admin.remove-active { transform: translateX(100%); }
 
         .btn-admin {
             position: relative;
@@ -1085,96 +1079,622 @@
                         <span>AI</span>
                     </div>
                     <div class="nav-item" onclick="openUserManagementPanel()">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                            <circle cx="9" cy="7" r="4"/>
-                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                        </svg>
+                        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                         <span>Users</span>
+                        <span class="badge" id="usersBadge" style="display: none;">0</span>
+                    </div>
+                    <div class="nav-item" onclick="openMessagesModal()">
+                        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                        <span>Messages</span>
+                        <span class="badge" id="messagesBadge" style="display: none;">0</span>
                     </div>
                 </div>
             </nav>
 
-            <!-- USER MANAGEMENT MODAL -->
-            <div class="user-panel-modal" id="userManagementModal">
-                <div class="user-panel">
-                    <div class="panel-close-wrapper">
-                        <div class="panel-close-btn" onclick="closeUserManagementPanel()">
-                            <span>×</span>
-                        </div>
+            <header class="glass-header">
+                <h1 class="hello-text" id="greetingText">Hello Admin</h1>
+
+                <div class="search-container">
+                    <div class="search-wrapper">
+                        <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"/>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                        </svg>
+                        <input type="text" id="searchInput" placeholder="Search projects...">
+                        <button class="clear-search" id="clearSearchBtn">
+                            <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2">
+                                <line x1="18" y1="6" x2="6" y2="18"/>
+                                <line x1="6" y1="6" x2="18" y2="18"/>
+                            </svg>
+                        </button>
                     </div>
-                    
-                    <div class="user-list-panel">
-                        <div class="user-list-header">
-                            <h2>Users</h2>
-                        </div>
-                        <div class="user-search">
-                            <input type="text" placeholder="Search members...">
-                        </div>
-                        <div class="users-scroll" id="userListContainer">
-                            <!-- Sample List Item -->
-                            <div class="user-list-item active">
-                                <div class="user-list-avatar">K</div>
-                                <div class="user-list-info">
-                                    <h4>Khalil <span class="admin-badge">Admin</span></h4>
-                                    <p>khalil@example.com</p>
-                                </div>
-                            </div>
+                </div>
+
+                <div class="category-icons">
+                    <div class="category-icon-card" data-cat="documents" onclick="filterByCategory('documents', this)">
+                        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                        <span>Documents</span>
+                    </div>
+                    <div class="category-icon-card" data-cat="sheets" onclick="filterByCategory('sheets', this)">
+                        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>
+                        <span>Sheets</span>
+                    </div>
+                    <div class="category-icon-card" data-cat="schedule" onclick="filterByCategory('schedule', this)">
+                        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>
+                        <span>Schedules</span>
+                    </div>
+                    <div class="category-icon-card" data-cat="assignment" onclick="filterByCategory('assignment', this)">
+                        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                        <span>Assignments</span>
+                    </div>
+                    <div class="category-icon-card" data-cat="exam" onclick="filterByCategory('exam', this)">
+                        <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><line x1="8" y1="9" x2="16" y2="9"/></svg>
+                        <span>Exams</span>
+                    </div>
+                    <div class="category-icon-card" data-cat="classwork" onclick="filterByCategory('classwork', this)">
+                        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/></svg>
+                        <span>Classwork</span>
+                    </div>
+                    <div class="category-icon-card" data-cat="homework" onclick="filterByCategory('homework', this)">
+                        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"/><polyline points="12 6 12 12 16 14"/></svg>
+                        <span>Homework</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="filter-bar">
+                <div class="filter-right">
+                    <div class="dropdown">
+                        <button class="dropdown-btn" onclick="toggleDropdown('ownerMenu')">
+                            <span id="ownerSelected">Any owner</span>
+                            <svg viewBox="0 0 24 24" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button>
+                        <div class="dropdown-menu" id="ownerMenu">
+                            <a onclick="setOwnerFilter('any'); closeDropdown('ownerMenu')">Any owner</a>
+                            <a onclick="setOwnerFilter('me'); closeDropdown('ownerMenu')">khalil mohammed (You)</a>
+                            <a onclick="setOwnerFilter('shared'); closeDropdown('ownerMenu')">Shared with you</a>
                         </div>
                     </div>
 
-                    <div class="user-detail-panel">
-                        <div class="user-profile-section">
-                            <div class="user-profile-avatar">K</div>
-                            <h3 class="user-profile-name">Khalil</h3>
-                            <p class="user-profile-email">khalil@example.com</p>
-                        </div>
-                        <div class="user-info-grid">
-                            <div class="info-row">
-                                <span class="info-label">Status</span>
-                                <span class="info-value">Active</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="info-label">Role</span>
-                                <span class="info-value">Administrator</span>
-                            </div>
+                    <div class="dropdown">
+                        <button class="dropdown-btn" onclick="toggleDropdown('categoryMenu')">
+                            <span id="categorySelected">All Categories</span>
+                            <svg viewBox="0 0 24 24" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button>
+                        <div class="dropdown-menu" id="categoryMenu">
+                            <a onclick="setCategoryFilter('all'); closeDropdown('categoryMenu')">All Categories</a>
+                            <a onclick="setCategoryFilter('documents'); closeDropdown('categoryMenu')">Documents</a>
+                            <a onclick="setCategoryFilter('sheets'); closeDropdown('categoryMenu')">Sheets</a>
+                            <a onclick="setCategoryFilter('schedule'); closeDropdown('categoryMenu')">Schedules</a>
+                            <a onclick="setCategoryFilter('assignment'); closeDropdown('categoryMenu')">Assignments</a>
+                            <a onclick="setCategoryFilter('exam'); closeDropdown('categoryMenu')">Exams</a>
+                            <a onclick="setCategoryFilter('classwork'); closeDropdown('categoryMenu')">Classwork</a>
+                            <a onclick="setCategoryFilter('homework'); closeDropdown('categoryMenu')">Homework</a>
                         </div>
                     </div>
+
+                    <button class="sort-btn" id="sortBtn" onclick="toggleSort()">
+                        <svg viewBox="0 0 24 24"><polyline points="6 15 12 9 18 15"/></svg>
+                        A-Z
+                    </button>
                 </div>
             </div>
 
-            <header class="glass-header">
-                <h1 class="hello-text">Welcome back, Admin</h1>
-            </header>
+            <main class="recent-section">
+                <div class="recent-grid" id="projectsGrid"></div>
+            </main>
+        </div>
+    </div>
+
+    <!-- USER MANAGEMENT PANEL - X button OUTSIDE the box -->
+    <div class="user-panel-modal" id="userPanelModal">
+        <div class="user-panel">
+            <div class="panel-close-wrapper">
+                <div class="panel-close-btn" onclick="closeUserManagementPanel()">
+                    <span>✕</span>
+                </div>
+            </div>
+            <div class="user-list-panel">
+                <div class="user-list-header">
+                    <h2>User Management</h2>
+                </div>
+                <div class="user-search">
+                    <input type="text" id="userSearchInput" placeholder="Search users...">
+                </div>
+                <div class="users-scroll" id="usersListPanel"></div>
+            </div>
+            <div class="user-detail-panel" id="userDetailPanel">
+                <div id="userDetailContent">
+                    <div style="text-align: center; padding: 60px; color: #666;">Select a user to view details</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="accessDenied" class="access-denied" style="display: none;">
+        <div class="access-denied-content">
+            <h2>Access Denied</h2>
+            <p>You don't have permission to access the admin dashboard.</p>
+            <button class="sort-btn" onclick="window.location.href='index.html'">Back to Home</button>
+        </div>
+    </div>
+
+    <div class="modal" id="createModal">
+        <div class="modal-content">
+            <h3>Create new</h3>
+            <p>Choose what to create</p>
+            <div class="create-options">
+                <div class="create-option" onclick="createProject('exam')">
+                    <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><line x1="8" y1="9" x2="16" y2="9"/></svg>
+                    <div><h4>Exam</h4><span>Create quizzes and tests</span></div>
+                </div>
+                <div class="create-option" onclick="createProject('schedule')">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>
+                    <div><h4>Schedule</h4><span>Plan classes</span></div>
+                </div>
+                <div class="create-option" onclick="createProject('classwork')">
+                    <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/></svg>
+                    <div><h4>Classwork</h4><span>Upload lessons</span></div>
+                </div>
+                <div class="create-option" onclick="createProject('assignment')">
+                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    <div><h4>Assignment</h4><span>Homework</span></div>
+                </div>
+                <div class="create-option" onclick="createProject('homework')">
+                    <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"/><polyline points="12 6 12 12 16 14"/></svg>
+                    <div><h4>Homework</h4><span>Create homework</span></div>
+                </div>
+            </div>
+            <button class="close-modal" onclick="closeModal('createModal')">Cancel</button>
+        </div>
+    </div>
+
+    <div class="modal" id="messagesModal">
+        <div class="modal-content">
+            <h3>Notifications</h3>
+            <div id="messagesList"></div>
+            <button class="close-modal" onclick="closeModal('messagesModal')">Close</button>
+        </div>
+    </div>
+
+    <div class="modal" id="applicationsModal">
+        <div class="modal-content">
+            <h3>Applications</h3>
+            <div><div class="message-item">Student Registration</div><div class="message-item">Grade Management</div><div class="message-item">Attendance Tracker</div></div>
+            <button class="close-modal" onclick="closeModal('applicationsModal')">Close</button>
         </div>
     </div>
 
     <script>
-        // Entrance animation
-        window.addEventListener('DOMContentLoaded', () => {
+        const firebaseConfig = {
+            apiKey: "AIzaSyCC5oK1cMufciR1v4wLi-jfYvXa_cQBnd0",
+            authDomain: "korahey-admin.firebaseapp.com",
+            projectId: "korahey-admin",
+            storageBucket: "korahey-admin.firebasestorage.app",
+            messagingSenderId: "86298888884",
+            appId: "1:86298888884:web:f1d835de1cb9d2534d65e1"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const HEAD_ADMIN_EMAIL = "khalilmohamedaden@gmail.com";
+
+        let projects = [];
+        let currentCategory = 'all';
+        let currentOwnerFilter = 'any';
+        let currentSort = 'az';
+        let messages = [{ id: 1, title: 'Welcome to Admin Dashboard', read: false }];
+        let selectedUserId = null;
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toastNotification');
+            toast.textContent = message;
+            toast.className = `toast-notification ${type}`;
+            toast.classList.add('show');
             setTimeout(() => {
-                const entrance = document.getElementById('adminEntrance');
-                const content = document.getElementById('adminContent');
-                entrance.classList.add('fade-out');
-                content.style.display = 'block';
-            }, 2000);
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        const sampleProjects = [
+            { id: 1, title: 'Final Exam - Grade 12', type: 'exam', date: new Date().toISOString(), category: 'exam', owner: 'me' },
+            { id: 2, title: 'Weekly Class Schedule', type: 'schedule', date: new Date().toISOString(), category: 'schedule', owner: 'me' },
+            { id: 3, title: 'Mathematics Notes', type: 'classwork', date: new Date().toISOString(), category: 'classwork', owner: 'shared' },
+            { id: 4, title: 'Physics Assignment', type: 'assignment', date: new Date().toISOString(), category: 'assignment', owner: 'me' },
+            { id: 5, title: 'Algebra Homework', type: 'homework', date: new Date().toISOString(), category: 'homework', owner: 'shared' }
+        ];
+
+        function loadProjects() { 
+            const saved = localStorage.getItem('adminProjects'); 
+            projects = saved ? JSON.parse(saved) : [...sampleProjects]; 
+            renderProjects(); 
+        }
+
+        function renderProjects() {
+            let filtered = [...projects];
+            if (currentOwnerFilter === 'me') {
+                filtered = filtered.filter(p => p.owner === 'me');
+            } else if (currentOwnerFilter === 'shared') {
+                filtered = filtered.filter(p => p.owner === 'shared');
+            }
+            const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
+            if(searchTerm) filtered = filtered.filter(p => p.title.toLowerCase().includes(searchTerm));
+            if(currentCategory !== 'all') filtered = filtered.filter(p => p.category === currentCategory);
+            if(currentSort === 'az') filtered.sort((a,b) => a.title.localeCompare(b.title));
+            else filtered.sort((a,b) => b.title.localeCompare(a.title));
+            const grid = document.getElementById('projectsGrid');
+            if(filtered.length === 0) { 
+                grid.innerHTML = '<div class="empty-state"><h3>No projects found</h3><p>Try a different search or create a new project</p></div>'; 
+                return; 
+            }
+            grid.innerHTML = filtered.map((p, i) => `<div class="liquid-card" onclick="openProject(${p.id})" style="animation-delay: ${i * 0.05}s"><div class="card-preview ${p.type}">${getIcon(p.type)}</div><div class="card-body"><h4>${escapeHtml(p.title)}</h4><p>Modified ${formatDate(p.date)}</p></div></div>`).join('');
+        }
+
+        function getIcon(type) {
+            switch(type) {
+                case 'exam': return `<svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><line x1="8" y1="9" x2="16" y2="9"/></svg>`;
+                case 'schedule': return `<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>`;
+                case 'classwork': return `<svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/></svg>`;
+                default: return `<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
+            }
+        }
+
+        function formatDate(d) { return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); }
+        function escapeHtml(str) { return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); }
+        function openProject(id) { alert(`Opening project ${id}`); }
+
+        function createProject(type) {
+            let title = `${type.charAt(0).toUpperCase() + type.slice(1)} ${new Date().toLocaleDateString()}`;
+            messages.unshift({ id: Date.now(), title: `Added to "${title}"`, read: false });
+            updateMessagesBadge();
+            projects.unshift({ id: Date.now(), title, type, date: new Date().toISOString(), category: type, owner: 'me' });
+            localStorage.setItem('adminProjects', JSON.stringify(projects));
+            renderProjects();
+            closeModal('createModal');
+            showToast(`Created new ${type}: ${title}`, 'success');
+        }
+
+        function toggleSort() {
+            const btn = document.getElementById('sortBtn');
+            if(currentSort === 'az') { 
+                currentSort = 'za'; 
+                btn.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="18 9 12 15 6 9"/></svg> Z-A'; 
+            } else { 
+                currentSort = 'az'; 
+                btn.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="6 15 12 9 18 15"/></svg> A-Z'; 
+            }
+            renderProjects();
+        }
+
+        function setOwnerFilter(filter) {
+            currentOwnerFilter = filter;
+            const ownerSelected = document.getElementById('ownerSelected');
+            if (filter === 'any') ownerSelected.textContent = 'Any owner';
+            else if (filter === 'me') ownerSelected.textContent = 'khalil mohammed (You)';
+            else if (filter === 'shared') ownerSelected.textContent = 'Shared with you';
+            renderProjects();
+        }
+
+        function setCategoryFilter(category) {
+            currentCategory = category;
+            const categorySelected = document.getElementById('categorySelected');
+            if (category === 'all') categorySelected.textContent = 'All Categories';
+            else categorySelected.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+            document.querySelectorAll('.category-icon-card').forEach(c => c.classList.remove('active'));
+            if (category !== 'all') {
+                const icon = document.querySelector(`.category-icon-card[data-cat="${category}"]`);
+                if (icon) icon.classList.add('active');
+            }
+            renderProjects();
+        }
+
+        function filterByCategory(category, el) {
+            setCategoryFilter(category);
+        }
+
+        function toggleDropdown(id) {
+            document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                if (menu.id !== id) menu.classList.remove('active');
+            });
+            document.getElementById(id).classList.toggle('active');
+        }
+
+        function closeDropdown(id) {
+            document.getElementById(id)?.classList.remove('active');
+        }
+
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.dropdown')) {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.classList.remove('active');
+                });
+            }
         });
 
-        function openUserManagementPanel() {
-            document.getElementById('userManagementModal').classList.add('active');
+        function getInitials(name) {
+            if (!name) return 'U';
+            const parts = name.trim().split(' ');
+            if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+            return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
         }
 
-        function closeUserManagementPanel() {
-            document.getElementById('userManagementModal').classList.remove('active');
+        async function fetchUsers() {
+            try {
+                const snapshot = await db.collection('users').get();
+                const users = [];
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    users.push({
+                        id: doc.id,
+                        email: data.email,
+                        name: data.name || (data.email ? data.email.split('@')[0] : 'User'),
+                        isAdmin: data.isAdmin || false,
+                        isBanned: data.isBanned || false,
+                        avatarInitial: getInitials(data.name || (data.email ? data.email.split('@')[0] : 'User'))
+                    });
+                });
+                if(document.getElementById('usersBadge')) document.getElementById('usersBadge').textContent = users.length;
+                return users;
+            } catch(e) {
+                console.log("Firestore error:", e);
+                return [];
+            }
         }
 
-        // Placeholder functions for nav
-        function goHome() { console.log("Home clicked"); }
-        function scrollToProjects() { console.log("Projects clicked"); }
-        function openApplications() { console.log("Apps clicked"); }
-        function openCreateModal() { console.log("Create clicked"); }
-        function openAI() { console.log("AI clicked"); }
+        async function renderUserList() {
+            const searchTerm = document.getElementById('userSearchInput')?.value.toLowerCase() || '';
+            const users = await fetchUsers();
+            const filtered = users.filter(u => u.email && (u.email.toLowerCase().includes(searchTerm) || u.name.toLowerCase().includes(searchTerm)));
+            const container = document.getElementById('usersListPanel');
+            
+            if(filtered.length === 0) { 
+                container.innerHTML = '<div style="padding:40px;text-align:center">No users found</div>'; 
+                return; 
+            }
+            
+            container.innerHTML = filtered.map(user => `
+                <div class="user-list-item" onclick="selectUser('${user.id}')" data-user-id="${user.id}">
+                    <div class="user-list-avatar">${user.avatarInitial}</div>
+                    <div class="user-list-info">
+                        <h4>${escapeHtml(user.name)} ${user.isAdmin ? '<span class="admin-badge">ADMIN</span>' : ''}${user.isBanned ? '<span class="banned-badge">BANNED</span>' : ''}</h4>
+                        <p>${escapeHtml(user.email)}</p>
+                    </div>
+                </div>
+            `).join('');
+            
+            if(selectedUserId) {
+                const el = document.querySelector(`.user-list-item[data-user-id="${selectedUserId}"]`);
+                if(el) el.classList.add('active');
+                await renderUserDetails(selectedUserId);
+            }
+        }
+
+        async function renderUserDetails(userId) {
+            try {
+                const doc = await db.collection('users').doc(userId).get();
+                if(!doc.exists) return;
+                const user = doc.data();
+                const isHeadAdmin = user.email === HEAD_ADMIN_EMAIL;
+                const name = user.name || (user.email ? user.email.split('@')[0] : 'User');
+                const isBanned = user.isBanned || false;
+                const isAdmin = user.isAdmin || false;
+                
+                if (isHeadAdmin) {
+                    document.getElementById('userDetailContent').innerHTML = `
+                        <div class="user-profile-section">
+                            <div class="user-profile-avatar">${getInitials(name)}</div>
+                            <div class="user-profile-name">${escapeHtml(name)}</div>
+                            <div class="user-profile-email">${escapeHtml(user.email || 'No email')}</div>
+                            <span class="admin-badge">HEAD ADMIN</span>
+                        </div>
+                        <div class="head-admin-message">
+                            Head Admin - Cannot be modified
+                        </div>
+                    `;
+                    return;
+                }
+                
+                document.getElementById('userDetailContent').innerHTML = `
+                    <div class="user-profile-section">
+                        <div class="user-profile-avatar">${getInitials(name)}</div>
+                        <div class="user-profile-name">${escapeHtml(name)}</div>
+                        <div class="user-profile-email">${escapeHtml(user.email || 'No email')}</div>
+                        ${isAdmin ? '<span class="admin-badge">ADMIN</span>' : ''}
+                    </div>
+                    <div class="user-info-grid">
+                        <div class="info-row"><span class="info-label">Email</span><span class="info-value">${escapeHtml(user.email || 'No email')}</span></div>
+                        <div class="info-row"><span class="info-label">Role</span><span class="info-value">${isAdmin ? 'Admin' : 'User'}</span></div>
+                        <div class="info-row"><span class="info-label">Status</span><span class="info-value">${isBanned ? 'Banned' : 'Active'}</span></div>
+                    </div>
+                    <div class="action-pill-group">
+                        <div class="hero-btns-group-admin" id="adminPillGroup">
+                            <div class="hero-pill-admin" id="adminPillInner" style="transform: translateX(${isAdmin ? '0%' : '100%'});"></div>
+                            <button class="btn-admin ${isAdmin ? 'active' : ''}" onmouseenter="moveAdminPill(true)" onmouseleave="resetAdminPill(${isAdmin})" onclick="toggleAdmin('${userId}', ${isAdmin})">Make Admin</button>
+                            <button class="btn-admin ${!isAdmin ? 'active' : ''}" onmouseenter="moveAdminPill(false)" onmouseleave="resetAdminPill(${isAdmin})" onclick="toggleAdmin('${userId}', ${isAdmin})">Remove Admin</button>
+                        </div>
+                        
+                        <div class="hero-btns-group-admin" id="banPillGroup">
+                            <div class="hero-pill-admin ban-pill" id="banPillInner" style="transform: translateX(${isBanned ? '0%' : '100%'});"></div>
+                            <button class="btn-admin ${isBanned ? 'active' : ''}" onmouseenter="moveBanPill(true)" onmouseleave="resetBanPill(${isBanned})" onclick="toggleBan('${userId}', ${isBanned})">Ban User</button>
+                            <button class="btn-admin ${!isBanned ? 'active' : ''}" onmouseenter="moveBanPill(false)" onmouseleave="resetBanPill(${isBanned})" onclick="toggleBan('${userId}', ${isBanned})">Unban User</button>
+                        </div>
+                    </div>
+                `;
+            } catch(e) {
+                console.log("Error rendering user details", e);
+            }
+        }
+
+        function moveAdminPill(toMake) {
+            const pill = document.getElementById('adminPillInner');
+            if (pill) {
+                pill.style.transform = toMake ? 'translateX(0%)' : 'translateX(100%)';
+            }
+        }
+
+        function resetAdminPill(isAdmin) {
+            const pill = document.getElementById('adminPillInner');
+            if (pill) {
+                pill.style.transform = isAdmin ? 'translateX(0%)' : 'translateX(100%)';
+            }
+        }
+
+        function moveBanPill(toBan) {
+            const pill = document.getElementById('banPillInner');
+            if (pill) {
+                pill.style.transform = toBan ? 'translateX(0%)' : 'translateX(100%)';
+            }
+        }
+
+        function resetBanPill(isBanned) {
+            const pill = document.getElementById('banPillInner');
+            if (pill) {
+                pill.style.transform = isBanned ? 'translateX(0%)' : 'translateX(100%)';
+            }
+        }
+
+        async function selectUser(id) { selectedUserId = id; await renderUserList(); }
+        
+        async function toggleAdmin(id, isCurrentlyAdmin) {
+            if (isCurrentlyAdmin) {
+                try {
+                    const doc = await db.collection('users').doc(id).get();
+                    if(doc.data().email === HEAD_ADMIN_EMAIL) { 
+                        showToast('Cannot remove head admin', 'error');
+                        return; 
+                    }
+                    await db.collection('users').doc(id).update({ isAdmin: false });
+                    showToast('Admin privileges removed', 'success');
+                    await renderUserList();
+                    if(selectedUserId === id) await renderUserDetails(id);
+                } catch(e) { showToast('Error: ' + e.message, 'error'); }
+            } else {
+                try {
+                    await db.collection('users').doc(id).update({ isAdmin: true });
+                    showToast('User is now an admin', 'success');
+                    await renderUserList();
+                    if(selectedUserId === id) await renderUserDetails(id);
+                } catch(e) { showToast('Error: ' + e.message, 'error'); }
+            }
+        }
+        
+        async function toggleBan(id, isCurrentlyBanned) {
+            if (isCurrentlyBanned) {
+                try {
+                    await db.collection('users').doc(id).update({ isBanned: false });
+                    showToast('User has been unbanned', 'success');
+                    await renderUserList();
+                    if(selectedUserId === id) await renderUserDetails(id);
+                } catch(e) { showToast('Error: ' + e.message, 'error'); }
+            } else {
+                try {
+                    await db.collection('users').doc(id).update({ isBanned: true });
+                    showToast('User has been banned', 'success');
+                    await renderUserList();
+                    if(selectedUserId === id) await renderUserDetails(id);
+                } catch(e) { showToast('Error: ' + e.message, 'error'); }
+            }
+        }
+
+        function openUserManagementPanel() { 
+            document.getElementById('userPanelModal').classList.add('active'); 
+            renderUserList(); 
+        }
+        
+        function closeUserManagementPanel() { 
+            document.getElementById('userPanelModal').classList.remove('active'); 
+            selectedUserId = null; 
+        }
+        
+        if(document.getElementById('userSearchInput')) {
+            document.getElementById('userSearchInput').addEventListener('input', () => renderUserList());
+        }
+
+        function goHome() { window.location.href = 'index.html'; }
+        function scrollToProjects() { document.querySelector('.recent-section')?.scrollIntoView({ behavior: 'smooth' }); }
+        function openCreateModal() { openModal('createModal'); }
+        function openMessagesModal() { loadMessages(); openModal('messagesModal'); }
+        function openApplications() { openModal('applicationsModal'); }
+        function openAI() { showToast('AI Assistant coming soon!', 'success'); }
+        function openModal(id) { document.getElementById(id).classList.add('active'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+        function loadMessages() {
+            const list = document.getElementById('messagesList');
+            if(messages.length === 0) list.innerHTML = '<div style="padding:40px;text-align:center">No messages</div>';
+            else list.innerHTML = messages.map(m => `<div class="message-item"><div class="message-title">${m.title}</div></div>`).join('');
+        }
+        function updateMessagesBadge() { const badge = document.getElementById('messagesBadge'); if(badge) badge.textContent = messages.filter(m => !m.read).length; }
+
+        const searchInput = document.getElementById('searchInput');
+        const clearBtn = document.getElementById('clearSearchBtn');
+        function updateClear() { if(clearBtn) clearBtn.style.display = searchInput.value.length > 0 ? 'flex' : 'none'; }
+        function clearSearch() { searchInput.value = ''; updateClear(); renderProjects(); }
+        if(searchInput) searchInput.addEventListener('input', () => { updateClear(); renderProjects(); });
+        if(clearBtn) clearBtn.addEventListener('click', clearSearch);
+
+        const entrance = document.getElementById('adminEntrance');
+        const adminContent = document.getElementById('adminContent');
+        const accessDenied = document.getElementById('accessDenied');
+
+        setTimeout(() => {
+            if(entrance) entrance.classList.add('fade-out');
+        }, 2000);
+
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                try {
+                    const userDoc = await db.collection('users').doc(user.uid).get();
+                    const userData = userDoc.data();
+                    
+                    if (userData && userData.isBanned === true) {
+                        await auth.signOut();
+                        if (adminContent) adminContent.style.display = 'none';
+                        if (accessDenied) {
+                            accessDenied.style.display = 'flex';
+                            accessDenied.querySelector('p').innerHTML = 'Your account has been banned.';
+                        }
+                        if (entrance) entrance.style.display = 'none';
+                        return;
+                    }
+                    
+                    const isHeadAdmin = user.email === HEAD_ADMIN_EMAIL;
+                    const isFirestoreAdmin = userData && userData.isAdmin === true;
+                    const isAdmin = isHeadAdmin || isFirestoreAdmin;
+                    
+                    if (isAdmin) {
+                        if (isHeadAdmin && !isFirestoreAdmin) {
+                            await db.collection('users').doc(user.uid).set({
+                                isAdmin: true,
+                                role: 'head_admin'
+                            }, { merge: true });
+                        }
+                        
+                        if (adminContent) adminContent.style.display = 'block';
+                        if (accessDenied) accessDenied.style.display = 'none';
+                        document.getElementById('greetingText').innerHTML = `Hello ${user.displayName?.split(' ')[0] || 'Admin'}`;
+                        loadProjects();
+                        updateMessagesBadge();
+                        await renderUserList();
+                        if (entrance) setTimeout(() => { entrance.style.display = 'none'; }, 2000);
+                    } else {
+                        if (adminContent) adminContent.style.display = 'none';
+                        if (accessDenied) accessDenied.style.display = 'flex';
+                        if (entrance) entrance.style.display = 'none';
+                    }
+                } catch(e) {
+                    console.log("Auth error:", e);
+                    if (adminContent) adminContent.style.display = 'none';
+                    if (accessDenied) accessDenied.style.display = 'flex';
+                    if (entrance) entrance.style.display = 'none';
+                }
+            } else {
+                if (adminContent) adminContent.style.display = 'none';
+                if (accessDenied) accessDenied.style.display = 'flex';
+                if (entrance) entrance.style.display = 'none';
+            }
+        });
     </script>
 </body>
 </html>
