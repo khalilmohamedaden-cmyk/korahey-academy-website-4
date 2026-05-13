@@ -653,6 +653,7 @@
             cursor: pointer;
             transition: all 0.2s;
             margin-bottom: 4px;
+            position: relative;
         }
 
         .user-list-item:hover {
@@ -661,6 +662,18 @@
 
         .user-list-item.active {
             background: rgba(0, 113, 227, 0.1);
+        }
+
+        /* Online indicator - green circle */
+        .online-indicator {
+            position: absolute;
+            bottom: 2px;
+            right: 12px;
+            width: 10px;
+            height: 10px;
+            background: #4cd964;
+            border-radius: 50%;
+            border: 2px solid white;
         }
 
         .user-list-avatar {
@@ -674,11 +687,13 @@
             color: white;
             font-weight: 600;
             font-size: 1rem;
+            position: relative;
         }
 
         .user-list-info h4 {
             font-size: 0.95rem;
             font-weight: 600;
+            margin-bottom: 2px;
         }
 
         .user-list-info p {
@@ -740,9 +755,15 @@
             color: white;
         }
 
+        .user-profile-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
         .user-profile-email {
-            font-size: 1.1rem;
-            font-weight: 500;
+            font-size: 0.9rem;
+            color: #666;
             margin-bottom: 8px;
         }
 
@@ -1225,11 +1246,34 @@
         let messages = [{ id: 1, title: 'Added to "Final Exam"', project: 'Final Exam', read: false }];
         
         let selectedUserId = null;
+        let onlineUsers = new Set(); // Track online users by UID
 
         // ============================================
         // FIREBASE USER MANAGEMENT
         // ============================================
         
+        // Track online status
+        function setUserOnline(userId) {
+            onlineUsers.add(userId);
+            renderUserList(); // Refresh to show online indicator
+        }
+
+        function setUserOffline(userId) {
+            onlineUsers.delete(userId);
+            renderUserList();
+        }
+
+        // Listen for presence (you can expand this with real-time presence)
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                setUserOnline(user.uid);
+                // Set up listener for when user goes offline
+                window.addEventListener('beforeunload', () => {
+                    setUserOffline(user.uid);
+                });
+            }
+        });
+
         // Fetch all users from Firestore
         async function fetchUsers() {
             try {
@@ -1239,13 +1283,16 @@
                     const userData = doc.data();
                     usersList.push({
                         id: doc.id,
+                        uid: doc.id,
                         email: userData.email,
+                        name: userData.name || userData.email.split('@')[0],
                         isAdmin: userData.isAdmin || false,
                         isBanned: userData.isBanned || false,
                         ipBanned: userData.ipBanned || false,
                         joinDate: userData.createdAt ? new Date(userData.createdAt.toDate()).toLocaleDateString() : 'Unknown',
                         lastActive: userData.lastLogin ? new Date(userData.lastLogin.toDate()).toLocaleDateString() : 'Unknown',
-                        avatarInitial: userData.email ? userData.email.charAt(0).toUpperCase() : 'U'
+                        avatarInitial: userData.name ? userData.name.charAt(0).toUpperCase() : userData.email.charAt(0).toUpperCase(),
+                        isOnline: onlineUsers.has(doc.id)
                     });
                 });
                 return usersList;
@@ -1259,7 +1306,7 @@
         async function renderUserList() {
             const searchTerm = document.getElementById('userSearchInput')?.value.toLowerCase() || '';
             const users = await fetchUsers();
-            const filteredUsers = users.filter(u => u.email.toLowerCase().includes(searchTerm));
+            const filteredUsers = users.filter(u => u.email.toLowerCase().includes(searchTerm) || (u.name && u.name.toLowerCase().includes(searchTerm)));
             const container = document.getElementById('usersListPanel');
             
             document.getElementById('usersBadge').textContent = users.length;
@@ -1271,10 +1318,13 @@
             
             container.innerHTML = filteredUsers.map(user => `
                 <div class="user-list-item" onclick="selectUser('${user.id}')" data-user-id="${user.id}">
-                    <div class="user-list-avatar">${user.avatarInitial}</div>
+                    <div class="user-list-avatar">
+                        ${user.avatarInitial}
+                        ${user.isOnline ? '<span class="online-indicator"></span>' : ''}
+                    </div>
                     <div class="user-list-info">
-                        <h4>${escapeHtml(user.email)} ${user.isAdmin ? '<span class="admin-badge">ADMIN</span>' : ''}${user.isBanned ? '<span class="banned-badge">BANNED</span>' : ''}</h4>
-                        <p>Joined: ${user.joinDate}</p>
+                        <h4>${escapeHtml(user.name)} ${user.isAdmin ? '<span class="admin-badge">ADMIN</span>' : ''}${user.isBanned ? '<span class="banned-badge">BANNED</span>' : ''}</h4>
+                        <p>${escapeHtml(user.email)}</p>
                     </div>
                 </div>
             `).join('');
@@ -1298,15 +1348,23 @@
             const isSuperAdmin = user.email === ADMIN_EMAIL;
             const joinDate = user.createdAt ? new Date(user.createdAt.toDate()).toLocaleDateString() : 'Unknown';
             const lastActive = user.lastLogin ? new Date(user.lastLogin.toDate()).toLocaleDateString() : 'Unknown';
-            const avatarInitial = user.email ? user.email.charAt(0).toUpperCase() : 'U';
+            const avatarInitial = user.name ? user.name.charAt(0).toUpperCase() : user.email.charAt(0).toUpperCase();
+            const displayName = user.name || user.email.split('@')[0];
+            const isOnline = onlineUsers.has(userId);
             
             const detailHtml = `
                 <div class="user-profile-section">
                     <div class="user-profile-avatar">${avatarInitial}</div>
+                    <div class="user-profile-name">${escapeHtml(displayName)}</div>
                     <div class="user-profile-email">${escapeHtml(user.email)}</div>
                     ${user.isAdmin ? '<span class="admin-badge" style="display: inline-block;">ADMIN</span>' : ''}
+                    ${isOnline ? '<span style="display: inline-block; background: #4cd964; color: white; font-size: 10px; padding: 2px 10px; border-radius: 20px; margin-left: 8px;">● Online</span>' : '<span style="display: inline-block; background: #999; color: white; font-size: 10px; padding: 2px 10px; border-radius: 20px; margin-left: 8px;">Offline</span>'}
                 </div>
                 <div class="user-info-grid">
+                    <div class="info-row">
+                        <span class="info-label">Full Name</span>
+                        <span class="info-value">${escapeHtml(displayName)}</span>
+                    </div>
                     <div class="info-row">
                         <span class="info-label">Email</span>
                         <span class="info-value">${escapeHtml(user.email)}</span>
@@ -1439,6 +1497,7 @@
                 await userRef.set({
                     email: user.email,
                     uid: user.uid,
+                    name: user.displayName || user.email.split('@')[0],
                     isAdmin: user.email === ADMIN_EMAIL,
                     isBanned: false,
                     ipBanned: false,
@@ -1701,6 +1760,9 @@
                     return;
                 }
                 
+                // Mark user as online
+                setUserOnline(user.uid);
+                
                 // Check if user is admin
                 const userDoc = await db.collection('users').doc(user.uid).get();
                 const isAdmin = userDoc.exists && (userDoc.data().isAdmin === true || user.email === ADMIN_EMAIL);
@@ -1708,7 +1770,8 @@
                 if (isAdmin) {
                     adminContent.style.display = 'block';
                     document.getElementById('accessDenied').style.display = 'none';
-                    document.getElementById('greetingText').innerHTML = `Hello ${user.displayName?.split(' ')[0] || 'Admin'}`;
+                    const displayName = user.displayName || user.email.split('@')[0];
+                    document.getElementById('greetingText').innerHTML = `Hello ${displayName}`;
                     loadProjects();
                     updateMessagesBadge();
                     showAdminContent();
@@ -1725,5 +1788,4 @@
         });
     </script>
 </body>
-</html>
 </html>
