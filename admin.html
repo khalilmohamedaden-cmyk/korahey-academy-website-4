@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Korahey Admin | Dashboard</title>
     
-    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
@@ -26,7 +25,6 @@
             min-height: 100vh;
         }
 
-        /* ENTRANCE ANIMATION */
         .admin-entrance {
             position: fixed;
             top: 0;
@@ -94,7 +92,6 @@
             50% { opacity: 1; transform: scale(1.2); }
         }
 
-        /* Main content */
         .main-content {
             flex: 1;
             overflow-x: hidden;
@@ -105,7 +102,6 @@
             transition: opacity 0.5s ease;
         }
 
-        /* LIVE GRADIENT BACKGROUND */
         .glass-header {
             padding: 100px 5% 40px;
             text-align: center;
@@ -120,9 +116,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* ============================================
-           DYNAMIC ISLAND
-        ============================================ */
         .dynamic-island {
             position: fixed;
             background: rgba(255, 255, 255, 0.45);
@@ -234,7 +227,6 @@
             background: rgba(0,0,0,0.04);
         }
 
-        /* CREATE BUTTON */
         .create-nav-item {
             position: relative;
             display: flex;
@@ -307,7 +299,6 @@
             z-index: 2;
         }
 
-        /* HELLO TEXT */
         .hello-text {
             font-size: 3.5rem;
             font-weight: 800;
@@ -318,7 +309,6 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* SEARCH BAR */
         .search-container {
             max-width: 600px;
             margin: 0 auto 30px;
@@ -366,7 +356,6 @@
             margin: 0;
         }
 
-        /* CATEGORY ICONS */
         .category-icons {
             display: flex;
             justify-content: center;
@@ -417,7 +406,6 @@
             font-weight: 600;
         }
 
-        /* FILTER BAR - with dropdowns */
         .filter-bar {
             max-width: 1400px;
             margin: 20px auto 30px;
@@ -436,7 +424,6 @@
             flex-wrap: wrap;
         }
 
-        /* Dropdown Styles with Metalball Animation */
         .dropdown {
             position: relative;
             display: inline-block;
@@ -573,11 +560,15 @@
             transform: scale(1);
         }
 
-        /* Close button outside the panel */
-        .panel-close-btn {
+        /* X Button - OUTSIDE the box */
+        .panel-close-wrapper {
             position: absolute;
-            top: -20px;
+            top: -50px;
             right: -20px;
+            z-index: 20;
+        }
+
+        .panel-close-btn {
             width: 44px;
             height: 44px;
             background: white;
@@ -589,7 +580,6 @@
             transition: all 0.2s;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             border: 1px solid rgba(0,0,0,0.1);
-            z-index: 10;
         }
 
         .panel-close-btn:hover {
@@ -780,7 +770,7 @@
             color: #1d1d1f;
         }
 
-        /* PILL BUTTONS GROUP for actions */
+        /* PILL BUTTONS - Exact same style as home page Join Us/Learn More */
         .action-pill-group {
             display: flex;
             gap: 20px;
@@ -790,48 +780,57 @@
             justify-content: center;
         }
 
-        .action-pill {
+        .hero-btns-group-admin {
             position: relative;
             display: inline-flex;
-            background: rgba(0, 0, 0, 0.05);
+            background: rgba(0, 0, 0, 0.03);
+            padding: 5px;
             border-radius: 100px;
-            overflow: hidden;
             border: 1px solid rgba(0,0,0,0.08);
         }
 
-        .action-pill-inner {
+        .hero-pill-admin {
             position: absolute;
-            top: 2px;
-            left: 2px;
-            width: calc(50% - 2px);
-            height: calc(100% - 4px);
+            top: 5px;
+            left: 5px;
+            width: calc(50% - 5px);
+            height: calc(100% - 10px);
             background: var(--apple-blue);
+            backdrop-filter: blur(15px);
             border-radius: 100px;
-            transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             z-index: 1;
             pointer-events: none;
         }
 
-        .action-pill.ban-pill .action-pill-inner {
+        .hero-pill-admin.ban-pill {
             background: #ff3b30;
         }
 
-        .action-pill-btn {
+        .hero-pill-admin.make-active { transform: translateX(0); }
+        .hero-pill-admin.remove-active { transform: translateX(100%); }
+
+        .btn-admin {
             position: relative;
             z-index: 2;
             background: transparent;
             border: none;
+            color: #555;
             padding: 10px 28px;
             cursor: pointer;
             font-weight: 600;
             border-radius: 100px;
+            min-width: 120px;
             font-size: 0.9rem;
             transition: color 0.2s;
-            color: #555;
         }
 
-        .action-pill-btn.active {
+        .btn-admin.active {
             color: white;
+        }
+
+        .btn-admin:hover {
+            color: #1d1d1f;
         }
 
         .head-admin-message {
@@ -844,7 +843,6 @@
             font-weight: 500;
         }
 
-        /* RECENT PROJECTS GRID */
         .recent-section { 
             max-width: 1400px; 
             margin: 0 auto; 
@@ -923,7 +921,6 @@
             font-size: 0.9rem;
         }
 
-        /* Access Denied */
         .access-denied {
             display: flex;
             align-items: center;
@@ -940,7 +937,6 @@
             text-align: center;
         }
 
-        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -1008,7 +1004,6 @@
         }
         .message-title { font-weight: 600; }
 
-        /* Custom Toast Notification */
         .toast-notification {
             position: fixed;
             bottom: 30px;
@@ -1052,14 +1047,15 @@
             .user-panel { flex-direction: column; width: 95%; height: 90%; }
             .user-list-panel { width: 100%; height: 45%; border-right: none; border-bottom: 1px solid rgba(0,0,0,0.1); }
             .user-detail-panel { width: 100%; height: 55%; }
-            .panel-close-btn { top: -15px; right: -15px; width: 36px; height: 36px; }
-            .action-pill-btn { padding: 8px 20px; font-size: 0.8rem; }
+            .panel-close-wrapper { top: -40px; right: -10px; }
+            .panel-close-btn { width: 36px; height: 36px; }
+            .panel-close-btn span { font-size: 20px; }
+            .btn-admin { padding: 8px 20px; font-size: 0.8rem; min-width: 100px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ENTRANCE ANIMATION -->
     <div class="admin-entrance" id="adminEntrance">
         <div class="entrance-content">
             <div class="entrance-logo">KORAHEY ACADEMY</div>
@@ -1070,12 +1066,10 @@
         </div>
     </div>
 
-    <!-- Custom Toast Notification -->
     <div id="toastNotification" class="toast-notification"></div>
 
     <div class="main-content">
         <div id="adminContent" style="display: none;">
-            <!-- DYNAMIC ISLAND -->
             <nav class="dynamic-island">
                 <div class="dynamic-island-wrapper">
                     <div class="nav-item" onclick="goHome()">
@@ -1138,7 +1132,6 @@
                     </div>
                 </div>
 
-                <!-- CATEGORY ICONS -->
                 <div class="category-icons">
                     <div class="category-icon-card" data-cat="documents" onclick="filterByCategory('documents', this)">
                         <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
@@ -1171,10 +1164,8 @@
                 </div>
             </header>
 
-            <!-- Filter Bar - Dropdowns for Owner and Category -->
             <div class="filter-bar">
                 <div class="filter-right">
-                    <!-- Owner Dropdown -->
                     <div class="dropdown">
                         <button class="dropdown-btn" onclick="toggleDropdown('ownerMenu')">
                             <span id="ownerSelected">Any owner</span>
@@ -1187,7 +1178,6 @@
                         </div>
                     </div>
 
-                    <!-- Category Dropdown -->
                     <div class="dropdown">
                         <button class="dropdown-btn" onclick="toggleDropdown('categoryMenu')">
                             <span id="categorySelected">All Categories</span>
@@ -1205,7 +1195,6 @@
                         </div>
                     </div>
 
-                    <!-- Sort Button -->
                     <button class="sort-btn" id="sortBtn" onclick="toggleSort()">
                         <svg viewBox="0 0 24 24"><polyline points="6 15 12 9 18 15"/></svg>
                         A-Z
@@ -1213,18 +1202,20 @@
                 </div>
             </div>
 
-            <!-- Recent Projects -->
             <main class="recent-section">
                 <div class="recent-grid" id="projectsGrid"></div>
             </main>
         </div>
     </div>
 
-    <!-- USER MANAGEMENT PANEL -->
+    <!-- USER MANAGEMENT PANEL - X button OUTSIDE the box -->
     <div class="user-panel-modal" id="userPanelModal">
         <div class="user-panel">
-            <div class="panel-close-btn" onclick="closeUserManagementPanel()">
-                <span>✕</span>
+            <!-- X Button - Positioned OUTSIDE the panel box -->
+            <div class="panel-close-wrapper">
+                <div class="panel-close-btn" onclick="closeUserManagementPanel()">
+                    <span>✕</span>
+                </div>
             </div>
             <div class="user-list-panel">
                 <div class="user-list-header">
@@ -1243,7 +1234,6 @@
         </div>
     </div>
 
-    <!-- Access Denied -->
     <div id="accessDenied" class="access-denied" style="display: none;">
         <div class="access-denied-content">
             <h2>Access Denied</h2>
@@ -1252,7 +1242,6 @@
         </div>
     </div>
 
-    <!-- Modals -->
     <div class="modal" id="createModal">
         <div class="modal-content">
             <h3>Create new</h3>
@@ -1321,7 +1310,6 @@
         let messages = [{ id: 1, title: 'Welcome to Admin Dashboard', read: false }];
         let selectedUserId = null;
 
-        // Toast notification function
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toastNotification');
             toast.textContent = message;
@@ -1332,7 +1320,6 @@
             }, 3000);
         }
 
-        // Sample projects
         const sampleProjects = [
             { id: 1, title: 'Final Exam - Grade 12', type: 'exam', date: new Date().toISOString(), category: 'exam', owner: 'me' },
             { id: 2, title: 'Weekly Class Schedule', type: 'schedule', date: new Date().toISOString(), category: 'schedule', owner: 'me' },
@@ -1349,23 +1336,16 @@
 
         function renderProjects() {
             let filtered = [...projects];
-            
-            // Filter by owner
             if (currentOwnerFilter === 'me') {
                 filtered = filtered.filter(p => p.owner === 'me');
             } else if (currentOwnerFilter === 'shared') {
                 filtered = filtered.filter(p => p.owner === 'shared');
             }
-            
-            // Filter by category
             const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
             if(searchTerm) filtered = filtered.filter(p => p.title.toLowerCase().includes(searchTerm));
             if(currentCategory !== 'all') filtered = filtered.filter(p => p.category === currentCategory);
-            
-            // Sort
             if(currentSort === 'az') filtered.sort((a,b) => a.title.localeCompare(b.title));
             else filtered.sort((a,b) => b.title.localeCompare(a.title));
-            
             const grid = document.getElementById('projectsGrid');
             if(filtered.length === 0) { 
                 grid.innerHTML = '<div class="empty-state"><h3>No projects found</h3><p>Try a different search or create a new project</p></div>'; 
@@ -1410,7 +1390,6 @@
             renderProjects();
         }
 
-        // Owner filter functions
         function setOwnerFilter(filter) {
             currentOwnerFilter = filter;
             const ownerSelected = document.getElementById('ownerSelected');
@@ -1420,14 +1399,11 @@
             renderProjects();
         }
 
-        // Category filter functions
         function setCategoryFilter(category) {
             currentCategory = category;
             const categorySelected = document.getElementById('categorySelected');
             if (category === 'all') categorySelected.textContent = 'All Categories';
             else categorySelected.textContent = category.charAt(0).toUpperCase() + category.slice(1);
-            
-            // Also update category icons
             document.querySelectorAll('.category-icon-card').forEach(c => c.classList.remove('active'));
             if (category !== 'all') {
                 const icon = document.querySelector(`.category-icon-card[data-cat="${category}"]`);
@@ -1440,7 +1416,6 @@
             setCategoryFilter(category);
         }
 
-        // Dropdown functions
         function toggleDropdown(id) {
             document.querySelectorAll('.dropdown-menu').forEach(menu => {
                 if (menu.id !== id) menu.classList.remove('active');
@@ -1452,7 +1427,6 @@
             document.getElementById(id)?.classList.remove('active');
         }
 
-        // Close dropdowns when clicking outside
         document.addEventListener('click', function(e) {
             if (!e.target.closest('.dropdown')) {
                 document.querySelectorAll('.dropdown-menu').forEach(menu => {
@@ -1461,7 +1435,6 @@
             }
         });
 
-        // ============ USER MANAGEMENT FUNCTIONS ============
         function getInitials(name) {
             if (!name) return 'U';
             const parts = name.trim().split(' ');
@@ -1558,21 +1531,49 @@
                         <div class="info-row"><span class="info-label">Status</span><span class="info-value">${isBanned ? 'Banned' : 'Active'}</span></div>
                     </div>
                     <div class="action-pill-group">
-                        <div class="action-pill" id="adminPill">
-                            <div class="action-pill-inner" id="adminPillInner" style="transform: translateX(${isAdmin ? '0%' : '100%'});"></div>
-                            <button class="action-pill-btn ${isAdmin ? 'active' : ''}" id="makeAdminBtn" onclick="toggleAdmin('${userId}', ${isAdmin})">Make Admin</button>
-                            <button class="action-pill-btn ${!isAdmin ? 'active' : ''}" id="removeAdminBtn" onclick="toggleAdmin('${userId}', ${isAdmin})">Remove Admin</button>
+                        <div class="hero-btns-group-admin" id="adminPillGroup">
+                            <div class="hero-pill-admin" id="adminPillInner" style="transform: translateX(${isAdmin ? '0%' : '100%'});"></div>
+                            <button class="btn-admin ${isAdmin ? 'active' : ''}" id="makeAdminBtn" onmouseenter="moveAdminPill(true)" onmouseleave="resetAdminPill(${isAdmin})" onclick="toggleAdmin('${userId}', ${isAdmin})">Make Admin</button>
+                            <button class="btn-admin ${!isAdmin ? 'active' : ''}" id="removeAdminBtn" onmouseenter="moveAdminPill(false)" onmouseleave="resetAdminPill(${isAdmin})" onclick="toggleAdmin('${userId}', ${isAdmin})">Remove Admin</button>
                         </div>
                         
-                        <div class="action-pill ban-pill" id="banPill">
-                            <div class="action-pill-inner" id="banPillInner" style="transform: translateX(${isBanned ? '0%' : '100%'});"></div>
-                            <button class="action-pill-btn ${isBanned ? 'active' : ''}" id="banBtn" onclick="toggleBan('${userId}', ${isBanned})">Ban User</button>
-                            <button class="action-pill-btn ${!isBanned ? 'active' : ''}" id="unbanBtn" onclick="toggleBan('${userId}', ${isBanned})">Unban User</button>
+                        <div class="hero-btns-group-admin" id="banPillGroup">
+                            <div class="hero-pill-admin ban-pill" id="banPillInner" style="transform: translateX(${isBanned ? '0%' : '100%'});"></div>
+                            <button class="btn-admin ${isBanned ? 'active' : ''}" id="banBtn" onmouseenter="moveBanPill(true)" onmouseleave="resetBanPill(${isBanned})" onclick="toggleBan('${userId}', ${isBanned})">Ban User</button>
+                            <button class="btn-admin ${!isBanned ? 'active' : ''}" id="unbanBtn" onmouseenter="moveBanPill(false)" onmouseleave="resetBanPill(${isBanned})" onclick="toggleBan('${userId}', ${isBanned})">Unban User</button>
                         </div>
                     </div>
                 `;
             } catch(e) {
                 console.log("Error rendering user details", e);
+            }
+        }
+
+        function moveAdminPill(toMake) {
+            const pill = document.getElementById('adminPillInner');
+            if (pill) {
+                pill.style.transform = toMake ? 'translateX(0%)' : 'translateX(100%)';
+            }
+        }
+
+        function resetAdminPill(isAdmin) {
+            const pill = document.getElementById('adminPillInner');
+            if (pill) {
+                pill.style.transform = isAdmin ? 'translateX(0%)' : 'translateX(100%)';
+            }
+        }
+
+        function moveBanPill(toBan) {
+            const pill = document.getElementById('banPillInner');
+            if (pill) {
+                pill.style.transform = toBan ? 'translateX(0%)' : 'translateX(100%)';
+            }
+        }
+
+        function resetBanPill(isBanned) {
+            const pill = document.getElementById('banPillInner');
+            if (pill) {
+                pill.style.transform = isBanned ? 'translateX(0%)' : 'translateX(100%)';
             }
         }
 
@@ -1633,7 +1634,6 @@
             document.getElementById('userSearchInput').addEventListener('input', () => renderUserList());
         }
 
-        // ============ UI FUNCTIONS ============
         function goHome() { window.location.href = 'index.html'; }
         function scrollToProjects() { document.querySelector('.recent-section')?.scrollIntoView({ behavior: 'smooth' }); }
         function openCreateModal() { openModal('createModal'); }
@@ -1657,7 +1657,6 @@
         if(searchInput) searchInput.addEventListener('input', () => { updateClear(); renderProjects(); });
         if(clearBtn) clearBtn.addEventListener('click', clearSearch);
 
-        // ============ AUTH CHECK ============
         const entrance = document.getElementById('adminEntrance');
         const adminContent = document.getElementById('adminContent');
         const accessDenied = document.getElementById('accessDenied');
@@ -1721,4 +1720,5 @@
         });
     </script>
 </body>
+</html>
 </html>
