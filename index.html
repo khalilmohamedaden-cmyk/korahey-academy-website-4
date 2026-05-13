@@ -89,7 +89,7 @@
         }
 
         /* Profile Avatar */
-        .profile-section { position: relative; margin-left: 20px; }
+        .profile-section { position: relative; margin-left: 20px; cursor: pointer; }
         .profile-avatar {
             width: 42px; height: 42px; border-radius: 50%;
             border: 2px solid rgba(255,255,255,0.1);
@@ -142,7 +142,7 @@
         
         .auth-btn:hover { color: #fff; }
 
-        /* Hero Buttons with Animated Pill */
+        /* Hero Buttons */
         .hero-btns-group {
             position: relative;
             display: inline-flex;
@@ -418,12 +418,14 @@
             </ul>
 
             <div style="display: flex; align-items: center;">
+                <!-- Auth Buttons (shown when not logged in) -->
                 <div class="auth-wrapper" id="authWrapper">
                     <div class="auth-pill signup-active" id="authPill"></div>
                     <button class="auth-btn" id="signUpBtn">Sign Up</button>
                     <button class="auth-btn" id="logInBtn">Log In</button>
                 </div>
 
+                <!-- Profile Dropdown (shown when logged in) -->
                 <div class="profile-section" id="profileSection" style="display: none;">
                     <img id="userAvatar" class="profile-avatar" src="default-avatar.png">
                     <div class="profile-dropdown">
@@ -431,20 +433,25 @@
                             <p id="dropdownUserName" style="font-weight: 700; font-size: 0.95rem;"></p>
                             <p id="dropdownUserEmail" style="font-size: 0.75rem; color: var(--text-dim);"></p>
                         </div>
-                        <div class="dropdown-item" id="myAccountBtn"><span>My Account</span></div>
+                        <div class="dropdown-item" id="myAccountBtn">
+                            <span>👤 My Account</span>
+                        </div>
                         <div id="adminDropdownItem" style="display: none;">
                             <div class="dropdown-item" id="adminDashboardBtn">
-                                <span>Admin Dashboard</span>
+                                <span>🛡️ Admin Dashboard</span>
                                 <span style="background: rgba(255,100,0,0.2); color: #ffa500; font-size: 0.7rem; padding: 2px 8px; border-radius: 20px; margin-left: 8px;">ADMIN</span>
                             </div>
                         </div>
-                        <div class="dropdown-item" id="signOutBtn" style="color: #ff4d4d !important;"><span>Sign Out</span></div>
+                        <div class="dropdown-item" id="signOutBtn" style="color: #ff4d4d !important;">
+                            <span>🚪 Sign Out</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </nav>
 
+    <!-- Ban Overlay -->
     <div id="banOverlay" style="display: none;" class="ban-message">
         <div class="ban-message-content">
             <h2>⛔ Account Banned</h2>
@@ -517,7 +524,7 @@
     <!-- Why Families Choose -->
     <section class="why-us-v2 reveal-slide-up">
         <div class="why-header"><h2 class="massive-title">Why Families Choose Korahey Academy</h2><p class="clean-desc centered-p">Our mission is to drive progress and enhance the lives of our students.</p></div>
-        <div class="why-img-container"><img src="slided1.png" class="soft-rect-large" alt="Why Choose Us" onerror="this.src='https://placehold.co/1100x500/1a1a1a/white?text=Korahey+Academy'"></div>
+        <div class="why-img-container"><img src="slided1.png" class="soft-rect-large" alt="Why Choose Us"></div>
         <div class="why-footer"><p class="clean-desc centered-p">Families choose us for our focus on real growth every single day.</p>
             <div class="hero-btns-wrapper">
                 <div class="hero-btns-group" id="footerBtnsGroup">
@@ -563,218 +570,238 @@
     <footer><div class="footer-content"><div class="footer-logo">Korahey Academy</div><div class="footer-copyright">© 2026 Khalil · Official site for Korahey Academy</div><div class="footer-made">Made by Khalil</div></div></footer>
 
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyCC5oK1cMufciR1v4wLi-jfYvXa_cQBnd0",
-            authDomain: "korahey-admin.firebaseapp.com",
-            projectId: "korahey-admin",
-            storageBucket: "korahey-admin.firebasestorage.app",
-            messagingSenderId: "86298888884",
-            appId: "1:86298888884:web:f1d835de1cb9d2534d65e1"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-
-        const ADMIN_EMAIL = "khalilmohamedaden@gmail.com";
-
-        // DOM Elements
-        const authWrapper = document.getElementById('authWrapper');
-        const authPill = document.getElementById('authPill');
-        const signUpBtn = document.getElementById('signUpBtn');
-        const logInBtn = document.getElementById('logInBtn');
-        const profileSection = document.getElementById('profileSection');
-        const userAvatar = document.getElementById('userAvatar');
-        const dropdownUserName = document.getElementById('dropdownUserName');
-        const dropdownUserEmail = document.getElementById('dropdownUserEmail');
-        const adminDropdownItem = document.getElementById('adminDropdownItem');
-        const banOverlay = document.getElementById('banOverlay');
-
-        const heroPill = document.getElementById('heroPill');
-        const heroJoinBtn = document.getElementById('heroJoinBtn');
-        const heroLearnBtn = document.getElementById('heroLearnBtn');
-        const footerPill = document.getElementById('footerPill');
-        const footerJoinBtn = document.getElementById('footerJoinBtn');
-        const footerLearnBtn = document.getElementById('footerLearnBtn');
-
-        function setupHeroPill() {
-            if (!heroJoinBtn || !heroLearnBtn || !heroPill) return;
-            heroJoinBtn.addEventListener('mouseenter', () => {
-                heroPill.classList.remove('learn-active');
-                heroPill.classList.add('join-active');
-            });
-            heroLearnBtn.addEventListener('mouseenter', () => {
-                heroPill.classList.remove('join-active');
-                heroPill.classList.add('learn-active');
-            });
-        }
-        
-        function setupFooterPill() {
-            if (!footerJoinBtn || !footerLearnBtn || !footerPill) return;
-            footerJoinBtn.addEventListener('mouseenter', () => {
-                footerPill.classList.remove('learn-active');
-                footerPill.classList.add('join-active');
-            });
-            footerLearnBtn.addEventListener('mouseenter', () => {
-                footerPill.classList.remove('join-active');
-                footerPill.classList.add('learn-active');
-            });
-        }
-
-        function setupAuthPill() {
-            if (!signUpBtn || !logInBtn || !authPill) return;
-            signUpBtn.addEventListener('mouseenter', () => {
-                authPill.classList.remove('login-active');
-                authPill.classList.add('signup-active');
-            });
-            logInBtn.addEventListener('mouseenter', () => {
-                authPill.classList.remove('signup-active');
-                authPill.classList.add('login-active');
-            });
-        }
-
-        function goToSignUp() { window.location.href = 'Sign.up.html'; }
-        function goToLogIn() { window.location.href = 'Log.in.html'; }
-        function goToAdminDashboard() { window.location.href = 'admin.html'; }
-        function openMyAccount() { alert('My Account page coming soon!'); }
-        
-        function logoutAndRedirect() {
-            auth.signOut().then(() => {
-                window.location.href = 'index.html';
-            });
-        }
-
-        if (signUpBtn) signUpBtn.addEventListener('click', goToSignUp);
-        if (logInBtn) logInBtn.addEventListener('click', goToLogIn);
-        if (heroJoinBtn) heroJoinBtn.addEventListener('click', goToSignUp);
-        if (heroLearnBtn) heroLearnBtn.addEventListener('click', goToLogIn);
-        if (footerJoinBtn) footerJoinBtn.addEventListener('click', goToSignUp);
-        if (footerLearnBtn) footerLearnBtn.addEventListener('click', goToLogIn);
-        
-        document.getElementById('myAccountBtn')?.addEventListener('click', openMyAccount);
-        document.getElementById('adminDashboardBtn')?.addEventListener('click', goToAdminDashboard);
-        document.getElementById('signOutBtn')?.addEventListener('click', () => auth.signOut().then(() => location.reload()));
-
-        async function updateProfileDropdown(user) {
-            if (dropdownUserName) dropdownUserName.textContent = user.displayName || user.email.split('@')[0];
-            if (dropdownUserEmail) dropdownUserEmail.textContent = user.email;
+        document.addEventListener('DOMContentLoaded', function() {
             
-            let isAdmin = user.email === ADMIN_EMAIL;
-            if (!isAdmin) {
-                const userDoc = await db.collection('users').doc(user.uid).get();
-                isAdmin = userDoc.exists && userDoc.data().isAdmin === true;
+            const firebaseConfig = {
+                apiKey: "AIzaSyCC5oK1cMufciR1v4wLi-jfYvXa_cQBnd0",
+                authDomain: "korahey-admin.firebaseapp.com",
+                projectId: "korahey-admin",
+                storageBucket: "korahey-admin.firebasestorage.app",
+                messagingSenderId: "86298888884",
+                appId: "1:86298888884:web:f1d835de1cb9d2534d65e1"
+            };
+
+            // Initialize Firebase
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
             }
             
-            if (adminDropdownItem) adminDropdownItem.style.display = isAdmin ? 'block' : 'none';
-        }
+            const auth = firebase.auth();
+            const db = firebase.firestore();
+            const ADMIN_EMAIL = "khalilmohamedaden@gmail.com";
 
-        // Auth state listener with BAN CHECK
-        auth.onAuthStateChanged(async (user) => {
-            if (user) {
-                // Check if user is banned
-                const userDoc = await db.collection('users').doc(user.uid).get();
-                const userData = userDoc.data();
+            // DOM Elements
+            const authWrapper = document.getElementById('authWrapper');
+            const authPill = document.getElementById('authPill');
+            const signUpBtn = document.getElementById('signUpBtn');
+            const logInBtn = document.getElementById('logInBtn');
+            const profileSection = document.getElementById('profileSection');
+            const userAvatar = document.getElementById('userAvatar');
+            const dropdownUserName = document.getElementById('dropdownUserName');
+            const dropdownUserEmail = document.getElementById('dropdownUserEmail');
+            const adminDropdownItem = document.getElementById('adminDropdownItem');
+            const banOverlay = document.getElementById('banOverlay');
+
+            // Hero Buttons
+            const heroPill = document.getElementById('heroPill');
+            const heroJoinBtn = document.getElementById('heroJoinBtn');
+            const heroLearnBtn = document.getElementById('heroLearnBtn');
+            const footerPill = document.getElementById('footerPill');
+            const footerJoinBtn = document.getElementById('footerJoinBtn');
+            const footerLearnBtn = document.getElementById('footerLearnBtn');
+
+            // Navigation functions
+            function goToSignUp() { window.location.href = 'Sign.up.html'; }
+            function goToLogIn() { window.location.href = 'Log.in.html'; }
+            function goToAdminDashboard() { window.location.href = 'admin.html'; }
+            function openMyAccount() { alert('My Account page coming soon!'); }
+            
+            window.logoutAndRedirect = function() {
+                auth.signOut().then(() => {
+                    window.location.href = 'index.html';
+                });
+            };
+
+            // Setup pill animations
+            function setupHeroPill() {
+                if (!heroJoinBtn || !heroLearnBtn || !heroPill) return;
+                heroJoinBtn.addEventListener('mouseenter', () => {
+                    heroPill.classList.remove('learn-active');
+                    heroPill.classList.add('join-active');
+                });
+                heroLearnBtn.addEventListener('mouseenter', () => {
+                    heroPill.classList.remove('join-active');
+                    heroPill.classList.add('learn-active');
+                });
+            }
+            
+            function setupFooterPill() {
+                if (!footerJoinBtn || !footerLearnBtn || !footerPill) return;
+                footerJoinBtn.addEventListener('mouseenter', () => {
+                    footerPill.classList.remove('learn-active');
+                    footerPill.classList.add('join-active');
+                });
+                footerLearnBtn.addEventListener('mouseenter', () => {
+                    footerPill.classList.remove('join-active');
+                    footerPill.classList.add('learn-active');
+                });
+            }
+
+            function setupAuthPill() {
+                if (!signUpBtn || !logInBtn || !authPill) return;
+                signUpBtn.addEventListener('mouseenter', () => {
+                    authPill.classList.remove('login-active');
+                    authPill.classList.add('signup-active');
+                });
+                logInBtn.addEventListener('mouseenter', () => {
+                    authPill.classList.remove('signup-active');
+                    authPill.classList.add('login-active');
+                });
+            }
+
+            // Attach button events
+            if (signUpBtn) signUpBtn.addEventListener('click', goToSignUp);
+            if (logInBtn) logInBtn.addEventListener('click', goToLogIn);
+            if (heroJoinBtn) heroJoinBtn.addEventListener('click', goToSignUp);
+            if (heroLearnBtn) heroLearnBtn.addEventListener('click', goToLogIn);
+            if (footerJoinBtn) footerJoinBtn.addEventListener('click', goToSignUp);
+            if (footerLearnBtn) footerLearnBtn.addEventListener('click', goToLogIn);
+            
+            document.getElementById('myAccountBtn')?.addEventListener('click', openMyAccount);
+            document.getElementById('adminDashboardBtn')?.addEventListener('click', goToAdminDashboard);
+            document.getElementById('signOutBtn')?.addEventListener('click', () => auth.signOut().then(() => location.reload()));
+
+            async function updateProfileDropdown(user) {
+                if (dropdownUserName) dropdownUserName.textContent = user.displayName || user.email.split('@')[0];
+                if (dropdownUserEmail) dropdownUserEmail.textContent = user.email;
                 
-                if (userData && userData.isBanned === true) {
-                    // Show ban message and hide everything
-                    if (banOverlay) banOverlay.style.display = 'flex';
+                let isAdmin = user.email === ADMIN_EMAIL;
+                if (!isAdmin) {
+                    try {
+                        const userDoc = await db.collection('users').doc(user.uid).get();
+                        isAdmin = userDoc.exists && userDoc.data().isAdmin === true;
+                    } catch(e) { console.log("Firestore error:", e); }
+                }
+                
+                if (adminDropdownItem) adminDropdownItem.style.display = isAdmin ? 'block' : 'none';
+            }
+
+            // Auth state listener with BAN CHECK
+            auth.onAuthStateChanged(async (user) => {
+                if (user) {
+                    // Check if user is banned
+                    try {
+                        const userDoc = await db.collection('users').doc(user.uid).get();
+                        const userData = userDoc.data();
+                        
+                        if (userData && userData.isBanned === true) {
+                            if (banOverlay) banOverlay.style.display = 'flex';
+                            if (authWrapper) authWrapper.style.display = 'none';
+                            if (profileSection) profileSection.style.display = 'none';
+                            return;
+                        }
+                    } catch(e) { console.log("Ban check error:", e); }
+                    
+                    // User is not banned - show normal UI
+                    if (banOverlay) banOverlay.style.display = 'none';
                     if (authWrapper) authWrapper.style.display = 'none';
+                    if (profileSection) profileSection.style.display = 'flex';
+                    
+                    if (userAvatar) {
+                        userAvatar.src = user.photoURL || `https://ui-avatars.com/api/?name=${(user.displayName || user.email.charAt(0)).toUpperCase()}&background=ffffff&color=000000&size=42`;
+                    }
+                    await updateProfileDropdown(user);
+                    
+                    // Update last login
+                    try {
+                        await db.collection('users').doc(user.uid).set({
+                            email: user.email,
+                            name: user.displayName || '',
+                            photoURL: user.photoURL || '',
+                            lastLogin: new Date().toISOString(),
+                            ...(user.email === ADMIN_EMAIL && { isAdmin: true })
+                        }, { merge: true });
+                    } catch(e) { console.log("Firestore update error:", e); }
+                    
+                } else {
+                    if (banOverlay) banOverlay.style.display = 'none';
                     if (profileSection) profileSection.style.display = 'none';
-                    return;
+                    if (authWrapper) {
+                        authWrapper.style.display = 'flex';
+                        setupAuthPill();
+                    }
                 }
-                
-                // User is not banned - show normal UI
-                if (banOverlay) banOverlay.style.display = 'none';
-                if (authWrapper) authWrapper.style.display = 'none';
-                if (profileSection) profileSection.style.display = 'flex';
-                if (userAvatar) {
-                    userAvatar.src = user.photoURL || `https://ui-avatars.com/api/?name=${(user.displayName || user.email.charAt(0)).toUpperCase()}&background=ffffff&color=000000&size=42`;
-                }
-                await updateProfileDropdown(user);
-                
-                await db.collection('users').doc(user.uid).set({
-                    email: user.email,
-                    name: user.displayName || '',
-                    photoURL: user.photoURL || '',
-                    lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
-                    ...(user.email === ADMIN_EMAIL && { isAdmin: true, role: 'super_admin' })
-                }, { merge: true });
-            } else {
-                if (banOverlay) banOverlay.style.display = 'none';
-                if (profileSection) profileSection.style.display = 'none';
-                if (authWrapper) {
-                    authWrapper.style.display = 'flex';
-                    setupAuthPill();
-                }
+            });
+
+            // Hero Slider
+            const slides = document.querySelectorAll('.hero-image-slider img');
+            const dots = document.querySelectorAll('.dot');
+            const movingPill = document.getElementById('hero-line');
+            const observerContainer = document.querySelector('.video-nav-observer');
+            let currentIdx = 0;
+            let autoInterval;
+
+            function movePillToDot(index) {
+                if (!dots[index] || !movingPill || !observerContainer) return;
+                const targetDot = dots[index];
+                const containerRect = observerContainer.getBoundingClientRect();
+                const dotRect = targetDot.getBoundingClientRect();
+                const dotCenter = (dotRect.left + dotRect.width / 2) - containerRect.left;
+                const pillWidth = movingPill.offsetWidth;
+                movingPill.style.left = `${dotCenter - (pillWidth / 2)}px`;
             }
-        });
 
-        // Hero Slider
-        const slides = document.querySelectorAll('.hero-image-slider img');
-        const dots = document.querySelectorAll('.dot');
-        const movingPill = document.getElementById('hero-line');
-        const observerContainer = document.querySelector('.video-nav-observer');
-        let currentIdx = 0;
-        let autoInterval;
+            function updateHero(index) {
+                slides.forEach(s => s.classList.remove('active'));
+                slides[index].classList.add('active');
+                movePillToDot(index);
+                currentIdx = index;
+            }
 
-        function movePillToDot(index) {
-            if (!dots[index] || !movingPill || !observerContainer) return;
-            const targetDot = dots[index];
-            const containerRect = observerContainer.getBoundingClientRect();
-            const dotRect = targetDot.getBoundingClientRect();
-            const dotCenter = (dotRect.left + dotRect.width / 2) - containerRect.left;
-            const pillWidth = movingPill.offsetWidth;
-            movingPill.style.left = `${dotCenter - (pillWidth / 2)}px`;
-        }
+            function startAutoCycle() {
+                autoInterval = setInterval(() => updateHero((currentIdx + 1) % slides.length), 6000);
+            }
 
-        function updateHero(index) {
-            slides.forEach(s => s.classList.remove('active'));
-            slides[index].classList.add('active');
-            movePillToDot(index);
-            currentIdx = index;
-        }
+            if (dots.length) {
+                dots.forEach((dot, i) => {
+                    dot.addEventListener('click', () => {
+                        clearInterval(autoInterval);
+                        updateHero(i);
+                        startAutoCycle();
+                    });
+                });
+            }
 
-        function startAutoCycle() {
-            autoInterval = setInterval(() => updateHero((currentIdx + 1) % slides.length), 6000);
-        }
-
-        if (dots.length) {
-            dots.forEach((dot, i) => {
-                dot.addEventListener('click', () => {
-                    clearInterval(autoInterval);
-                    updateHero(i);
+            // Initialize
+            window.addEventListener('load', () => {
+                setupHeroPill();
+                setupFooterPill();
+                
+                if (slides.length) {
+                    setTimeout(() => { updateHero(0); }, 100);
                     startAutoCycle();
+                }
+                
+                document.querySelectorAll('.reveal, .reveal-slide-up, .reveal-pop').forEach(el => {
+                    new IntersectionObserver((entries) => {
+                        entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+                    }, { threshold: 0.1 }).observe(el);
                 });
             });
-        }
 
-        window.addEventListener('load', () => {
-            setupHeroPill();
-            setupFooterPill();
+            window.addEventListener('resize', () => { if (dots.length && dots[currentIdx]) movePillToDot(currentIdx); });
             
-            if (slides.length) {
-                setTimeout(() => { updateHero(0); }, 100);
-                startAutoCycle();
-            }
-            
-            document.querySelectorAll('.reveal, .reveal-slide-up, .reveal-pop').forEach(el => {
-                new IntersectionObserver((entries) => {
-                    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
-                }, { threshold: 0.1 }).observe(el);
+            let lastScrollY = window.scrollY;
+            const nav = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                const currentScrollY = window.scrollY;
+                if (nav) {
+                    if (currentScrollY > lastScrollY && currentScrollY > 100) nav.classList.add('nav-hidden');
+                    else nav.classList.remove('nav-hidden');
+                }
+                lastScrollY = currentScrollY;
             });
-        });
-
-        window.addEventListener('resize', () => { if (dots.length && dots[currentIdx]) movePillToDot(currentIdx); });
-        
-        let lastScrollY = window.scrollY;
-        const nav = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            const currentScrollY = window.scrollY;
-            if (nav) {
-                if (currentScrollY > lastScrollY && currentScrollY > 100) nav.classList.add('nav-hidden');
-                else nav.classList.remove('nav-hidden');
-            }
-            lastScrollY = currentScrollY;
+            
         });
     </script>
 </body>
