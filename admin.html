@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Korahey Admin | Dashboard</title>
     
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
@@ -25,6 +26,7 @@
             min-height: 100vh;
         }
 
+        /* ENTRANCE ANIMATION */
         .admin-entrance {
             position: fixed;
             top: 0;
@@ -92,6 +94,7 @@
             50% { opacity: 1; transform: scale(1.2); }
         }
 
+        /* Main content */
         .main-content {
             flex: 1;
             overflow-x: hidden;
@@ -102,6 +105,7 @@
             transition: opacity 0.5s ease;
         }
 
+        /* LIVE GRADIENT BACKGROUND */
         .glass-header {
             padding: 100px 5% 40px;
             text-align: center;
@@ -116,6 +120,9 @@
             100% { background-position: 0% 50%; }
         }
 
+        /* ============================================
+           DYNAMIC ISLAND
+        ============================================ */
         .dynamic-island {
             position: fixed;
             background: rgba(255, 255, 255, 0.45);
@@ -227,6 +234,7 @@
             background: rgba(0,0,0,0.04);
         }
 
+        /* CREATE BUTTON */
         .create-nav-item {
             position: relative;
             display: flex;
@@ -299,6 +307,7 @@
             z-index: 2;
         }
 
+        /* HELLO TEXT */
         .hello-text {
             font-size: 3.5rem;
             font-weight: 800;
@@ -309,6 +318,7 @@
             -webkit-text-fill-color: transparent;
         }
 
+        /* SEARCH BAR */
         .search-container {
             max-width: 600px;
             margin: 0 auto 30px;
@@ -356,6 +366,7 @@
             margin: 0;
         }
 
+        /* CATEGORY ICONS */
         .category-icons {
             display: flex;
             justify-content: center;
@@ -406,6 +417,7 @@
             font-weight: 600;
         }
 
+        /* FILTER BAR */
         .filter-bar {
             max-width: 1400px;
             margin: 20px auto 30px;
@@ -460,6 +472,7 @@
             background: rgba(0,0,0,0.08);
         }
 
+        /* DROPDOWN */
         .dropdown {
             position: relative;
             display: inline-block;
@@ -527,6 +540,9 @@
             background: rgba(0, 0, 0, 0.05);
         }
 
+        /* ============================================
+           USER MANAGEMENT PANEL
+        ============================================ */
         .user-panel-modal {
             display: none;
             position: fixed;
@@ -651,6 +667,17 @@
 
         .user-list-item.active {
             background: rgba(0, 113, 227, 0.1);
+        }
+
+        .online-indicator {
+            position: absolute;
+            bottom: 2px;
+            right: 12px;
+            width: 10px;
+            height: 10px;
+            background: #4cd964;
+            border-radius: 50%;
+            border: 2px solid white;
         }
 
         .user-list-avatar {
@@ -807,6 +834,7 @@
             opacity: 0.9;
         }
 
+        /* RECENT PROJECTS GRID */
         .recent-section { 
             max-width: 1400px; 
             margin: 0 auto; 
@@ -885,6 +913,7 @@
             font-size: 0.9rem;
         }
 
+        /* Access Denied */
         .access-denied {
             display: flex;
             align-items: center;
@@ -897,10 +926,11 @@
             background: white;
             padding: 40px;
             border-radius: 40px;
-            max-width: 500px;
+            max-width: 400px;
             text-align: center;
         }
 
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -951,6 +981,8 @@
         }
 
         .create-option svg { width: 28px; height: 28px; stroke: var(--apple-blue); }
+        .create-option-text h4 { font-weight: 600; margin-bottom: 4px; }
+        .create-option-text span { font-size: 13px; color: #86868b; }
 
         .close-modal {
             margin-top: 20px;
@@ -962,42 +994,11 @@
             cursor: pointer;
         }
 
-        .message-item {
+        .user-list, .message-item {
             padding: 12px;
             border-bottom: 1px solid #e5e5e5;
         }
         .message-title { font-weight: 600; }
-
-        .loading-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            flex-direction: column;
-            gap: 20px;
-        }
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid #eef8ff;
-            border-top-color: var(--apple-blue);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .debug-info {
-            background: #f0f0f0;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-            text-align: left;
-            font-family: monospace;
-            font-size: 12px;
-            color: #333;
-        }
 
         @media (max-width: 768px) {
             .glass-header { padding: 100px 5% 30px; }
@@ -1017,12 +1018,8 @@
 </head>
 <body>
 
-    <div id="loadingContainer" class="loading-container">
-        <div class="loading-spinner"></div>
-        <div>Checking admin permissions...</div>
-    </div>
-
-    <div class="admin-entrance" id="adminEntrance" style="display: none;">
+    <!-- ENTRANCE ANIMATION -->
+    <div class="admin-entrance" id="adminEntrance">
         <div class="entrance-content">
             <div class="entrance-logo">KORAHEY ACADEMY</div>
             <div class="entrance-sub">ADMIN DASHBOARD</div>
@@ -1033,7 +1030,8 @@
     </div>
 
     <div class="main-content">
-        <div id="adminContent" style="display: none;">
+        <div id="adminContent">
+            <!-- DYNAMIC ISLAND -->
             <nav class="dynamic-island">
                 <div class="dynamic-island-wrapper">
                     <div class="nav-item" onclick="goHome()">
@@ -1096,6 +1094,7 @@
                     </div>
                 </div>
 
+                <!-- CATEGORY ICONS -->
                 <div class="category-icons">
                     <div class="category-icon-card" data-cat="documents" onclick="filterByCategory('documents', this)">
                         <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
@@ -1128,9 +1127,37 @@
                 </div>
             </header>
 
+            <!-- Filter Bar -->
             <div class="filter-bar">
                 <div class="filter-left">
                     <h3>Recent</h3>
+                    <div class="dropdown">
+                        <button class="dropdown-btn" onclick="toggleDropdown('ownerMenu')">
+                            Any owner
+                            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button>
+                        <div class="dropdown-menu" id="ownerMenu">
+                            <a onclick="filterByOwner('any'); closeDropdown('ownerMenu')">Any owner</a>
+                            <a onclick="filterByOwner('me'); closeDropdown('ownerMenu')">khalil mohammed (You)</a>
+                            <a onclick="filterByOwner('shared'); closeDropdown('ownerMenu')">Shared with you</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="dropdown-btn" onclick="toggleDropdown('categoryMenu')">
+                            All Categories
+                            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button>
+                        <div class="dropdown-menu" id="categoryMenu">
+                            <a onclick="filterByCategoryDropdown('all'); closeDropdown('categoryMenu')">All Categories</a>
+                            <a onclick="filterByCategoryDropdown('documents'); closeDropdown('categoryMenu')">Documents</a>
+                            <a onclick="filterByCategoryDropdown('sheets'); closeDropdown('categoryMenu')">Sheets</a>
+                            <a onclick="filterByCategoryDropdown('schedule'); closeDropdown('categoryMenu')">Schedules</a>
+                            <a onclick="filterByCategoryDropdown('assignment'); closeDropdown('categoryMenu')">Assignments</a>
+                            <a onclick="filterByCategoryDropdown('exam'); closeDropdown('categoryMenu')">Exams</a>
+                            <a onclick="filterByCategoryDropdown('classwork'); closeDropdown('categoryMenu')">Classwork</a>
+                            <a onclick="filterByCategoryDropdown('homework'); closeDropdown('categoryMenu')">Homework</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="filter-right">
                     <button class="sort-btn" id="sortBtn" onclick="toggleSort()">
@@ -1140,12 +1167,14 @@
                 </div>
             </div>
 
+            <!-- Recent Projects -->
             <main class="recent-section">
                 <div class="recent-grid" id="projectsGrid"></div>
             </main>
         </div>
     </div>
 
+    <!-- USER MANAGEMENT PANEL -->
     <div class="user-panel-modal" id="userPanelModal">
         <div class="user-panel">
             <div class="user-list-panel">
@@ -1169,23 +1198,16 @@
         </div>
     </div>
 
+    <!-- Access Denied -->
     <div id="accessDenied" class="access-denied" style="display: none;">
         <div class="access-denied-content">
             <h2>Access Denied</h2>
-            <p id="deniedMessage">You don't have permission to access the admin dashboard.</p>
-            <div id="debugInfo" class="debug-info"></div>
-            <button class="sort-btn" onclick="window.location.href='index.html'" style="margin-top: 20px;">Back to Home</button>
+            <p>You don't have permission.</p>
+            <button class="sort-btn" onclick="window.location.href='index.html'">Back to Home</button>
         </div>
     </div>
 
-    <div id="notLoggedIn" class="access-denied" style="display: none;">
-        <div class="access-denied-content">
-            <h2>Not Logged In</h2>
-            <p>Please log in to access the admin dashboard.</p>
-            <button class="sort-btn" onclick="window.location.href='Log.in.html'" style="margin-top: 20px;">Go to Login</button>
-        </div>
-    </div>
-
+    <!-- Modals -->
     <div class="modal" id="createModal">
         <div class="modal-content">
             <h3>Create new</h3>
@@ -1233,303 +1255,304 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            
-            const firebaseConfig = {
-                apiKey: "AIzaSyCC5oK1cMufciR1v4wLi-jfYvXa_cQBnd0",
-                authDomain: "korahey-admin.firebaseapp.com",
-                projectId: "korahey-admin",
-                storageBucket: "korahey-admin.firebasestorage.app",
-                messagingSenderId: "86298888884",
-                appId: "1:86298888884:web:f1d835de1cb9d2534d65e1"
-            };
+        const firebaseConfig = {
+            apiKey: "AIzaSyCC5oK1cMufciR1v4wLi-jfYvXa_cQBnd0",
+            authDomain: "korahey-admin.firebaseapp.com",
+            projectId: "korahey-admin",
+            storageBucket: "korahey-admin.firebasestorage.app",
+            messagingSenderId: "86298888884",
+            appId: "1:86298888884:web:f1d835de1cb9d2534d65e1"
+        };
 
-            if (!firebase.apps.length) {
-                firebase.initializeApp(firebaseConfig);
-            }
-            
-            const auth = firebase.auth();
-            const db = firebase.firestore();
-            const HEAD_ADMIN_EMAIL = "khalilmohamedaden@gmail.com";
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const ADMIN_EMAIL = "khalilmohamedaden@gmail.com";
 
-            let projects = [];
-            let currentSort = 'az';
-            let messages = [{ id: 1, title: 'Welcome to Admin Dashboard', read: false }];
-            let selectedUserId = null;
+        let projects = [];
+        let currentCategory = 'all';
+        let currentSort = 'az';
+        let messages = [{ id: 1, title: 'Added to "Final Exam"', read: false }];
+        let selectedUserId = null;
+        let onlineUsers = new Set();
 
-            const sampleProjects = [
-                { id: 1, title: 'Final Exam - Grade 12', type: 'exam', date: new Date().toISOString(), category: 'exam' },
-                { id: 2, title: 'Weekly Class Schedule', type: 'schedule', date: new Date().toISOString(), category: 'schedule' },
-                { id: 3, title: 'Mathematics Notes', type: 'classwork', date: new Date().toISOString(), category: 'classwork' },
-                { id: 4, title: 'Physics Assignment', type: 'assignment', date: new Date().toISOString(), category: 'assignment' },
-                { id: 5, title: 'Algebra Homework', type: 'homework', date: new Date().toISOString(), category: 'homework' }
-            ];
-
-            function loadProjects() { 
-                const saved = localStorage.getItem('adminProjects'); 
-                projects = saved ? JSON.parse(saved) : [...sampleProjects]; 
-                renderProjects(); 
-            }
-
-            function renderProjects() {
-                let filtered = [...projects];
-                if (currentSort === 'az') filtered.sort((a, b) => a.title.localeCompare(b.title));
-                else filtered.sort((a, b) => b.title.localeCompare(a.title));
-                const grid = document.getElementById('projectsGrid');
-                if (filtered.length === 0) {
-                    grid.innerHTML = '<div class="empty-state"><h3>No projects found</h3><p>Click the + button to create your first project</p></div>';
-                    return;
-                }
-                grid.innerHTML = filtered.map((p, i) => `<div class="liquid-card" onclick="openProject(${p.id})" style="animation-delay: ${i * 0.05}s"><div class="card-preview ${p.type}">${getIcon(p.type)}</div><div class="card-body"><h4>${escapeHtml(p.title)}</h4><p>Modified ${formatDate(p.date)}</p></div></div>`).join('');
-            }
-
-            function getIcon(type) {
-                switch(type) {
-                    case 'exam': return `<svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><line x1="8" y1="9" x2="16" y2="9"/></svg>`;
-                    case 'schedule': return `<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>`;
-                    case 'classwork': return `<svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/></svg>`;
-                    default: return `<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
-                }
-            }
-
-            function formatDate(d) { return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); }
-            function escapeHtml(str) { return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); }
-            function openProject(id) { alert(`Opening project ${id}`); }
-            
-            function createProject(type) {
-                let title = `${type.charAt(0).toUpperCase() + type.slice(1)} ${new Date().toLocaleDateString()}`;
-                messages.unshift({ id: Date.now(), title: `Added to "${title}"`, read: false });
-                updateMessagesBadge();
-                projects.unshift({ id: Date.now(), title, type, date: new Date().toISOString(), category: type });
-                localStorage.setItem('adminProjects', JSON.stringify(projects));
-                renderProjects();
-                closeModal('createModal');
-                alert(`Created new ${type}: ${title}`);
-            }
-
-            function toggleSort() {
-                const btn = document.getElementById('sortBtn');
-                if (currentSort === 'az') { currentSort = 'za'; btn.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="18 9 12 15 6 9"/></svg> Z-A'; }
-                else { currentSort = 'az'; btn.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="6 15 12 9 18 15"/></svg> A-Z'; }
-                renderProjects();
-            }
-
-            function filterByCategory(category, el) {
-                document.querySelectorAll('.category-icon-card').forEach(c => c.classList.remove('active'));
-                if (el) el.classList.add('active');
-            }
-
-            async function fetchUsers() {
-                try {
-                    const snapshot = await db.collection('users').get();
-                    const users = [];
-                    snapshot.forEach(doc => {
-                        const data = doc.data();
-                        users.push({
-                            id: doc.id,
-                            email: data.email,
-                            name: data.name || (data.email ? data.email.split('@')[0] : 'User'),
-                            isAdmin: data.isAdmin || false,
-                            isBanned: data.isBanned || false,
-                            ipBanned: data.ipBanned || false,
-                            avatarInitial: (data.name || (data.email ? data.email.charAt(0).toUpperCase() : 'U'))
-                        });
-                    });
-                    if(document.getElementById('usersBadge')) document.getElementById('usersBadge').textContent = users.length;
-                    return users;
-                } catch(e) {
-                    console.log("Firestore error:", e);
-                    return [];
-                }
-            }
-
-            async function renderUserList() {
-                const searchTerm = document.getElementById('userSearchInput')?.value.toLowerCase() || '';
-                const users = await fetchUsers();
-                const filtered = users.filter(u => u.email && (u.email.toLowerCase().includes(searchTerm) || u.name.toLowerCase().includes(searchTerm)));
-                const container = document.getElementById('usersListPanel');
-                
-                if(filtered.length === 0) { 
-                    container.innerHTML = '<div style="padding:40px;text-align:center">No users found</div>'; 
-                    return; 
-                }
-                
-                container.innerHTML = filtered.map(user => `
-                    <div class="user-list-item" onclick="selectUser('${user.id}')" data-user-id="${user.id}">
-                        <div class="user-list-avatar">${user.avatarInitial}</div>
-                        <div class="user-list-info">
-                            <h4>${escapeHtml(user.name)} ${user.isAdmin ? '<span class="admin-badge">ADMIN</span>' : ''}${user.isBanned ? '<span class="banned-badge">BANNED</span>' : ''}</h4>
-                            <p>${escapeHtml(user.email)}</p>
-                        </div>
-                    </div>
-                `).join('');
-                
-                if(selectedUserId) {
-                    const el = document.querySelector(`.user-list-item[data-user-id="${selectedUserId}"]`);
-                    if(el) el.classList.add('active');
-                    await renderUserDetails(selectedUserId);
-                }
-            }
-
-            async function renderUserDetails(userId) {
-                try {
-                    const doc = await db.collection('users').doc(userId).get();
-                    if(!doc.exists) return;
-                    const user = doc.data();
-                    const isHeadAdmin = user.email === HEAD_ADMIN_EMAIL;
-                    const name = user.name || (user.email ? user.email.split('@')[0] : 'User');
-                    
-                    document.getElementById('userDetailContent').innerHTML = `
-                        <div class="user-profile-section">
-                            <div class="user-profile-avatar">${name.charAt(0).toUpperCase()}</div>
-                            <div class="user-profile-name">${escapeHtml(name)}</div>
-                            <div class="user-profile-email">${escapeHtml(user.email || 'No email')}</div>
-                            ${user.isAdmin ? '<span class="admin-badge">ADMIN</span>' : ''}
-                        </div>
-                        <div class="user-info-grid">
-                            <div class="info-row"><span class="info-label">Email</span><span class="info-value">${escapeHtml(user.email || 'No email')}</span></div>
-                            <div class="info-row"><span class="info-label">Role</span><span class="info-value">${user.isAdmin ? 'Admin' : 'User'}</span></div>
-                            <div class="info-row"><span class="info-label">Status</span><span class="info-value">${user.isBanned ? 'Banned' : 'Active'}</span></div>
-                            <div class="info-row"><span class="info-label">IP Banned</span><span class="info-value">${user.ipBanned ? 'Yes' : 'No'}</span></div>
-                        </div>
-                        <div class="action-buttons">
-                            ${!isHeadAdmin && !user.isAdmin ? '<button class="action-btn make-admin" onclick="makeAdmin(\''+userId+'\')">Make Admin</button>' : ''}
-                            ${!isHeadAdmin && user.isAdmin ? '<button class="action-btn remove-admin" onclick="removeAdmin(\''+userId+'\')">Remove Admin</button>' : ''}
-                            <button class="action-btn ban" onclick="${user.isBanned ? `unbanUser('${userId}')` : `banUser('${userId}')`}">${user.isBanned ? 'Unban User' : 'Ban User'}</button>
-                            <button class="action-btn ip-ban" onclick="${user.ipBanned ? `unbanIp('${userId}')` : `banIp('${userId}')`}">${user.ipBanned ? 'Remove IP Ban' : 'IP Ban'}</button>
-                        </div>
-                    `;
-                } catch(e) {
-                    console.log("Error rendering user details", e);
-                }
-            }
-
-            async function selectUser(id) { selectedUserId = id; await renderUserList(); }
-            async function makeAdmin(id) { try { await db.collection('users').doc(id).update({ isAdmin: true }); alert('User is now an admin'); await renderUserList(); } catch(e) { alert('Error: ' + e.message); } }
-            async function removeAdmin(id) { const doc = await db.collection('users').doc(id).get(); if(doc.data().email === HEAD_ADMIN_EMAIL) { alert('Cannot remove head admin'); return; } await db.collection('users').doc(id).update({ isAdmin: false }); alert('Admin removed'); await renderUserList(); }
-            async function banUser(id) { await db.collection('users').doc(id).update({ isBanned: true }); alert('User banned'); await renderUserList(); }
-            async function unbanUser(id) { await db.collection('users').doc(id).update({ isBanned: false }); alert('User unbanned'); await renderUserList(); }
-            async function banIp(id) { await db.collection('users').doc(id).update({ ipBanned: true }); alert('IP banned'); await renderUserList(); }
-            async function unbanIp(id) { await db.collection('users').doc(id).update({ ipBanned: false }); alert('IP ban removed'); await renderUserList(); }
-
-            function openUserManagementPanel() { document.getElementById('userPanelModal').classList.add('active'); renderUserList(); }
-            function closeUserManagementPanel() { document.getElementById('userPanelModal').classList.remove('active'); selectedUserId = null; }
-            
-            function goHome() { window.location.href = 'index.html'; }
-            function scrollToProjects() { document.querySelector('.recent-section')?.scrollIntoView({ behavior: 'smooth' }); }
-            function openCreateModal() { openModal('createModal'); }
-            function openMessagesModal() { loadMessages(); openModal('messagesModal'); }
-            function openApplications() { openModal('applicationsModal'); }
-            function openAI() { alert('AI Assistant coming soon!'); }
-            function openModal(id) { document.getElementById(id).classList.add('active'); }
-            function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-
-            function loadMessages() {
-                const list = document.getElementById('messagesList');
-                if(messages.length === 0) list.innerHTML = '<div style="padding:40px;text-align:center">No messages</div>';
-                else list.innerHTML = messages.map(m => `<div class="message-item"><div class="message-title">${m.title}</div></div>`).join('');
-            }
-            function updateMessagesBadge() { const badge = document.getElementById('messagesBadge'); if(badge) badge.textContent = messages.filter(m => !m.read).length; }
-
-            const searchInput = document.getElementById('searchInput');
-            const clearBtn = document.getElementById('clearSearchBtn');
-            if(clearBtn) clearBtn.addEventListener('click', () => { searchInput.value = ''; renderProjects(); });
-            if(searchInput) searchInput.addEventListener('input', () => renderProjects());
-            if(document.getElementById('userSearchInput')) {
-                document.getElementById('userSearchInput').addEventListener('input', () => renderUserList());
-            }
-
-            // ============ AUTH CHECK WITH HEAD ADMIN ============
-            const loadingContainer = document.getElementById('loadingContainer');
+        // ============ AUTH CHECK ============
+        auth.onAuthStateChanged(async (user) => {
             const entrance = document.getElementById('adminEntrance');
             const adminContent = document.getElementById('adminContent');
             const accessDenied = document.getElementById('accessDenied');
-            const notLoggedIn = document.getElementById('notLoggedIn');
-            const deniedMessage = document.getElementById('deniedMessage');
-            const debugInfo = document.getElementById('debugInfo');
-
-            auth.onAuthStateChanged(async (user) => {
-                console.log("=== AUTH CHECK ===");
-                console.log("User:", user ? user.email : "No user");
+            
+            if (user) {
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                const userData = userDoc.data();
                 
-                if (user) {
-                    try {
-                        // Get user data from Firestore
-                        const userDoc = await db.collection('users').doc(user.uid).get();
-                        const userData = userDoc.data();
-                        console.log("Firestore user data:", userData);
-                        
-                        // Check if user is banned
-                        if (userData && userData.isBanned === true) {
-                            loadingContainer.style.display = 'none';
-                            deniedMessage.innerHTML = 'Your account has been banned.';
-                            debugInfo.innerHTML = `<strong>Debug Info:</strong><br>Email: ${user.email}<br>Status: BANNED`;
-                            accessDenied.style.display = 'flex';
-                            return;
-                        }
-                        
-                        // Check if user is head admin (by email) OR has admin flag
-                        const isHeadAdmin = user.email === HEAD_ADMIN_EMAIL;
-                        const isAdminFromFirestore = userData && userData.isAdmin === true;
-                        const isAdmin = isHeadAdmin || isAdminFromFirestore;
-                        
-                        console.log("Is Head Admin (by email):", isHeadAdmin);
-                        console.log("Is Admin from Firestore:", isAdminFromFirestore);
-                        console.log("Final Is Admin:", isAdmin);
-                        
-                        // If user is head admin but Firestore doesn't have isAdmin=true, update it
-                        if (isHeadAdmin && !isAdminFromFirestore) {
-                            console.log("Updating head admin in Firestore...");
-                            await db.collection('users').doc(user.uid).set({
-                                isAdmin: true,
-                                role: 'head_admin'
-                            }, { merge: true });
-                        }
-                        
-                        if (isAdmin) {
-                            // Show admin content
-                            loadingContainer.style.display = 'none';
-                            entrance.style.display = 'flex';
-                            adminContent.style.display = 'block';
-                            accessDenied.style.display = 'none';
-                            notLoggedIn.style.display = 'none';
-                            
-                            document.getElementById('greetingText').innerHTML = `Hello ${user.displayName?.split(' ')[0] || 'Admin'}`;
-                            loadProjects();
-                            updateMessagesBadge();
-                            await renderUserList();
-                            
-                            setTimeout(() => {
-                                if(entrance) entrance.classList.add('fade-out');
-                                setTimeout(() => {
-                                    if(entrance) entrance.style.display = 'none';
-                                }, 600);
-                            }, 2000);
-                        } else {
-                            // User is logged in but not admin
-                            loadingContainer.style.display = 'none';
-                            deniedMessage.innerHTML = 'You are logged in but do not have admin permissions.';
-                            debugInfo.innerHTML = `<strong>Debug Info:</strong><br>Email: ${user.email}<br>Is Head Admin: ${isHeadAdmin}<br>Is Admin in Firestore: ${isAdminFromFirestore}<br><br>Only the head admin (${HEAD_ADMIN_EMAIL}) can access this page.`;
-                            accessDenied.style.display = 'flex';
-                            if(entrance) entrance.style.display = 'none';
-                        }
-                    } catch(e) {
-                        console.log("Auth check error:", e);
-                        loadingContainer.style.display = 'none';
-                        deniedMessage.innerHTML = 'Error checking admin permissions.';
-                        debugInfo.innerHTML = `<strong>Error:</strong><br>${e.message}`;
+                // Check if banned
+                if (userData && userData.isBanned) {
+                    await auth.signOut();
+                    if (adminContent) adminContent.style.display = 'none';
+                    if (accessDenied) {
                         accessDenied.style.display = 'flex';
-                        if(entrance) entrance.style.display = 'none';
+                        accessDenied.innerHTML = '<div class="access-denied-content"><h2>Account Banned</h2><p>Your account has been banned. Contact support.</p><button class="sort-btn" onclick="window.location.href=\'index.html\'">Back to Home</button></div>';
+                    }
+                    if (entrance) entrance.style.display = 'none';
+                    return;
+                }
+                
+                const isAdmin = user.email === ADMIN_EMAIL || (userData && userData.isAdmin === true);
+                
+                if (isAdmin) {
+                    if (adminContent) adminContent.style.display = 'block';
+                    if (accessDenied) accessDenied.style.display = 'none';
+                    document.getElementById('greetingText').innerHTML = `Hello ${user.displayName?.split(' ')[0] || 'Admin'}`;
+                    loadProjects();
+                    updateMessagesBadge();
+                    await renderUserList();
+                    if (entrance) {
+                        entrance.classList.add('fade-out');
+                        setTimeout(() => { if(entrance) entrance.style.display = 'none'; }, 600);
                     }
                 } else {
-                    // No user logged in
-                    console.log("No user logged in");
-                    loadingContainer.style.display = 'none';
-                    notLoggedIn.style.display = 'flex';
-                    if(entrance) entrance.style.display = 'none';
+                    if (adminContent) adminContent.style.display = 'none';
+                    if (accessDenied) accessDenied.style.display = 'flex';
+                    if (entrance) entrance.style.display = 'none';
                 }
-            });
+            } else {
+                if (adminContent) adminContent.style.display = 'none';
+                if (accessDenied) accessDenied.style.display = 'flex';
+                if (entrance) entrance.style.display = 'none';
+            }
         });
+
+        async function fetchUsers() {
+            try {
+                const snapshot = await db.collection('users').get();
+                const users = [];
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    users.push({
+                        id: doc.id,
+                        email: data.email,
+                        name: data.name || (data.email ? data.email.split('@')[0] : 'User'),
+                        isAdmin: data.isAdmin || false,
+                        isBanned: data.isBanned || false,
+                        ipBanned: data.ipBanned || false,
+                        joinDate: data.createdAt ? new Date(data.createdAt.toDate()).toLocaleDateString() : 'Unknown',
+                        avatarInitial: (data.name || (data.email ? data.email.charAt(0).toUpperCase() : 'U')),
+                        isOnline: onlineUsers.has(doc.id)
+                    });
+                });
+                if(document.getElementById('usersBadge')) document.getElementById('usersBadge').textContent = users.length;
+                return users;
+            } catch(e) {
+                console.log("Firestore error:", e);
+                return [];
+            }
+        }
+
+        async function renderUserList() {
+            const searchTerm = document.getElementById('userSearchInput')?.value.toLowerCase() || '';
+            const users = await fetchUsers();
+            const filtered = users.filter(u => u.email && (u.email.toLowerCase().includes(searchTerm) || u.name.toLowerCase().includes(searchTerm)));
+            const container = document.getElementById('usersListPanel');
+            
+            if(filtered.length === 0) { 
+                container.innerHTML = '<div style="padding:40px;text-align:center">No users</div>'; 
+                return; 
+            }
+            
+            container.innerHTML = filtered.map(user => `
+                <div class="user-list-item" onclick="selectUser('${user.id}')" data-user-id="${user.id}">
+                    <div class="user-list-avatar">${user.avatarInitial}${user.isOnline ? '<span class="online-indicator"></span>' : ''}</div>
+                    <div class="user-list-info">
+                        <h4>${escapeHtml(user.name)} ${user.isAdmin ? '<span class="admin-badge">ADMIN</span>' : ''}${user.isBanned ? '<span class="banned-badge">BANNED</span>' : ''}</h4>
+                        <p>${escapeHtml(user.email)}</p>
+                    </div>
+                </div>
+            `).join('');
+            
+            if(selectedUserId) {
+                const el = document.querySelector(`.user-list-item[data-user-id="${selectedUserId}"]`);
+                if(el) el.classList.add('active');
+                await renderUserDetails(selectedUserId);
+            }
+        }
+
+        async function renderUserDetails(userId) {
+            try {
+                const doc = await db.collection('users').doc(userId).get();
+                if(!doc.exists) return;
+                const user = doc.data();
+                const isSuperAdmin = user.email === ADMIN_EMAIL;
+                const name = user.name || (user.email ? user.email.split('@')[0] : 'User');
+                
+                document.getElementById('userDetailContent').innerHTML = `
+                    <div class="user-profile-section">
+                        <div class="user-profile-avatar">${name.charAt(0).toUpperCase()}</div>
+                        <div class="user-profile-name">${escapeHtml(name)}</div>
+                        <div class="user-profile-email">${escapeHtml(user.email || 'No email')}</div>
+                        ${user.isAdmin ? '<span class="admin-badge">ADMIN</span>' : ''}
+                    </div>
+                    <div class="user-info-grid">
+                        <div class="info-row"><span class="info-label">Email</span><span class="info-value">${escapeHtml(user.email || 'No email')}</span></div>
+                        <div class="info-row"><span class="info-label">Role</span><span class="info-value">${user.isAdmin ? 'Admin' : 'User'}</span></div>
+                        <div class="info-row"><span class="info-label">Status</span><span class="info-value">${user.isBanned ? 'Banned' : 'Active'}</span></div>
+                        <div class="info-row"><span class="info-label">IP Banned</span><span class="info-value">${user.ipBanned ? 'Yes' : 'No'}</span></div>
+                    </div>
+                    <div class="action-buttons">
+                        ${!isSuperAdmin && !user.isAdmin ? '<button class="action-btn make-admin" onclick="makeAdmin(\''+userId+'\')">Make Admin</button>' : ''}
+                        ${!isSuperAdmin && user.isAdmin ? '<button class="action-btn remove-admin" onclick="removeAdmin(\''+userId+'\')">Remove Admin</button>' : ''}
+                        <button class="action-btn ban" onclick="${user.isBanned ? `unbanUser('${userId}')` : `banUser('${userId}')`}">${user.isBanned ? 'Unban User' : 'Ban User'}</button>
+                        <button class="action-btn ip-ban" onclick="${user.ipBanned ? `unbanIp('${userId}')` : `banIp('${userId}')`}">${user.ipBanned ? 'Remove IP Ban' : 'IP Ban'}</button>
+                    </div>
+                `;
+            } catch(e) {
+                console.log("Error rendering user details", e);
+            }
+        }
+
+        async function selectUser(id) { selectedUserId = id; await renderUserList(); }
+        async function makeAdmin(id) { try { await db.collection('users').doc(id).update({ isAdmin: true }); alert('✅ User is now an admin'); await renderUserList(); } catch(e) { alert('Error: ' + e.message); } }
+        async function removeAdmin(id) { const doc = await db.collection('users').doc(id).get(); if(doc.data().email === ADMIN_EMAIL) { alert('Cannot remove super admin'); return; } await db.collection('users').doc(id).update({ isAdmin: false }); alert('✅ Admin privileges removed'); await renderUserList(); }
+        async function banUser(id) { await db.collection('users').doc(id).update({ isBanned: true }); alert('🚫 User banned'); await renderUserList(); }
+        async function unbanUser(id) { await db.collection('users').doc(id).update({ isBanned: false }); alert('✅ User unbanned'); await renderUserList(); }
+        async function banIp(id) { await db.collection('users').doc(id).update({ ipBanned: true }); alert('🚫 IP banned'); await renderUserList(); }
+        async function unbanIp(id) { await db.collection('users').doc(id).update({ ipBanned: false }); alert('✅ IP ban removed'); await renderUserList(); }
+
+        function openUserManagementPanel() { document.getElementById('userPanelModal').classList.add('active'); renderUserList(); }
+        function closeUserManagementPanel() { document.getElementById('userPanelModal').classList.remove('active'); selectedUserId = null; }
+        
+        if(document.getElementById('userSearchInput')) {
+            document.getElementById('userSearchInput').addEventListener('input', () => renderUserList());
+        }
+
+        function goHome() { window.location.href = 'index.html'; }
+        function scrollToProjects() { document.querySelector('.recent-section')?.scrollIntoView({ behavior: 'smooth' }); }
+        function openCreateModal() { openModal('createModal'); }
+        function openMessagesModal() { loadMessages(); openModal('messagesModal'); }
+        function openApplications() { openModal('applicationsModal'); }
+        function openAI() { alert('AI Assistant coming soon!'); }
+        function openModal(id) { document.getElementById(id).classList.add('active'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+        function toggleDropdown(id) { 
+            document.querySelectorAll('.dropdown-menu').forEach(m => { if(m.id !== id) m.classList.remove('active'); }); 
+            document.getElementById(id).classList.toggle('active'); 
+        }
+        function closeDropdown(id) { document.getElementById(id)?.classList.remove('active'); }
+        
+        function filterByOwner(type) {
+            const btn = document.querySelector('#ownerMenu')?.previousElementSibling;
+            if(btn) {
+                if(type === 'any') btn.innerHTML = 'Any owner <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
+                else if(type === 'me') btn.innerHTML = 'khalil mohammed (You) <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
+                else btn.innerHTML = 'Shared with you <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
+            }
+            renderProjects(); 
+            closeDropdown('ownerMenu');
+        }
+
+        function filterByCategory(category, el) {
+            currentCategory = category;
+            document.querySelectorAll('.category-icon-card').forEach(c => c.classList.remove('active'));
+            if(el) el.classList.add('active');
+            const btn = document.querySelector('#categoryMenu')?.previousElementSibling;
+            if(btn) btn.innerHTML = (category === 'all' ? 'All Categories' : category.charAt(0).toUpperCase() + category.slice(1)) + ' <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
+            renderProjects();
+        }
+
+        function filterByCategoryDropdown(category) {
+            currentCategory = category;
+            document.querySelectorAll('.category-icon-card').forEach(c => { 
+                if(c.dataset.cat === category) c.classList.add('active'); 
+                else c.classList.remove('active'); 
+            });
+            if(category === 'all') document.querySelectorAll('.category-icon-card').forEach(c => c.classList.remove('active'));
+            const btn = document.querySelector('#categoryMenu')?.previousElementSibling;
+            if(btn) btn.innerHTML = (category === 'all' ? 'All Categories' : category.charAt(0).toUpperCase() + category.slice(1)) + ' <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
+            renderProjects(); 
+            closeDropdown('categoryMenu');
+        }
+
+        function toggleSort() {
+            const btn = document.getElementById('sortBtn');
+            if(currentSort === 'az') { 
+                currentSort = 'za'; 
+                if(btn) btn.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="18 9 12 15 6 9"/></svg> Z-A'; 
+            } else { 
+                currentSort = 'az'; 
+                if(btn) btn.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="6 15 12 9 18 15"/></svg> A-Z'; 
+            }
+            renderProjects();
+        }
+
+        const sampleProjects = [
+            { id: 1, title: 'Final Exam - Grade 12', type: 'exam', date: new Date().toISOString(), category: 'exam' },
+            { id: 2, title: 'Weekly Class Schedule', type: 'schedule', date: new Date().toISOString(), category: 'schedule' },
+            { id: 3, title: 'Mathematics Notes', type: 'classwork', date: new Date().toISOString(), category: 'classwork' },
+            { id: 4, title: 'Physics Assignment', type: 'assignment', date: new Date().toISOString(), category: 'assignment' },
+            { id: 5, title: 'Algebra Homework', type: 'homework', date: new Date().toISOString(), category: 'homework' }
+        ];
+
+        function loadProjects() { 
+            const saved = localStorage.getItem('adminProjects'); 
+            projects = saved ? JSON.parse(saved) : [...sampleProjects]; 
+            renderProjects(); 
+        }
+        
+        function renderProjects() {
+            let filtered = [...projects];
+            const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
+            if(searchTerm) filtered = filtered.filter(p => p.title.toLowerCase().includes(searchTerm));
+            if(currentCategory !== 'all') filtered = filtered.filter(p => p.category === currentCategory);
+            if(currentSort === 'az') filtered.sort((a,b) => a.title.localeCompare(b.title));
+            else filtered.sort((a,b) => b.title.localeCompare(a.title));
+            const grid = document.getElementById('projectsGrid');
+            if(filtered.length === 0) { 
+                grid.innerHTML = '<div class="empty-state"><h3>No projects found</h3><p>Try a different search or create a new project</p></div>'; 
+                return; 
+            }
+            grid.innerHTML = filtered.map((p, i) => `<div class="liquid-card" onclick="openProject(${p.id})" style="animation-delay: ${i * 0.05}s"><div class="card-preview ${p.type}">${getIcon(p.type)}</div><div class="card-body"><h4>${escapeHtml(p.title)}</h4><p>Modified ${formatDate(p.date)}</p></div></div>`).join('');
+        }
+
+        function getIcon(type) {
+            switch(type) {
+                case 'exam': return `<svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><line x1="8" y1="9" x2="16" y2="9"/></svg>`;
+                case 'schedule': return `<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>`;
+                case 'classwork': return `<svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/></svg>`;
+                default: return `<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
+            }
+        }
+
+        function formatDate(d) { return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); }
+        function escapeHtml(str) { return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); }
+        function openProject(id) { alert(`Opening project ${id}`); }
+
+        function createProject(type) {
+            let title = `${type.charAt(0).toUpperCase() + type.slice(1)} ${new Date().toLocaleDateString()}`;
+            messages.unshift({ id: Date.now(), title: `Added to "${title}"`, read: false });
+            updateMessagesBadge();
+            projects.unshift({ id: Date.now(), title, type, date: new Date().toISOString(), category: type });
+            localStorage.setItem('adminProjects', JSON.stringify(projects));
+            renderProjects();
+            closeModal('createModal');
+        }
+
+        const searchInput = document.getElementById('searchInput');
+        const clearBtn = document.getElementById('clearSearchBtn');
+        function updateClear() { if(clearBtn) clearBtn.style.display = searchInput.value.length > 0 ? 'flex' : 'none'; }
+        function clearSearch() { searchInput.value = ''; updateClear(); renderProjects(); }
+        if(searchInput) searchInput.addEventListener('input', () => { updateClear(); renderProjects(); });
+        if(clearBtn) clearBtn.addEventListener('click', clearSearch);
+
+        function loadMessages() {
+            const list = document.getElementById('messagesList');
+            if(messages.length === 0) list.innerHTML = '<div style="padding:40px;text-align:center">No messages</div>';
+            else list.innerHTML = messages.map(m => `<div class="message-item"><div class="message-title">${m.title}</div></div>`).join('');
+        }
+        function updateMessagesBadge() { const badge = document.getElementById('messagesBadge'); if(badge) badge.textContent = messages.filter(m => !m.read).length; }
+
+        document.addEventListener('click', e => { if(!e.target.closest('.dropdown')) document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('active')); });
     </script>
 </body>
+</html>
 </html>
