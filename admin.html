@@ -1030,7 +1030,7 @@
     </div>
 
     <div class="main-content">
-        <div id="adminContent">
+        <div id="adminContent" style="display: none;">
             <!-- DYNAMIC ISLAND -->
             <nav class="dynamic-island">
                 <div class="dynamic-island-wrapper">
@@ -1202,7 +1202,7 @@
     <div id="accessDenied" class="access-denied" style="display: none;">
         <div class="access-denied-content">
             <h2>Access Denied</h2>
-            <p>You don't have permission.</p>
+            <p>You don't have permission to access the admin dashboard.</p>
             <button class="sort-btn" onclick="window.location.href='index.html'">Back to Home</button>
         </div>
     </div>
@@ -1267,224 +1267,16 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
-        const ADMIN_EMAIL = "khalilmohamedaden@gmail.com";
+        const HEAD_ADMIN_EMAIL = "khalilmohamedaden@gmail.com";
 
         let projects = [];
         let currentCategory = 'all';
         let currentSort = 'az';
-        let messages = [{ id: 1, title: 'Added to "Final Exam"', read: false }];
+        let messages = [{ id: 1, title: 'Welcome to Admin Dashboard', read: false }];
         let selectedUserId = null;
         let onlineUsers = new Set();
 
-        // ============ AUTH CHECK ============
-        auth.onAuthStateChanged(async (user) => {
-            const entrance = document.getElementById('adminEntrance');
-            const adminContent = document.getElementById('adminContent');
-            const accessDenied = document.getElementById('accessDenied');
-            
-            if (user) {
-                const userDoc = await db.collection('users').doc(user.uid).get();
-                const userData = userDoc.data();
-                
-                // Check if banned
-                if (userData && userData.isBanned) {
-                    await auth.signOut();
-                    if (adminContent) adminContent.style.display = 'none';
-                    if (accessDenied) {
-                        accessDenied.style.display = 'flex';
-                        accessDenied.innerHTML = '<div class="access-denied-content"><h2>Account Banned</h2><p>Your account has been banned. Contact support.</p><button class="sort-btn" onclick="window.location.href=\'index.html\'">Back to Home</button></div>';
-                    }
-                    if (entrance) entrance.style.display = 'none';
-                    return;
-                }
-                
-                const isAdmin = user.email === ADMIN_EMAIL || (userData && userData.isAdmin === true);
-                
-                if (isAdmin) {
-                    if (adminContent) adminContent.style.display = 'block';
-                    if (accessDenied) accessDenied.style.display = 'none';
-                    document.getElementById('greetingText').innerHTML = `Hello ${user.displayName?.split(' ')[0] || 'Admin'}`;
-                    loadProjects();
-                    updateMessagesBadge();
-                    await renderUserList();
-                    if (entrance) {
-                        entrance.classList.add('fade-out');
-                        setTimeout(() => { if(entrance) entrance.style.display = 'none'; }, 600);
-                    }
-                } else {
-                    if (adminContent) adminContent.style.display = 'none';
-                    if (accessDenied) accessDenied.style.display = 'flex';
-                    if (entrance) entrance.style.display = 'none';
-                }
-            } else {
-                if (adminContent) adminContent.style.display = 'none';
-                if (accessDenied) accessDenied.style.display = 'flex';
-                if (entrance) entrance.style.display = 'none';
-            }
-        });
-
-        async function fetchUsers() {
-            try {
-                const snapshot = await db.collection('users').get();
-                const users = [];
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    users.push({
-                        id: doc.id,
-                        email: data.email,
-                        name: data.name || (data.email ? data.email.split('@')[0] : 'User'),
-                        isAdmin: data.isAdmin || false,
-                        isBanned: data.isBanned || false,
-                        ipBanned: data.ipBanned || false,
-                        joinDate: data.createdAt ? new Date(data.createdAt.toDate()).toLocaleDateString() : 'Unknown',
-                        avatarInitial: (data.name || (data.email ? data.email.charAt(0).toUpperCase() : 'U')),
-                        isOnline: onlineUsers.has(doc.id)
-                    });
-                });
-                if(document.getElementById('usersBadge')) document.getElementById('usersBadge').textContent = users.length;
-                return users;
-            } catch(e) {
-                console.log("Firestore error:", e);
-                return [];
-            }
-        }
-
-        async function renderUserList() {
-            const searchTerm = document.getElementById('userSearchInput')?.value.toLowerCase() || '';
-            const users = await fetchUsers();
-            const filtered = users.filter(u => u.email && (u.email.toLowerCase().includes(searchTerm) || u.name.toLowerCase().includes(searchTerm)));
-            const container = document.getElementById('usersListPanel');
-            
-            if(filtered.length === 0) { 
-                container.innerHTML = '<div style="padding:40px;text-align:center">No users</div>'; 
-                return; 
-            }
-            
-            container.innerHTML = filtered.map(user => `
-                <div class="user-list-item" onclick="selectUser('${user.id}')" data-user-id="${user.id}">
-                    <div class="user-list-avatar">${user.avatarInitial}${user.isOnline ? '<span class="online-indicator"></span>' : ''}</div>
-                    <div class="user-list-info">
-                        <h4>${escapeHtml(user.name)} ${user.isAdmin ? '<span class="admin-badge">ADMIN</span>' : ''}${user.isBanned ? '<span class="banned-badge">BANNED</span>' : ''}</h4>
-                        <p>${escapeHtml(user.email)}</p>
-                    </div>
-                </div>
-            `).join('');
-            
-            if(selectedUserId) {
-                const el = document.querySelector(`.user-list-item[data-user-id="${selectedUserId}"]`);
-                if(el) el.classList.add('active');
-                await renderUserDetails(selectedUserId);
-            }
-        }
-
-        async function renderUserDetails(userId) {
-            try {
-                const doc = await db.collection('users').doc(userId).get();
-                if(!doc.exists) return;
-                const user = doc.data();
-                const isSuperAdmin = user.email === ADMIN_EMAIL;
-                const name = user.name || (user.email ? user.email.split('@')[0] : 'User');
-                
-                document.getElementById('userDetailContent').innerHTML = `
-                    <div class="user-profile-section">
-                        <div class="user-profile-avatar">${name.charAt(0).toUpperCase()}</div>
-                        <div class="user-profile-name">${escapeHtml(name)}</div>
-                        <div class="user-profile-email">${escapeHtml(user.email || 'No email')}</div>
-                        ${user.isAdmin ? '<span class="admin-badge">ADMIN</span>' : ''}
-                    </div>
-                    <div class="user-info-grid">
-                        <div class="info-row"><span class="info-label">Email</span><span class="info-value">${escapeHtml(user.email || 'No email')}</span></div>
-                        <div class="info-row"><span class="info-label">Role</span><span class="info-value">${user.isAdmin ? 'Admin' : 'User'}</span></div>
-                        <div class="info-row"><span class="info-label">Status</span><span class="info-value">${user.isBanned ? 'Banned' : 'Active'}</span></div>
-                        <div class="info-row"><span class="info-label">IP Banned</span><span class="info-value">${user.ipBanned ? 'Yes' : 'No'}</span></div>
-                    </div>
-                    <div class="action-buttons">
-                        ${!isSuperAdmin && !user.isAdmin ? '<button class="action-btn make-admin" onclick="makeAdmin(\''+userId+'\')">Make Admin</button>' : ''}
-                        ${!isSuperAdmin && user.isAdmin ? '<button class="action-btn remove-admin" onclick="removeAdmin(\''+userId+'\')">Remove Admin</button>' : ''}
-                        <button class="action-btn ban" onclick="${user.isBanned ? `unbanUser('${userId}')` : `banUser('${userId}')`}">${user.isBanned ? 'Unban User' : 'Ban User'}</button>
-                        <button class="action-btn ip-ban" onclick="${user.ipBanned ? `unbanIp('${userId}')` : `banIp('${userId}')`}">${user.ipBanned ? 'Remove IP Ban' : 'IP Ban'}</button>
-                    </div>
-                `;
-            } catch(e) {
-                console.log("Error rendering user details", e);
-            }
-        }
-
-        async function selectUser(id) { selectedUserId = id; await renderUserList(); }
-        async function makeAdmin(id) { try { await db.collection('users').doc(id).update({ isAdmin: true }); alert('✅ User is now an admin'); await renderUserList(); } catch(e) { alert('Error: ' + e.message); } }
-        async function removeAdmin(id) { const doc = await db.collection('users').doc(id).get(); if(doc.data().email === ADMIN_EMAIL) { alert('Cannot remove super admin'); return; } await db.collection('users').doc(id).update({ isAdmin: false }); alert('✅ Admin privileges removed'); await renderUserList(); }
-        async function banUser(id) { await db.collection('users').doc(id).update({ isBanned: true }); alert('🚫 User banned'); await renderUserList(); }
-        async function unbanUser(id) { await db.collection('users').doc(id).update({ isBanned: false }); alert('✅ User unbanned'); await renderUserList(); }
-        async function banIp(id) { await db.collection('users').doc(id).update({ ipBanned: true }); alert('🚫 IP banned'); await renderUserList(); }
-        async function unbanIp(id) { await db.collection('users').doc(id).update({ ipBanned: false }); alert('✅ IP ban removed'); await renderUserList(); }
-
-        function openUserManagementPanel() { document.getElementById('userPanelModal').classList.add('active'); renderUserList(); }
-        function closeUserManagementPanel() { document.getElementById('userPanelModal').classList.remove('active'); selectedUserId = null; }
-        
-        if(document.getElementById('userSearchInput')) {
-            document.getElementById('userSearchInput').addEventListener('input', () => renderUserList());
-        }
-
-        function goHome() { window.location.href = 'index.html'; }
-        function scrollToProjects() { document.querySelector('.recent-section')?.scrollIntoView({ behavior: 'smooth' }); }
-        function openCreateModal() { openModal('createModal'); }
-        function openMessagesModal() { loadMessages(); openModal('messagesModal'); }
-        function openApplications() { openModal('applicationsModal'); }
-        function openAI() { alert('AI Assistant coming soon!'); }
-        function openModal(id) { document.getElementById(id).classList.add('active'); }
-        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-
-        function toggleDropdown(id) { 
-            document.querySelectorAll('.dropdown-menu').forEach(m => { if(m.id !== id) m.classList.remove('active'); }); 
-            document.getElementById(id).classList.toggle('active'); 
-        }
-        function closeDropdown(id) { document.getElementById(id)?.classList.remove('active'); }
-        
-        function filterByOwner(type) {
-            const btn = document.querySelector('#ownerMenu')?.previousElementSibling;
-            if(btn) {
-                if(type === 'any') btn.innerHTML = 'Any owner <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
-                else if(type === 'me') btn.innerHTML = 'khalil mohammed (You) <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
-                else btn.innerHTML = 'Shared with you <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
-            }
-            renderProjects(); 
-            closeDropdown('ownerMenu');
-        }
-
-        function filterByCategory(category, el) {
-            currentCategory = category;
-            document.querySelectorAll('.category-icon-card').forEach(c => c.classList.remove('active'));
-            if(el) el.classList.add('active');
-            const btn = document.querySelector('#categoryMenu')?.previousElementSibling;
-            if(btn) btn.innerHTML = (category === 'all' ? 'All Categories' : category.charAt(0).toUpperCase() + category.slice(1)) + ' <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
-            renderProjects();
-        }
-
-        function filterByCategoryDropdown(category) {
-            currentCategory = category;
-            document.querySelectorAll('.category-icon-card').forEach(c => { 
-                if(c.dataset.cat === category) c.classList.add('active'); 
-                else c.classList.remove('active'); 
-            });
-            if(category === 'all') document.querySelectorAll('.category-icon-card').forEach(c => c.classList.remove('active'));
-            const btn = document.querySelector('#categoryMenu')?.previousElementSibling;
-            if(btn) btn.innerHTML = (category === 'all' ? 'All Categories' : category.charAt(0).toUpperCase() + category.slice(1)) + ' <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
-            renderProjects(); 
-            closeDropdown('categoryMenu');
-        }
-
-        function toggleSort() {
-            const btn = document.getElementById('sortBtn');
-            if(currentSort === 'az') { 
-                currentSort = 'za'; 
-                if(btn) btn.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="18 9 12 15 6 9"/></svg> Z-A'; 
-            } else { 
-                currentSort = 'az'; 
-                if(btn) btn.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="6 15 12 9 18 15"/></svg> A-Z'; 
-            }
-            renderProjects();
-        }
-
+        // Sample projects
         const sampleProjects = [
             { id: 1, title: 'Final Exam - Grade 12', type: 'exam', date: new Date().toISOString(), category: 'exam' },
             { id: 2, title: 'Weekly Class Schedule', type: 'schedule', date: new Date().toISOString(), category: 'schedule' },
@@ -1498,7 +1290,7 @@
             projects = saved ? JSON.parse(saved) : [...sampleProjects]; 
             renderProjects(); 
         }
-        
+
         function renderProjects() {
             let filtered = [...projects];
             const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
@@ -1535,14 +1327,162 @@
             localStorage.setItem('adminProjects', JSON.stringify(projects));
             renderProjects();
             closeModal('createModal');
+            alert(`Created new ${type}: ${title}`);
         }
 
-        const searchInput = document.getElementById('searchInput');
-        const clearBtn = document.getElementById('clearSearchBtn');
-        function updateClear() { if(clearBtn) clearBtn.style.display = searchInput.value.length > 0 ? 'flex' : 'none'; }
-        function clearSearch() { searchInput.value = ''; updateClear(); renderProjects(); }
-        if(searchInput) searchInput.addEventListener('input', () => { updateClear(); renderProjects(); });
-        if(clearBtn) clearBtn.addEventListener('click', clearSearch);
+        function toggleSort() {
+            const btn = document.getElementById('sortBtn');
+            if(currentSort === 'az') { currentSort = 'za'; btn.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="18 9 12 15 6 9"/></svg> Z-A'; }
+            else { currentSort = 'az'; btn.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="6 15 12 9 18 15"/></svg> A-Z'; }
+            renderProjects();
+        }
+
+        function filterByCategory(category, el) {
+            currentCategory = category;
+            document.querySelectorAll('.category-icon-card').forEach(c => c.classList.remove('active'));
+            if(el) el.classList.add('active');
+            const btn = document.querySelector('#categoryMenu')?.previousElementSibling;
+            if(btn) btn.innerHTML = (category === 'all' ? 'All Categories' : category.charAt(0).toUpperCase() + category.slice(1)) + ' <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
+            renderProjects();
+        }
+
+        function filterByCategoryDropdown(category) {
+            currentCategory = category;
+            document.querySelectorAll('.category-icon-card').forEach(c => { if(c.dataset.cat === category) c.classList.add('active'); else c.classList.remove('active'); });
+            if(category === 'all') document.querySelectorAll('.category-icon-card').forEach(c => c.classList.remove('active'));
+            const btn = document.querySelector('#categoryMenu')?.previousElementSibling;
+            if(btn) btn.innerHTML = (category === 'all' ? 'All Categories' : category.charAt(0).toUpperCase() + category.slice(1)) + ' <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
+            renderProjects(); 
+            closeDropdown('categoryMenu');
+        }
+
+        function filterByOwner(type) {
+            const btn = document.querySelector('#ownerMenu')?.previousElementSibling;
+            if(btn) {
+                if(type === 'any') btn.innerHTML = 'Any owner <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
+                else if(type === 'me') btn.innerHTML = 'khalil mohammed (You) <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
+                else btn.innerHTML = 'Shared with you <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
+            }
+            renderProjects(); 
+            closeDropdown('ownerMenu');
+        }
+
+        function toggleDropdown(id) { 
+            document.querySelectorAll('.dropdown-menu').forEach(m => { if(m.id !== id) m.classList.remove('active'); }); 
+            document.getElementById(id).classList.toggle('active'); 
+        }
+        function closeDropdown(id) { document.getElementById(id)?.classList.remove('active'); }
+
+        // ============ USER MANAGEMENT FUNCTIONS ============
+        async function fetchUsers() {
+            try {
+                const snapshot = await db.collection('users').get();
+                const users = [];
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    users.push({
+                        id: doc.id,
+                        email: data.email,
+                        name: data.name || (data.email ? data.email.split('@')[0] : 'User'),
+                        isAdmin: data.isAdmin || false,
+                        isBanned: data.isBanned || false,
+                        ipBanned: data.ipBanned || false,
+                        avatarInitial: (data.name || (data.email ? data.email.charAt(0).toUpperCase() : 'U'))
+                    });
+                });
+                if(document.getElementById('usersBadge')) document.getElementById('usersBadge').textContent = users.length;
+                return users;
+            } catch(e) {
+                console.log("Firestore error:", e);
+                return [];
+            }
+        }
+
+        async function renderUserList() {
+            const searchTerm = document.getElementById('userSearchInput')?.value.toLowerCase() || '';
+            const users = await fetchUsers();
+            const filtered = users.filter(u => u.email && (u.email.toLowerCase().includes(searchTerm) || u.name.toLowerCase().includes(searchTerm)));
+            const container = document.getElementById('usersListPanel');
+            
+            if(filtered.length === 0) { 
+                container.innerHTML = '<div style="padding:40px;text-align:center">No users found</div>'; 
+                return; 
+            }
+            
+            container.innerHTML = filtered.map(user => `
+                <div class="user-list-item" onclick="selectUser('${user.id}')" data-user-id="${user.id}">
+                    <div class="user-list-avatar">${user.avatarInitial}</div>
+                    <div class="user-list-info">
+                        <h4>${escapeHtml(user.name)} ${user.isAdmin ? '<span class="admin-badge">ADMIN</span>' : ''}${user.isBanned ? '<span class="banned-badge">BANNED</span>' : ''}</h4>
+                        <p>${escapeHtml(user.email)}</p>
+                    </div>
+                </div>
+            `).join('');
+            
+            if(selectedUserId) {
+                const el = document.querySelector(`.user-list-item[data-user-id="${selectedUserId}"]`);
+                if(el) el.classList.add('active');
+                await renderUserDetails(selectedUserId);
+            }
+        }
+
+        async function renderUserDetails(userId) {
+            try {
+                const doc = await db.collection('users').doc(userId).get();
+                if(!doc.exists) return;
+                const user = doc.data();
+                const isHeadAdmin = user.email === HEAD_ADMIN_EMAIL;
+                const name = user.name || (user.email ? user.email.split('@')[0] : 'User');
+                
+                document.getElementById('userDetailContent').innerHTML = `
+                    <div class="user-profile-section">
+                        <div class="user-profile-avatar">${name.charAt(0).toUpperCase()}</div>
+                        <div class="user-profile-name">${escapeHtml(name)}</div>
+                        <div class="user-profile-email">${escapeHtml(user.email || 'No email')}</div>
+                        ${user.isAdmin ? '<span class="admin-badge">ADMIN</span>' : ''}
+                    </div>
+                    <div class="user-info-grid">
+                        <div class="info-row"><span class="info-label">Email</span><span class="info-value">${escapeHtml(user.email || 'No email')}</span></div>
+                        <div class="info-row"><span class="info-label">Role</span><span class="info-value">${user.isAdmin ? 'Admin' : 'User'}</span></div>
+                        <div class="info-row"><span class="info-label">Status</span><span class="info-value">${user.isBanned ? 'Banned' : 'Active'}</span></div>
+                        <div class="info-row"><span class="info-label">IP Banned</span><span class="info-value">${user.ipBanned ? 'Yes' : 'No'}</span></div>
+                    </div>
+                    <div class="action-buttons">
+                        ${!isHeadAdmin && !user.isAdmin ? '<button class="action-btn make-admin" onclick="makeAdmin(\''+userId+'\')">Make Admin</button>' : ''}
+                        ${!isHeadAdmin && user.isAdmin ? '<button class="action-btn remove-admin" onclick="removeAdmin(\''+userId+'\')">Remove Admin</button>' : ''}
+                        <button class="action-btn ban" onclick="${user.isBanned ? `unbanUser('${userId}')` : `banUser('${userId}')`}">${user.isBanned ? 'Unban User' : 'Ban User'}</button>
+                        <button class="action-btn ip-ban" onclick="${user.ipBanned ? `unbanIp('${userId}')` : `banIp('${userId}')`}">${user.ipBanned ? 'Remove IP Ban' : 'IP Ban'}</button>
+                    </div>
+                `;
+            } catch(e) {
+                console.log("Error rendering user details", e);
+            }
+        }
+
+        async function selectUser(id) { selectedUserId = id; await renderUserList(); }
+        async function makeAdmin(id) { try { await db.collection('users').doc(id).update({ isAdmin: true }); alert('User is now an admin'); await renderUserList(); } catch(e) { alert('Error: ' + e.message); } }
+        async function removeAdmin(id) { const doc = await db.collection('users').doc(id).get(); if(doc.data().email === HEAD_ADMIN_EMAIL) { alert('Cannot remove head admin'); return; } await db.collection('users').doc(id).update({ isAdmin: false }); alert('Admin privileges removed'); await renderUserList(); }
+        async function banUser(id) { await db.collection('users').doc(id).update({ isBanned: true }); alert('User banned'); await renderUserList(); }
+        async function unbanUser(id) { await db.collection('users').doc(id).update({ isBanned: false }); alert('User unbanned'); await renderUserList(); }
+        async function banIp(id) { await db.collection('users').doc(id).update({ ipBanned: true }); alert('IP banned'); await renderUserList(); }
+        async function unbanIp(id) { await db.collection('users').doc(id).update({ ipBanned: false }); alert('IP ban removed'); await renderUserList(); }
+
+        function openUserManagementPanel() { document.getElementById('userPanelModal').classList.add('active'); renderUserList(); }
+        function closeUserManagementPanel() { document.getElementById('userPanelModal').classList.remove('active'); selectedUserId = null; }
+        
+        if(document.getElementById('userSearchInput')) {
+            document.getElementById('userSearchInput').addEventListener('input', () => renderUserList());
+        }
+
+        // ============ UI FUNCTIONS ============
+        function goHome() { window.location.href = 'index.html'; }
+        function scrollToProjects() { document.querySelector('.recent-section')?.scrollIntoView({ behavior: 'smooth' }); }
+        function openCreateModal() { openModal('createModal'); }
+        function openMessagesModal() { loadMessages(); openModal('messagesModal'); }
+        function openApplications() { openModal('applicationsModal'); }
+        function openAI() { alert('AI Assistant coming soon!'); }
+        function openModal(id) { document.getElementById(id).classList.add('active'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
         function loadMessages() {
             const list = document.getElementById('messagesList');
@@ -1551,8 +1491,86 @@
         }
         function updateMessagesBadge() { const badge = document.getElementById('messagesBadge'); if(badge) badge.textContent = messages.filter(m => !m.read).length; }
 
+        const searchInput = document.getElementById('searchInput');
+        const clearBtn = document.getElementById('clearSearchBtn');
+        function updateClear() { if(clearBtn) clearBtn.style.display = searchInput.value.length > 0 ? 'flex' : 'none'; }
+        function clearSearch() { searchInput.value = ''; updateClear(); renderProjects(); }
+        if(searchInput) searchInput.addEventListener('input', () => { updateClear(); renderProjects(); });
+        if(clearBtn) clearBtn.addEventListener('click', clearSearch);
+
         document.addEventListener('click', e => { if(!e.target.closest('.dropdown')) document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('active')); });
+
+        // ============ AUTH CHECK ============
+        const entrance = document.getElementById('adminEntrance');
+        const adminContent = document.getElementById('adminContent');
+        const accessDenied = document.getElementById('accessDenied');
+
+        setTimeout(() => {
+            if(entrance) entrance.classList.add('fade-out');
+        }, 2000);
+
+        auth.onAuthStateChanged(async (user) => {
+            console.log("Auth check - User:", user ? user.email : "No user");
+            
+            if (user) {
+                try {
+                    const userDoc = await db.collection('users').doc(user.uid).get();
+                    const userData = userDoc.data();
+                    
+                    // Check if banned
+                    if (userData && userData.isBanned === true) {
+                        await auth.signOut();
+                        if (adminContent) adminContent.style.display = 'none';
+                        if (accessDenied) {
+                            accessDenied.style.display = 'flex';
+                            accessDenied.querySelector('p').innerHTML = 'Your account has been banned.';
+                        }
+                        if (entrance) entrance.style.display = 'none';
+                        return;
+                    }
+                    
+                    // Check if head admin (by email) OR admin from Firestore
+                    const isHeadAdmin = user.email === HEAD_ADMIN_EMAIL;
+                    const isFirestoreAdmin = userData && userData.isAdmin === true;
+                    const isAdmin = isHeadAdmin || isFirestoreAdmin;
+                    
+                    console.log("Is Head Admin:", isHeadAdmin);
+                    console.log("Is Firestore Admin:", isFirestoreAdmin);
+                    console.log("Is Admin:", isAdmin);
+                    
+                    if (isAdmin) {
+                        // Update head admin in Firestore if needed
+                        if (isHeadAdmin && !isFirestoreAdmin) {
+                            await db.collection('users').doc(user.uid).set({
+                                isAdmin: true,
+                                role: 'head_admin'
+                            }, { merge: true });
+                        }
+                        
+                        if (adminContent) adminContent.style.display = 'block';
+                        if (accessDenied) accessDenied.style.display = 'none';
+                        document.getElementById('greetingText').innerHTML = `Hello ${user.displayName?.split(' ')[0] || 'Admin'}`;
+                        loadProjects();
+                        updateMessagesBadge();
+                        await renderUserList();
+                        if (entrance) setTimeout(() => { entrance.style.display = 'none'; }, 2000);
+                    } else {
+                        if (adminContent) adminContent.style.display = 'none';
+                        if (accessDenied) accessDenied.style.display = 'flex';
+                        if (entrance) entrance.style.display = 'none';
+                    }
+                } catch(e) {
+                    console.log("Auth error:", e);
+                    if (adminContent) adminContent.style.display = 'none';
+                    if (accessDenied) accessDenied.style.display = 'flex';
+                    if (entrance) entrance.style.display = 'none';
+                }
+            } else {
+                if (adminContent) adminContent.style.display = 'none';
+                if (accessDenied) accessDenied.style.display = 'flex';
+                if (entrance) entrance.style.display = 'none';
+            }
+        });
     </script>
 </body>
-</html>
 </html>
