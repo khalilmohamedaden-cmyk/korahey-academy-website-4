@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Korahey Exam Designer - Microsoft Word Style</title>
+    <title>Korahey Exam Designer | Create Exams</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -186,21 +186,33 @@
         }
 
         .word-document {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
             background: white;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             border-radius: 4px;
-            padding: 60px 70px;
+            padding: 50px 60px;
             font-family: 'Times New Roman', Georgia, serif;
             font-size: 12pt;
             line-height: 1.5;
         }
 
-        /* ========== HEADER STYLE - EXACTLY LIKE IMAGE ========== */
-        .exam-header {
+        /* ========== HEADER STYLE - EXACTLY LIKE REQUESTED ========== */
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .header-logo {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+        }
+
+        .header-title {
             text-align: center;
-            margin-bottom: 30px;
         }
 
         .school-name {
@@ -208,15 +220,89 @@
             font-weight: 800;
             letter-spacing: -0.5px;
             color: #1d1d1f;
-            margin-bottom: 5px;
             font-family: 'Times New Roman', Georgia, serif;
         }
 
-        .motto {
+        .academy-text {
             font-size: 14px;
-            font-style: italic;
+            font-weight: 500;
             color: #555;
-            margin-bottom: 20px;
+            margin-top: 4px;
+        }
+
+        .metadata-bar {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .metadata-row {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .metadata-item {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .metadata-label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .staff-section {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .staff-row {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .staff-item {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .student-info {
+            margin: 25px 0;
+            padding: 15px;
+            border: 1px solid #e0e3e8;
+            border-radius: 8px;
+            background: white;
+        }
+
+        .student-row {
+            display: flex;
+            align-items: baseline;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .student-field {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .student-field .field-label {
+            font-weight: 600;
+            min-width: 60px;
         }
 
         hr {
@@ -225,66 +311,7 @@
             border-top: 1px solid #ccc;
         }
 
-        /* Two column layout - EXACTLY LIKE IMAGE */
-        .two-column {
-            display: flex;
-            gap: 50px;
-            margin: 20px 0;
-        }
-
-        .col {
-            flex: 1;
-        }
-
-        .field-row {
-            margin-bottom: 16px;
-            display: flex;
-            align-items: baseline;
-        }
-
-        .field-label {
-            font-weight: 600;
-            width: 110px;
-            font-size: 12pt;
-            color: #333;
-        }
-
-        .field-value {
-            flex: 1;
-            border-bottom: 1px solid #ccc;
-            min-width: 150px;
-            padding: 4px 0;
-        }
-
-        .centered-row {
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .centered-field {
-            display: inline-block;
-            margin: 0 20px;
-        }
-
-        .centered-field .field-label {
-            width: auto;
-            margin-right: 8px;
-        }
-
-        .centered-field .field-value {
-            display: inline-block;
-            min-width: 150px;
-        }
-
-        .academy-footer {
-            text-align: center;
-            font-weight: 600;
-            margin-top: 30px;
-            font-size: 14px;
-            color: #1d1d1f;
-        }
-
-        /* Editable text styles - Like Microsoft Word */
+        /* Editable text styles */
         [contenteditable="true"] {
             outline: none;
             padding: 4px 8px;
@@ -292,6 +319,8 @@
             transition: background 0.2s;
             display: inline-block;
             cursor: text;
+            min-width: 120px;
+            border-bottom: 1px dashed #ccc;
         }
 
         [contenteditable="true"]:hover {
@@ -300,15 +329,11 @@
 
         [contenteditable="true"]:focus {
             background: rgba(0, 113, 227, 0.1);
-        }
-
-        .field-value[contenteditable="true"] {
-            border-bottom: 1px solid #ccc;
-            min-width: 180px;
+            border-bottom-color: #0071e3;
         }
 
         .questions-container {
-            margin-top: 40px;
+            margin-top: 30px;
         }
 
         /* Question Card */
@@ -517,29 +542,21 @@
             color: #9ca3af;
         }
 
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
-            border-radius: 4px;
-        }
-
         @media (max-width: 800px) {
-            .two-column {
-                flex-direction: column;
-                gap: 0;
-            }
             .word-document {
                 padding: 30px 20px;
             }
             .insert-sidebar {
                 width: 220px;
+            }
+            .metadata-row, .staff-row, .student-row {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+            .header-top {
+                flex-direction: column;
+                gap: 15px;
             }
         }
     </style>
@@ -627,69 +644,79 @@
         <!-- Center Canvas - Word Document -->
         <div class="word-canvas" id="examCanvas" ondragover="dragOver(event)" ondrop="dropQuestion(event)">
             <div class="word-document" id="examDocument">
-                <!-- HEADER - EXACTLY LIKE THE IMAGE -->
-                <div class="exam-header">
-                    <div class="school-name" contenteditable="true">KORAHLEY ACADEMY</div>
-                    <div class="motto" contenteditable="true">Passion for Success</div>
+                <!-- HEADER - EXACTLY LIKE REQUESTED -->
+                <!-- Top row with logos and title -->
+                <div class="header-top">
+                    <img src="logo-compressed.jpg" alt="Logo" class="header-logo" onerror="this.src='https://placehold.co/80x80?text=Logo'">
+                    <div class="header-title">
+                        <div class="school-name" contenteditable="true">KORAHY ACADEMY</div>
+                    </div>
+                    <img src="logo-compressed.jpg" alt="Logo" class="header-logo" onerror="this.src='https://placehold.co/80x80?text=Logo'">
                 </div>
 
-                <hr>
-
-                <!-- Centered row for Academic Year, Semester, Test Date -->
-                <div class="centered-row">
-                    <div class="centered-field">
-                        <span class="field-label">Academic Year:</span>
-                        <span class="field-value" contenteditable="true">__________</span>
-                    </div>
-                    <div class="centered-field">
-                        <span class="field-label">Semester:</span>
-                        <span class="field-value" contenteditable="true">__________</span>
-                    </div>
-                    <div class="centered-field">
-                        <span class="field-label">Test Date:</span>
-                        <span class="field-value" contenteditable="true">__________</span>
+                <!-- Metadata Bar: Academic Year, Semester, Test, Date -->
+                <div class="metadata-bar">
+                    <div class="metadata-row">
+                        <div class="metadata-item">
+                            <span class="metadata-label">Academic Year:</span>
+                            <span contenteditable="true">__________</span>
+                        </div>
+                        <div class="metadata-item">
+                            <span class="metadata-label">Semester:</span>
+                            <span contenteditable="true">__________</span>
+                        </div>
+                        <div class="metadata-item">
+                            <span class="metadata-label">Test:</span>
+                            <span contenteditable="true">__________</span>
+                        </div>
+                        <div class="metadata-item">
+                            <span class="metadata-label">Date:</span>
+                            <span contenteditable="true">__________</span>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Two column layout - EXACTLY LIKE IMAGE -->
-                <div class="two-column">
-                    <div class="col">
-                        <div class="field-row">
+                <!-- Staff Section: Prepared by, Reviewed by, Marked by -->
+                <div class="staff-section">
+                    <div class="staff-row">
+                        <div class="staff-item">
+                            <span class="metadata-label">Prepared by:</span>
+                            <span contenteditable="true">__________</span>
+                        </div>
+                        <div class="staff-item">
+                            <span class="metadata-label">Reviewed by:</span>
+                            <span contenteditable="true">__________</span>
+                        </div>
+                        <div class="staff-item">
+                            <span class="metadata-label">Marked by:</span>
+                            <span contenteditable="true">__________</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Student Information Row -->
+                <div class="student-info">
+                    <div class="student-row">
+                        <div class="student-field">
                             <span class="field-label">Name:</span>
-                            <span class="field-value" contenteditable="true">__________</span>
+                            <span contenteditable="true">________________________________________</span>
                         </div>
-                        <div class="field-row">
-                            <span class="field-label">Marked by:</span>
-                            <span class="field-value" contenteditable="true">__________</span>
-                        </div>
-                        <div class="field-row">
+                        <div class="student-field">
                             <span class="field-label">Branch:</span>
-                            <span class="field-value" contenteditable="true">__________</span>
+                            <span contenteditable="true">__________</span>
                         </div>
-                        <div class="field-row">
+                        <div class="student-field">
                             <span class="field-label">Grade:</span>
-                            <span class="field-value" contenteditable="true">__________</span>
+                            <span contenteditable="true">__________</span>
                         </div>
-                    </div>
-                    <div class="col">
-                        <div class="field-row">
+                        <div class="student-field">
                             <span class="field-label">Subject:</span>
-                            <span class="field-value" contenteditable="true">__________</span>
-                        </div>
-                        <div class="field-row">
-                            <span class="field-label">Prepared by:</span>
-                            <span class="field-value" contenteditable="true">__________</span>
-                        </div>
-                        <div class="field-row">
-                            <span class="field-label">Reviewed by:</span>
-                            <span class="field-value" contenteditable="true">__________</span>
+                            <span contenteditable="true">__________</span>
                         </div>
                     </div>
                 </div>
 
                 <hr>
-
-                <div class="academy-footer" contenteditable="true">KORAHLEY ACADEMY</div>
 
                 <!-- Questions Container -->
                 <div class="questions-container" id="questionsContainer">
@@ -983,19 +1010,18 @@
         // Save Exam
         function saveExam() {
             const headerData = {
-                schoolName: document.querySelector('.school-name')?.innerText || 'KORAHLEY ACADEMY',
-                motto: document.querySelector('.motto')?.innerText || 'Passion for Success',
-                academicYear: document.querySelectorAll('.centered-field .field-value')[0]?.innerText || '__________',
-                semester: document.querySelectorAll('.centered-field .field-value')[1]?.innerText || '__________',
-                testDate: document.querySelectorAll('.centered-field .field-value')[2]?.innerText || '__________',
-                name: document.querySelectorAll('.col:first-child .field-value')[0]?.innerText || '__________',
-                markedBy: document.querySelectorAll('.col:first-child .field-value')[1]?.innerText || '__________',
-                branch: document.querySelectorAll('.col:first-child .field-value')[2]?.innerText || '__________',
-                grade: document.querySelectorAll('.col:first-child .field-value')[3]?.innerText || '__________',
-                subject: document.querySelectorAll('.col:last-child .field-value')[0]?.innerText || '__________',
-                preparedBy: document.querySelectorAll('.col:last-child .field-value')[1]?.innerText || '__________',
-                reviewedBy: document.querySelectorAll('.col:last-child .field-value')[2]?.innerText || '__________',
-                academyFooter: document.querySelector('.academy-footer')?.innerText || 'KORAHLEY ACADEMY'
+                schoolName: document.querySelector('.school-name')?.innerText || 'KORAHY ACADEMY',
+                academicYear: document.querySelectorAll('.metadata-row .metadata-item span[contenteditable="true"]')[0]?.innerText || '__________',
+                semester: document.querySelectorAll('.metadata-row .metadata-item span[contenteditable="true"]')[1]?.innerText || '__________',
+                test: document.querySelectorAll('.metadata-row .metadata-item span[contenteditable="true"]')[2]?.innerText || '__________',
+                date: document.querySelectorAll('.metadata-row .metadata-item span[contenteditable="true"]')[3]?.innerText || '__________',
+                preparedBy: document.querySelectorAll('.staff-row .staff-item span[contenteditable="true"]')[0]?.innerText || '__________',
+                reviewedBy: document.querySelectorAll('.staff-row .staff-item span[contenteditable="true"]')[1]?.innerText || '__________',
+                markedBy: document.querySelectorAll('.staff-row .staff-item span[contenteditable="true"]')[2]?.innerText || '__________',
+                name: document.querySelectorAll('.student-field span[contenteditable="true"]')[0]?.innerText || '__________',
+                branch: document.querySelectorAll('.student-field span[contenteditable="true"]')[1]?.innerText || '__________',
+                grade: document.querySelectorAll('.student-field span[contenteditable="true"]')[2]?.innerText || '__________',
+                subject: document.querySelectorAll('.student-field span[contenteditable="true"]')[3]?.innerText || '__________'
             };
             
             const examData = {
@@ -1010,19 +1036,18 @@
         function exportExam() {
             saveExam();
             const headerData = {
-                schoolName: document.querySelector('.school-name')?.innerText || 'KORAHLEY ACADEMY',
-                motto: document.querySelector('.motto')?.innerText || 'Passion for Success',
-                academicYear: document.querySelectorAll('.centered-field .field-value')[0]?.innerText || '__________',
-                semester: document.querySelectorAll('.centered-field .field-value')[1]?.innerText || '__________',
-                testDate: document.querySelectorAll('.centered-field .field-value')[2]?.innerText || '__________',
-                name: document.querySelectorAll('.col:first-child .field-value')[0]?.innerText || '__________',
-                markedBy: document.querySelectorAll('.col:first-child .field-value')[1]?.innerText || '__________',
-                branch: document.querySelectorAll('.col:first-child .field-value')[2]?.innerText || '__________',
-                grade: document.querySelectorAll('.col:first-child .field-value')[3]?.innerText || '__________',
-                subject: document.querySelectorAll('.col:last-child .field-value')[0]?.innerText || '__________',
-                preparedBy: document.querySelectorAll('.col:last-child .field-value')[1]?.innerText || '__________',
-                reviewedBy: document.querySelectorAll('.col:last-child .field-value')[2]?.innerText || '__________',
-                academyFooter: document.querySelector('.academy-footer')?.innerText || 'KORAHLEY ACADEMY'
+                schoolName: document.querySelector('.school-name')?.innerText || 'KORAHY ACADEMY',
+                academicYear: document.querySelectorAll('.metadata-row .metadata-item span[contenteditable="true"]')[0]?.innerText || '__________',
+                semester: document.querySelectorAll('.metadata-row .metadata-item span[contenteditable="true"]')[1]?.innerText || '__________',
+                test: document.querySelectorAll('.metadata-row .metadata-item span[contenteditable="true"]')[2]?.innerText || '__________',
+                date: document.querySelectorAll('.metadata-row .metadata-item span[contenteditable="true"]')[3]?.innerText || '__________',
+                preparedBy: document.querySelectorAll('.staff-row .staff-item span[contenteditable="true"]')[0]?.innerText || '__________',
+                reviewedBy: document.querySelectorAll('.staff-row .staff-item span[contenteditable="true"]')[1]?.innerText || '__________',
+                markedBy: document.querySelectorAll('.staff-row .staff-item span[contenteditable="true"]')[2]?.innerText || '__________',
+                name: document.querySelectorAll('.student-field span[contenteditable="true"]')[0]?.innerText || '__________',
+                branch: document.querySelectorAll('.student-field span[contenteditable="true"]')[1]?.innerText || '__________',
+                grade: document.querySelectorAll('.student-field span[contenteditable="true"]')[2]?.innerText || '__________',
+                subject: document.querySelectorAll('.student-field span[contenteditable="true"]')[3]?.innerText || '__________'
             };
             
             const printWindow = window.open('', '_blank');
@@ -1031,46 +1056,55 @@
                 <head>
                     <title>Korahey Academy - Examination</title>
                     <style>
-                        body { font-family: 'Times New Roman', serif; padding: 50px; max-width: 800px; margin: 0 auto; }
-                        .school-name { font-size: 28px; font-weight: 800; text-align: center; margin-bottom: 5px; }
-                        .motto { text-align: center; font-style: italic; margin-bottom: 20px; }
+                        body { font-family: 'Times New Roman', serif; padding: 50px; max-width: 900px; margin: 0 auto; }
+                        .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+                        .header-logo { width: 80px; height: 80px; object-fit: contain; }
+                        .school-name { font-size: 28px; font-weight: 800; text-align: center; }
+                        .metadata-bar, .staff-section { background: #f8f9fa; padding: 15px; margin: 15px 0; border-radius: 8px; text-align: center; }
+                        .metadata-row, .staff-row { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
+                        .student-info { border: 1px solid #ccc; padding: 15px; margin: 15px 0; border-radius: 8px; }
+                        .student-row { display: flex; gap: 20px; flex-wrap: wrap; }
+                        .student-field { flex: 1; }
+                        .field-label { font-weight: 600; }
                         hr { margin: 20px 0; }
-                        .centered-row { text-align: center; margin: 20px 0; }
-                        .centered-field { margin: 0 15px; }
-                        .two-column { display: flex; gap: 50px; margin: 20px 0; }
-                        .col { flex: 1; }
-                        .field-row { margin-bottom: 15px; }
-                        .field-label { font-weight: 600; width: 100px; display: inline-block; }
-                        .academy-footer { text-align: center; font-weight: 600; margin-top: 30px; }
                         .question { margin-bottom: 25px; }
                         .question-title { font-weight: 700; margin-bottom: 8px; }
                         .options { margin-left: 30px; }
                     </style>
                 </head>
                 <body>
-                    <div class="school-name">${headerData.schoolName}</div>
-                    <div class="motto">${headerData.motto}</div>
-                    <hr>
-                    <div class="centered-row">
-                        <span class="centered-field">Academic Year: ${headerData.academicYear}</span>
-                        <span class="centered-field">Semester: ${headerData.semester}</span>
-                        <span class="centered-field">Test Date: ${headerData.testDate}</span>
+                    <div class="header-top">
+                        <img src="logo-compressed.jpg" alt="Logo" class="header-logo" onerror="this.style.display='none'">
+                        <div class="school-name">${headerData.schoolName}</div>
+                        <img src="logo-compressed.jpg" alt="Logo" class="header-logo" onerror="this.style.display='none'">
                     </div>
-                    <div class="two-column">
-                        <div class="col">
-                            <div class="field-row"><span class="field-label">Name:</span> ${headerData.name}</div>
-                            <div class="field-row"><span class="field-label">Marked by:</span> ${headerData.markedBy}</div>
-                            <div class="field-row"><span class="field-label">Branch:</span> ${headerData.branch}</div>
-                            <div class="field-row"><span class="field-label">Grade:</span> ${headerData.grade}</div>
-                        </div>
-                        <div class="col">
-                            <div class="field-row"><span class="field-label">Subject:</span> ${headerData.subject}</div>
-                            <div class="field-row"><span class="field-label">Prepared by:</span> ${headerData.preparedBy}</div>
-                            <div class="field-row"><span class="field-label">Reviewed by:</span> ${headerData.reviewedBy}</div>
+                    
+                    <div class="metadata-bar">
+                        <div class="metadata-row">
+                            <span>Academic Year: ${headerData.academicYear}</span>
+                            <span>Semester: ${headerData.semester}</span>
+                            <span>Test: ${headerData.test}</span>
+                            <span>Date: ${headerData.date}</span>
                         </div>
                     </div>
-                    <hr>
-                    <div class="academy-footer">${headerData.academyFooter}</div>
+                    
+                    <div class="staff-section">
+                        <div class="staff-row">
+                            <span>Prepared by: ${headerData.preparedBy}</span>
+                            <span>Reviewed by: ${headerData.reviewedBy}</span>
+                            <span>Marked by: ${headerData.markedBy}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="student-info">
+                        <div class="student-row">
+                            <div class="student-field"><span class="field-label">Name:</span> ${headerData.name}</div>
+                            <div class="student-field"><span class="field-label">Branch:</span> ${headerData.branch}</div>
+                            <div class="student-field"><span class="field-label">Grade:</span> ${headerData.grade}</div>
+                            <div class="student-field"><span class="field-label">Subject:</span> ${headerData.subject}</div>
+                        </div>
+                    </div>
+                    
                     <hr>
                     <h3>Examination Questions</h3>
                     ${questions.map((q, idx) => `
@@ -1101,29 +1135,25 @@
                 if (exam.header) {
                     const h = exam.header;
                     const schoolName = document.querySelector('.school-name');
-                    const motto = document.querySelector('.motto');
-                    if (schoolName) schoolName.innerText = h.schoolName || 'KORAHLEY ACADEMY';
-                    if (motto) motto.innerText = h.motto || 'Passion for Success';
+                    if (schoolName) schoolName.innerText = h.schoolName || 'KORAHY ACADEMY';
                     
-                    const fieldValues = document.querySelectorAll('.field-value');
-                    const centeredFields = document.querySelectorAll('.centered-field .field-value');
-                    if (centeredFields[0]) centeredFields[0].innerText = h.academicYear || '__________';
-                    if (centeredFields[1]) centeredFields[1].innerText = h.semester || '__________';
-                    if (centeredFields[2]) centeredFields[2].innerText = h.testDate || '__________';
+                    const editableFields = document.querySelectorAll('[contenteditable="true"]');
+                    const metadataFields = document.querySelectorAll('.metadata-row .metadata-item span[contenteditable="true"]');
+                    if (metadataFields[0]) metadataFields[0].innerText = h.academicYear || '__________';
+                    if (metadataFields[1]) metadataFields[1].innerText = h.semester || '__________';
+                    if (metadataFields[2]) metadataFields[2].innerText = h.test || '__________';
+                    if (metadataFields[3]) metadataFields[3].innerText = h.date || '__________';
                     
-                    const leftColFields = document.querySelectorAll('.col:first-child .field-value');
-                    if (leftColFields[0]) leftColFields[0].innerText = h.name || '__________';
-                    if (leftColFields[1]) leftColFields[1].innerText = h.markedBy || '__________';
-                    if (leftColFields[2]) leftColFields[2].innerText = h.branch || '__________';
-                    if (leftColFields[3]) leftColFields[3].innerText = h.grade || '__________';
+                    const staffFields = document.querySelectorAll('.staff-row .staff-item span[contenteditable="true"]');
+                    if (staffFields[0]) staffFields[0].innerText = h.preparedBy || '__________';
+                    if (staffFields[1]) staffFields[1].innerText = h.reviewedBy || '__________';
+                    if (staffFields[2]) staffFields[2].innerText = h.markedBy || '__________';
                     
-                    const rightColFields = document.querySelectorAll('.col:last-child .field-value');
-                    if (rightColFields[0]) rightColFields[0].innerText = h.subject || '__________';
-                    if (rightColFields[1]) rightColFields[1].innerText = h.preparedBy || '__________';
-                    if (rightColFields[2]) rightColFields[2].innerText = h.reviewedBy || '__________';
-                    
-                    const academyFooter = document.querySelector('.academy-footer');
-                    if (academyFooter) academyFooter.innerText = h.academyFooter || 'KORAHLEY ACADEMY';
+                    const studentFields = document.querySelectorAll('.student-field span[contenteditable="true"]');
+                    if (studentFields[0]) studentFields[0].innerText = h.name || '__________';
+                    if (studentFields[1]) studentFields[1].innerText = h.branch || '__________';
+                    if (studentFields[2]) studentFields[2].innerText = h.grade || '__________';
+                    if (studentFields[3]) studentFields[3].innerText = h.subject || '__________';
                 }
                 if (exam.questions) {
                     questions = exam.questions;
