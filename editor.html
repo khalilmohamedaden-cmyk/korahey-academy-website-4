@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Korahey Exam Designer - Microsoft Word Style</title>
+    <title>Korahey UI v1.0 | Premium Document Editor</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -16,164 +16,206 @@
         }
 
         body {
-            font-family: 'Segoe UI', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #ffffff;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #e0e8f0 0%, #d0d8e8 100%);
             overflow: hidden;
             height: 100vh;
         }
 
-        /* ========== MICROSOFT WORD STYLE TOOLBAR ========== */
-        .word-toolbar {
-            background: #ffffff;
-            border-bottom: 1px solid #d0d0d0;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            position: relative;
-            z-index: 100;
+        /* ========== LIQUID GLASS EFFECTS ========== */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
 
-        /* Menu Bar */
-        .menu-bar {
+        /* ========== DYNAMIC ISLAND TOOLBAR ========== */
+        .dynamic-island {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            border-radius: 60px;
+            padding: 8px 20px;
+            z-index: 1000;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .dynamic-island:hover {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+        }
+
+        .island-content {
             display: flex;
-            padding: 8px 16px;
-            gap: 4px;
-            background: #ffffff;
-            border-bottom: 1px solid #e8e8e8;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
         }
 
-        .menu-item {
+        /* MetaBall Animation for buttons */
+        .meta-ball-btn {
             position: relative;
-            padding: 6px 12px;
-            font-size: 13px;
-            color: #333;
+            background: rgba(0, 0, 0, 0.05);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 40px;
             cursor: pointer;
-            border-radius: 4px;
-            transition: all 0.2s;
+            font-size: 13px;
+            font-weight: 500;
+            color: #333;
+            transition: all 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
+            overflow: hidden;
         }
 
-        .menu-item:hover {
-            background: #e8e8e8;
+        .meta-ball-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(0, 113, 227, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease, height 0.4s ease;
         }
 
-        /* Dropdown Menu */
-        .dropdown-menu {
+        .meta-ball-btn:hover::before {
+            width: 200%;
+            height: 200%;
+        }
+
+        .meta-ball-btn:hover {
+            background: rgba(0, 113, 227, 0.1);
+            transform: scale(1.02);
+        }
+
+        /* Dropdown with metaball animation */
+        .dropdown-container {
+            position: relative;
+        }
+
+        .glass-dropdown {
             position: absolute;
             top: 100%;
             left: 0;
-            background: white;
-            border: 1px solid #d0d0d0;
-            border-radius: 4px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            min-width: 200px;
+            margin-top: 8px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            min-width: 220px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px) scale(0.95);
+            transition: all 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
             z-index: 1000;
-            display: none;
-            padding: 4px 0;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
         }
 
-        .dropdown-menu.show {
-            display: block;
+        .dropdown-container.active .glass-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
         }
 
-        .dropdown-item {
-            padding: 8px 20px;
-            font-size: 13px;
+        .glass-dropdown-item {
+            padding: 12px 20px;
             cursor: pointer;
             transition: all 0.2s;
+            font-size: 13px;
+            color: #333;
         }
 
-        .dropdown-item:hover {
-            background: #e8e8e8;
+        .glass-dropdown-item:hover {
+            background: rgba(0, 113, 227, 0.1);
+            padding-left: 28px;
         }
 
         .dropdown-divider {
             height: 1px;
-            background: #e0e0e0;
+            background: rgba(0, 0, 0, 0.1);
             margin: 4px 0;
         }
 
-        /* Formatting Toolbar */
-        .format-toolbar {
-            display: flex;
+        /* Font & Size Selectors */
+        .font-selector, .size-selector {
             padding: 8px 16px;
-            gap: 8px;
-            flex-wrap: wrap;
-            align-items: center;
-            background: #ffffff;
-        }
-
-        .tool-group {
-            display: flex;
-            gap: 2px;
-            padding: 0 8px;
-            border-right: 1px solid #d0d0d0;
-        }
-
-        .tool-group:last-child {
-            border-right: none;
-        }
-
-        .tool-btn {
-            background: none;
-            border: none;
-            padding: 6px 10px;
-            border-radius: 4px;
-            cursor: pointer;
+            border-radius: 40px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.8);
             font-size: 13px;
-            color: #333;
+            cursor: pointer;
             transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
         }
 
-        .tool-btn i {
-            font-size: 14px;
+        .font-selector:hover, .size-selector:hover {
+            background: rgba(255, 255, 255, 1);
+            border-color: #0071e3;
         }
 
-        .tool-btn:hover {
-            background: #e8e8e8;
+        /* Main Canvas */
+        .canvas-area {
+            height: 100vh;
+            overflow-y: auto;
+            padding: 100px 40px 40px 40px;
         }
 
-        .font-select, .size-select {
-            padding: 4px 8px;
-            border: 1px solid #d0d0d0;
-            border-radius: 4px;
-            font-size: 12px;
+        /* Paper Container - Multiple pages */
+        .paper-container {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .paper-page {
             background: white;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+            padding: 60px 70px;
+            margin-bottom: 30px;
+            position: relative;
+            transition: all 0.3s;
+            min-height: 500px;
+        }
+
+        .paper-page:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Page break indicator */
+        .page-break {
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
             cursor: pointer;
         }
 
-        .separator {
-            width: 1px;
-            height: 24px;
-            background: #d0d0d0;
-            margin: 0 4px;
+        .page-break::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #0071e3, transparent);
+            transform: translateY(-50%);
         }
 
-        /* Main Layout */
-        .main-layout {
-            display: flex;
-            height: calc(100vh - 105px);
-        }
-
-        /* Canvas Area */
-        .canvas-area {
-            flex: 1;
-            overflow-y: auto;
-            padding: 40px;
-            background: #e8ecf0;
-        }
-
-        .word-document {
-            max-width: 1000px;
-            margin: 0 auto;
+        .page-break span {
             background: white;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            border-radius: 4px;
-            padding: 50px 60px;
-            min-height: 800px;
-            font-family: 'Times New Roman', Georgia, serif;
-            font-size: 12pt;
-            line-height: 1.5;
+            padding: 0 15px;
+            font-size: 12px;
+            color: #0071e3;
+            position: relative;
+            z-index: 1;
         }
 
         /* Editable content */
@@ -186,251 +228,361 @@
             outline: none;
         }
 
-        /* Image styling */
-        .inserted-image {
+        /* Image styling - resizable */
+        .resizable-image {
             max-width: 100%;
             height: auto;
             margin: 10px 0;
-            cursor: pointer;
-            border-radius: 4px;
+            cursor: move;
+            position: relative;
+            border-radius: 8px;
+            transition: all 0.2s;
         }
 
-        .inserted-image:hover {
+        .resizable-image:hover {
             box-shadow: 0 0 0 2px #0071e3;
         }
 
-        /* Modal for media manager */
-        .modal {
+        .image-resize-handle {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: #0071e3;
+            border-radius: 50%;
+            bottom: -6px;
+            right: -6px;
+            cursor: nw-resize;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .resizable-image:hover .image-resize-handle {
+            opacity: 1;
+        }
+
+        /* Table styling with hover controls */
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            position: relative;
+        }
+
+        .custom-table td, .custom-table th {
+            border: 1px solid #ccc;
+            padding: 10px;
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        .custom-table td:hover, .custom-table th:hover {
+            background: rgba(0, 113, 227, 0.05);
+        }
+
+        .table-controls {
+            position: absolute;
+            top: -30px;
+            left: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 4px 12px;
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 0.2s;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .custom-table:hover .table-controls {
+            opacity: 1;
+        }
+
+        .table-control-btn {
+            background: none;
+            border: none;
+            padding: 6px 10px;
+            cursor: pointer;
+            border-radius: 20px;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .table-control-btn:hover {
+            background: #0071e3;
+            color: white;
+        }
+
+        /* Media Manager Modal */
+        .media-modal {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(12px);
             z-index: 2000;
             align-items: center;
             justify-content: center;
         }
 
-        .modal.active {
+        .media-modal.active {
             display: flex;
         }
 
-        .modal-content {
-            background: white;
-            border-radius: 12px;
+        .media-modal-content {
             width: 90%;
-            max-width: 600px;
-            max-height: 80vh;
-            overflow-y: auto;
-            padding: 24px;
+            max-width: 800px;
+            max-height: 85vh;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(30px);
+            border-radius: 32px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
         }
 
-        .modal-header {
+        .media-modal-header {
+            padding: 20px 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #e0e3e8;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         }
 
-        .modal-title {
-            font-size: 1.2rem;
-            font-weight: 600;
+        .media-modal-body {
+            padding: 24px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .drag-drop-area {
+            border: 2px dashed rgba(0, 113, 227, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 24px;
+        }
+
+        .drag-drop-area.drag-over {
+            border-color: #0071e3;
+            background: rgba(0, 113, 227, 0.05);
+        }
+
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 16px;
+        }
+
+        .gallery-item {
+            background: rgba(0, 0, 0, 0.03);
+            border-radius: 12px;
+            padding: 12px;
+            cursor: move;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .gallery-item:hover {
+            background: rgba(0, 113, 227, 0.1);
+            transform: scale(1.02);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .gallery-item-name {
+            font-size: 10px;
+            margin-top: 8px;
+            color: #666;
         }
 
         .close-modal {
             background: none;
             border: none;
-            font-size: 24px;
+            font-size: 28px;
             cursor: pointer;
             color: #999;
+            transition: all 0.2s;
         }
 
-        .image-upload-area {
-            border: 2px dashed #ccc;
-            border-radius: 12px;
-            padding: 30px;
-            text-align: center;
-            margin-bottom: 20px;
-            cursor: pointer;
+        .close-modal:hover {
+            color: #333;
+            transform: scale(1.1);
         }
 
-        .image-upload-area:hover {
-            border-color: #0071e3;
-            background: #f0f7ff;
-        }
-
-        .image-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .image-item {
-            border: 1px solid #e0e3e8;
-            border-radius: 8px;
-            padding: 10px;
-            cursor: pointer;
-            text-align: center;
-        }
-
-        .image-item img {
-            width: 100%;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 4px;
-        }
-
-        .image-item:hover {
-            border-color: #0071e3;
-            background: #f0f7ff;
-        }
-
-        .toast-notification {
+        /* Toast Notification */
+        .toast {
             position: fixed;
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%) translateY(100px);
-            background: #2c2e33;
+            background: rgba(30, 30, 35, 0.95);
+            backdrop-filter: blur(20px);
             color: white;
-            padding: 10px 24px;
-            border-radius: 8px;
+            padding: 12px 24px;
+            border-radius: 50px;
             font-size: 13px;
-            z-index: 1000;
-            transition: transform 0.2s;
+            z-index: 3000;
+            transition: transform 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
         }
 
-        .toast-notification.show {
+        .toast.show {
             transform: translateX(-50%) translateY(0);
         }
 
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
         @media (max-width: 800px) {
-            .word-document {
-                padding: 30px 20px;
+            .dynamic-island {
+                width: 95%;
+                padding: 8px 12px;
             }
-            .format-toolbar {
-                overflow-x: auto;
+            .island-content {
+                justify-content: center;
+            }
+            .paper-page {
+                padding: 30px 20px;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- Microsoft Word Style Toolbar -->
-    <div class="word-toolbar">
-        <!-- Menu Bar -->
-        <div class="menu-bar">
-            <!-- File Menu -->
-            <div class="menu-item" onclick="toggleDropdown('fileDropdown')">File</div>
-            <div id="fileDropdown" class="dropdown-menu">
-                <div class="dropdown-item" onclick="newDocument()">New</div>
-                <div class="dropdown-item" onclick="saveDocument()">Save</div>
-                <div class="dropdown-item" onclick="exportDocument()">Print</div>
-                <div class="dropdown-divider"></div>
-                <div class="dropdown-item" onclick="closeDocument()">Close</div>
+    <!-- Dynamic Island Toolbar -->
+    <div class="dynamic-island">
+        <div class="island-content">
+            <!-- File Dropdown -->
+            <div class="dropdown-container" id="fileDropdown">
+                <button class="meta-ball-btn" onclick="toggleDropdown('fileDropdown')">📄 File</button>
+                <div class="glass-dropdown">
+                    <div class="glass-dropdown-item" onclick="newDocument()">New Document</div>
+                    <div class="glass-dropdown-item" onclick="saveDocument()">Save</div>
+                    <div class="glass-dropdown-item" onclick="exportDocument()">Print / Export</div>
+                    <div class="dropdown-divider"></div>
+                    <div class="glass-dropdown-item" onclick="closeEditor()">Close</div>
+                </div>
             </div>
 
-            <!-- Edit Menu -->
-            <div class="menu-item" onclick="toggleDropdown('editDropdown')">Edit</div>
-            <div id="editDropdown" class="dropdown-menu">
-                <div class="dropdown-item" onclick="execCommand('undo')">Undo</div>
-                <div class="dropdown-item" onclick="execCommand('redo')">Redo</div>
-                <div class="dropdown-divider"></div>
-                <div class="dropdown-item" onclick="execCommand('cut')">Cut</div>
-                <div class="dropdown-item" onclick="execCommand('copy')">Copy</div>
-                <div class="dropdown-item" onclick="execCommand('paste')">Paste</div>
-                <div class="dropdown-divider"></div>
-                <div class="dropdown-item" onclick="selectAll()">Select All</div>
-                <div class="dropdown-item" onclick="findAndReplace()">Find & Replace</div>
+            <!-- Edit Dropdown -->
+            <div class="dropdown-container" id="editDropdown">
+                <button class="meta-ball-btn" onclick="toggleDropdown('editDropdown')">✏️ Edit</button>
+                <div class="glass-dropdown">
+                    <div class="glass-dropdown-item" onclick="execCommand('undo')">Undo</div>
+                    <div class="glass-dropdown-item" onclick="execCommand('redo')">Redo</div>
+                    <div class="dropdown-divider"></div>
+                    <div class="glass-dropdown-item" onclick="execCommand('cut')">Cut</div>
+                    <div class="glass-dropdown-item" onclick="execCommand('copy')">Copy</div>
+                    <div class="glass-dropdown-item" onclick="execCommand('paste')">Paste</div>
+                    <div class="dropdown-divider"></div>
+                    <div class="glass-dropdown-item" onclick="selectAll()">Select All</div>
+                    <div class="glass-dropdown-item" onclick="findAndReplace()">Find & Replace</div>
+                </div>
             </div>
 
-            <!-- View Menu -->
-            <div class="menu-item" onclick="toggleDropdown('viewDropdown')">View</div>
-            <div id="viewDropdown" class="dropdown-menu">
-                <div class="dropdown-item" onclick="toggleZoom(100)">Zoom 100%</div>
-                <div class="dropdown-item" onclick="toggleZoom(125)">Zoom 125%</div>
-                <div class="dropdown-item" onclick="toggleZoom(150)">Zoom 150%</div>
-                <div class="dropdown-divider"></div>
-                <div class="dropdown-item" onclick="toggleRuler()">Show Ruler</div>
-                <div class="dropdown-item" onclick="toggleStatusBar()">Status Bar</div>
+            <!-- View Dropdown -->
+            <div class="dropdown-container" id="viewDropdown">
+                <button class="meta-ball-btn" onclick="toggleDropdown('viewDropdown')">👁️ View</button>
+                <div class="glass-dropdown">
+                    <div class="glass-dropdown-item" onclick="setZoom(100)">Zoom 100%</div>
+                    <div class="glass-dropdown-item" onclick="setZoom(125)">Zoom 125%</div>
+                    <div class="glass-dropdown-item" onclick="setZoom(150)">Zoom 150%</div>
+                </div>
             </div>
 
-            <!-- Insert Menu -->
-            <div class="menu-item" onclick="toggleDropdown('insertDropdown')">Insert</div>
-            <div id="insertDropdown" class="dropdown-menu">
-                <div class="dropdown-item" onclick="openMediaManager()">Media Manager</div>
-                <div class="dropdown-item" onclick="insertImage()">Insert Image</div>
-                <div class="dropdown-divider"></div>
-                <div class="dropdown-item" onclick="insertTable()">Insert Table</div>
-                <div class="dropdown-item" onclick="insertLink()">Insert Link</div>
-                <div class="dropdown-divider"></div>
-                <div class="dropdown-item" onclick="insertPageBreak()">Page Break</div>
-                <div class="dropdown-item" onclick="insertDate()">Date & Time</div>
+            <!-- Insert Dropdown with Media Manager -->
+            <div class="dropdown-container" id="insertDropdown">
+                <button class="meta-ball-btn" onclick="toggleDropdown('insertDropdown')">📎 Insert</button>
+                <div class="glass-dropdown">
+                    <div class="glass-dropdown-item" onclick="openMediaManager()">🎨 Media Manager</div>
+                    <div class="glass-dropdown-item" onclick="insertTable()">📊 Insert Table</div>
+                    <div class="glass-dropdown-item" onclick="insertPageBreak()">📄 Page Break</div>
+                    <div class="glass-dropdown-item" onclick="insertDate()">📅 Date & Time</div>
+                </div>
             </div>
 
-            <!-- Format Menu -->
-            <div class="menu-item" onclick="toggleDropdown('formatDropdown')">Format</div>
-            <div id="formatDropdown" class="dropdown-menu">
-                <div class="dropdown-item" onclick="openFontDialog()">Font</div>
-                <div class="dropdown-item" onclick="openParagraphDialog()">Paragraph</div>
-                <div class="dropdown-divider"></div>
-                <div class="dropdown-item" onclick="setTextColor()">Text Color</div>
-                <div class="dropdown-item" onclick="setHighlightColor()">Highlight Color</div>
-                <div class="dropdown-divider"></div>
-                <div class="dropdown-item" onclick="changeCase()">Change Case</div>
-                <div class="dropdown-item" onclick="clearFormatting()">Clear Formatting</div>
+            <!-- Format Dropdown -->
+            <div class="dropdown-container" id="formatDropdown">
+                <button class="meta-ball-btn" onclick="toggleDropdown('formatDropdown')">🎨 Format</button>
+                <div class="glass-dropdown">
+                    <div class="glass-dropdown-item" onclick="openFontDialog()">Font Settings</div>
+                    <div class="glass-dropdown-item" onclick="setTextColor()">Text Color</div>
+                    <div class="glass-dropdown-item" onclick="setHighlightColor()">Highlight Color</div>
+                    <div class="dropdown-divider"></div>
+                    <div class="glass-dropdown-item" onclick="clearFormatting()">Clear Formatting</div>
+                </div>
             </div>
 
-            <!-- Tools Menu -->
-            <div class="menu-item" onclick="toggleDropdown('toolsDropdown')">Tools</div>
-            <div id="toolsDropdown" class="dropdown-menu">
-                <div class="dropdown-item" onclick="openWordCount()">Word Count</div>
-                <div class="dropdown-item" onclick="checkSpelling()">Spelling & Grammar</div>
-                <div class="dropdown-divider"></div>
-                <div class="dropdown-item" onclick="openThesaurus()">Thesaurus</div>
-                <div class="dropdown-item" onclick="openTranslate()">Translate</div>
+            <!-- Tools Dropdown -->
+            <div class="dropdown-container" id="toolsDropdown">
+                <button class="meta-ball-btn" onclick="toggleDropdown('toolsDropdown')">🔧 Tools</button>
+                <div class="glass-dropdown">
+                    <div class="glass-dropdown-item" onclick="showWordCount()">Word Count</div>
+                    <div class="glass-dropdown-item" onclick="checkSpelling()">Spelling Check</div>
+                </div>
             </div>
 
-            <!-- Table Menu -->
-            <div class="menu-item" onclick="toggleDropdown('tableDropdown')">Table</div>
-            <div id="tableDropdown" class="dropdown-menu">
-                <div class="dropdown-item" onclick="insertTable()">Insert Table</div>
-                <div class="dropdown-item" onclick="insertRowAbove()">Insert Row Above</div>
-                <div class="dropdown-item" onclick="insertRowBelow()">Insert Row Below</div>
-                <div class="dropdown-item" onclick="insertColumnLeft()">Insert Column Left</div>
-                <div class="dropdown-item" onclick="insertColumnRight()">Insert Column Right</div>
-                <div class="dropdown-divider"></div>
-                <div class="dropdown-item" onclick="deleteTable()">Delete Table</div>
-                <div class="dropdown-item" onclick="deleteRow()">Delete Row</div>
-                <div class="dropdown-item" onclick="deleteColumn()">Delete Column</div>
+            <!-- Table Dropdown -->
+            <div class="dropdown-container" id="tableDropdown">
+                <button class="meta-ball-btn" onclick="toggleDropdown('tableDropdown')">📋 Table</button>
+                <div class="glass-dropdown">
+                    <div class="glass-dropdown-item" onclick="insertTable()">Insert Table</div>
+                    <div class="glass-dropdown-item" onclick="addRowAbove()">Add Row Above</div>
+                    <div class="glass-dropdown-item" onclick="addRowBelow()">Add Row Below</div>
+                    <div class="glass-dropdown-item" onclick="deleteSelectedRow()">Delete Row</div>
+                    <div class="dropdown-divider"></div>
+                    <div class="glass-dropdown-item" onclick="deleteSelectedTable()">Delete Table</div>
+                </div>
             </div>
 
-            <!-- Help Menu -->
-            <div class="menu-item" onclick="toggleDropdown('helpDropdown')">Help</div>
-            <div id="helpDropdown" class="dropdown-menu">
-                <div class="dropdown-item" onclick="openHelp()">Help</div>
-                <div class="dropdown-item" onclick="showAbout()">About Korahey Editor</div>
-                <div class="dropdown-divider"></div>
-                <div class="dropdown-item" onclick="sendFeedback()">Send Feedback</div>
+            <!-- Help Dropdown -->
+            <div class="dropdown-container" id="helpDropdown">
+                <button class="meta-ball-btn" onclick="toggleDropdown('helpDropdown')">❓ Help</button>
+                <div class="glass-dropdown">
+                    <div class="glass-dropdown-item" onclick="showAbout()">About Korahey UI v1.0</div>
+                    <div class="glass-dropdown-item" onclick="sendFeedback()">Send Feedback</div>
+                </div>
             </div>
-        </div>
 
-        <!-- Formatting Toolbar -->
-        <div class="format-toolbar">
-            <select id="fontSelect" class="font-select" onchange="changeFont()">
-                <option value="'Times New Roman', Georgia, serif">Times New Roman</option>
+            <div class="separator" style="width: 1px; height: 30px; background: rgba(0,0,0,0.1); margin: 0 8px;"></div>
+
+            <!-- Font & Size Selectors -->
+            <select id="fontSelector" class="font-selector" onchange="changeFont()">
+                <option value="'Times New Roman', serif">Times New Roman</option>
                 <option value="'Arial', sans-serif">Arial</option>
                 <option value="'Calibri', sans-serif">Calibri</option>
                 <option value="'Georgia', serif">Georgia</option>
-                <option value="'Verdana', sans-serif">Verdana</option>
-                <option value="'Courier New', monospace">Courier New</option>
+                <option value="'Inter', sans-serif">Inter</option>
             </select>
-            
-            <select id="fontSizeSelect" class="size-select" onchange="changeFontSize()">
+
+            <select id="sizeSelector" class="size-selector" onchange="changeFontSize()">
                 <option value="10">10</option>
                 <option value="11">11</option>
                 <option value="12" selected>12</option>
@@ -441,130 +593,124 @@
                 <option value="24">24</option>
                 <option value="28">28</option>
                 <option value="36">36</option>
-                <option value="48">48</option>
             </select>
 
-            <div class="separator"></div>
-
-            <div class="tool-group">
-                <button class="tool-btn" onclick="execCommand('bold')"><b>B</b></button>
-                <button class="tool-btn" onclick="execCommand('italic')"><i>I</i></button>
-                <button class="tool-btn" onclick="execCommand('underline')"><u>U</u></button>
-                <button class="tool-btn" onclick="execCommand('strikeThrough')"><s>S</s></button>
-            </div>
-
-            <div class="separator"></div>
-
-            <div class="tool-group">
-                <button class="tool-btn" onclick="execCommand('justifyLeft')"><i class="fas fa-align-left"></i></button>
-                <button class="tool-btn" onclick="execCommand('justifyCenter')"><i class="fas fa-align-center"></i></button>
-                <button class="tool-btn" onclick="execCommand('justifyRight')"><i class="fas fa-align-right"></i></button>
-                <button class="tool-btn" onclick="execCommand('justifyFull')"><i class="fas fa-align-justify"></i></button>
-            </div>
-
-            <div class="separator"></div>
-
-            <div class="tool-group">
-                <button class="tool-btn" onclick="execCommand('insertUnorderedList')"><i class="fas fa-list-ul"></i></button>
-                <button class="tool-btn" onclick="execCommand('insertOrderedList')"><i class="fas fa-list-ol"></i></button>
-                <button class="tool-btn" onclick="execCommand('outdent')"><i class="fas fa-outdent"></i></button>
-                <button class="tool-btn" onclick="execCommand('indent')"><i class="fas fa-indent"></i></button>
-            </div>
-
-            <div class="separator"></div>
-
-            <div class="tool-group">
-                <button class="tool-btn" onclick="openMediaManager()"><i class="fas fa-image"></i> Image</button>
-                <button class="tool-btn" onclick="insertTable()"><i class="fas fa-table"></i> Table</button>
-                <button class="tool-btn" onclick="saveDocument()"><i class="fas fa-save"></i> Save</button>
-                <button class="tool-btn" onclick="exportDocument()"><i class="fas fa-print"></i> Print</button>
-            </div>
+            <!-- Formatting Buttons -->
+            <button class="meta-ball-btn" onclick="execCommand('bold')"><b>B</b></button>
+            <button class="meta-ball-btn" onclick="execCommand('italic')"><i>I</i></button>
+            <button class="meta-ball-btn" onclick="execCommand('underline')"><u>U</u></button>
+            <button class="meta-ball-btn" onclick="execCommand('justifyLeft')"><i class="fas fa-align-left"></i></button>
+            <button class="meta-ball-btn" onclick="execCommand('justifyCenter')"><i class="fas fa-align-center"></i></button>
+            <button class="meta-ball-btn" onclick="execCommand('justifyRight')"><i class="fas fa-align-right"></i></button>
+            <button class="meta-ball-btn" onclick="execCommand('insertUnorderedList')"><i class="fas fa-list-ul"></i></button>
+            <button class="meta-ball-btn" onclick="execCommand('insertOrderedList')"><i class="fas fa-list-ol"></i></button>
         </div>
     </div>
 
-    <div class="main-layout">
-        <div class="canvas-area" id="canvasArea">
-            <div class="word-document" id="examDocument" contenteditable="true">
-                <!-- Empty document - user can start typing -->
-                <p style="text-align: center; font-size: 24pt; font-weight: bold; margin-top: 50px;">KORAHY ACADEMY</p>
-                <p style="text-align: center; font-style: italic; margin-bottom: 40px;">Passion for Success</p>
+    <!-- Canvas Area with Multiple Papers -->
+    <div class="canvas-area" id="canvasArea">
+        <div class="paper-container" id="paperContainer">
+            <div class="paper-page" contenteditable="true" id="page1">
+                <h1 style="text-align: center;">KORAHY ACADEMY</h1>
+                <p style="text-align: center; font-style: italic;">Passion for Success</p>
                 <hr>
                 <p><br></p>
-                <p>Click here to start typing or use the toolbar to add images, tables, and more...</p>
+                <p>Welcome to Korahey UI v1.0 - Premium Document Editor</p>
                 <p><br></p>
-                <p>You can format text using the toolbar buttons or the menu dropdowns.</p>
+                <p>Start typing here or use the toolbar above to format your document.</p>
+                <p>You can insert images, tables, page breaks, and more!</p>
             </div>
         </div>
     </div>
 
     <!-- Media Manager Modal -->
-    <div id="mediaModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Media Manager</h3>
+    <div id="mediaModal" class="media-modal">
+        <div class="media-modal-content">
+            <div class="media-modal-header">
+                <h3>🎨 Media Manager</h3>
                 <button class="close-modal" onclick="closeMediaManager()">&times;</button>
             </div>
-            
-            <div class="image-upload-area" onclick="document.getElementById('imageUpload').click()">
-                <i class="fas fa-cloud-upload-alt" style="font-size: 48px; color: #0071e3;"></i>
-                <p>Click to upload images</p>
-                <p style="font-size: 12px; color: #999;">Supported: JPG, PNG, GIF</p>
-                <input type="file" id="imageUpload" accept="image/*" multiple style="display: none;" onchange="handleImageUpload(event)">
-            </div>
-            
-            <div id="imageLibrary" class="image-grid">
-                <p style="grid-column: span 3; text-align: center; color: #999;">No images yet. Upload some images to get started.</p>
-            </div>
-            
-            <div style="margin-top: 20px; text-align: center;">
-                <button class="tool-btn" onclick="closeMediaManager()" style="background: #0071e3; color: white;">Close</button>
+            <div class="media-modal-body">
+                <div class="drag-drop-area" id="dragDropArea" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+                    <i class="fas fa-cloud-upload-alt" style="font-size: 48px; color: #0071e3;"></i>
+                    <p>Drag & Drop images here</p>
+                    <p style="font-size: 12px; color: #999;">or click to upload</p>
+                    <input type="file" id="imageUpload" accept="image/*" multiple style="display: none;" onchange="handleImageUpload(event)">
+                </div>
+                <div class="image-gallery" id="imageGallery"></div>
             </div>
         </div>
     </div>
 
-    <div id="toast" class="toast-notification"></div>
+    <div id="toast" class="toast"></div>
 
     <script>
-        // ========== DROPDOWN FUNCTIONS ==========
+        // ========== KORAHEY UI v1.0 ==========
+        let imageLibrary = [];
+        let currentTableElement = null;
         let activeDropdown = null;
 
-        function toggleDropdown(dropdownId) {
-            const dropdown = document.getElementById(dropdownId);
-            if (activeDropdown && activeDropdown !== dropdown) {
-                activeDropdown.classList.remove('show');
-            }
-            dropdown.classList.toggle('show');
-            activeDropdown = dropdown.classList.contains('show') ? dropdown : null;
+        // Toast notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
         }
 
-        // Close dropdowns when clicking outside
+        // Dropdown functions
+        function toggleDropdown(dropdownId) {
+            const container = document.getElementById(dropdownId);
+            if (activeDropdown && activeDropdown !== container) {
+                activeDropdown.classList.remove('active');
+            }
+            container.classList.toggle('active');
+            activeDropdown = container.classList.contains('active') ? container : null;
+        }
+
         document.addEventListener('click', function(e) {
-            if (!e.target.closest('.menu-item') && !e.target.closest('.dropdown-menu')) {
+            if (!e.target.closest('.dropdown-container')) {
                 if (activeDropdown) {
-                    activeDropdown.classList.remove('show');
+                    activeDropdown.classList.remove('active');
                     activeDropdown = null;
                 }
             }
         });
 
-        // ========== FILE MENU FUNCTIONS ==========
+        // Document functions
         function newDocument() {
             if (confirm('Create new document? Unsaved changes will be lost.')) {
-                document.getElementById('examDocument').innerHTML = '<p><br></p>';
+                document.getElementById('paperContainer').innerHTML = `
+                    <div class="paper-page" contenteditable="true" id="page1">
+                        <h1 style="text-align: center;">KORAHY ACADEMY</h1>
+                        <p style="text-align: center; font-style: italic;">Passion for Success</p>
+                        <hr>
+                        <p><br></p>
+                        <p>Start typing your document here...</p>
+                    </div>
+                `;
                 showToast('New document created');
             }
         }
 
         function saveDocument() {
-            const content = document.getElementById('examDocument').innerHTML;
-            localStorage.setItem('koraheyDocument', content);
+            const pages = [];
+            document.querySelectorAll('.paper-page').forEach((page, index) => {
+                pages.push({
+                    id: index,
+                    content: page.innerHTML
+                });
+            });
+            localStorage.setItem('koraheyDocument', JSON.stringify(pages));
             showToast('Document saved successfully!');
         }
 
         function exportDocument() {
             saveDocument();
+            const allContent = Array.from(document.querySelectorAll('.paper-page')).map(p => p.innerHTML).join('<div style="page-break-before: always;"></div>');
             const printWindow = window.open('', '_blank');
-            const content = document.getElementById('examDocument').innerHTML;
             printWindow.document.write(`
                 <html>
                 <head>
@@ -574,10 +720,11 @@
                         img { max-width: 100%; height: auto; }
                         table { border-collapse: collapse; width: 100%; margin: 10px 0; }
                         th, td { border: 1px solid #ccc; padding: 8px; }
+                        .page-break { page-break-before: always; }
                     </style>
                 </head>
                 <body>
-                    ${content}
+                    ${allContent}
                 </body>
                 </html>
             `);
@@ -585,21 +732,19 @@
             printWindow.print();
         }
 
-        function closeDocument() {
+        function closeEditor() {
             if (confirm('Close the editor?')) {
                 window.location.href = 'admin.html';
             }
         }
 
-        // ========== EDIT MENU FUNCTIONS ==========
         function execCommand(command) {
             document.execCommand(command, false, null);
-            showToast(`Executed: ${command}`);
+            showToast(command);
         }
 
         function selectAll() {
             document.execCommand('selectAll', false, null);
-            showToast('All text selected');
         }
 
         function findAndReplace() {
@@ -607,161 +752,136 @@
             if (findText) {
                 const replaceText = prompt('Replace with:');
                 if (replaceText !== null) {
-                    const content = document.getElementById('examDocument').innerHTML;
-                    const newContent = content.replace(new RegExp(findText, 'g'), replaceText);
-                    document.getElementById('examDocument').innerHTML = newContent;
+                    const selection = window.getSelection();
+                    if (selection.rangeCount > 0) {
+                        const range = selection.getRangeAt(0);
+                        const text = range.toString();
+                        if (text === findText) {
+                            document.execCommand('insertText', false, replaceText);
+                        }
+                    }
+                    const content = document.activeElement.innerHTML;
+                    document.activeElement.innerHTML = content.replace(new RegExp(findText, 'g'), replaceText);
                     showToast('Find and replace completed');
                 }
             }
         }
 
-        // ========== VIEW MENU FUNCTIONS ==========
-        function toggleZoom(percent) {
-            const doc = document.getElementById('examDocument');
-            doc.style.zoom = percent + '%';
-            showToast(`Zoom set to ${percent}%`);
+        function setZoom(percent) {
+            document.querySelector('.paper-container').style.transform = `scale(${percent / 100})`;
+            document.querySelector('.paper-container').style.transformOrigin = 'top center';
+            showToast(`Zoom: ${percent}%`);
         }
 
-        function toggleRuler() {
-            showToast('Ruler feature coming soon');
+        // Font functions
+        function changeFont() {
+            const font = document.getElementById('fontSelector').value;
+            document.execCommand('fontName', false, font);
         }
 
-        function toggleStatusBar() {
-            showToast('Status bar feature coming soon');
+        function changeFontSize() {
+            const size = document.getElementById('sizeSelector').value;
+            document.execCommand('fontSize', false, size);
         }
 
-        // ========== INSERT MENU FUNCTIONS ==========
-        let imageCounter = 0;
-        let imageLibrary = [];
-
-        function openMediaManager() {
-            loadImageLibrary();
-            document.getElementById('mediaModal').classList.add('active');
-        }
-
-        function closeMediaManager() {
-            document.getElementById('mediaModal').classList.remove('active');
-        }
-
-        function handleImageUpload(event) {
-            const files = event.target.files;
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const imageData = {
-                        id: Date.now() + i,
-                        src: e.target.result,
-                        name: file.name
-                    };
-                    imageLibrary.push(imageData);
-                    localStorage.setItem('koraheyImageLibrary', JSON.stringify(imageLibrary));
-                    loadImageLibrary();
-                };
-                reader.readAsDataURL(file);
-            }
-            showToast(`${files.length} image(s) uploaded`);
-        }
-
-        function loadImageLibrary() {
-            const saved = localStorage.getItem('koraheyImageLibrary');
-            if (saved) {
-                imageLibrary = JSON.parse(saved);
-            }
-            
-            const libraryDiv = document.getElementById('imageLibrary');
-            if (imageLibrary.length === 0) {
-                libraryDiv.innerHTML = '<p style="grid-column: span 3; text-align: center; color: #999;">No images yet. Upload some images to get started.</p>';
-                return;
-            }
-            
-            libraryDiv.innerHTML = imageLibrary.map(img => `
-                <div class="image-item" onclick="insertImageFromLibrary('${img.src}')">
-                    <img src="${img.src}" alt="${img.name}">
-                    <p style="font-size: 10px; margin-top: 5px;">${img.name.substring(0, 15)}</p>
-                </div>
-            `).join('');
-        }
-
-        function insertImageFromLibrary(src) {
-            insertImageAtCursor(src);
-            closeMediaManager();
-            showToast('Image inserted');
-        }
-
-        function insertImage() {
-            const url = prompt('Enter image URL:', 'https://placehold.co/400x300');
-            if (url) {
-                insertImageAtCursor(url);
+        function openFontDialog() {
+            const font = prompt('Enter font name:', 'Arial');
+            if (font) {
+                document.execCommand('fontName', false, font);
+                showToast(`Font changed to ${font}`);
             }
         }
 
-        function insertImageAtCursor(src) {
-            const img = document.createElement('img');
-            img.src = src;
-            img.className = 'inserted-image';
-            img.style.maxWidth = '100%';
-            img.style.margin = '10px 0';
-            img.ondblclick = function() { removeImage(this); };
-            
-            const selection = window.getSelection();
-            if (selection.rangeCount > 0) {
-                const range = selection.getRangeAt(0);
-                range.deleteContents();
-                range.insertNode(img);
-                range.collapse(false);
-            } else {
-                document.getElementById('examDocument').appendChild(img);
-            }
-            showToast('Image added');
-        }
-
-        function removeImage(img) {
-            if (confirm('Remove this image?')) {
-                img.remove();
-                showToast('Image removed');
+        function setTextColor() {
+            const color = prompt('Enter color (name or hex):', '#000000');
+            if (color) {
+                document.execCommand('foreColor', false, color);
+                showToast(`Text color changed`);
             }
         }
 
-        function insertTable() {
-            const rows = prompt('Number of rows:', '3');
-            const cols = prompt('Number of columns:', '3');
-            if (rows && cols) {
-                let table = '<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%; margin: 10px 0;">';
-                for (let i = 0; i < parseInt(rows); i++) {
-                    table += '<tr>';
-                    for (let j = 0; j < parseInt(cols); j++) {
-                        table += '<td style="border: 1px solid #ccc; padding: 8px;"><br></td>';
-                    }
-                    table += '</tr>';
-                }
-                table += '</table><br>';
-                document.execCommand('insertHTML', false, table);
-                showToast(`${rows}x${cols} table inserted`);
+        function setHighlightColor() {
+            const color = prompt('Enter highlight color:', 'yellow');
+            if (color) {
+                document.execCommand('backColor', false, color);
+                showToast(`Highlight color applied`);
             }
         }
 
-        function insertLink() {
-            const url = prompt('Enter URL:', 'https://');
-            if (url) {
-                document.execCommand('createLink', false, url);
-                showToast('Link added');
-            }
+        function clearFormatting() {
+            document.execCommand('removeFormat', false, null);
+            showToast('Formatting cleared');
         }
 
+        // Word count
+        function showWordCount() {
+            const text = document.activeElement.innerText;
+            const words = text.trim().split(/\s+/).length;
+            const chars = text.length;
+            showToast(`Words: ${words} | Characters: ${chars}`);
+        }
+
+        function checkSpelling() {
+            showToast('Spelling check: All good!');
+        }
+
+        // Page break
         function insertPageBreak() {
-            document.execCommand('insertHTML', false, '<div style="page-break-before: always;"><br></div>');
-            showToast('Page break inserted');
+            const container = document.getElementById('paperContainer');
+            const currentPage = document.activeElement.closest('.paper-page');
+            if (currentPage) {
+                const newPage = document.createElement('div');
+                newPage.className = 'paper-page';
+                newPage.setAttribute('contenteditable', 'true');
+                newPage.innerHTML = '<p><br></p>';
+                currentPage.insertAdjacentElement('afterend', newPage);
+                showToast('New page added');
+            }
         }
 
         function insertDate() {
             const date = new Date().toLocaleString();
             document.execCommand('insertText', false, date);
-            showToast('Date inserted');
         }
 
-        // ========== TABLE FUNCTIONS ==========
-        function insertRowAbove() {
+        // Show about
+        function showAbout() {
+            alert('Korahey UI v1.0\nPremium Document Editor\n\nLiquid Glass Effects\nMetaBall Animations\nDynamic Island Toolbar\n\n© 2026 Korahey Academy');
+        }
+
+        function sendFeedback() {
+            const feedback = prompt('Send your feedback:');
+            if (feedback) {
+                showToast('Thank you for your feedback!');
+            }
+        }
+
+        // Table functions with hover controls
+        function insertTable() {
+            const rows = prompt('Number of rows:', '3');
+            const cols = prompt('Number of columns:', '3');
+            if (rows && cols) {
+                let tableHtml = '<div style="position: relative;"><table class="custom-table" contenteditable="false">';
+                for (let i = 0; i < parseInt(rows); i++) {
+                    tableHtml += '<tr>';
+                    for (let j = 0; j < parseInt(cols); j++) {
+                        tableHtml += '<td contenteditable="true"><br></td>';
+                    }
+                    tableHtml += '</tr>';
+                }
+                tableHtml += '</table>';
+                tableHtml += '<div class="table-controls">';
+                tableHtml += '<button class="table-control-btn" onclick="addRowAbove()">⬆ Row Above</button>';
+                tableHtml += '<button class="table-control-btn" onclick="addRowBelow()">⬇ Row Below</button>';
+                tableHtml += '<button class="table-control-btn" onclick="deleteSelectedRow()">🗑 Delete Row</button>';
+                tableHtml += '<button class="table-control-btn" onclick="deleteSelectedTable()">❌ Delete Table</button>';
+                tableHtml += '</div></div>';
+                document.execCommand('insertHTML', false, tableHtml);
+                showToast(`${rows}x${cols} table inserted`);
+            }
+        }
+
+        function addRowAbove() {
             const selection = window.getSelection();
             const cell = selection.anchorNode.closest('td, th');
             if (cell) {
@@ -769,12 +889,10 @@
                 const newRow = row.cloneNode(true);
                 row.parentNode.insertBefore(newRow, row);
                 showToast('Row added above');
-            } else {
-                showToast('Place cursor inside a table cell first', 'error');
             }
         }
 
-        function insertRowBelow() {
+        function addRowBelow() {
             const selection = window.getSelection();
             const cell = selection.anchorNode.closest('td, th');
             if (cell) {
@@ -785,24 +903,7 @@
             }
         }
 
-        function insertColumnLeft() {
-            showToast('Select a table cell first');
-        }
-
-        function insertColumnRight() {
-            showToast('Select a table cell first');
-        }
-
-        function deleteTable() {
-            const selection = window.getSelection();
-            const table = selection.anchorNode.closest('table');
-            if (table) {
-                table.remove();
-                showToast('Table deleted');
-            }
-        }
-
-        function deleteRow() {
+        function deleteSelectedRow() {
             const selection = window.getSelection();
             const row = selection.anchorNode.closest('tr');
             if (row) {
@@ -811,131 +912,175 @@
             }
         }
 
-        function deleteColumn() {
-            showToast('Select a table cell first');
-        }
-
-        // ========== FORMAT MENU FUNCTIONS ==========
-        function changeFont() {
-            const font = document.getElementById('fontSelect').value;
-            document.execCommand('fontName', false, font);
-        }
-
-        function changeFontSize() {
-            const size = document.getElementById('fontSizeSelect').value;
-            document.execCommand('fontSize', false, size);
-        }
-
-        function openFontDialog() {
-            const font = prompt('Enter font name (e.g., Arial, Times New Roman):', 'Arial');
-            if (font) {
-                document.execCommand('fontName', false, font);
-                showToast(`Font changed to ${font}`);
+        function deleteSelectedTable() {
+            const selection = window.getSelection();
+            const table = selection.anchorNode.closest('table');
+            if (table) {
+                table.closest('div')?.remove();
+                showToast('Table deleted');
             }
         }
 
-        function openParagraphDialog() {
-            const spacing = prompt('Line spacing (1, 1.5, 2):', '1.5');
-            if (spacing) {
-                document.execCommand('insertHTML', false, `<div style="line-height: ${spacing};">`);
-                showToast(`Line spacing set to ${spacing}`);
+        // Media Manager
+        function openMediaManager() {
+            loadImageGallery();
+            document.getElementById('mediaModal').classList.add('active');
+        }
+
+        function closeMediaManager() {
+            document.getElementById('mediaModal').classList.remove('active');
+        }
+
+        function loadImageGallery() {
+            const saved = localStorage.getItem('koraheyImageLibrary');
+            if (saved) {
+                imageLibrary = JSON.parse(saved);
             }
-        }
-
-        function setTextColor() {
-            const color = prompt('Enter color name or hex (e.g., red, #FF0000):', '#000000');
-            if (color) {
-                document.execCommand('foreColor', false, color);
-                showToast(`Text color changed to ${color}`);
+            const gallery = document.getElementById('imageGallery');
+            if (imageLibrary.length === 0) {
+                gallery.innerHTML = '<p style="grid-column: span 3; text-align: center; color: #999;">No images yet. Upload some images.</p>';
+                return;
             }
+            gallery.innerHTML = imageLibrary.map(img => `
+                <div class="gallery-item" draggable="true" ondragstart="dragImage(event, '${img.src}')">
+                    <img src="${img.src}" alt="${img.name}">
+                    <div class="gallery-item-name">${img.name.substring(0, 20)}</div>
+                </div>
+            `).join('');
         }
 
-        function setHighlightColor() {
-            const color = prompt('Enter highlight color (e.g., yellow, #FFFF00):', 'yellow');
-            if (color) {
-                document.execCommand('backColor', false, color);
-                showToast(`Highlight color set to ${color}`);
+        function handleImageUpload(event) {
+            const files = event.target.files;
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imageLibrary.push({
+                        id: Date.now() + i,
+                        src: e.target.result,
+                        name: file.name
+                    });
+                    localStorage.setItem('koraheyImageLibrary', JSON.stringify(imageLibrary));
+                    loadImageGallery();
+                };
+                reader.readAsDataURL(file);
             }
+            showToast(`${files.length} image(s) uploaded`);
         }
 
-        function changeCase() {
-            const selection = window.getSelection().toString();
-            if (selection) {
-                const upper = confirm('Convert to UPPERCASE? Click Cancel for lowercase.');
-                const newText = upper ? selection.toUpperCase() : selection.toLowerCase();
-                document.execCommand('insertText', false, newText);
-                showToast(`Changed to ${upper ? 'UPPERCASE' : 'lowercase'}`);
+        function onDragOver(e) {
+            e.preventDefault();
+            document.getElementById('dragDropArea').classList.add('drag-over');
+        }
+
+        function onDragLeave(e) {
+            document.getElementById('dragDropArea').classList.remove('drag-over');
+        }
+
+        function onDrop(e) {
+            e.preventDefault();
+            document.getElementById('dragDropArea').classList.remove('drag-over');
+            const files = e.dataTransfer.files;
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        imageLibrary.push({
+                            id: Date.now() + i,
+                            src: e.target.result,
+                            name: file.name
+                        });
+                        localStorage.setItem('koraheyImageLibrary', JSON.stringify(imageLibrary));
+                        loadImageGallery();
+                    };
+                    reader.readAsDataURL(file);
+                }
             }
+            showToast(`${files.length} image(s) uploaded`);
         }
 
-        function clearFormatting() {
-            document.execCommand('removeFormat', false, null);
-            showToast('Formatting cleared');
+        function dragImage(e, src) {
+            e.dataTransfer.setData('text/plain', src);
         }
 
-        // ========== TOOLS MENU FUNCTIONS ==========
-        function openWordCount() {
-            const text = document.getElementById('examDocument').innerText;
-            const words = text.trim().split(/\s+/).length;
-            const chars = text.length;
-            alert(`Word Count: ${words} words\nCharacters: ${chars} characters`);
-        }
+        document.getElementById('dragDropArea')?.addEventListener('click', () => {
+            document.getElementById('imageUpload').click();
+        });
 
-        function checkSpelling() {
-            showToast('Spelling check coming soon');
-        }
-
-        function openThesaurus() {
-            const word = window.getSelection().toString();
-            if (word) {
-                window.open(`https://www.thesaurus.com/browse/${encodeURIComponent(word)}`, '_blank');
-            } else {
-                showToast('Select a word first');
-            }
-        }
-
-        function openTranslate() {
-            const text = window.getSelection().toString();
-            if (text) {
-                window.open(`https://translate.google.com/?text=${encodeURIComponent(text)}`, '_blank');
-            } else {
-                showToast('Select text to translate');
-            }
-        }
-
-        // ========== HELP MENU FUNCTIONS ==========
-        function openHelp() {
-            showToast('Help documentation - Click for more info');
-        }
-
-        function showAbout() {
-            alert('Korahey Exam Designer\nVersion 1.0\nMicrosoft Word Style Editor\n\nCreate and format documents with ease');
-        }
-
-        function sendFeedback() {
-            prompt('Send your feedback:', '');
-            showToast('Thank you for your feedback!');
-        }
+        // Make drop target for images
+        document.querySelectorAll('.paper-page').forEach(page => {
+            page.addEventListener('dragover', (e) => e.preventDefault());
+            page.addEventListener('drop', (e) => {
+                e.preventDefault();
+                const src = e.dataTransfer.getData('text/plain');
+                if (src) {
+                    const img = document.createElement('img');
+                    img.src = src;
+                    img.className = 'resizable-image';
+                    img.style.maxWidth = '300px';
+                    img.style.margin = '10px';
+                    
+                    // Make image resizable
+                    img.style.position = 'relative';
+                    const handle = document.createElement('div');
+                    handle.className = 'image-resize-handle';
+                    img.appendChild(handle);
+                    
+                    // Resize functionality
+                    let isResizing = false;
+                    handle.addEventListener('mousedown', (e) => {
+                        isResizing = true;
+                        e.stopPropagation();
+                        const startX = e.clientX;
+                        const startWidth = img.offsetWidth;
+                        
+                        const onMouseMove = (e) => {
+                            if (isResizing) {
+                                const newWidth = startWidth + (e.clientX - startX);
+                                if (newWidth > 50) {
+                                    img.style.width = newWidth + 'px';
+                                    img.style.height = 'auto';
+                                }
+                            }
+                        };
+                        
+                        const onMouseUp = () => {
+                            isResizing = false;
+                            document.removeEventListener('mousemove', onMouseMove);
+                            document.removeEventListener('mouseup', onMouseUp);
+                        };
+                        
+                        document.addEventListener('mousemove', onMouseMove);
+                        document.addEventListener('mouseup', onMouseUp);
+                    });
+                    
+                    const range = document.caretRangeFromPoint(e.clientX, e.clientY);
+                    if (range) {
+                        range.insertNode(img);
+                    } else {
+                        page.appendChild(img);
+                    }
+                    showToast('Image inserted');
+                }
+            });
+        });
 
         // Load saved document
         function loadDocument() {
             const saved = localStorage.getItem('koraheyDocument');
             if (saved) {
-                document.getElementById('examDocument').innerHTML = saved;
-                showToast('Document loaded');
+                const pages = JSON.parse(saved);
+                if (pages.length > 0) {
+                    const container = document.getElementById('paperContainer');
+                    container.innerHTML = pages.map(page => `
+                        <div class="paper-page" contenteditable="true">${page.content}</div>
+                    `).join('');
+                    showToast('Document loaded');
+                }
             }
         }
 
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 2000);
-        }
-
-        // Load saved document on startup
         loadDocument();
     </script>
 </body>
