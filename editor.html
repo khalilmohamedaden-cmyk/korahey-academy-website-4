@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Korahey UI v1.0 | Premium Document Editor</title>
+    <title>Korahey UI v1.0 | Document Editor</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -16,41 +16,95 @@
         }
 
         body {
-            font-family: 'Inter', 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #e0e8f0 0%, #d0d8e8 100%);
+            font-family: 'Segoe UI', 'Inter', sans-serif;
+            background: #e8ecf0;
             overflow: hidden;
             height: 100vh;
         }
 
-        /* ========== LIQUID GLASS EFFECTS ========== */
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        /* ========== MICROSOFT WORD STYLE MENU BAR ========== */
+        .menu-bar {
+            background: #ffffff;
+            border-bottom: 1px solid #c8cbd1;
+            padding: 4px 16px;
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
         }
 
-        /* ========== DYNAMIC ISLAND TOOLBAR ========== */
+        .menu-item {
+            padding: 6px 12px;
+            font-size: 13px;
+            color: #333;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .menu-item:hover {
+            background: #e8e8e8;
+        }
+
+        /* Dropdown Menu */
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border: 1px solid #d0d0d0;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            min-width: 220px;
+            z-index: 1000;
+            display: none;
+            padding: 4px 0;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 8px 20px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background: #e8e8e8;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: #e0e0e0;
+            margin: 4px 0;
+        }
+
+        /* ========== DYNAMIC ISLAND (Actions Only) ========== */
         .dynamic-island {
             position: fixed;
-            top: 20px;
+            top: 40px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
             border-radius: 60px;
             padding: 8px 20px;
-            z-index: 1000;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            z-index: 999;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             transition: all 0.3s ease;
-            width: auto;
-            min-width: 300px;
         }
 
         .dynamic-island:hover {
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
         }
 
         .island-content {
@@ -58,28 +112,15 @@
             gap: 12px;
             align-items: center;
             flex-wrap: wrap;
-            justify-content: space-between;
-        }
-
-        .island-left {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .island-right {
-            display: flex;
-            gap: 12px;
-            align-items: center;
+            justify-content: center;
         }
 
         /* MetaBall Animation for buttons */
-        .meta-ball-btn {
+        .action-btn {
             position: relative;
-            background: rgba(0, 0, 0, 0.05);
+            background: rgba(0, 0, 0, 0.04);
             border: none;
-            padding: 8px 16px;
+            padding: 8px 14px;
             border-radius: 40px;
             cursor: pointer;
             font-size: 13px;
@@ -92,25 +133,25 @@
             gap: 6px;
         }
 
-        .meta-ball-btn::before {
+        .action-btn::before {
             content: '';
             position: absolute;
             top: 50%;
             left: 50%;
             width: 0;
             height: 0;
-            background: rgba(0, 113, 227, 0.2);
+            background: rgba(0, 113, 227, 0.15);
             border-radius: 50%;
             transform: translate(-50%, -50%);
             transition: width 0.4s ease, height 0.4s ease;
         }
 
-        .meta-ball-btn:hover::before {
+        .action-btn:hover::before {
             width: 200%;
             height: 200%;
         }
 
-        .meta-ball-btn:hover {
+        .action-btn:hover {
             background: rgba(0, 113, 227, 0.1);
             transform: scale(1.02);
         }
@@ -119,77 +160,25 @@
             padding: 8px 12px;
         }
 
-        /* Dropdown with metaball animation */
-        .dropdown-container {
-            position: relative;
-        }
-
-        .glass-dropdown {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            margin-top: 8px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            min-width: 220px;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px) scale(0.95);
-            transition: all 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
-            z-index: 1000;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-            overflow: hidden;
-        }
-
-        .dropdown-container.active .glass-dropdown {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0) scale(1);
-        }
-
-        .glass-dropdown-item {
-            padding: 12px 20px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 13px;
-            color: #333;
-        }
-
-        .glass-dropdown-item:hover {
-            background: rgba(0, 113, 227, 0.1);
-            padding-left: 28px;
-        }
-
-        .dropdown-divider {
-            height: 1px;
+        .separator {
+            width: 1px;
+            height: 28px;
             background: rgba(0, 0, 0, 0.1);
-            margin: 4px 0;
+            margin: 0 4px;
         }
 
-        /* Font & Size Selectors */
         .font-selector, .size-selector {
-            padding: 8px 16px;
+            padding: 6px 12px;
             border-radius: 40px;
             border: 1px solid rgba(0, 0, 0, 0.1);
-            background: rgba(255, 255, 255, 0.8);
-            font-size: 13px;
+            background: white;
+            font-size: 12px;
             cursor: pointer;
             transition: all 0.2s;
         }
 
         .font-selector:hover, .size-selector:hover {
-            background: rgba(255, 255, 255, 1);
             border-color: #0071e3;
-        }
-
-        /* Separator */
-        .separator {
-            width: 1px;
-            height: 30px;
-            background: rgba(0, 0, 0, 0.1);
-            margin: 0 4px;
         }
 
         /* Main Canvas */
@@ -197,13 +186,13 @@
             height: 100vh;
             overflow-y: auto;
             padding: 100px 40px 40px 40px;
+            margin-top: 40px;
         }
 
-        /* Paper Container - Multiple pages */
+        /* Paper Container */
         .paper-container {
             max-width: 900px;
             margin: 0 auto;
-            position: relative;
         }
 
         .paper-page {
@@ -212,54 +201,11 @@
             border-radius: 4px;
             padding: 60px 70px;
             margin-bottom: 30px;
-            position: relative;
-            transition: all 0.3s;
             min-height: 500px;
         }
 
-        .paper-page:last-child {
-            margin-bottom: 0;
-        }
-
-        /* Custom Right Click Menu */
-        .custom-context-menu {
-            position: fixed;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 16px;
-            padding: 8px 0;
-            min-width: 200px;
-            z-index: 10000;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.2s;
-        }
-
-        .custom-context-menu.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .context-menu-item {
-            padding: 10px 20px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .context-menu-item:hover {
-            background: rgba(0, 113, 227, 0.1);
-        }
-
-        .context-divider {
-            height: 1px;
-            background: rgba(0, 0, 0, 0.1);
-            margin: 4px 0;
+        .paper-page:focus {
+            outline: none;
         }
 
         /* Image styling */
@@ -268,8 +214,7 @@
             height: auto;
             margin: 10px 0;
             cursor: move;
-            border-radius: 8px;
-            transition: all 0.2s;
+            border-radius: 4px;
         }
 
         .resizable-image:hover {
@@ -286,11 +231,6 @@
         .custom-table td, .custom-table th {
             border: 1px solid #ccc;
             padding: 10px;
-            transition: all 0.2s;
-        }
-
-        .custom-table td:hover, .custom-table th:hover {
-            background: rgba(0, 113, 227, 0.05);
         }
 
         /* Media Manager Modal */
@@ -302,7 +242,7 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(8px);
             z-index: 2000;
             align-items: center;
             justify-content: center;
@@ -316,12 +256,10 @@
             width: 90%;
             max-width: 800px;
             max-height: 85vh;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(30px);
-            border-radius: 32px;
+            background: white;
+            border-radius: 16px;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
         }
 
         .media-modal-header {
@@ -329,7 +267,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid #e0e0e0;
         }
 
         .media-modal-body {
@@ -339,8 +277,8 @@
         }
 
         .drag-drop-area {
-            border: 2px dashed rgba(0, 113, 227, 0.3);
-            border-radius: 20px;
+            border: 2px dashed #ccc;
+            border-radius: 16px;
             padding: 40px;
             text-align: center;
             cursor: pointer;
@@ -350,7 +288,7 @@
 
         .drag-drop-area.drag-over {
             border-color: #0071e3;
-            background: rgba(0, 113, 227, 0.05);
+            background: #f0f7ff;
         }
 
         .image-gallery {
@@ -360,7 +298,7 @@
         }
 
         .gallery-item {
-            background: rgba(0, 0, 0, 0.03);
+            background: #f5f5f5;
             border-radius: 12px;
             padding: 12px;
             cursor: grab;
@@ -368,12 +306,8 @@
             text-align: center;
         }
 
-        .gallery-item:active {
-            cursor: grabbing;
-        }
-
         .gallery-item:hover {
-            background: rgba(0, 113, 227, 0.1);
+            background: #e8e8e8;
             transform: scale(1.02);
         }
 
@@ -384,24 +318,16 @@
             border-radius: 8px;
         }
 
-        .gallery-item-name {
-            font-size: 10px;
-            margin-top: 8px;
-            color: #666;
-        }
-
         .close-modal {
             background: none;
             border: none;
-            font-size: 28px;
+            font-size: 24px;
             cursor: pointer;
             color: #999;
-            transition: all 0.2s;
         }
 
         .close-modal:hover {
             color: #333;
-            transform: scale(1.1);
         }
 
         /* Toast Notification */
@@ -410,27 +336,26 @@
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%) translateY(100px);
-            background: rgba(30, 30, 35, 0.95);
-            backdrop-filter: blur(20px);
+            background: #333;
             color: white;
-            padding: 12px 24px;
-            border-radius: 50px;
+            padding: 10px 24px;
+            border-radius: 8px;
             font-size: 13px;
             z-index: 3000;
-            transition: transform 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
+            transition: transform 0.3s;
         }
 
         .toast.show {
             transform: translateX(-50%) translateY(0);
         }
 
-        @media (max-width: 1000px) {
+        @media (max-width: 900px) {
             .dynamic-island {
                 width: 95%;
                 padding: 8px 12px;
             }
             .island-content {
-                flex-direction: column;
+                justify-content: center;
             }
             .paper-page {
                 padding: 30px 20px;
@@ -440,149 +365,143 @@
 </head>
 <body>
 
-    <!-- Dynamic Island Toolbar -->
-    <div class="dynamic-island">
-        <div class="island-content">
-            <div class="island-left">
-                <!-- File Dropdown -->
-                <div class="dropdown-container" id="fileDropdown">
-                    <button class="meta-ball-btn" onclick="toggleDropdown('fileDropdown')">📄 File</button>
-                    <div class="glass-dropdown">
-                        <div class="glass-dropdown-item" onclick="newDocument()">New Document</div>
-                        <div class="glass-dropdown-item" onclick="saveDocument()">Save</div>
-                        <div class="glass-dropdown-item" onclick="exportDocument()">Print / Export</div>
-                        <div class="dropdown-divider"></div>
-                        <div class="glass-dropdown-item" onclick="closeEditor()">Close</div>
-                    </div>
-                </div>
+    <!-- Microsoft Word Style Menu Bar -->
+    <div class="menu-bar">
+        <!-- File Menu -->
+        <div class="menu-item" onclick="toggleDropdown('fileMenu')">File</div>
+        <div id="fileMenu" class="dropdown-menu">
+            <div class="dropdown-item" onclick="newDocument()">New</div>
+            <div class="dropdown-item" onclick="saveDocument()">Save</div>
+            <div class="dropdown-item" onclick="exportDocument()">Print</div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item" onclick="closeEditor()">Close</div>
+        </div>
 
-                <!-- Edit Dropdown -->
-                <div class="dropdown-container" id="editDropdown">
-                    <button class="meta-ball-btn" onclick="toggleDropdown('editDropdown')">✏️ Edit</button>
-                    <div class="glass-dropdown">
-                        <div class="glass-dropdown-item" onclick="execCommand('undo')">Undo</div>
-                        <div class="glass-dropdown-item" onclick="execCommand('redo')">Redo</div>
-                        <div class="dropdown-divider"></div>
-                        <div class="glass-dropdown-item" onclick="execCommand('cut')">Cut</div>
-                        <div class="glass-dropdown-item" onclick="execCommand('copy')">Copy</div>
-                        <div class="glass-dropdown-item" onclick="execCommand('paste')">Paste</div>
-                        <div class="dropdown-divider"></div>
-                        <div class="glass-dropdown-item" onclick="selectAll()">Select All</div>
-                        <div class="glass-dropdown-item" onclick="findAndReplace()">Find & Replace</div>
-                    </div>
-                </div>
+        <!-- Edit Menu -->
+        <div class="menu-item" onclick="toggleDropdown('editMenu')">Edit</div>
+        <div id="editMenu" class="dropdown-menu">
+            <div class="dropdown-item" onclick="execCommand('undo')">Undo</div>
+            <div class="dropdown-item" onclick="execCommand('redo')">Redo</div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item" onclick="execCommand('cut')">Cut</div>
+            <div class="dropdown-item" onclick="execCommand('copy')">Copy</div>
+            <div class="dropdown-item" onclick="execCommand('paste')">Paste</div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item" onclick="selectAll()">Select All</div>
+            <div class="dropdown-item" onclick="findAndReplace()">Find and Replace</div>
+        </div>
 
-                <!-- View Dropdown -->
-                <div class="dropdown-container" id="viewDropdown">
-                    <button class="meta-ball-btn" onclick="toggleDropdown('viewDropdown')">👁️ View</button>
-                    <div class="glass-dropdown">
-                        <div class="glass-dropdown-item" onclick="setZoom(100)">Zoom 100%</div>
-                        <div class="glass-dropdown-item" onclick="setZoom(125)">Zoom 125%</div>
-                        <div class="glass-dropdown-item" onclick="setZoom(150)">Zoom 150%</div>
-                    </div>
-                </div>
+        <!-- View Menu -->
+        <div class="menu-item" onclick="toggleDropdown('viewMenu')">View</div>
+        <div id="viewMenu" class="dropdown-menu">
+            <div class="dropdown-item" onclick="setZoom(100)">Zoom 100%</div>
+            <div class="dropdown-item" onclick="setZoom(125)">Zoom 125%</div>
+            <div class="dropdown-item" onclick="setZoom(150)">Zoom 150%</div>
+        </div>
 
-                <!-- Insert Dropdown with Media Manager -->
-                <div class="dropdown-container" id="insertDropdown">
-                    <button class="meta-ball-btn" onclick="toggleDropdown('insertDropdown')">📎 Insert</button>
-                    <div class="glass-dropdown">
-                        <div class="glass-dropdown-item" onclick="openMediaManager()">🎨 Media Manager</div>
-                        <div class="glass-dropdown-item" onclick="insertTable()">📊 Insert Table</div>
-                        <div class="glass-dropdown-item" onclick="insertPageBreak()">📄 Page Break</div>
-                        <div class="glass-dropdown-item" onclick="insertDate()">📅 Date & Time</div>
-                    </div>
-                </div>
+        <!-- Insert Menu -->
+        <div class="menu-item" onclick="toggleDropdown('insertMenu')">Insert</div>
+        <div id="insertMenu" class="dropdown-menu">
+            <div class="dropdown-item" onclick="openMediaManager()">Media Manager</div>
+            <div class="dropdown-item" onclick="insertTable()">Table</div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item" onclick="insertPageBreak()">Page Break</div>
+            <div class="dropdown-item" onclick="insertDate()">Date and Time</div>
+        </div>
 
-                <!-- Format Dropdown -->
-                <div class="dropdown-container" id="formatDropdown">
-                    <button class="meta-ball-btn" onclick="toggleDropdown('formatDropdown')">🎨 Format</button>
-                    <div class="glass-dropdown">
-                        <div class="glass-dropdown-item" onclick="openFontDialog()">Font Settings</div>
-                        <div class="glass-dropdown-item" onclick="setTextColor()">Text Color</div>
-                        <div class="glass-dropdown-item" onclick="setHighlightColor()">Highlight Color</div>
-                        <div class="dropdown-divider"></div>
-                        <div class="glass-dropdown-item" onclick="clearFormatting()">Clear Formatting</div>
-                    </div>
-                </div>
+        <!-- Format Menu -->
+        <div class="menu-item" onclick="toggleDropdown('formatMenu')">Format</div>
+        <div id="formatMenu" class="dropdown-menu">
+            <div class="dropdown-item" onclick="openFontDialog()">Font</div>
+            <div class="dropdown-item" onclick="setTextColor()">Text Color</div>
+            <div class="dropdown-item" onclick="setHighlightColor()">Highlight Color</div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item" onclick="clearFormatting()">Clear Formatting</div>
+        </div>
 
-                <!-- Tools Dropdown -->
-                <div class="dropdown-container" id="toolsDropdown">
-                    <button class="meta-ball-btn" onclick="toggleDropdown('toolsDropdown')">🔧 Tools</button>
-                    <div class="glass-dropdown">
-                        <div class="glass-dropdown-item" onclick="showWordCount()">Word Count</div>
-                        <div class="glass-dropdown-item" onclick="checkSpelling()">Spelling Check</div>
-                    </div>
-                </div>
+        <!-- Tools Menu -->
+        <div class="menu-item" onclick="toggleDropdown('toolsMenu')">Tools</div>
+        <div id="toolsMenu" class="dropdown-menu">
+            <div class="dropdown-item" onclick="showWordCount()">Word Count</div>
+            <div class="dropdown-item" onclick="checkSpelling()">Spelling and Grammar</div>
+        </div>
 
-                <!-- Help Dropdown -->
-                <div class="dropdown-container" id="helpDropdown">
-                    <button class="meta-ball-btn" onclick="toggleDropdown('helpDropdown')">❓ Help</button>
-                    <div class="glass-dropdown">
-                        <div class="glass-dropdown-item" onclick="showAbout()">About Korahey UI v1.0</div>
-                        <div class="glass-dropdown-item" onclick="sendFeedback()">Send Feedback</div>
-                    </div>
-                </div>
+        <!-- Table Menu -->
+        <div class="menu-item" onclick="toggleDropdown('tableMenu')">Table</div>
+        <div id="tableMenu" class="dropdown-menu">
+            <div class="dropdown-item" onclick="insertTable()">Insert Table</div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item" onclick="addRowAbove()">Insert Row Above</div>
+            <div class="dropdown-item" onclick="addRowBelow()">Insert Row Below</div>
+            <div class="dropdown-item" onclick="deleteSelectedRow()">Delete Row</div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item" onclick="deleteSelectedTable()">Delete Table</div>
+        </div>
 
-                <div class="separator"></div>
-
-                <!-- Font & Size Selectors -->
-                <select id="fontSelector" class="font-selector" onchange="changeFont()">
-                    <option value="'Times New Roman', serif">Times New Roman</option>
-                    <option value="'Arial', sans-serif">Arial</option>
-                    <option value="'Calibri', sans-serif">Calibri</option>
-                    <option value="'Georgia', serif">Georgia</option>
-                    <option value="'Inter', sans-serif">Inter</option>
-                </select>
-
-                <select id="sizeSelector" class="size-selector" onchange="changeFontSize()">
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12" selected>12</option>
-                    <option value="14">14</option>
-                    <option value="16">16</option>
-                    <option value="18">18</option>
-                    <option value="20">20</option>
-                    <option value="24">24</option>
-                    <option value="28">28</option>
-                    <option value="36">36</option>
-                </select>
-
-                <div class="separator"></div>
-
-                <!-- Formatting Buttons -->
-                <button class="meta-ball-btn icon-btn" onclick="execCommand('bold')" title="Bold"><b>B</b></button>
-                <button class="meta-ball-btn icon-btn" onclick="execCommand('italic')" title="Italic"><i>I</i></button>
-                <button class="meta-ball-btn icon-btn" onclick="execCommand('underline')" title="Underline"><u>U</u></button>
-                <button class="meta-ball-btn icon-btn" onclick="execCommand('strikeThrough')" title="Strikethrough"><s>S</s></button>
-                
-                <div class="separator"></div>
-                
-                <button class="meta-ball-btn icon-btn" onclick="execCommand('justifyLeft')" title="Align Left"><i class="fas fa-align-left"></i></button>
-                <button class="meta-ball-btn icon-btn" onclick="execCommand('justifyCenter')" title="Center"><i class="fas fa-align-center"></i></button>
-                <button class="meta-ball-btn icon-btn" onclick="execCommand('justifyRight')" title="Align Right"><i class="fas fa-align-right"></i></button>
-                <button class="meta-ball-btn icon-btn" onclick="execCommand('justifyFull')" title="Justify"><i class="fas fa-align-justify"></i></button>
-                
-                <div class="separator"></div>
-                
-                <button class="meta-ball-btn icon-btn" onclick="execCommand('insertUnorderedList')" title="Bullet List"><i class="fas fa-list-ul"></i></button>
-                <button class="meta-ball-btn icon-btn" onclick="execCommand('insertOrderedList')" title="Numbered List"><i class="fas fa-list-ol"></i></button>
-            </div>
-
-            <div class="island-right">
-                <!-- Image & Table Buttons -->
-                <button class="meta-ball-btn" onclick="openMediaManager()">🖼️ Image</button>
-                <button class="meta-ball-btn" onclick="insertTable()">📊 Table</button>
-                
-                <div class="separator"></div>
-                
-                <!-- Save & Print on the right -->
-                <button class="meta-ball-btn" onclick="saveDocument()">💾 Save</button>
-                <button class="meta-ball-btn" onclick="exportDocument()">🖨️ Print</button>
-            </div>
+        <!-- Help Menu -->
+        <div class="menu-item" onclick="toggleDropdown('helpMenu')">Help</div>
+        <div id="helpMenu" class="dropdown-menu">
+            <div class="dropdown-item" onclick="showAbout()">About Korahey UI</div>
+            <div class="dropdown-item" onclick="sendFeedback()">Send Feedback</div>
         </div>
     </div>
 
-    <!-- Canvas Area with Multiple Papers -->
+    <!-- Dynamic Island (Actions Only: Font, Size, Formatting Buttons) -->
+    <div class="dynamic-island">
+        <div class="island-content">
+            <select id="fontSelector" class="font-selector" onchange="changeFont()">
+                <option value="'Times New Roman', serif">Times New Roman</option>
+                <option value="'Arial', sans-serif">Arial</option>
+                <option value="'Calibri', sans-serif">Calibri</option>
+                <option value="'Georgia', serif">Georgia</option>
+                <option value="'Inter', sans-serif">Inter</option>
+            </select>
+
+            <select id="sizeSelector" class="size-selector" onchange="changeFontSize()">
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12" selected>12</option>
+                <option value="14">14</option>
+                <option value="16">16</option>
+                <option value="18">18</option>
+                <option value="20">20</option>
+                <option value="24">24</option>
+                <option value="28">28</option>
+                <option value="36">36</option>
+            </select>
+
+            <div class="separator"></div>
+
+            <button class="action-btn icon-btn" onclick="execCommand('bold')" title="Bold"><b>B</b></button>
+            <button class="action-btn icon-btn" onclick="execCommand('italic')" title="Italic"><i>I</i></button>
+            <button class="action-btn icon-btn" onclick="execCommand('underline')" title="Underline"><u>U</u></button>
+            <button class="action-btn icon-btn" onclick="execCommand('strikeThrough')" title="Strikethrough"><s>S</s></button>
+
+            <div class="separator"></div>
+
+            <button class="action-btn icon-btn" onclick="execCommand('justifyLeft')" title="Align Left"><i class="fas fa-align-left"></i></button>
+            <button class="action-btn icon-btn" onclick="execCommand('justifyCenter')" title="Center"><i class="fas fa-align-center"></i></button>
+            <button class="action-btn icon-btn" onclick="execCommand('justifyRight')" title="Align Right"><i class="fas fa-align-right"></i></button>
+            <button class="action-btn icon-btn" onclick="execCommand('justifyFull')" title="Justify"><i class="fas fa-align-justify"></i></button>
+
+            <div class="separator"></div>
+
+            <button class="action-btn icon-btn" onclick="execCommand('insertUnorderedList')" title="Bullet List"><i class="fas fa-list-ul"></i></button>
+            <button class="action-btn icon-btn" onclick="execCommand('insertOrderedList')" title="Numbered List"><i class="fas fa-list-ol"></i></button>
+
+            <div class="separator"></div>
+
+            <button class="action-btn" onclick="openMediaManager()">Insert Image</button>
+            <button class="action-btn" onclick="insertTable()">Insert Table</button>
+
+            <div class="separator"></div>
+
+            <button class="action-btn" onclick="saveDocument()">Save</button>
+            <button class="action-btn" onclick="exportDocument()">Print</button>
+        </div>
+    </div>
+
+    <!-- Canvas Area -->
     <div class="canvas-area" id="canvasArea">
         <div class="paper-container" id="paperContainer">
             <div class="paper-page" contenteditable="true" id="page1">
@@ -590,47 +509,11 @@
                 <p style="text-align: center; font-style: italic;">Passion for Success</p>
                 <hr>
                 <p><br></p>
-                <p>Welcome to Korahey UI v1.0 - Premium Document Editor</p>
+                <p>Welcome to Korahey UI v1.0 - Document Editor</p>
                 <p><br></p>
-                <p>Start typing here or use the toolbar above to format your document.</p>
-                <p>You can insert images, tables, page breaks, and more!</p>
-                <p><br></p>
-                <p><b>Right-click</b> anywhere for custom context menu with additional options.</p>
+                <p>Start typing here. Use the menu bar for File, Edit, View, Insert, Format, Tools, Table, and Help options.</p>
+                <p>Use the dynamic island below for quick formatting actions.</p>
             </div>
-        </div>
-    </div>
-
-    <!-- Custom Right Click Menu -->
-    <div id="contextMenu" class="custom-context-menu">
-        <div class="context-menu-item" onclick="execCommand('bold'); hideContextMenu()">
-            <i class="fas fa-bold"></i> Bold
-        </div>
-        <div class="context-menu-item" onclick="execCommand('italic'); hideContextMenu()">
-            <i class="fas fa-italic"></i> Italic
-        </div>
-        <div class="context-menu-item" onclick="execCommand('underline'); hideContextMenu()">
-            <i class="fas fa-underline"></i> Underline
-        </div>
-        <div class="context-divider"></div>
-        <div class="context-menu-item" onclick="execCommand('copy'); hideContextMenu()">
-            <i class="fas fa-copy"></i> Copy
-        </div>
-        <div class="context-menu-item" onclick="execCommand('cut'); hideContextMenu()">
-            <i class="fas fa-cut"></i> Cut
-        </div>
-        <div class="context-menu-item" onclick="execCommand('paste'); hideContextMenu()">
-            <i class="fas fa-paste"></i> Paste
-        </div>
-        <div class="context-divider"></div>
-        <div class="context-menu-item" onclick="selectAll(); hideContextMenu()">
-            <i class="fas fa-check-double"></i> Select All
-        </div>
-        <div class="context-divider"></div>
-        <div class="context-menu-item" onclick="insertTable(); hideContextMenu()">
-            <i class="fas fa-table"></i> Insert Table
-        </div>
-        <div class="context-menu-item" onclick="openMediaManager(); hideContextMenu()">
-            <i class="fas fa-image"></i> Insert Image
         </div>
     </div>
 
@@ -638,13 +521,13 @@
     <div id="mediaModal" class="media-modal">
         <div class="media-modal-content">
             <div class="media-modal-header">
-                <h3>🎨 Media Manager</h3>
+                <h3>Media Manager</h3>
                 <button class="close-modal" onclick="closeMediaManager()">&times;</button>
             </div>
             <div class="media-modal-body">
                 <div class="drag-drop-area" id="dragDropArea" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
                     <i class="fas fa-cloud-upload-alt" style="font-size: 48px; color: #0071e3;"></i>
-                    <p>Drag & Drop images here</p>
+                    <p>Drag and drop images here</p>
                     <p style="font-size: 12px; color: #999;">or click to upload</p>
                     <input type="file" id="imageUpload" accept="image/*" multiple style="display: none;" onchange="handleImageUpload(event)">
                 </div>
@@ -658,9 +541,8 @@
     <script>
         // ========== KORAHEY UI v1.0 ==========
         let imageLibrary = [];
-        let activeDropdown = null;
+        let activeMenu = null;
 
-        // Toast notification
         function showToast(message) {
             const toast = document.getElementById('toast');
             toast.textContent = message;
@@ -671,46 +553,29 @@
         }
 
         // Dropdown functions
-        function toggleDropdown(dropdownId) {
-            const container = document.getElementById(dropdownId);
-            if (activeDropdown && activeDropdown !== container) {
-                activeDropdown.classList.remove('active');
+        function toggleDropdown(menuId) {
+            const menu = document.getElementById(menuId);
+            if (activeMenu && activeMenu !== menu) {
+                activeMenu.classList.remove('show');
             }
-            container.classList.toggle('active');
-            activeDropdown = container.classList.contains('active') ? container : null;
+            menu.classList.toggle('show');
+            activeMenu = menu.classList.contains('show') ? menu : null;
         }
 
         document.addEventListener('click', function(e) {
-            if (!e.target.closest('.dropdown-container')) {
-                if (activeDropdown) {
-                    activeDropdown.classList.remove('active');
-                    activeDropdown = null;
+            if (!e.target.closest('.menu-item') && !e.target.closest('.dropdown-menu')) {
+                if (activeMenu) {
+                    activeMenu.classList.remove('show');
+                    activeMenu = null;
                 }
             }
         });
-
-        // Right-click context menu
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-            const menu = document.getElementById('contextMenu');
-            menu.style.left = e.pageX + 'px';
-            menu.style.top = e.pageY + 'px';
-            menu.classList.add('show');
-        });
-
-        document.addEventListener('click', function() {
-            hideContextMenu();
-        });
-
-        function hideContextMenu() {
-            document.getElementById('contextMenu').classList.remove('show');
-        }
 
         // Document functions
         function newDocument() {
             if (confirm('Create new document? Unsaved changes will be lost.')) {
                 document.getElementById('paperContainer').innerHTML = `
-                    <div class="paper-page" contenteditable="true" id="page1">
+                    <div class="paper-page" contenteditable="true">
                         <h1 style="text-align: center;">KORAHY ACADEMY</h1>
                         <p style="text-align: center; font-style: italic;">Passion for Success</p>
                         <hr>
@@ -731,7 +596,7 @@
                 });
             });
             localStorage.setItem('koraheyDocument', JSON.stringify(pages));
-            showToast('Document saved successfully!');
+            showToast('Document saved');
         }
 
         function exportDocument() {
@@ -747,7 +612,6 @@
                         img { max-width: 100%; height: auto; }
                         table { border-collapse: collapse; width: 100%; margin: 10px 0; }
                         th, td { border: 1px solid #ccc; padding: 8px; }
-                        .page-break { page-break-before: always; }
                     </style>
                 </head>
                 <body>
@@ -767,8 +631,6 @@
 
         function execCommand(command) {
             document.execCommand(command, false, null);
-            showToast(command);
-            hideContextMenu();
         }
 
         function selectAll() {
@@ -793,7 +655,6 @@
             showToast(`Zoom: ${percent}%`);
         }
 
-        // Font functions
         function changeFont() {
             const font = document.getElementById('fontSelector').value;
             document.execCommand('fontName', false, font);
@@ -816,7 +677,6 @@
             const color = prompt('Enter color (name or hex):', '#000000');
             if (color) {
                 document.execCommand('foreColor', false, color);
-                showToast(`Text color changed`);
             }
         }
 
@@ -824,7 +684,6 @@
             const color = prompt('Enter highlight color:', 'yellow');
             if (color) {
                 document.execCommand('backColor', false, color);
-                showToast(`Highlight color applied`);
             }
         }
 
@@ -833,7 +692,6 @@
             showToast('Formatting cleared');
         }
 
-        // Word count
         function showWordCount() {
             const text = document.activeElement.innerText;
             const words = text.trim().split(/\s+/).length;
@@ -845,9 +703,7 @@
             showToast('Spelling check: All good!');
         }
 
-        // Page break
         function insertPageBreak() {
-            const container = document.getElementById('paperContainer');
             const currentPage = document.activeElement.closest('.paper-page');
             if (currentPage) {
                 const newPage = document.createElement('div');
@@ -864,9 +720,8 @@
             document.execCommand('insertText', false, date);
         }
 
-        // About
         function showAbout() {
-            alert('Korahey UI v1.0\nPremium Document Editor\n\nLiquid Glass Effects\nMetaBall Animations\nDynamic Island Toolbar\nCustom Right-Click Menu\n\n© 2026 Korahey Academy');
+            alert('Korahey UI v1.0\nDocument Editor\n\nMenu Bar with File, Edit, View, Insert, Format, Tools, Table, Help\nDynamic Island for Formatting Actions\n\n© 2026 Korahey Academy');
         }
 
         function sendFeedback() {
@@ -881,7 +736,7 @@
             const rows = prompt('Number of rows:', '3');
             const cols = prompt('Number of columns:', '3');
             if (rows && cols) {
-                let tableHtml = '<table class="custom-table" contenteditable="false" border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">';
+                let tableHtml = '<table class="custom-table" border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">';
                 for (let i = 0; i < parseInt(rows); i++) {
                     tableHtml += '<tr>';
                     for (let j = 0; j < parseInt(cols); j++) {
@@ -892,6 +747,46 @@
                 tableHtml += '</table><br>';
                 document.execCommand('insertHTML', false, tableHtml);
                 showToast(`${rows}x${cols} table inserted`);
+            }
+        }
+
+        function addRowAbove() {
+            const selection = window.getSelection();
+            const cell = selection.anchorNode.closest('td, th');
+            if (cell) {
+                const row = cell.closest('tr');
+                const newRow = row.cloneNode(true);
+                row.parentNode.insertBefore(newRow, row);
+                showToast('Row added above');
+            }
+        }
+
+        function addRowBelow() {
+            const selection = window.getSelection();
+            const cell = selection.anchorNode.closest('td, th');
+            if (cell) {
+                const row = cell.closest('tr');
+                const newRow = row.cloneNode(true);
+                row.parentNode.insertBefore(newRow, row.nextSibling);
+                showToast('Row added below');
+            }
+        }
+
+        function deleteSelectedRow() {
+            const selection = window.getSelection();
+            const row = selection.anchorNode.closest('tr');
+            if (row) {
+                row.remove();
+                showToast('Row deleted');
+            }
+        }
+
+        function deleteSelectedTable() {
+            const selection = window.getSelection();
+            const table = selection.anchorNode.closest('table');
+            if (table) {
+                table.remove();
+                showToast('Table deleted');
             }
         }
 
@@ -982,7 +877,6 @@
             document.getElementById('imageUpload').click();
         });
 
-        // Make drop target for images
         document.querySelectorAll('.paper-page').forEach(page => {
             page.addEventListener('dragover', (e) => e.preventDefault());
             page.addEventListener('drop', (e) => {
@@ -991,10 +885,8 @@
                 if (src) {
                     const img = document.createElement('img');
                     img.src = src;
-                    img.className = 'resizable-image';
                     img.style.maxWidth = '300px';
                     img.style.margin = '10px';
-                    
                     const range = document.caretRangeFromPoint(e.clientX, e.clientY);
                     if (range) {
                         range.insertNode(img);
@@ -1006,7 +898,6 @@
             });
         });
 
-        // Load saved document
         function loadDocument() {
             const saved = localStorage.getItem('koraheyDocument');
             if (saved) {
