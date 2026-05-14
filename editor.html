@@ -3,33 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Korahey UI v1.0 | Document Editor</title>
+    <title>Korahey Editor | Document Editor</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --apple-blue: #0071e3;
+            --text-main: #1d1d1f;
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
-            font-family: 'Inter', 'Segoe UI', sans-serif;
-            background: #e8ecf0;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+            background: #f5f5f7;
+            color: var(--text-main);
             overflow: hidden;
-            height: 100vh;
+            min-height: 100vh;
         }
 
-        /* ========== LOADING ANIMATION ========== */
+        /* Loading Animation */
         .loading-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #eef8ff 100%);
             z-index: 10000;
             display: flex;
             align-items: center;
@@ -50,7 +52,9 @@
             font-size: 3rem;
             font-weight: 800;
             letter-spacing: -2px;
-            color: white;
+            background: linear-gradient(135deg, #1d1d1f 0%, var(--apple-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin-bottom: 20px;
             animation: pulse 1.5s ease infinite;
         }
@@ -58,38 +62,25 @@
         .loader-spinner {
             width: 50px;
             height: 50px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-top-color: white;
+            border: 3px solid rgba(0, 113, 227, 0.2);
+            border-top-color: var(--apple-blue);
             border-radius: 50%;
             margin: 0 auto;
             animation: spin 1s linear infinite;
         }
 
-        .loader-text {
-            color: white;
-            margin-top: 20px;
-            font-size: 14px;
-            letter-spacing: 2px;
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(1.05); } }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(1.05); }
-        }
-
-        /* ========== TOP BAR WITH MENU AND SAVE/PRINT ========== */
+        /* Top Bar */
         .top-bar {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
             z-index: 1000;
             display: flex;
             justify-content: space-between;
@@ -106,49 +97,54 @@
         .brand-icon {
             width: 32px;
             height: 32px;
-            background: linear-gradient(135deg, #0071e3, #005bb5);
+            background: linear-gradient(135deg, var(--apple-blue), #005bb5);
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-weight: 700;
-            font-size: 14px;
         }
 
         .brand-text {
             font-weight: 700;
-            font-size: 16px;
-            background: linear-gradient(135deg, #1d1d1f, #0071e3);
+            font-size: 1.1rem;
+            background: linear-gradient(135deg, #1d1d1f, var(--apple-blue));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .menu-bar {
-            display: flex;
-            gap: 4px;
-        }
-
+        .menu-bar { display: flex; gap: 4px; }
         .menu-item {
             padding: 6px 14px;
             font-size: 13px;
-            color: #333;
             cursor: pointer;
             border-radius: 8px;
             transition: all 0.2s;
             position: relative;
-            font-weight: 500;
         }
+        .menu-item:hover { background: rgba(0, 0, 0, 0.05); }
 
-        .menu-item:hover {
-            background: rgba(0, 0, 0, 0.05);
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 12px;
+            min-width: 200px;
+            display: none;
+            padding: 8px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid rgba(0,0,0,0.05);
+            z-index: 1000;
         }
+        .dropdown-menu.show { display: block; }
+        .dropdown-item { padding: 10px 20px; font-size: 13px; cursor: pointer; transition: all 0.2s; }
+        .dropdown-item:hover { background: rgba(0, 0, 0, 0.05); }
+        .dropdown-divider { height: 1px; background: rgba(0, 0, 0, 0.1); margin: 6px 0; }
 
-        .right-actions {
-            display: flex;
-            gap: 12px;
-        }
-
+        .right-actions { display: flex; gap: 12px; }
         .top-btn {
             background: rgba(0, 0, 0, 0.05);
             border: none;
@@ -157,75 +153,27 @@
             cursor: pointer;
             font-size: 13px;
             font-weight: 500;
-            color: #333;
             transition: all 0.2s;
         }
+        .top-btn:hover { background: rgba(0, 0, 0, 0.1); }
 
-        .top-btn:hover {
-            background: rgba(0, 0, 0, 0.1);
-        }
-
-        /* Dropdown Menu */
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-            min-width: 200px;
-            z-index: 1000;
-            display: none;
-            padding: 8px 0;
-        }
-
-        .dropdown-menu.show {
-            display: block;
-        }
-
-        .dropdown-item {
-            padding: 10px 20px;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .dropdown-item:hover {
-            background: rgba(0, 0, 0, 0.05);
-        }
-
-        .dropdown-divider {
-            height: 1px;
-            background: rgba(0, 0, 0, 0.08);
-            margin: 8px 0;
-        }
-
-        /* ========== DYNAMIC ISLAND ========== */
+        /* Dynamic Island */
         .dynamic-island {
             position: fixed;
-            top: 60px;
+            top: 56px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(20px);
             border-radius: 60px;
             padding: 8px 20px;
             z-index: 999;
-            border: 1px solid rgba(0, 0, 0, 0.06);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
             display: inline-flex;
-            width: auto;
         }
 
-        .island-content {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            flex-wrap: nowrap;
-        }
-
+        .island-content { display: flex; gap: 8px; align-items: center; }
         .action-btn {
             background: transparent;
             border: none;
@@ -233,31 +181,11 @@
             border-radius: 40px;
             cursor: pointer;
             font-size: 13px;
-            font-weight: 500;
-            color: #555;
-            transition: all 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
+            transition: all 0.2s;
         }
-
-        .action-btn:hover {
-            background: rgba(0, 0, 0, 0.05);
-            color: #333;
-        }
-
-        .action-btn.active {
-            background: #0071e3;
-            color: white;
-        }
-
-        .separator {
-            width: 1px;
-            height: 28px;
-            background: rgba(0, 0, 0, 0.1);
-            margin: 0 6px;
-        }
-
+        .action-btn:hover { background: rgba(0, 0, 0, 0.05); }
+        .action-btn.active { background: var(--apple-blue); color: white; }
+        .separator { width: 1px; height: 28px; background: rgba(0, 0, 0, 0.1); margin: 0 6px; }
         .font-selector, .size-selector {
             padding: 6px 12px;
             border-radius: 40px;
@@ -267,67 +195,49 @@
             cursor: pointer;
         }
 
-        /* ========== MAIN LAYOUT ========== */
-        .main-layout {
+        /* Main Layout */
+        .main-editor-layout {
             display: flex;
             height: 100vh;
             padding-top: 110px;
         }
 
-        /* Page Panel (Right Side) */
-        .page-panel {
-            width: 280px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-left: 1px solid rgba(0, 0, 0, 0.08);
-            display: flex;
-            flex-direction: column;
-            z-index: 50;
-            margin-top: -10px;
-        }
-
-        .page-panel-header {
-            padding: 20px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-            font-weight: 600;
-            font-size: 14px;
-            color: #333;
-        }
-
-        .page-list {
-            flex: 1;
+        /* Left Panel - Pages */
+        .left-panel {
+            width: 260px;
+            padding: 20px 16px;
             overflow-y: auto;
-            padding: 16px;
+            border-right: 1px solid rgba(0, 0, 0, 0.05);
         }
 
-        .page-thumbnail {
+        .panel-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #86868b;
+            margin-bottom: 16px;
+            padding-left: 8px;
+        }
+
+        .page-list { display: flex; flex-direction: column; gap: 8px; }
+        .page-thumb {
             background: white;
-            border: 1px solid rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.08);
             border-radius: 12px;
             padding: 12px;
-            margin-bottom: 12px;
             cursor: pointer;
             transition: all 0.2s;
             display: flex;
             align-items: center;
             gap: 12px;
         }
-
-        .page-thumbnail:hover {
-            border-color: #0071e3;
-            transform: translateX(4px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-
-        .page-thumbnail.active {
-            border-color: #0071e3;
-            background: rgba(0, 113, 227, 0.05);
-        }
-
+        .page-thumb:hover { border-color: var(--apple-blue); transform: translateX(4px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .page-thumb.active { border-color: var(--apple-blue); background: rgba(0, 113, 227, 0.05); }
         .page-number {
             width: 32px;
             height: 32px;
-            background: #f0f0f0;
+            background: #f5f5f7;
             border-radius: 8px;
             display: flex;
             align-items: center;
@@ -335,14 +245,8 @@
             font-size: 12px;
             font-weight: 600;
         }
-
-        .page-preview {
-            flex: 1;
-            font-size: 12px;
-            color: #666;
-        }
-
-        .delete-page {
+        .page-preview { flex: 1; font-size: 13px; color: #666; }
+        .delete-page-btn {
             background: none;
             border: none;
             cursor: pointer;
@@ -350,24 +254,18 @@
             padding: 4px 8px;
             border-radius: 6px;
         }
+        .delete-page-btn:hover { background: rgba(255, 59, 48, 0.1); color: #ff3b30; }
 
-        .delete-page:hover {
-            background: rgba(255, 59, 48, 0.1);
-            color: #ff3b30;
-        }
-
-        /* Canvas Area */
-        .canvas-area {
+        /* Center Canvas */
+        .canvas-center {
             flex: 1;
             overflow-y: auto;
             padding: 20px 40px;
+            display: flex;
+            justify-content: center;
         }
 
-        .paper-container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
+        .paper-container { width: 100%; max-width: 900px; }
         .paper-page {
             background: white;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
@@ -376,36 +274,27 @@
             min-height: 297mm;
             margin: 0 auto 30px auto;
             padding: 20mm 25mm;
-            position: relative;
-            transition: all 0.3s;
+            transition: transform 0.2s;
+        }
+        .paper-page:focus { outline: none; }
+
+        /* Right Panel - Stats */
+        .right-panel {
+            width: 220px;
+            padding: 20px 16px;
+            border-left: 1px solid rgba(0, 0, 0, 0.05);
         }
 
-        .paper-page:focus {
-            outline: none;
+        .stat-item {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
-
-        /* Bottom Bar */
-        .bottom-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-top: 1px solid rgba(0, 0, 0, 0.08);
-            padding: 10px 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 100;
-        }
-
-        .zoom-controls {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
+        .stat-label { font-size: 11px; color: #86868b; margin-bottom: 8px; }
+        .stat-value { font-size: 28px; font-weight: 700; color: var(--apple-blue); }
+        .zoom-controls { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
         .zoom-btn {
             background: rgba(0, 0, 0, 0.05);
             border: none;
@@ -413,83 +302,27 @@
             height: 32px;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 14px;
-            transition: all 0.2s;
         }
-
-        .zoom-btn:hover {
-            background: rgba(0, 0, 0, 0.1);
-        }
-
-        .zoom-value {
-            font-size: 13px;
-            font-weight: 500;
-            min-width: 50px;
-            text-align: center;
-        }
-
-        .page-counter {
-            font-size: 13px;
-            color: #666;
-        }
+        .zoom-value { font-size: 14px; font-weight: 500; min-width: 50px; text-align: center; }
 
         /* Custom Right Click Menu */
         .custom-context-menu {
             position: fixed;
             background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(20px);
             border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
             min-width: 200px;
-            z-index: 10000;
             display: none;
             padding: 8px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border: 1px solid rgba(0,0,0,0.05);
+            z-index: 10000;
         }
+        .custom-context-menu.show { display: block; }
+        .context-menu-item { padding: 10px 20px; font-size: 13px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 10px; }
+        .context-menu-item:hover { background: rgba(0, 0, 0, 0.05); }
 
-        .custom-context-menu.show {
-            display: block;
-        }
-
-        .context-menu-item {
-            padding: 10px 20px;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .context-menu-item:hover {
-            background: rgba(0, 0, 0, 0.05);
-        }
-
-        /* Image styling */
-        .resizable-image {
-            max-width: 100%;
-            height: auto;
-            margin: 10px 0;
-            border-radius: 8px;
-        }
-
-        .resizable-image:hover {
-            box-shadow: 0 0 0 2px #0071e3;
-        }
-
-        /* Table styling */
-        .custom-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 15px 0;
-        }
-
-        .custom-table td, .custom-table th {
-            border: 1px solid #ddd;
-            padding: 10px;
-        }
-
-        /* Media Manager Modal */
+        /* Modal */
         .media-modal {
             display: none;
             position: fixed;
@@ -503,121 +336,54 @@
             align-items: center;
             justify-content: center;
         }
-
-        .media-modal.active {
-            display: flex;
-        }
-
+        .media-modal.active { display: flex; }
         .media-modal-content {
             width: 90%;
             max-width: 800px;
-            max-height: 85vh;
             background: white;
             border-radius: 24px;
             overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
         }
-
-        .media-modal-header {
-            padding: 20px 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #eee;
-        }
-
-        .media-modal-body {
-            padding: 24px;
-            max-height: 60vh;
-            overflow-y: auto;
-        }
-
+        .media-modal-header { padding: 20px 24px; display: flex; justify-content: space-between; border-bottom: 1px solid #eee; }
+        .media-modal-body { padding: 24px; max-height: 60vh; overflow-y: auto; }
         .drag-drop-area {
             border: 2px dashed #ccc;
             border-radius: 16px;
             padding: 40px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s;
             margin-bottom: 24px;
         }
-
-        .drag-drop-area.drag-over {
-            border-color: #0071e3;
-            background: #f0f7ff;
-        }
-
-        .image-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 16px;
-        }
-
+        .drag-drop-area.drag-over { border-color: var(--apple-blue); background: rgba(0,113,227,0.05); }
+        .image-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 12px; }
         .gallery-item {
-            background: #f5f5f5;
+            background: #f5f5f7;
             border-radius: 12px;
-            padding: 12px;
+            padding: 8px;
             cursor: grab;
-            transition: all 0.2s;
             text-align: center;
         }
-
-        .gallery-item:hover {
-            background: #e8e8e8;
-            transform: scale(1.02);
-        }
-
-        .gallery-item img {
-            width: 100%;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-
+        .gallery-item img { width: 100%; height: 80px; object-fit: cover; border-radius: 8px; }
         .toast {
             position: fixed;
-            bottom: 70px;
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%) translateY(100px);
-            background: #333;
+            background: rgba(30,30,35,0.95);
+            backdrop-filter: blur(20px);
             color: white;
-            padding: 10px 24px;
+            padding: 12px 24px;
             border-radius: 50px;
-            font-size: 13px;
             z-index: 3000;
             transition: transform 0.3s;
         }
+        .toast.show { transform: translateX(-50%) translateY(0); }
 
-        .toast.show {
-            transform: translateX(-50%) translateY(0);
-        }
-
-        @media (max-width: 1000px) {
-            .page-panel {
-                width: 240px;
-            }
-            .dynamic-island {
-                padding: 8px 16px;
-            }
-            .island-content {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            .paper-page {
-                width: 100%;
-                padding: 20px;
-            }
-        }
-
-        @media print {
-            .top-bar, .dynamic-island, .page-panel, .bottom-bar, .toast {
-                display: none;
-            }
-            .paper-page {
-                box-shadow: none;
-                margin: 0;
-                padding: 0;
-            }
+        @media (max-width: 900px) {
+            .left-panel, .right-panel { width: 180px; }
+            .dynamic-island { padding: 8px 12px; }
+            .island-content { flex-wrap: wrap; justify-content: center; }
+            .paper-page { width: 100%; padding: 20px; }
         }
     </style>
 </head>
@@ -626,9 +392,8 @@
     <!-- Loading Animation -->
     <div id="loadingOverlay" class="loading-overlay">
         <div class="loader">
-            <div class="loader-logo">KORAHY</div>
+            <div class="loader-logo">KORAHEY</div>
             <div class="loader-spinner"></div>
-            <div class="loader-text">Loading Editor...</div>
         </div>
     </div>
 
@@ -638,7 +403,6 @@
             <div class="brand-icon">K</div>
             <div class="brand-text">Korahey Editor</div>
         </div>
-
         <div class="menu-bar">
             <div class="menu-item" onclick="toggleDropdown('fileMenu')">File</div>
             <div id="fileMenu" class="dropdown-menu">
@@ -648,7 +412,6 @@
                 <div class="dropdown-divider"></div>
                 <div class="dropdown-item" onclick="closeEditor()">Close</div>
             </div>
-
             <div class="menu-item" onclick="toggleDropdown('editMenu')">Edit</div>
             <div id="editMenu" class="dropdown-menu">
                 <div class="dropdown-item" onclick="execCommand('undo')">Undo</div>
@@ -659,45 +422,19 @@
                 <div class="dropdown-item" onclick="execCommand('paste')">Paste</div>
                 <div class="dropdown-divider"></div>
                 <div class="dropdown-item" onclick="selectAll()">Select All</div>
-                <div class="dropdown-item" onclick="findAndReplace()">Find and Replace</div>
             </div>
-
-            <div class="menu-item" onclick="toggleDropdown('viewMenu')">View</div>
-            <div id="viewMenu" class="dropdown-menu">
-                <div class="dropdown-item" onclick="setZoom(100)">Zoom 100%</div>
-                <div class="dropdown-item" onclick="setZoom(125)">Zoom 125%</div>
-                <div class="dropdown-item" onclick="setZoom(150)">Zoom 150%</div>
-            </div>
-
             <div class="menu-item" onclick="toggleDropdown('insertMenu')">Insert</div>
             <div id="insertMenu" class="dropdown-menu">
                 <div class="dropdown-item" onclick="openMediaManager()">Media Manager</div>
                 <div class="dropdown-item" onclick="insertTable()">Table</div>
                 <div class="dropdown-divider"></div>
-                <div class="dropdown-item" onclick="insertDate()">Date and Time</div>
+                <div class="dropdown-item" onclick="insertDate()">Date & Time</div>
             </div>
-
-            <div class="menu-item" onclick="toggleDropdown('formatMenu')">Format</div>
-            <div id="formatMenu" class="dropdown-menu">
-                <div class="dropdown-item" onclick="openFontDialog()">Font</div>
-                <div class="dropdown-item" onclick="setTextColor()">Text Color</div>
-                <div class="dropdown-item" onclick="setHighlightColor()">Highlight Color</div>
-                <div class="dropdown-divider"></div>
-                <div class="dropdown-item" onclick="clearFormatting()">Clear Formatting</div>
-            </div>
-
-            <div class="menu-item" onclick="toggleDropdown('toolsMenu')">Tools</div>
-            <div id="toolsMenu" class="dropdown-menu">
-                <div class="dropdown-item" onclick="showWordCount()">Word Count</div>
-            </div>
-
             <div class="menu-item" onclick="toggleDropdown('helpMenu')">Help</div>
             <div id="helpMenu" class="dropdown-menu">
                 <div class="dropdown-item" onclick="showAbout()">About</div>
-                <div class="dropdown-item" onclick="sendFeedback()">Feedback</div>
             </div>
         </div>
-
         <div class="right-actions">
             <button class="top-btn" onclick="saveDocument()">Save</button>
             <button class="top-btn" onclick="exportDocument()">Print</button>
@@ -709,87 +446,71 @@
         <div class="island-content">
             <select id="fontSelector" class="font-selector" onchange="changeFont()">
                 <option value="'Times New Roman', serif">Times New Roman</option>
-                <option value="'Arial', sans-serif">Arial</option>
-                <option value="'Calibri', sans-serif">Calibri</option>
-                <option value="'Georgia', serif">Georgia</option>
-                <option value="'Inter', sans-serif">Inter</option>
+                <option value="Arial">Arial</option>
+                <option value="Calibri">Calibri</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Inter">Inter</option>
             </select>
-
             <select id="sizeSelector" class="size-selector" onchange="changeFontSize()">
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12" selected>12</option>
-                <option value="14">14</option>
-                <option value="16">16</option>
-                <option value="18">18</option>
-                <option value="20">20</option>
-                <option value="24">24</option>
-                <option value="28">28</option>
+                <option value="10">10</option><option value="11">11</option><option value="12" selected>12</option>
+                <option value="14">14</option><option value="16">16</option><option value="18">18</option>
+                <option value="20">20</option><option value="24">24</option><option value="28">28</option>
                 <option value="36">36</option>
             </select>
-
             <div class="separator"></div>
-
             <button class="action-btn" id="boldBtn" onclick="toggleFormat('bold', 'boldBtn')"><b>B</b></button>
             <button class="action-btn" id="italicBtn" onclick="toggleFormat('italic', 'italicBtn')"><i>I</i></button>
             <button class="action-btn" id="underlineBtn" onclick="toggleFormat('underline', 'underlineBtn')"><u>U</u></button>
-
             <div class="separator"></div>
-
             <button class="action-btn" id="alignLeftBtn" onclick="setAlignment('justifyLeft', 'alignLeftBtn')"><i class="fas fa-align-left"></i></button>
             <button class="action-btn" id="alignCenterBtn" onclick="setAlignment('justifyCenter', 'alignCenterBtn')"><i class="fas fa-align-center"></i></button>
             <button class="action-btn" id="alignRightBtn" onclick="setAlignment('justifyRight', 'alignRightBtn')"><i class="fas fa-align-right"></i></button>
-
             <div class="separator"></div>
-
             <button class="action-btn" id="bulletBtn" onclick="toggleList('insertUnorderedList', 'bulletBtn')"><i class="fas fa-list-ul"></i></button>
             <button class="action-btn" id="numberBtn" onclick="toggleList('insertOrderedList', 'numberBtn')"><i class="fas fa-list-ol"></i></button>
-
             <div class="separator"></div>
-
             <button class="action-btn" onclick="openMediaManager()"><i class="fas fa-image"></i> Image</button>
             <button class="action-btn" onclick="insertTable()"><i class="fas fa-table"></i> Table</button>
         </div>
     </div>
 
-    <!-- Main Layout -->
-    <div class="main-layout">
-        <!-- Canvas Area -->
-        <div class="canvas-area" id="canvasArea">
+    <!-- Main Editor Layout -->
+    <div class="main-editor-layout">
+        <!-- Left Panel - Pages -->
+        <div class="left-panel">
+            <div class="panel-title">Pages</div>
+            <div class="page-list" id="pageList"></div>
+        </div>
+
+        <!-- Center Canvas -->
+        <div class="canvas-center" id="canvasArea">
             <div class="paper-container" id="paperContainer">
-                <div class="paper-page" contenteditable="true" id="page1" data-page="1">
-                    <h1 style="text-align: center;">KORAHY ACADEMY</h1>
+                <div class="paper-page" contenteditable="true" data-page="1">
+                    <h1 style="text-align: center;">KORAHEY ACADEMY</h1>
                     <p style="text-align: center; font-style: italic;">Passion for Success</p>
                     <hr>
                     <p><br></p>
                     <p>Welcome to Korahey UI v1.0 - Document Editor</p>
-                    <p><br></p>
-                    <p>Start typing here. When you fill the page, a new one will be created automatically.</p>
-                    <p>Use the page panel on the right to navigate between pages.</p>
+                    <p>Start typing here. A new page will be created automatically when you fill this one.</p>
                 </div>
             </div>
         </div>
 
-        <!-- Page Panel (Right Side) -->
-        <div class="page-panel">
-            <div class="page-panel-header">
-                <i class="fas fa-copy"></i> Pages
+        <!-- Right Panel - Stats & Zoom -->
+        <div class="right-panel">
+            <div class="stat-item">
+                <div class="stat-label">Word Count</div>
+                <div class="stat-value" id="wordCount">0</div>
             </div>
-            <div class="page-list" id="pageList">
-                <!-- Pages will be listed here -->
+            <div class="stat-item">
+                <div class="stat-label">Zoom</div>
+                <div class="zoom-controls">
+                    <button class="zoom-btn" onclick="zoomOut()"><i class="fas fa-search-minus"></i></button>
+                    <span class="zoom-value" id="zoomValue">100%</span>
+                    <button class="zoom-btn" onclick="zoomIn()"><i class="fas fa-search-plus"></i></button>
+                </div>
             </div>
         </div>
-    </div>
-
-    <!-- Bottom Bar -->
-    <div class="bottom-bar">
-        <div class="zoom-controls">
-            <button class="zoom-btn" onclick="zoomOut()"><i class="fas fa-search-minus"></i></button>
-            <span class="zoom-value" id="zoomValue">100%</span>
-            <button class="zoom-btn" onclick="zoomIn()"><i class="fas fa-search-plus"></i></button>
-        </div>
-        <div class="page-counter" id="pageCounter">Page 1 of 1</div>
-        <div style="width: 100px;"></div>
     </div>
 
     <!-- Custom Right Click Menu -->
@@ -815,9 +536,8 @@
             </div>
             <div class="media-modal-body">
                 <div class="drag-drop-area" id="dragDropArea" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
-                    <i class="fas fa-cloud-upload-alt" style="font-size: 48px; color: #0071e3;"></i>
-                    <p>Drag and drop images here</p>
-                    <p style="font-size: 12px; color: #999;">or click to upload</p>
+                    <i class="fas fa-cloud-upload-alt" style="font-size: 48px; color: var(--apple-blue);"></i>
+                    <p>Drag & drop images here or click to upload</p>
                     <input type="file" id="imageUpload" accept="image/*" multiple style="display: none;" onchange="handleImageUpload(event)">
                 </div>
                 <div class="image-gallery" id="imageGallery"></div>
@@ -828,12 +548,11 @@
     <div id="toast" class="toast"></div>
 
     <script>
-        // ========== KORAHEY UI v1.0 ==========
+        // ========== KORAHEY UI v1.0 EDITOR ==========
         let imageLibrary = [];
         let activeMenu = null;
         let currentActiveButtons = {};
         let currentZoom = 100;
-        let pages = [];
         let currentPageIndex = 0;
 
         // Loading animation
@@ -841,34 +560,39 @@
             setTimeout(() => {
                 const loader = document.getElementById('loadingOverlay');
                 loader.classList.add('fade-out');
-                setTimeout(() => {
-                    loader.style.display = 'none';
-                }, 600);
-            }, 1500);
+                setTimeout(() => { loader.style.display = 'none'; }, 600);
+            }, 1200);
         });
 
         function showToast(message) {
             const toast = document.getElementById('toast');
             toast.textContent = message;
             toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 2000);
+            setTimeout(() => { toast.classList.remove('show'); }, 2000);
         }
+
+        // Word count update
+        function updateWordCount() {
+            const activePage = document.querySelector('.paper-page:focus') || document.querySelector('.paper-page');
+            if (activePage) {
+                const text = activePage.innerText;
+                const words = text.trim().split(/\s+/).length;
+                document.getElementById('wordCount').textContent = words;
+            }
+        }
+
+        document.addEventListener('input', updateWordCount);
+        setInterval(updateWordCount, 1000);
 
         // Page Management
         function updatePageList() {
             const pages = document.querySelectorAll('.paper-page');
             const container = document.getElementById('pageList');
-            const pageCounter = document.getElementById('pageCounter');
-            
-            pageCounter.textContent = `Page ${currentPageIndex + 1} of ${pages.length}`;
-            
             container.innerHTML = Array.from(pages).map((page, idx) => `
-                <div class="page-thumbnail ${idx === currentPageIndex ? 'active' : ''}" onclick="goToPage(${idx})">
+                <div class="page-thumb ${idx === currentPageIndex ? 'active' : ''}" onclick="goToPage(${idx})">
                     <div class="page-number">${idx + 1}</div>
                     <div class="page-preview">Page ${idx + 1}</div>
-                    ${pages.length > 1 ? `<button class="delete-page" onclick="event.stopPropagation(); deletePage(${idx})"><i class="fas fa-trash"></i></button>` : ''}
+                    ${pages.length > 1 ? `<button class="delete-page-btn" onclick="event.stopPropagation(); deletePage(${idx})"><i class="fas fa-trash"></i></button>` : ''}
                 </div>
             `).join('');
         }
@@ -880,6 +604,7 @@
                 pages[index].focus();
                 currentPageIndex = index;
                 updatePageList();
+                updateWordCount();
             }
         }
 
@@ -887,9 +612,7 @@
             const pages = document.querySelectorAll('.paper-page');
             if (pages.length > 1) {
                 pages[index].remove();
-                if (currentPageIndex >= pages.length - 1) {
-                    currentPageIndex = pages.length - 2;
-                }
+                if (currentPageIndex >= pages.length - 1) currentPageIndex = pages.length - 2;
                 updatePageList();
                 showToast('Page deleted');
             }
@@ -898,28 +621,20 @@
         function checkAndAddNewPage() {
             const activePage = document.activeElement.closest('.paper-page');
             if (activePage) {
-                const rect = activePage.getBoundingClientRect();
-                const scrollTop = activePage.parentElement.scrollTop;
-                const pageHeight = activePage.scrollHeight;
-                const viewportHeight = window.innerHeight - 200;
-                
-                // Check if near bottom of page
-                if (activePage.scrollTop + viewportHeight > pageHeight - 200) {
-                    const lastChar = activePage.innerText.slice(-1);
-                    if (lastChar === ' ' || lastChar === '\n' || activePage.innerText.length > 500) {
-                        const newPage = document.createElement('div');
-                        newPage.className = 'paper-page';
-                        newPage.setAttribute('contenteditable', 'true');
-                        newPage.innerHTML = '<p><br></p>';
-                        activePage.insertAdjacentElement('afterend', newPage);
-                        updatePageList();
-                        showToast('New page added');
-                    }
+                const scrollHeight = activePage.scrollHeight;
+                const clientHeight = activePage.clientHeight;
+                if (scrollHeight - clientHeight < 100) {
+                    const newPage = document.createElement('div');
+                    newPage.className = 'paper-page';
+                    newPage.setAttribute('contenteditable', 'true');
+                    newPage.innerHTML = '<p><br></p>';
+                    activePage.insertAdjacentElement('afterend', newPage);
+                    updatePageList();
+                    showToast('New page added');
                 }
             }
         }
 
-        // Auto-create page when typing near bottom
         document.addEventListener('input', function(e) {
             if (e.target.closest('.paper-page')) {
                 checkAndAddNewPage();
@@ -929,32 +644,18 @@
 
         // Zoom functions
         function zoomIn() {
-            if (currentZoom < 200) {
-                currentZoom += 10;
-                document.querySelector('.paper-container').style.transform = `scale(${currentZoom / 100})`;
-                document.querySelector('.paper-container').style.transformOrigin = 'top center';
-                document.getElementById('zoomValue').textContent = currentZoom + '%';
-            }
+            if (currentZoom < 200) { currentZoom += 10; applyZoom(); }
         }
-
         function zoomOut() {
-            if (currentZoom > 50) {
-                currentZoom -= 10;
-                document.querySelector('.paper-container').style.transform = `scale(${currentZoom / 100})`;
-                document.querySelector('.paper-container').style.transformOrigin = 'top center';
-                document.getElementById('zoomValue').textContent = currentZoom + '%';
-            }
+            if (currentZoom > 50) { currentZoom -= 10; applyZoom(); }
         }
-
-        function setZoom(percent) {
-            currentZoom = percent;
+        function applyZoom() {
             document.querySelector('.paper-container').style.transform = `scale(${currentZoom / 100})`;
             document.querySelector('.paper-container').style.transformOrigin = 'top center';
             document.getElementById('zoomValue').textContent = currentZoom + '%';
-            showToast(`Zoom: ${percent}%`);
         }
 
-        // Right-click context menu
+        // Right-click menu
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
             const menu = document.getElementById('contextMenu');
@@ -962,313 +663,140 @@
             menu.style.top = e.pageY + 'px';
             menu.classList.add('show');
         });
+        document.addEventListener('click', function() { hideContextMenu(); });
+        function hideContextMenu() { document.getElementById('contextMenu').classList.remove('show'); }
 
-        document.addEventListener('click', function(e) {
-            hideContextMenu();
-            if (!e.target.closest('.menu-item') && !e.target.closest('.dropdown-menu')) {
-                if (activeMenu) {
-                    activeMenu.classList.remove('show');
-                    activeMenu = null;
-                }
-            }
-        });
-
-        function hideContextMenu() {
-            document.getElementById('contextMenu').classList.remove('show');
-        }
-
+        // Dropdown
         function toggleDropdown(menuId) {
             const menu = document.getElementById(menuId);
-            if (activeMenu && activeMenu !== menu) {
-                activeMenu.classList.remove('show');
-            }
+            if (activeMenu && activeMenu !== menu) activeMenu.classList.remove('show');
             menu.classList.toggle('show');
             activeMenu = menu.classList.contains('show') ? menu : null;
         }
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.menu-item') && !e.target.closest('.dropdown-menu')) {
+                if (activeMenu) { activeMenu.classList.remove('show'); activeMenu = null; }
+            }
+        });
 
+        // Formatting
         function toggleFormat(command, btnId) {
             document.execCommand(command, false, null);
             const btn = document.getElementById(btnId);
             if (btn) {
-                if (currentActiveButtons[btnId]) {
-                    btn.classList.remove('active');
-                    currentActiveButtons[btnId] = false;
-                } else {
-                    btn.classList.add('active');
-                    currentActiveButtons[btnId] = true;
-                }
+                currentActiveButtons[btnId] = !currentActiveButtons[btnId];
+                btn.classList.toggle('active', currentActiveButtons[btnId]);
             }
             hideContextMenu();
         }
-
         function setAlignment(command, btnId) {
             document.execCommand(command, false, null);
-            const alignBtns = ['alignLeftBtn', 'alignCenterBtn', 'alignRightBtn'];
-            alignBtns.forEach(id => {
+            ['alignLeftBtn', 'alignCenterBtn', 'alignRightBtn'].forEach(id => {
                 const btn = document.getElementById(id);
                 if (btn) btn.classList.remove('active');
                 currentActiveButtons[id] = false;
             });
             const clickedBtn = document.getElementById(btnId);
-            if (clickedBtn) {
-                clickedBtn.classList.add('active');
-                currentActiveButtons[btnId] = true;
-            }
+            if (clickedBtn) { clickedBtn.classList.add('active'); currentActiveButtons[btnId] = true; }
             hideContextMenu();
         }
-
         function toggleList(command, btnId) {
             document.execCommand(command, false, null);
             const btn = document.getElementById(btnId);
             if (btn) {
-                if (currentActiveButtons[btnId]) {
-                    btn.classList.remove('active');
-                    currentActiveButtons[btnId] = false;
-                } else {
-                    btn.classList.add('active');
-                    currentActiveButtons[btnId] = true;
-                }
+                currentActiveButtons[btnId] = !currentActiveButtons[btnId];
+                btn.classList.toggle('active', currentActiveButtons[btnId]);
             }
             hideContextMenu();
         }
+        function execCommand(command) { document.execCommand(command, false, null); hideContextMenu(); }
+        function selectAll() { document.execCommand('selectAll', false, null); hideContextMenu(); }
 
         function newDocument() {
             if (confirm('Create new document? Unsaved changes will be lost.')) {
-                document.getElementById('paperContainer').innerHTML = `
-                    <div class="paper-page" contenteditable="true">
-                        <h1 style="text-align: center;">KORAHY ACADEMY</h1>
-                        <p style="text-align: center; font-style: italic;">Passion for Success</p>
-                        <hr>
-                        <p><br></p>
-                        <p>Start typing your document here...</p>
-                    </div>
-                `;
+                document.getElementById('paperContainer').innerHTML = `<div class="paper-page" contenteditable="true"><h1 style="text-align: center;">KORAHEY ACADEMY</h1><p style="text-align: center; font-style: italic;">Passion for Success</p><hr><p><br></p><p>Start typing your document here...</p></div>`;
                 currentPageIndex = 0;
                 updatePageList();
                 showToast('New document created');
             }
         }
-
         function saveDocument() {
             const pages = [];
-            document.querySelectorAll('.paper-page').forEach((page, index) => {
-                pages.push({
-                    id: index,
-                    content: page.innerHTML
-                });
-            });
+            document.querySelectorAll('.paper-page').forEach((page, i) => pages.push({ id: i, content: page.innerHTML }));
             localStorage.setItem('koraheyDocument', JSON.stringify(pages));
             showToast('Document saved');
         }
+        function exportDocument() { saveDocument(); window.print(); }
+        function closeEditor() { if (confirm('Close editor?')) window.location.href = 'admin.html'; }
+        function changeFont() { document.execCommand('fontName', false, document.getElementById('fontSelector').value); }
+        function changeFontSize() { document.execCommand('fontSize', false, document.getElementById('sizeSelector').value); }
+        function insertDate() { document.execCommand('insertText', false, new Date().toLocaleString()); }
+        function showAbout() { alert('Korahey UI v1.0\nDocument Editor\n\nA4 Paper | Page Management | Word Count\n\n© 2026 Korahey Academy'); }
 
-        function exportDocument() {
-            saveDocument();
-            window.print();
-        }
-
-        function closeEditor() {
-            if (confirm('Close the editor?')) {
-                window.location.href = 'admin.html';
-            }
-        }
-
-        function execCommand(command) {
-            document.execCommand(command, false, null);
-            hideContextMenu();
-        }
-
-        function selectAll() {
-            document.execCommand('selectAll', false, null);
-            hideContextMenu();
-        }
-
-        function findAndReplace() {
-            const findText = prompt('Find:');
-            if (findText) {
-                const replaceText = prompt('Replace with:');
-                if (replaceText !== null) {
-                    const content = document.activeElement.innerHTML;
-                    document.activeElement.innerHTML = content.replace(new RegExp(findText, 'g'), replaceText);
-                    showToast('Find and replace completed');
-                }
-            }
-        }
-
-        function changeFont() {
-            const font = document.getElementById('fontSelector').value;
-            document.execCommand('fontName', false, font);
-        }
-
-        function changeFontSize() {
-            const size = document.getElementById('sizeSelector').value;
-            document.execCommand('fontSize', false, size);
-        }
-
-        function openFontDialog() {
-            const font = prompt('Enter font name:', 'Arial');
-            if (font) {
-                document.execCommand('fontName', false, font);
-                showToast(`Font changed to ${font}`);
-            }
-        }
-
-        function setTextColor() {
-            const color = prompt('Enter color (name or hex):', '#000000');
-            if (color) {
-                document.execCommand('foreColor', false, color);
-            }
-        }
-
-        function setHighlightColor() {
-            const color = prompt('Enter highlight color:', 'yellow');
-            if (color) {
-                document.execCommand('backColor', false, color);
-            }
-        }
-
-        function clearFormatting() {
-            document.execCommand('removeFormat', false, null);
-            showToast('Formatting cleared');
-            Object.keys(currentActiveButtons).forEach(btnId => {
-                const btn = document.getElementById(btnId);
-                if (btn) btn.classList.remove('active');
-                currentActiveButtons[btnId] = false;
-            });
-        }
-
-        function showWordCount() {
-            const text = document.activeElement.innerText;
-            const words = text.trim().split(/\s+/).length;
-            const chars = text.length;
-            showToast(`Words: ${words} | Characters: ${chars}`);
-        }
-
-        function insertDate() {
-            const date = new Date().toLocaleString();
-            document.execCommand('insertText', false, date);
-        }
-
-        function showAbout() {
-            alert('Korahey UI v1.0\nDocument Editor\n\nA4 Paper Size\nCustom Right-Click Menu\nAuto Page Creation\nPage Panel\n\n© 2026 Korahey Academy');
-        }
-
-        function sendFeedback() {
-            const feedback = prompt('Send your feedback:');
-            if (feedback) {
-                showToast('Thank you for your feedback!');
-            }
-        }
-
+        // Table functions
         function insertTable() {
-            const rows = prompt('Number of rows:', '3');
-            const cols = prompt('Number of columns:', '3');
+            const rows = prompt('Rows:', '3');
+            const cols = prompt('Columns:', '3');
             if (rows && cols) {
-                let tableHtml = '<table class="custom-table" border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">';
+                let html = '<table border="1" cellpadding="8" style="border-collapse: collapse; width: 100%;">';
                 for (let i = 0; i < parseInt(rows); i++) {
-                    tableHtml += '<tr>';
-                    for (let j = 0; j < parseInt(cols); j++) {
-                        tableHtml += '<td contenteditable="true"><br></td>';
-                    }
-                    tableHtml += '</tr>';
+                    html += '</tr>';
+                    for (let j = 0; j < parseInt(cols); j++) html += `<td contenteditable="true"><br></td>`;
+                    html += '</tr>';
                 }
-                tableHtml += '</table><br>';
-                document.execCommand('insertHTML', false, tableHtml);
+                html += '</table><br>';
+                document.execCommand('insertHTML', false, html);
                 showToast(`${rows}x${cols} table inserted`);
             }
             hideContextMenu();
         }
 
         // Media Manager
-        function openMediaManager() {
-            loadImageGallery();
-            document.getElementById('mediaModal').classList.add('active');
-            hideContextMenu();
-        }
-
-        function closeMediaManager() {
-            document.getElementById('mediaModal').classList.remove('active');
-        }
-
+        function openMediaManager() { loadImageGallery(); document.getElementById('mediaModal').classList.add('active'); hideContextMenu(); }
+        function closeMediaManager() { document.getElementById('mediaModal').classList.remove('active'); }
         function loadImageGallery() {
             const saved = localStorage.getItem('koraheyImageLibrary');
-            if (saved) {
-                imageLibrary = JSON.parse(saved);
-            }
+            if (saved) imageLibrary = JSON.parse(saved);
             const gallery = document.getElementById('imageGallery');
-            if (imageLibrary.length === 0) {
-                gallery.innerHTML = '<p style="grid-column: span 3; text-align: center; color: #999;">No images yet. Upload some images.</p>';
-                return;
-            }
-            gallery.innerHTML = imageLibrary.map(img => `
-                <div class="gallery-item" draggable="true" ondragstart="dragImage(event, '${img.src}')">
-                    <img src="${img.src}" alt="${img.name}">
-                    <div class="gallery-item-name">${img.name.substring(0, 20)}</div>
-                </div>
-            `).join('');
+            if (imageLibrary.length === 0) { gallery.innerHTML = '<p style="text-align:center; color:#999;">No images. Upload some.</p>'; return; }
+            gallery.innerHTML = imageLibrary.map(img => `<div class="gallery-item" draggable="true" ondragstart="dragImage(event, '${img.src}')"><img src="${img.src}"><div>${img.name.substring(0, 15)}</div></div>`).join('');
         }
-
         function handleImageUpload(event) {
-            const files = event.target.files;
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
+            Array.from(event.target.files).forEach((file, i) => {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    imageLibrary.push({
-                        id: Date.now() + i,
-                        src: e.target.result,
-                        name: file.name
-                    });
+                reader.onload = e => {
+                    imageLibrary.push({ id: Date.now() + i, src: e.target.result, name: file.name });
                     localStorage.setItem('koraheyImageLibrary', JSON.stringify(imageLibrary));
                     loadImageGallery();
                 };
                 reader.readAsDataURL(file);
-            }
-            showToast(`${files.length} image(s) uploaded`);
+            });
+            showToast(`${event.target.files.length} image(s) uploaded`);
         }
-
-        function onDragOver(e) {
-            e.preventDefault();
-            document.getElementById('dragDropArea').classList.add('drag-over');
-        }
-
-        function onDragLeave(e) {
-            document.getElementById('dragDropArea').classList.remove('drag-over');
-        }
-
+        function onDragOver(e) { e.preventDefault(); document.getElementById('dragDropArea').classList.add('drag-over'); }
+        function onDragLeave(e) { document.getElementById('dragDropArea').classList.remove('drag-over'); }
         function onDrop(e) {
             e.preventDefault();
             document.getElementById('dragDropArea').classList.remove('drag-over');
-            const files = e.dataTransfer.files;
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
+            Array.from(e.dataTransfer.files).forEach((file, i) => {
                 if (file.type.startsWith('image/')) {
                     const reader = new FileReader();
-                    reader.onload = function(e) {
-                        imageLibrary.push({
-                            id: Date.now() + i,
-                            src: e.target.result,
-                            name: file.name
-                        });
+                    reader.onload = e => {
+                        imageLibrary.push({ id: Date.now() + i, src: e.target.result, name: file.name });
                         localStorage.setItem('koraheyImageLibrary', JSON.stringify(imageLibrary));
                         loadImageGallery();
                     };
                     reader.readAsDataURL(file);
                 }
-            }
-            showToast(`${files.length} image(s) uploaded`);
+            });
+            showToast(`${e.dataTransfer.files.length} image(s) uploaded`);
         }
-
-        function dragImage(e, src) {
-            e.dataTransfer.setData('text/plain', src);
-        }
-
-        document.getElementById('dragDropArea')?.addEventListener('click', () => {
-            document.getElementById('imageUpload').click();
-        });
+        function dragImage(e, src) { e.dataTransfer.setData('text/plain', src); }
+        document.getElementById('dragDropArea')?.addEventListener('click', () => document.getElementById('imageUpload').click());
 
         document.querySelectorAll('.paper-page').forEach(page => {
-            page.addEventListener('dragover', (e) => e.preventDefault());
-            page.addEventListener('drop', (e) => {
+            page.addEventListener('dragover', e => e.preventDefault());
+            page.addEventListener('drop', e => {
                 e.preventDefault();
                 const src = e.dataTransfer.getData('text/plain');
                 if (src) {
@@ -1277,11 +805,8 @@
                     img.style.maxWidth = '100%';
                     img.style.margin = '10px 0';
                     const range = document.caretRangeFromPoint(e.clientX, e.clientY);
-                    if (range) {
-                        range.insertNode(img);
-                    } else {
-                        page.appendChild(img);
-                    }
+                    if (range) range.insertNode(img);
+                    else page.appendChild(img);
                     showToast('Image inserted');
                 }
             });
@@ -1292,20 +817,16 @@
             if (saved) {
                 const pages = JSON.parse(saved);
                 if (pages.length > 0) {
-                    const container = document.getElementById('paperContainer');
-                    container.innerHTML = pages.map((page, idx) => `
-                        <div class="paper-page" contenteditable="true" data-page="${idx + 1}">${page.content}</div>
-                    `).join('');
+                    document.getElementById('paperContainer').innerHTML = pages.map(p => `<div class="paper-page" contenteditable="true">${p.content}</div>`).join('');
                     updatePageList();
                     showToast('Document loaded');
                 }
             }
             updatePageList();
+            updateWordCount();
         }
 
-        // Initialize
         loadDocument();
-        updatePageList();
     </script>
 </body>
 </html>
