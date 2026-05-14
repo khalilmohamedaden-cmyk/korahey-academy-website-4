@@ -22,33 +22,63 @@
             height: 100vh;
         }
 
-        /* ========== MICROSOFT WORD STYLE MENU BAR ========== */
-        .menu-bar {
-            background: #ffffff;
-            border-bottom: 1px solid #c8cbd1;
-            padding: 4px 16px;
-            display: flex;
-            gap: 4px;
-            flex-wrap: wrap;
+        /* ========== TOP BAR WITH MENU AND SAVE/PRINT ========== */
+        .top-bar {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
+            background: #ffffff;
+            border-bottom: 1px solid #d0d0d0;
             z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 24px;
+        }
+
+        /* Menu Bar */
+        .menu-bar {
+            display: flex;
+            gap: 6px;
         }
 
         .menu-item {
-            padding: 6px 12px;
+            padding: 6px 14px;
             font-size: 13px;
             color: #333;
             cursor: pointer;
             border-radius: 4px;
-            transition: all 0.2s;
+            transition: background 0.2s;
             position: relative;
+            font-weight: 500;
         }
 
         .menu-item:hover {
+            background: #f0f0f0;
+        }
+
+        /* Right side buttons (Save & Print) */
+        .right-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .top-btn {
+            background: #f5f5f5;
+            border: 1px solid #d0d0d0;
+            padding: 6px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: #333;
+            transition: all 0.2s;
+        }
+
+        .top-btn:hover {
             background: #e8e8e8;
+            border-color: #0071e3;
         }
 
         /* Dropdown Menu */
@@ -58,12 +88,12 @@
             left: 0;
             background: white;
             border: 1px solid #d0d0d0;
-            border-radius: 4px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            min-width: 220px;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            min-width: 200px;
             z-index: 1000;
             display: none;
-            padding: 4px 0;
+            padding: 6px 0;
         }
 
         .dropdown-menu.show {
@@ -74,37 +104,32 @@
             padding: 8px 20px;
             font-size: 13px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: background 0.2s;
         }
 
         .dropdown-item:hover {
-            background: #e8e8e8;
+            background: #f0f0f0;
         }
 
         .dropdown-divider {
             height: 1px;
             background: #e0e0e0;
-            margin: 4px 0;
+            margin: 6px 0;
         }
 
-        /* ========== DYNAMIC ISLAND (Actions Only) ========== */
+        /* ========== DYNAMIC ISLAND (STRETCHED, CLEAN) ========== */
         .dynamic-island {
             position: fixed;
-            top: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
+            top: 56px;
+            left: 24px;
+            right: 24px;
+            background: #ffffff;
             border-radius: 60px;
-            padding: 8px 20px;
+            padding: 8px 24px;
             z-index: 999;
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-        }
-
-        .dynamic-island:hover {
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            border: 1px solid #d0d0d0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            transition: all 0.2s ease;
         }
 
         .island-content {
@@ -112,48 +137,32 @@
             gap: 12px;
             align-items: center;
             flex-wrap: wrap;
-            justify-content: center;
         }
 
-        /* MetaBall Animation for buttons */
+        /* Action Buttons - Clean, no blurry effects */
         .action-btn {
-            position: relative;
-            background: rgba(0, 0, 0, 0.04);
+            background: transparent;
             border: none;
             padding: 8px 14px;
             border-radius: 40px;
             cursor: pointer;
             font-size: 13px;
             font-weight: 500;
-            color: #333;
-            transition: all 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
-            overflow: hidden;
+            color: #555;
+            transition: all 0.2s ease;
             display: inline-flex;
             align-items: center;
             gap: 6px;
         }
 
-        .action-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(0, 113, 227, 0.15);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.4s ease, height 0.4s ease;
-        }
-
-        .action-btn:hover::before {
-            width: 200%;
-            height: 200%;
-        }
-
         .action-btn:hover {
-            background: rgba(0, 113, 227, 0.1);
-            transform: scale(1.02);
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .action-btn.active {
+            background: #0071e3;
+            color: white;
         }
 
         .icon-btn {
@@ -163,14 +172,14 @@
         .separator {
             width: 1px;
             height: 28px;
-            background: rgba(0, 0, 0, 0.1);
-            margin: 0 4px;
+            background: #e0e0e0;
+            margin: 0 6px;
         }
 
         .font-selector, .size-selector {
             padding: 6px 12px;
             border-radius: 40px;
-            border: 1px solid rgba(0, 0, 0, 0.1);
+            border: 1px solid #d0d0d0;
             background: white;
             font-size: 12px;
             cursor: pointer;
@@ -185,8 +194,7 @@
         .canvas-area {
             height: 100vh;
             overflow-y: auto;
-            padding: 100px 40px 40px 40px;
-            margin-top: 40px;
+            padding: 130px 40px 40px 40px;
         }
 
         /* Paper Container */
@@ -197,7 +205,7 @@
 
         .paper-page {
             background: white;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             border-radius: 4px;
             padding: 60px 70px;
             margin-bottom: 30px;
@@ -241,8 +249,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
             z-index: 2000;
             align-items: center;
             justify-content: center;
@@ -259,7 +267,7 @@
             background: white;
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
         }
 
         .media-modal-header {
@@ -349,10 +357,11 @@
             transform: translateX(-50%) translateY(0);
         }
 
-        @media (max-width: 900px) {
+        @media (max-width: 1000px) {
             .dynamic-island {
-                width: 95%;
-                padding: 8px 12px;
+                left: 16px;
+                right: 16px;
+                padding: 8px 16px;
             }
             .island-content {
                 justify-content: center;
@@ -365,88 +374,97 @@
 </head>
 <body>
 
-    <!-- Microsoft Word Style Menu Bar -->
-    <div class="menu-bar">
-        <!-- File Menu -->
-        <div class="menu-item" onclick="toggleDropdown('fileMenu')">File</div>
-        <div id="fileMenu" class="dropdown-menu">
-            <div class="dropdown-item" onclick="newDocument()">New</div>
-            <div class="dropdown-item" onclick="saveDocument()">Save</div>
-            <div class="dropdown-item" onclick="exportDocument()">Print</div>
-            <div class="dropdown-divider"></div>
-            <div class="dropdown-item" onclick="closeEditor()">Close</div>
+    <!-- Top Bar with Menu and Save/Print -->
+    <div class="top-bar">
+        <!-- Menu Bar -->
+        <div class="menu-bar">
+            <!-- File Menu -->
+            <div class="menu-item" onclick="toggleDropdown('fileMenu')">File</div>
+            <div id="fileMenu" class="dropdown-menu">
+                <div class="dropdown-item" onclick="newDocument()">New</div>
+                <div class="dropdown-item" onclick="saveDocument()">Save</div>
+                <div class="dropdown-item" onclick="exportDocument()">Print</div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item" onclick="closeEditor()">Close</div>
+            </div>
+
+            <!-- Edit Menu -->
+            <div class="menu-item" onclick="toggleDropdown('editMenu')">Edit</div>
+            <div id="editMenu" class="dropdown-menu">
+                <div class="dropdown-item" onclick="execCommand('undo')">Undo</div>
+                <div class="dropdown-item" onclick="execCommand('redo')">Redo</div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item" onclick="execCommand('cut')">Cut</div>
+                <div class="dropdown-item" onclick="execCommand('copy')">Copy</div>
+                <div class="dropdown-item" onclick="execCommand('paste')">Paste</div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item" onclick="selectAll()">Select All</div>
+                <div class="dropdown-item" onclick="findAndReplace()">Find and Replace</div>
+            </div>
+
+            <!-- View Menu -->
+            <div class="menu-item" onclick="toggleDropdown('viewMenu')">View</div>
+            <div id="viewMenu" class="dropdown-menu">
+                <div class="dropdown-item" onclick="setZoom(100)">Zoom 100%</div>
+                <div class="dropdown-item" onclick="setZoom(125)">Zoom 125%</div>
+                <div class="dropdown-item" onclick="setZoom(150)">Zoom 150%</div>
+            </div>
+
+            <!-- Insert Menu -->
+            <div class="menu-item" onclick="toggleDropdown('insertMenu')">Insert</div>
+            <div id="insertMenu" class="dropdown-menu">
+                <div class="dropdown-item" onclick="openMediaManager()">Media Manager</div>
+                <div class="dropdown-item" onclick="insertTable()">Table</div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item" onclick="insertPageBreak()">Page Break</div>
+                <div class="dropdown-item" onclick="insertDate()">Date and Time</div>
+            </div>
+
+            <!-- Format Menu -->
+            <div class="menu-item" onclick="toggleDropdown('formatMenu')">Format</div>
+            <div id="formatMenu" class="dropdown-menu">
+                <div class="dropdown-item" onclick="openFontDialog()">Font</div>
+                <div class="dropdown-item" onclick="setTextColor()">Text Color</div>
+                <div class="dropdown-item" onclick="setHighlightColor()">Highlight Color</div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item" onclick="clearFormatting()">Clear Formatting</div>
+            </div>
+
+            <!-- Tools Menu -->
+            <div class="menu-item" onclick="toggleDropdown('toolsMenu')">Tools</div>
+            <div id="toolsMenu" class="dropdown-menu">
+                <div class="dropdown-item" onclick="showWordCount()">Word Count</div>
+                <div class="dropdown-item" onclick="checkSpelling()">Spelling and Grammar</div>
+            </div>
+
+            <!-- Table Menu -->
+            <div class="menu-item" onclick="toggleDropdown('tableMenu')">Table</div>
+            <div id="tableMenu" class="dropdown-menu">
+                <div class="dropdown-item" onclick="insertTable()">Insert Table</div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item" onclick="addRowAbove()">Insert Row Above</div>
+                <div class="dropdown-item" onclick="addRowBelow()">Insert Row Below</div>
+                <div class="dropdown-item" onclick="deleteSelectedRow()">Delete Row</div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item" onclick="deleteSelectedTable()">Delete Table</div>
+            </div>
+
+            <!-- Help Menu -->
+            <div class="menu-item" onclick="toggleDropdown('helpMenu')">Help</div>
+            <div id="helpMenu" class="dropdown-menu">
+                <div class="dropdown-item" onclick="showAbout()">About Korahey UI</div>
+                <div class="dropdown-item" onclick="sendFeedback()">Send Feedback</div>
+            </div>
         </div>
 
-        <!-- Edit Menu -->
-        <div class="menu-item" onclick="toggleDropdown('editMenu')">Edit</div>
-        <div id="editMenu" class="dropdown-menu">
-            <div class="dropdown-item" onclick="execCommand('undo')">Undo</div>
-            <div class="dropdown-item" onclick="execCommand('redo')">Redo</div>
-            <div class="dropdown-divider"></div>
-            <div class="dropdown-item" onclick="execCommand('cut')">Cut</div>
-            <div class="dropdown-item" onclick="execCommand('copy')">Copy</div>
-            <div class="dropdown-item" onclick="execCommand('paste')">Paste</div>
-            <div class="dropdown-divider"></div>
-            <div class="dropdown-item" onclick="selectAll()">Select All</div>
-            <div class="dropdown-item" onclick="findAndReplace()">Find and Replace</div>
-        </div>
-
-        <!-- View Menu -->
-        <div class="menu-item" onclick="toggleDropdown('viewMenu')">View</div>
-        <div id="viewMenu" class="dropdown-menu">
-            <div class="dropdown-item" onclick="setZoom(100)">Zoom 100%</div>
-            <div class="dropdown-item" onclick="setZoom(125)">Zoom 125%</div>
-            <div class="dropdown-item" onclick="setZoom(150)">Zoom 150%</div>
-        </div>
-
-        <!-- Insert Menu -->
-        <div class="menu-item" onclick="toggleDropdown('insertMenu')">Insert</div>
-        <div id="insertMenu" class="dropdown-menu">
-            <div class="dropdown-item" onclick="openMediaManager()">Media Manager</div>
-            <div class="dropdown-item" onclick="insertTable()">Table</div>
-            <div class="dropdown-divider"></div>
-            <div class="dropdown-item" onclick="insertPageBreak()">Page Break</div>
-            <div class="dropdown-item" onclick="insertDate()">Date and Time</div>
-        </div>
-
-        <!-- Format Menu -->
-        <div class="menu-item" onclick="toggleDropdown('formatMenu')">Format</div>
-        <div id="formatMenu" class="dropdown-menu">
-            <div class="dropdown-item" onclick="openFontDialog()">Font</div>
-            <div class="dropdown-item" onclick="setTextColor()">Text Color</div>
-            <div class="dropdown-item" onclick="setHighlightColor()">Highlight Color</div>
-            <div class="dropdown-divider"></div>
-            <div class="dropdown-item" onclick="clearFormatting()">Clear Formatting</div>
-        </div>
-
-        <!-- Tools Menu -->
-        <div class="menu-item" onclick="toggleDropdown('toolsMenu')">Tools</div>
-        <div id="toolsMenu" class="dropdown-menu">
-            <div class="dropdown-item" onclick="showWordCount()">Word Count</div>
-            <div class="dropdown-item" onclick="checkSpelling()">Spelling and Grammar</div>
-        </div>
-
-        <!-- Table Menu -->
-        <div class="menu-item" onclick="toggleDropdown('tableMenu')">Table</div>
-        <div id="tableMenu" class="dropdown-menu">
-            <div class="dropdown-item" onclick="insertTable()">Insert Table</div>
-            <div class="dropdown-divider"></div>
-            <div class="dropdown-item" onclick="addRowAbove()">Insert Row Above</div>
-            <div class="dropdown-item" onclick="addRowBelow()">Insert Row Below</div>
-            <div class="dropdown-item" onclick="deleteSelectedRow()">Delete Row</div>
-            <div class="dropdown-divider"></div>
-            <div class="dropdown-item" onclick="deleteSelectedTable()">Delete Table</div>
-        </div>
-
-        <!-- Help Menu -->
-        <div class="menu-item" onclick="toggleDropdown('helpMenu')">Help</div>
-        <div id="helpMenu" class="dropdown-menu">
-            <div class="dropdown-item" onclick="showAbout()">About Korahey UI</div>
-            <div class="dropdown-item" onclick="sendFeedback()">Send Feedback</div>
+        <!-- Right Side Buttons (Save & Print) -->
+        <div class="right-actions">
+            <button class="top-btn" onclick="saveDocument()">Save</button>
+            <button class="top-btn" onclick="exportDocument()">Print</button>
         </div>
     </div>
 
-    <!-- Dynamic Island (Actions Only: Font, Size, Formatting Buttons) -->
+    <!-- Dynamic Island (Stretched, Clean) -->
     <div class="dynamic-island">
         <div class="island-content">
             <select id="fontSelector" class="font-selector" onchange="changeFont()">
@@ -472,32 +490,27 @@
 
             <div class="separator"></div>
 
-            <button class="action-btn icon-btn" onclick="execCommand('bold')" title="Bold"><b>B</b></button>
-            <button class="action-btn icon-btn" onclick="execCommand('italic')" title="Italic"><i>I</i></button>
-            <button class="action-btn icon-btn" onclick="execCommand('underline')" title="Underline"><u>U</u></button>
-            <button class="action-btn icon-btn" onclick="execCommand('strikeThrough')" title="Strikethrough"><s>S</s></button>
+            <button class="action-btn icon-btn" id="boldBtn" onclick="toggleFormat('bold', 'boldBtn')" title="Bold"><b>B</b></button>
+            <button class="action-btn icon-btn" id="italicBtn" onclick="toggleFormat('italic', 'italicBtn')" title="Italic"><i>I</i></button>
+            <button class="action-btn icon-btn" id="underlineBtn" onclick="toggleFormat('underline', 'underlineBtn')" title="Underline"><u>U</u></button>
+            <button class="action-btn icon-btn" id="strikeBtn" onclick="toggleFormat('strikeThrough', 'strikeBtn')" title="Strikethrough"><s>S</s></button>
 
             <div class="separator"></div>
 
-            <button class="action-btn icon-btn" onclick="execCommand('justifyLeft')" title="Align Left"><i class="fas fa-align-left"></i></button>
-            <button class="action-btn icon-btn" onclick="execCommand('justifyCenter')" title="Center"><i class="fas fa-align-center"></i></button>
-            <button class="action-btn icon-btn" onclick="execCommand('justifyRight')" title="Align Right"><i class="fas fa-align-right"></i></button>
-            <button class="action-btn icon-btn" onclick="execCommand('justifyFull')" title="Justify"><i class="fas fa-align-justify"></i></button>
+            <button class="action-btn icon-btn" id="alignLeftBtn" onclick="setAlignment('justifyLeft', 'alignLeftBtn')" title="Align Left"><i class="fas fa-align-left"></i></button>
+            <button class="action-btn icon-btn" id="alignCenterBtn" onclick="setAlignment('justifyCenter', 'alignCenterBtn')" title="Center"><i class="fas fa-align-center"></i></button>
+            <button class="action-btn icon-btn" id="alignRightBtn" onclick="setAlignment('justifyRight', 'alignRightBtn')" title="Align Right"><i class="fas fa-align-right"></i></button>
+            <button class="action-btn icon-btn" id="alignJustifyBtn" onclick="setAlignment('justifyFull', 'alignJustifyBtn')" title="Justify"><i class="fas fa-align-justify"></i></button>
 
             <div class="separator"></div>
 
-            <button class="action-btn icon-btn" onclick="execCommand('insertUnorderedList')" title="Bullet List"><i class="fas fa-list-ul"></i></button>
-            <button class="action-btn icon-btn" onclick="execCommand('insertOrderedList')" title="Numbered List"><i class="fas fa-list-ol"></i></button>
+            <button class="action-btn icon-btn" id="bulletBtn" onclick="toggleList('insertUnorderedList', 'bulletBtn')" title="Bullet List"><i class="fas fa-list-ul"></i></button>
+            <button class="action-btn icon-btn" id="numberBtn" onclick="toggleList('insertOrderedList', 'numberBtn')" title="Numbered List"><i class="fas fa-list-ol"></i></button>
 
             <div class="separator"></div>
 
             <button class="action-btn" onclick="openMediaManager()">Insert Image</button>
             <button class="action-btn" onclick="insertTable()">Insert Table</button>
-
-            <div class="separator"></div>
-
-            <button class="action-btn" onclick="saveDocument()">Save</button>
-            <button class="action-btn" onclick="exportDocument()">Print</button>
         </div>
     </div>
 
@@ -542,6 +555,7 @@
         // ========== KORAHEY UI v1.0 ==========
         let imageLibrary = [];
         let activeMenu = null;
+        let currentActiveButtons = {};
 
         function showToast(message) {
             const toast = document.getElementById('toast');
@@ -570,6 +584,52 @@
                 }
             }
         });
+
+        // Formatting functions with active state
+        function toggleFormat(command, btnId) {
+            document.execCommand(command, false, null);
+            const btn = document.getElementById(btnId);
+            if (btn) {
+                if (currentActiveButtons[btnId]) {
+                    btn.classList.remove('active');
+                    currentActiveButtons[btnId] = false;
+                } else {
+                    btn.classList.add('active');
+                    currentActiveButtons[btnId] = true;
+                }
+            }
+        }
+
+        function setAlignment(command, btnId) {
+            document.execCommand(command, false, null);
+            // Reset all alignment buttons
+            const alignBtns = ['alignLeftBtn', 'alignCenterBtn', 'alignRightBtn', 'alignJustifyBtn'];
+            alignBtns.forEach(id => {
+                const btn = document.getElementById(id);
+                if (btn) btn.classList.remove('active');
+                currentActiveButtons[id] = false;
+            });
+            // Activate clicked button
+            const clickedBtn = document.getElementById(btnId);
+            if (clickedBtn) {
+                clickedBtn.classList.add('active');
+                currentActiveButtons[btnId] = true;
+            }
+        }
+
+        function toggleList(command, btnId) {
+            document.execCommand(command, false, null);
+            const btn = document.getElementById(btnId);
+            if (btn) {
+                if (currentActiveButtons[btnId]) {
+                    btn.classList.remove('active');
+                    currentActiveButtons[btnId] = false;
+                } else {
+                    btn.classList.add('active');
+                    currentActiveButtons[btnId] = true;
+                }
+            }
+        }
 
         // Document functions
         function newDocument() {
@@ -690,6 +750,12 @@
         function clearFormatting() {
             document.execCommand('removeFormat', false, null);
             showToast('Formatting cleared');
+            // Reset all active buttons
+            Object.keys(currentActiveButtons).forEach(btnId => {
+                const btn = document.getElementById(btnId);
+                if (btn) btn.classList.remove('active');
+                currentActiveButtons[btnId] = false;
+            });
         }
 
         function showWordCount() {
@@ -738,7 +804,7 @@
             if (rows && cols) {
                 let tableHtml = '<table class="custom-table" border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">';
                 for (let i = 0; i < parseInt(rows); i++) {
-                    tableHtml += '<tr>';
+                    tableHtml += '</tr>';
                     for (let j = 0; j < parseInt(cols); j++) {
                         tableHtml += '<td contenteditable="true"><br></td>';
                     }
