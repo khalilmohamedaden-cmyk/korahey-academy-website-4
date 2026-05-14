@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Korahey Admin | Dashboard + Editor</title>
+    <title>Korahey Admin | Dashboard</title>
     
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -96,7 +95,6 @@
             50% { opacity: 1; transform: scale(1.2); }
         }
 
-        /* Main content */
         .main-content {
             flex: 1;
             overflow-x: hidden;
@@ -107,7 +105,6 @@
             transition: opacity 0.5s ease;
         }
 
-        /* LIVE GRADIENT BACKGROUND */
         .glass-header {
             padding: 100px 5% 40px;
             text-align: center;
@@ -122,7 +119,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* LEFT DYNAMIC ISLAND */
         .dynamic-island {
             position: fixed;
             background: rgba(255, 255, 255, 0.45);
@@ -839,180 +835,6 @@
             font-weight: 500;
         }
 
-        /* ============================================
-           BOTTOM DYNAMIC ISLAND - FIGMA/CANVA EDITOR
-        ============================================ */
-        .bottom-editor-island {
-            position: fixed;
-            bottom: 24px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 60px;
-            padding: 12px 24px;
-            z-index: 2000;
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .bottom-editor-island.hidden {
-            transform: translateX(-50%) translateY(100px);
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .editor-tools {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .editor-group {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(0, 0, 0, 0.03);
-            padding: 6px 16px;
-            border-radius: 40px;
-            border: 1px solid rgba(0,0,0,0.05);
-        }
-
-        .editor-group label {
-            font-size: 0.75rem;
-            font-weight: 500;
-            color: #666;
-        }
-
-        .editor-group input, .editor-group select {
-            padding: 6px 12px;
-            border-radius: 30px;
-            border: 1px solid #ddd;
-            background: white;
-            font-size: 0.8rem;
-            outline: none;
-            cursor: pointer;
-        }
-
-        .editor-group input[type="color"] {
-            width: 36px;
-            height: 36px;
-            padding: 2px;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-
-        .editor-group input[type="range"] {
-            width: 120px;
-        }
-
-        .color-presets {
-            display: flex;
-            gap: 8px;
-        }
-
-        .color-dot {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: all 0.2s;
-        }
-
-        .color-dot:hover {
-            transform: scale(1.1);
-            border-color: #fff;
-            box-shadow: 0 0 0 2px #0071e3;
-        }
-
-        .editor-toggle-btn {
-            background: var(--apple-blue);
-            border: none;
-            padding: 10px 20px;
-            border-radius: 40px;
-            color: white;
-            font-weight: 500;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s;
-        }
-
-        .editor-toggle-btn:hover {
-            background: #005bb5;
-            transform: scale(1.02);
-        }
-
-        /* Preview Panel */
-        .preview-panel {
-            position: fixed;
-            right: 24px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 280px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 28px;
-            padding: 20px;
-            z-index: 1999;
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .preview-panel.hidden {
-            transform: translateY(-50%) translateX(120%);
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .preview-title {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: #666;
-            margin-bottom: 12px;
-            text-align: center;
-        }
-
-        .preview-box {
-            background: #f5f5f7;
-            border-radius: 20px;
-            padding: 30px 20px;
-            text-align: center;
-            transition: all 0.2s ease;
-        }
-
-        .preview-text {
-            font-size: 1rem;
-            font-weight: 500;
-            margin-bottom: 10px;
-        }
-
-        .preview-subtext {
-            font-size: 0.8rem;
-            color: #666;
-        }
-
-        .close-editor {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            background: none;
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
-            color: #999;
-        }
-
-        .close-editor:hover {
-            color: #333;
-        }
-
         .recent-section { 
             max-width: 1400px; 
             margin: 0 auto; 
@@ -1149,6 +971,7 @@
             border: 1px solid #e5e5e5;
             border-radius: 20px;
             cursor: pointer;
+            transition: all 0.2s;
         }
 
         .create-option:hover {
@@ -1157,6 +980,9 @@
         }
 
         .create-option svg { width: 28px; height: 28px; stroke: var(--apple-blue); }
+        
+        .create-option-text h4 { font-weight: 600; margin-bottom: 4px; }
+        .create-option-text span { font-size: 13px; color: #86868b; }
 
         .close-modal {
             margin-top: 20px;
@@ -1200,10 +1026,6 @@
             .user-detail-panel { width: 100%; height: 55%; }
             .panel-close-wrapper { top: -40px; right: 0; }
             .single-pill-text { padding: 8px 20px; min-width: 120px; font-size: 0.8rem; }
-            .bottom-editor-island { width: 90%; padding: 12px 16px; }
-            .editor-tools { gap: 10px; }
-            .editor-group { padding: 4px 12px; }
-            .preview-panel { display: none; }
         }
     </style>
 </head>
@@ -1223,7 +1045,6 @@
 
     <div class="main-content">
         <div id="adminContent" style="display: none;">
-            <!-- LEFT DYNAMIC ISLAND -->
             <nav class="dynamic-island">
                 <div class="dynamic-island-wrapper">
                     <div class="nav-item" onclick="goHome()">
@@ -1264,68 +1085,12 @@
                         <span>Messages</span>
                         <span class="badge" id="messagesBadge" style="display: none;">0</span>
                     </div>
-                    <div class="nav-item" onclick="toggleEditor()">
-                        <i class="fas fa-palette" style="font-size: 22px; stroke: none; fill: #1d1d1f;"></i>
+                    <div class="nav-item" onclick="openEditor()">
+                        <i class="fas fa-palette" style="font-size: 20px; stroke: none; fill: #1d1d1f;"></i>
                         <span>Editor</span>
                     </div>
                 </div>
             </nav>
-
-            <!-- BOTTOM DYNAMIC ISLAND - FIGMA/CANVA EDITOR -->
-            <div class="bottom-editor-island" id="editorIsland">
-                <button class="close-editor" onclick="toggleEditor()">✕</button>
-                <div class="editor-tools">
-                    <div class="editor-group">
-                        <label>Color</label>
-                        <input type="color" id="colorPicker" value="#0071e3">
-                    </div>
-                    <div class="color-presets">
-                        <div class="color-dot" style="background: #0071e3;" onclick="setColor('#0071e3')"></div>
-                        <div class="color-dot" style="background: #ff3b30;" onclick="setColor('#ff3b30')"></div>
-                        <div class="color-dot" style="background: #34c759;" onclick="setColor('#34c759')"></div>
-                        <div class="color-dot" style="background: #ff9500;" onclick="setColor('#ff9500')"></div>
-                        <div class="color-dot" style="background: #af52de;" onclick="setColor('#af52de')"></div>
-                        <div class="color-dot" style="background: #000000;" onclick="setColor('#000000')"></div>
-                    </div>
-                    <div class="editor-group">
-                        <label>Font Size</label>
-                        <input type="range" id="fontSizeSlider" min="12" max="48" value="16">
-                        <span id="fontSizeValue">16px</span>
-                    </div>
-                    <div class="editor-group">
-                        <label>Font</label>
-                        <select id="fontFamily">
-                            <option value="-apple-system">System Default</option>
-                            <option value="Georgia">Georgia</option>
-                            <option value="Times New Roman">Times New Roman</option>
-                            <option value="Courier New">Courier New</option>
-                            <option value="Arial">Arial</option>
-                        </select>
-                    </div>
-                    <div class="editor-group">
-                        <label>Bg Opacity</label>
-                        <input type="range" id="opacitySlider" min="0" max="100" value="100">
-                        <span id="opacityValue">100%</span>
-                    </div>
-                    <div class="editor-group">
-                        <label>Border Radius</label>
-                        <input type="range" id="radiusSlider" min="0" max="50" value="20">
-                        <span id="radiusValue">20px</span>
-                    </div>
-                    <button class="editor-toggle-btn" onclick="applyEditorChanges()">
-                        <i class="fas fa-check"></i> Apply
-                    </button>
-                </div>
-            </div>
-
-            <!-- PREVIEW PANEL -->
-            <div class="preview-panel" id="previewPanel">
-                <div class="preview-title">Live Preview</div>
-                <div class="preview-box" id="previewBox">
-                    <div class="preview-text" id="previewText">Design Preview</div>
-                    <div class="preview-subtext">See your changes in real-time</div>
-                </div>
-            </div>
 
             <header class="glass-header">
                 <h1 class="hello-text" id="greetingText">Hello Admin</h1>
@@ -1455,6 +1220,7 @@
         </div>
     </div>
 
+    <!-- CREATE MODAL -->
     <div class="modal" id="createModal">
         <div class="modal-content">
             <h3>Create new</h3>
@@ -1462,23 +1228,38 @@
             <div class="create-options">
                 <div class="create-option" onclick="createProject('exam')">
                     <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><line x1="8" y1="9" x2="16" y2="9"/></svg>
-                    <div><h4>Exam</h4><span>Create quizzes and tests</span></div>
+                    <div class="create-option-text">
+                        <h4>Exam</h4>
+                        <span>Create quizzes and tests</span>
+                    </div>
                 </div>
                 <div class="create-option" onclick="createProject('schedule')">
                     <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>
-                    <div><h4>Schedule</h4><span>Plan classes</span></div>
+                    <div class="create-option-text">
+                        <h4>Schedule</h4>
+                        <span>Plan classes</span>
+                    </div>
                 </div>
                 <div class="create-option" onclick="createProject('classwork')">
                     <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/></svg>
-                    <div><h4>Classwork</h4><span>Upload lessons</span></div>
+                    <div class="create-option-text">
+                        <h4>Classwork</h4>
+                        <span>Upload lessons</span>
+                    </div>
                 </div>
                 <div class="create-option" onclick="createProject('assignment')">
                     <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    <div><h4>Assignment</h4><span>Homework</span></div>
+                    <div class="create-option-text">
+                        <h4>Assignment</h4>
+                        <span>Create homework assignments</span>
+                    </div>
                 </div>
                 <div class="create-option" onclick="createProject('homework')">
                     <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"/><polyline points="12 6 12 12 16 14"/></svg>
-                    <div><h4>Homework</h4><span>Create homework</span></div>
+                    <div class="create-option-text">
+                        <h4>Homework</h4>
+                        <span>Post homework tasks</span>
+                    </div>
                 </div>
             </div>
             <button class="close-modal" onclick="closeModal('createModal')">Cancel</button>
@@ -1523,9 +1304,6 @@
         let messages = [{ id: 1, title: 'Welcome to Admin Dashboard', read: false }];
         let selectedUserId = null;
 
-        // Editor state
-        let editorVisible = true;
-
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toastNotification');
             toast.textContent = message;
@@ -1535,95 +1313,6 @@
                 toast.classList.remove('show');
             }, 3000);
         }
-
-        // Editor Functions
-        function toggleEditor() {
-            editorVisible = !editorVisible;
-            const editorIsland = document.getElementById('editorIsland');
-            const previewPanel = document.getElementById('previewPanel');
-            if (editorVisible) {
-                editorIsland.classList.remove('hidden');
-                previewPanel.classList.remove('hidden');
-            } else {
-                editorIsland.classList.add('hidden');
-                previewPanel.classList.add('hidden');
-            }
-        }
-
-        function setColor(color) {
-            document.getElementById('colorPicker').value = color;
-            updatePreview();
-        }
-
-        function updatePreview() {
-            const color = document.getElementById('colorPicker').value;
-            const fontSize = document.getElementById('fontSizeSlider').value;
-            const fontFamily = document.getElementById('fontFamily').value;
-            const opacity = document.getElementById('opacitySlider').value;
-            const radius = document.getElementById('radiusSlider').value;
-            
-            document.getElementById('fontSizeValue').textContent = fontSize + 'px';
-            document.getElementById('opacityValue').textContent = opacity + '%';
-            document.getElementById('radiusValue').textContent = radius + 'px';
-            
-            const previewBox = document.getElementById('previewBox');
-            previewBox.style.backgroundColor = color;
-            previewBox.style.opacity = opacity / 100;
-            previewBox.style.borderRadius = radius + 'px';
-            
-            const previewText = document.getElementById('previewText');
-            previewText.style.fontSize = fontSize + 'px';
-            previewText.style.fontFamily = fontFamily;
-        }
-
-        function applyEditorChanges() {
-            const color = document.getElementById('colorPicker').value;
-            const fontSize = document.getElementById('fontSizeSlider').value;
-            const fontFamily = document.getElementById('fontFamily').value;
-            const opacity = document.getElementById('opacitySlider').value;
-            const radius = document.getElementById('radiusSlider').value;
-            
-            // Apply to root CSS variables
-            document.documentElement.style.setProperty('--apple-blue', color);
-            
-            // Apply to all cards
-            document.querySelectorAll('.liquid-card, .stat-pill-card, .mission-card-item').forEach(card => {
-                card.style.borderRadius = radius + 'px';
-            });
-            
-            // Apply font to body
-            document.body.style.fontFamily = fontFamily;
-            document.body.style.fontSize = fontSize + 'px';
-            
-            // Save settings to localStorage
-            const settings = { color, fontSize, fontFamily, opacity, radius };
-            localStorage.setItem('editorSettings', JSON.stringify(settings));
-            
-            showToast('Design applied successfully!', 'success');
-        }
-
-        function loadEditorSettings() {
-            const saved = localStorage.getItem('editorSettings');
-            if (saved) {
-                const settings = JSON.parse(saved);
-                document.getElementById('colorPicker').value = settings.color;
-                document.getElementById('fontSizeSlider').value = settings.fontSize;
-                document.getElementById('fontFamily').value = settings.fontFamily;
-                document.getElementById('opacitySlider').value = settings.opacity;
-                document.getElementById('radiusSlider').value = settings.radius;
-                document.documentElement.style.setProperty('--apple-blue', settings.color);
-                document.body.style.fontFamily = settings.fontFamily;
-                document.body.style.fontSize = settings.fontSize + 'px';
-                updatePreview();
-            }
-        }
-
-        // Add event listeners for real-time preview
-        document.getElementById('colorPicker')?.addEventListener('input', updatePreview);
-        document.getElementById('fontSizeSlider')?.addEventListener('input', updatePreview);
-        document.getElementById('fontFamily')?.addEventListener('change', updatePreview);
-        document.getElementById('opacitySlider')?.addEventListener('input', updatePreview);
-        document.getElementById('radiusSlider')?.addEventListener('input', updatePreview);
 
         const sampleProjects = [
             { id: 1, title: 'Final Exam - Grade 12', type: 'exam', date: new Date().toISOString(), category: 'exam', owner: 'me' },
@@ -1641,22 +1330,36 @@
 
         function renderProjects() {
             let filtered = [...projects];
+            // Filter by owner
             if (currentOwnerFilter === 'me') {
                 filtered = filtered.filter(p => p.owner === 'me');
             } else if (currentOwnerFilter === 'shared') {
                 filtered = filtered.filter(p => p.owner === 'shared');
             }
+            // Filter by search
             const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
             if(searchTerm) filtered = filtered.filter(p => p.title.toLowerCase().includes(searchTerm));
+            // Filter by category
             if(currentCategory !== 'all') filtered = filtered.filter(p => p.category === currentCategory);
+            // Sort
             if(currentSort === 'az') filtered.sort((a,b) => a.title.localeCompare(b.title));
             else filtered.sort((a,b) => b.title.localeCompare(a.title));
+            
             const grid = document.getElementById('projectsGrid');
             if(filtered.length === 0) { 
-                grid.innerHTML = '<div class="empty-state"><h3>No projects found</h3><p>Try a different search or create a new project</p></div>'; 
+                grid.innerHTML = '<div class="empty-state"><h3>No projects found</h3><p>Click the + button to create your first project</p></div>'; 
                 return; 
             }
-            grid.innerHTML = filtered.map((p, i) => `<div class="liquid-card" onclick="openProject(${p.id})" style="animation-delay: ${i * 0.05}s"><div class="card-preview ${p.type}">${getIcon(p.type)}</div><div class="card-body"><h4>${escapeHtml(p.title)}</h4><p>Modified ${formatDate(p.date)}</p></div></div>`).join('');
+            grid.innerHTML = filtered.map((p, i) => `
+                <div class="liquid-card" onclick="openProject(${p.id})" style="animation-delay: ${i * 0.05}s">
+                    <div class="card-preview ${p.type}">${getIcon(p.type)}</div>
+                    <div class="card-body">
+                        <h4>${escapeHtml(p.title)}</h4>
+                        <p>Modified ${formatDate(p.date)}</p>
+                        <span style="display: inline-block; margin-top: 8px; font-size: 0.7rem; color: #0071e3;">${p.type.toUpperCase()}</span>
+                    </div>
+                </div>
+            `).join('');
         }
 
         function getIcon(type) {
@@ -1668,15 +1371,35 @@
             }
         }
 
-        function formatDate(d) { return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); }
-        function escapeHtml(str) { return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); }
-        function openProject(id) { alert(`Opening project ${id}`); }
+        function formatDate(d) { 
+            return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); 
+        }
+        
+        function escapeHtml(str) { 
+            return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); 
+        }
+        
+        function openProject(id) { 
+            const project = projects.find(p => p.id === id);
+            if (project) {
+                showToast(`Opening: ${project.title}`, 'success');
+            }
+        }
 
         function createProject(type) {
-            let title = `${type.charAt(0).toUpperCase() + type.slice(1)} ${new Date().toLocaleDateString()}`;
-            messages.unshift({ id: Date.now(), title: `Added to "${title}"`, read: false });
-            updateMessagesBadge();
-            projects.unshift({ id: Date.now(), title, type, date: new Date().toISOString(), category: type, owner: 'me' });
+            let title = prompt(`Enter ${type} title:`, `${type.charAt(0).toUpperCase() + type.slice(1)} ${new Date().toLocaleDateString()}`);
+            if (!title) return;
+            
+            const newProject = {
+                id: Date.now(),
+                title: title,
+                type: type,
+                date: new Date().toISOString(),
+                category: type,
+                owner: 'me'
+            };
+            
+            projects.unshift(newProject);
             localStorage.setItem('adminProjects', JSON.stringify(projects));
             renderProjects();
             closeModal('createModal');
@@ -1709,6 +1432,8 @@
             const categorySelected = document.getElementById('categorySelected');
             if (category === 'all') categorySelected.textContent = 'All Categories';
             else categorySelected.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+            
+            // Update category icons
             document.querySelectorAll('.category-icon-card').forEach(c => c.classList.remove('active'));
             if (category !== 'all') {
                 const icon = document.querySelector(`.category-icon-card[data-cat="${category}"]`);
@@ -1914,6 +1639,7 @@
         function openMessagesModal() { loadMessages(); openModal('messagesModal'); }
         function openApplications() { openModal('applicationsModal'); }
         function openAI() { showToast('AI Assistant coming soon!', 'success'); }
+        function openEditor() { window.location.href = 'editor.html'; }
         function openModal(id) { document.getElementById(id).classList.add('active'); }
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
@@ -1922,7 +1648,11 @@
             if(messages.length === 0) list.innerHTML = '<div style="padding:40px;text-align:center">No messages</div>';
             else list.innerHTML = messages.map(m => `<div class="message-item"><div class="message-title">${m.title}</div></div>`).join('');
         }
-        function updateMessagesBadge() { const badge = document.getElementById('messagesBadge'); if(badge) badge.textContent = messages.filter(m => !m.read).length; }
+        
+        function updateMessagesBadge() { 
+            const badge = document.getElementById('messagesBadge'); 
+            if(badge) badge.textContent = messages.filter(m => !m.read).length; 
+        }
 
         const searchInput = document.getElementById('searchInput');
         const clearBtn = document.getElementById('clearSearchBtn');
@@ -1974,7 +1704,6 @@
                         loadProjects();
                         updateMessagesBadge();
                         await renderUserList();
-                        loadEditorSettings();
                         if (entrance) setTimeout(() => { entrance.style.display = 'none'; }, 2000);
                     } else {
                         if (adminContent) adminContent.style.display = 'none';
@@ -1995,4 +1724,5 @@
         });
     </script>
 </body>
+</html>
 </html>
