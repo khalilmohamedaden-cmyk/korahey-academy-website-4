@@ -680,7 +680,7 @@
                     <hr>
                     <p><br></p>
                     <p>Welcome to Korahey UI v1.0 - Document Editor</p>
-                    <p>Start typing here. A new page will be created automatically when you fill this one.</p>
+                    <p>Start typing here. When the page becomes full, a new page will be created automatically.</p>
                     <p><br></p>
                     <p>This document uses true A4 paper size (210mm x 297mm).</p>
                     <p>The page panel on the left shows mini previews of each page.</p>
@@ -750,6 +750,7 @@
         let currentZoom = 100;
         let currentPageIndex = 0;
         let panelCollapsed = false;
+        let isAutoCreatingPage = false;
 
         // Loading animation
         window.addEventListener('load', () => {
@@ -876,36 +877,87 @@
             }
         }
 
+        // Check if page is full - only create new page when actually full
+        function isPageFull(pageElement) {
+            // Get the actual scroll height and client height
+            const scrollHeight = pageElement.scrollHeight;
+            const clientHeight = pageElement.clientHeight;
+            
+            // Consider page full when content height exceeds available space by 50px or more
+            // This prevents creating new pages when typing a single letter
+            const contentExceeds = scrollHeight - clientHeight > 50;
+            
+            // Also check if there's significant content (not just empty)
+            const textContent = pageElement.innerText.trim();
+            const hasSubstantialContent = textContent.length > 200;
+            
+            return contentExceeds && hasSubstantialContent;
+        }
+
+        // Check and add new page only when current page is truly full
         function checkAndAddNewPage() {
+            if (isAutoCreatingPage) return;
+            
             const activePage = document.activeElement.closest('.paper-page');
-            if (activePage) {
+            if (!activePage) return;
+            
+            // Check if the page is full
+            if (isPageFull(activePage)) {
+                isAutoCreatingPage = true;
+                
+                // Get the remaining content that goes beyond the page
+                const allContent = activePage.innerHTML;
+                
+                // Create new page
+                const newPage = document.createElement('div');
+                newPage.className = 'paper-page';
+                newPage.setAttribute('contenteditable', 'true');
+                newPage.innerHTML = '<p><br></p>';
+                
+                // Insert after current page
+                activePage.insertAdjacentElement('afterend', newPage);
+                
+                // Focus on new page
+                setTimeout(() => {
+                    newPage.focus();
+                    updatePageList();
+                    showToast('New page added - Page is full');
+                    isAutoCreatingPage = false;
+                }, 100);
+                
+                updatePageList();
+            }
+        }
+
+        // Also check on scroll events (when user scrolls to bottom)
+        function handleScroll(e) {
+            const activePage = document.activeElement.closest('.paper-page');
+            if (activePage && !isAutoCreatingPage) {
+                const scrollTop = activePage.scrollTop;
                 const scrollHeight = activePage.scrollHeight;
                 const clientHeight = activePage.clientHeight;
-                // Add new page when near bottom
-                if (activePage.scrollTop + clientHeight >= scrollHeight - 100) {
-                    const newPage = document.createElement('div');
-                    newPage.className = 'paper-page';
-                    newPage.setAttribute('contenteditable', 'true');
-                    newPage.innerHTML = '<p><br></p>';
-                    activePage.insertAdjacentElement('afterend', newPage);
-                    updatePageList();
-                    showToast('New page added');
+                
+                // If user scrolled to bottom and page is full, add new page
+                if (scrollTop + clientHeight >= scrollHeight - 10 && isPageFull(activePage)) {
+                    checkAndAddNewPage();
                 }
             }
         }
 
+        // Listen for input events with debounce to avoid multiple page creations
+        let inputTimeout;
         document.addEventListener('input', function(e) {
             if (e.target.closest('.paper-page')) {
-                checkAndAddNewPage();
-                updatePageList();
+                clearTimeout(inputTimeout);
+                inputTimeout = setTimeout(() => {
+                    checkAndAddNewPage();
+                    updatePageList();
+                }, 500);
             }
         });
 
-        document.addEventListener('scroll', function(e) {
-            if (e.target.closest('.canvas-center')) {
-                // Update current page index based on scroll position
-            }
-        });
+        // Listen for scroll events
+        document.addEventListener('scroll', handleScroll, true);
 
         // Zoom functions
         function zoomIn() {
@@ -915,8 +967,11 @@
             if (currentZoom > 50) { currentZoom -= 10; applyZoom(); }
         }
         function applyZoom() {
-            document.querySelector('.paper-container').style.transform = `scale(${currentZoom / 100})`;
-            document.querySelector('.paper-container').style.transformOrigin = 'top center';
+            const container = document.querySelector('.paper-container');
+            if (container) {
+                container.style.transform = `scale(${currentZoom / 100})`;
+                container.style.transformOrigin = 'top center';
+            }
             document.getElementById('zoomValue').textContent = currentZoom + '%';
         }
 
@@ -979,7 +1034,7 @@
 
         function newDocument() {
             if (confirm('Create new document? Unsaved changes will be lost.')) {
-                document.getElementById('paperContainer').innerHTML = `<div class="paper-page" contenteditable="true"><h1 style="text-align: center; font-size: 24pt;">KORAHEY ACADEMY</h1><p style="text-align: center; font-style: italic; font-size: 12pt;">Passion for Success</p><hr><p><br></p><p>Start typing your document here...</p></div>`;
+                document.getElementById('paperContainer').innerHTML = `<div class="paper-page" contenteditable="true"><h1 style="text-align: center; font-size: 24pt;">KORAHEY ACADEMY</h1><p style="text-align: center; font-style: italic; font-size: 12pt;">Passion for Success</p><hr><p><br></p><p>Start typing your document here. A new page will only be created when this page becomes full.</p></div>`;
                 currentPageIndex = 0;
                 updatePageList();
                 showToast('New document created');
@@ -996,7 +1051,7 @@
         function changeFont() { document.execCommand('fontName', false, document.getElementById('fontSelector').value); }
         function changeFontSize() { document.execCommand('fontSize', false, document.getElementById('sizeSelector').value); }
         function insertDate() { document.execCommand('insertText', false, new Date().toLocaleString()); }
-        function showAbout() { alert('Korahey UI v1.0\nDocument Editor\n\nTrue A4 Paper Size (210mm x 297mm)\nPage Management with Mini Previews\n\n© 2026 Korahey Academy'); }
+        function showAbout() { alert('Korahey UI v1.0\nDocument Editor\n\nTrue A4 Paper Size (210mm x 297mm)\nSmart Page Creation - Only creates new page when current page is actually full\nPage Management with Mini Previews\n\n© 2026 Korahey Academy'); }
 
         // Table functions
         function insertTable() {
@@ -1073,6 +1128,7 @@
                     if (range) range.insertNode(img);
                     else page.appendChild(img);
                     showToast('Image inserted');
+                    updatePageList();
                 }
             });
         });
