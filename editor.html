@@ -169,71 +169,110 @@
             overflow: hidden;
         }
 
-        /* KORAHLEY ACADEMY HEADER STYLE */
+        /* KORAHLEY ACADEMY HEADER - EXACTLY LIKE IMAGE */
         .exam-header {
             background: white;
             padding: 30px 40px;
-            text-align: center;
             border-bottom: 2px solid #0071e3;
         }
 
-        .school-name {
-            font-size: 2rem;
+        /* Editable text styles - like Microsoft Word */
+        [contenteditable="true"] {
+            outline: none;
+            border-bottom: 1px dashed #0071e3;
+            min-width: 80px;
+            display: inline-block;
+            padding: 2px 4px;
+            cursor: text;
+        }
+
+        [contenteditable="true"]:hover {
+            background: rgba(0, 113, 227, 0.05);
+            border-bottom-color: #0071e3;
+        }
+
+        [contenteditable="true"]:focus {
+            background: rgba(0, 113, 227, 0.1);
+            border-bottom-color: #0071e3;
+        }
+
+        .school-name-large {
+            text-align: center;
+            font-size: 2.2rem;
             font-weight: 800;
             letter-spacing: -1px;
             background: linear-gradient(135deg, #1d1d1f 0%, #0071e3 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 20px;
-        }
-
-        .exam-info-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #e9ecef;
-        }
-
-        .info-field {
-            text-align: left;
-            padding: 5px 10px;
-            border-bottom: 1px solid #e9ecef;
-            font-size: 0.85rem;
-        }
-
-        .info-field label {
-            font-weight: 600;
-            color: #555;
-            min-width: 100px;
-            display: inline-block;
-        }
-
-        .info-field span {
-            color: #1d1d1f;
-        }
-
-        .info-field input {
-            border: none;
-            background: transparent;
-            padding: 5px;
-            font-size: 0.85rem;
-            font-family: inherit;
-            width: 200px;
-            border-bottom: 1px dashed #ccc;
-        }
-
-        .info-field input:focus {
-            outline: none;
-            border-bottom-color: #0071e3;
+            margin-bottom: 10px;
         }
 
         .motto {
-            font-size: 0.8rem;
+            text-align: center;
+            font-size: 0.85rem;
             color: #0071e3;
             font-style: italic;
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+        }
+
+        /* Two column layout for header fields */
+        .header-columns {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 20px;
+        }
+
+        .header-col {
+            flex: 1;
+        }
+
+        .header-field {
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        .field-label {
+            font-weight: 600;
+            color: #444;
+            min-width: 100px;
+        }
+
+        .editable-field {
+            min-width: 180px;
+            color: #1d1d1f;
+        }
+
+        .bottom-row {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #e9ecef;
+            justify-content: center;
+        }
+
+        .bottom-field {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .bottom-field .field-label {
+            min-width: auto;
+        }
+
+        .academy-footer {
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #0071e3;
             margin-top: 15px;
+            letter-spacing: 1px;
         }
 
         .questions-container {
@@ -493,8 +532,14 @@
             .question-sidebar, .style-sidebar {
                 width: 240px;
             }
-            .exam-info-grid {
-                grid-template-columns: 1fr;
+            .header-columns {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .bottom-row {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
             }
         }
     </style>
@@ -548,73 +593,71 @@
                     </div>
                 </div>
             </div>
-
-            <div class="sidebar-section">
-                <div class="sidebar-title">Exam Settings</div>
-                <div class="style-group">
-                    <div class="style-label">Academic Year</div>
-                    <input type="text" id="academicYear" class="info-field-input" placeholder="2024/2025" value="2024/2025">
-                </div>
-                <div class="style-group">
-                    <div class="style-label">Semester</div>
-                    <select id="semester" class="info-field-input">
-                        <option>First Semester</option>
-                        <option>Second Semester</option>
-                    </select>
-                </div>
-                <div class="style-group">
-                    <div class="style-label">Subject</div>
-                    <input type="text" id="subject" class="info-field-input" placeholder="Mathematics" value="Mathematics">
-                </div>
-            </div>
         </div>
 
         <!-- Center Canvas - Exam Area -->
         <div class="exam-canvas" id="examCanvas" ondragover="dragOver(event)" ondrop="dropQuestion(event)">
             <div class="exam-container" id="examContainer">
-                <!-- KORAHLEY ACADEMY HEADER -->
+                <!-- KORAHLEY ACADEMY HEADER - EXACTLY LIKE IMAGE with click-to-edit -->
                 <div class="exam-header">
-                    <div class="school-name">KORAHLEY ACADEMY</div>
+                    <div class="school-name-large">KORAHLEY ACADEMY</div>
+                    <div class="motto" contenteditable="true">Passion for Success</div>
                     
-                    <div class="exam-info-grid">
-                        <div class="info-field">
-                            <label>Name:</label>
-                            <input type="text" id="studentName" placeholder="__________________">
+                    <div class="header-columns">
+                        <div class="header-col">
+                            <div class="header-field">
+                                <span class="field-label">Name:</span>
+                                <span class="editable-field" contenteditable="true">__________</span>
+                            </div>
+                            <div class="header-field">
+                                <span class="field-label">Marked by:</span>
+                                <span class="editable-field" contenteditable="true">__________</span>
+                            </div>
+                            <div class="header-field">
+                                <span class="field-label">Branch:</span>
+                                <span class="editable-field" contenteditable="true">__________</span>
+                            </div>
+                            <div class="header-field">
+                                <span class="field-label">Grade:</span>
+                                <span class="editable-field" contenteditable="true">__________</span>
+                            </div>
+                            <div class="header-field">
+                                <span class="field-label">Subject:</span>
+                                <span class="editable-field" contenteditable="true">__________</span>
+                            </div>
                         </div>
-                        <div class="info-field">
-                            <label>Grade:</label>
-                            <input type="text" id="grade" placeholder="______">
-                        </div>
-                        <div class="info-field">
-                            <label>Marked by:</label>
-                            <input type="text" id="markedBy" placeholder="______">
-                        </div>
-                        <div class="info-field">
-                            <label>Reviewed by:</label>
-                            <input type="text" id="reviewedBy" placeholder="______">
-                        </div>
-                        <div class="info-field">
-                            <label>Subject:</label>
-                            <input type="text" id="subjectField" placeholder="______" value="Mathematics">
-                        </div>
-                        <div class="info-field">
-                            <label>Grade:</label>
-                            <input type="text" id="gradeField" placeholder="______">
-                        </div>
-                        <div class="info-field">
-                            <label>Academic Year:</label>
-                            <input type="text" id="academicYearField" placeholder="______" value="2024/2025">
-                        </div>
-                        <div class="info-field">
-                            <label>Semester:</label>
-                            <input type="text" id="semesterField" placeholder="______" value="First Semester">
-                        </div>
-                        <div class="info-field">
-                            <label>Test Date:</label>
-                            <input type="date" id="testDate">
+                        <div class="header-col">
+                            <div class="header-field">
+                                <span class="field-label">Academic Year:</span>
+                                <span class="editable-field" contenteditable="true">__________</span>
+                            </div>
+                            <div class="header-field">
+                                <span class="field-label">Prepared by:</span>
+                                <span class="editable-field" contenteditable="true">__________</span>
+                            </div>
+                            <div class="header-field">
+                                <span class="field-label">Reviewed by:</span>
+                                <span class="editable-field" contenteditable="true">__________</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="motto">Passion for Success</div>
+                    
+                    <div class="bottom-row">
+                        <div class="bottom-field">
+                            <span class="field-label">Semester:</span>
+                            <span class="editable-field" contenteditable="true">__________</span>
+                        </div>
+                        <div class="bottom-field">
+                            <span class="field-label">Test:</span>
+                            <span class="editable-field" contenteditable="true">__________</span>
+                        </div>
+                        <div class="bottom-field">
+                            <span class="field-label">Date:</span>
+                            <span class="editable-field" contenteditable="true">__________</span>
+                        </div>
+                    </div>
+                    
+                    <div class="academy-footer">KORAHLEY ACADEMY</div>
                 </div>
 
                 <div class="questions-container" id="questionsContainer">
@@ -635,7 +678,7 @@
         <!-- Right Sidebar - Styling -->
         <div class="style-sidebar">
             <div class="sidebar-section">
-                <div class="sidebar-title">Header Color</div>
+                <div class="sidebar-title">Theme Color</div>
                 <div class="color-presets">
                     <div class="color-dot" style="background: #0071e3;" onclick="setAccentColor('#0071e3')"></div>
                     <div class="color-dot" style="background: #5856d6;" onclick="setAccentColor('#5856d6')"></div>
@@ -921,9 +964,12 @@
             document.querySelectorAll('.question-number').forEach(el => {
                 el.style.background = color;
             });
-            document.querySelector('.school-name').style.background = `linear-gradient(135deg, #1d1d1f 0%, ${color} 100%)`;
-            document.querySelector('.school-name').style.webkitBackgroundClip = 'text';
-            document.querySelector('.school-name').style.webkitTextFillColor = 'transparent';
+            document.querySelector('.exam-header').style.borderBottomColor = color;
+            document.querySelector('.academy-footer').style.color = color;
+            document.querySelector('.school-name-large').style.background = `linear-gradient(135deg, #1d1d1f 0%, ${color} 100%)`;
+            document.querySelector('.school-name-large').style.webkitBackgroundClip = 'text';
+            document.querySelector('.school-name-large').style.webkitTextFillColor = 'transparent';
+            document.querySelector('.motto').style.color = color;
         }
 
         function applyBorderRadius() {
@@ -936,15 +982,24 @@
 
         // Save Exam
         function saveExam() {
+            // Get all editable field values
+            const headerData = {
+                motto: document.querySelector('.motto')?.innerText || 'Passion for Success',
+                name: document.querySelector('.header-field .editable-field')?.innerText || '__________',
+                markedBy: document.querySelectorAll('.header-field .editable-field')[1]?.innerText || '__________',
+                branch: document.querySelectorAll('.header-field .editable-field')[2]?.innerText || '__________',
+                grade: document.querySelectorAll('.header-field .editable-field')[3]?.innerText || '__________',
+                subject: document.querySelectorAll('.header-field .editable-field')[4]?.innerText || '__________',
+                academicYear: document.querySelectorAll('.header-col .editable-field')[5]?.innerText || '__________',
+                preparedBy: document.querySelectorAll('.header-col .editable-field')[6]?.innerText || '__________',
+                reviewedBy: document.querySelectorAll('.header-col .editable-field')[7]?.innerText || '__________',
+                semester: document.querySelectorAll('.bottom-field .editable-field')[0]?.innerText || '__________',
+                test: document.querySelectorAll('.bottom-field .editable-field')[1]?.innerText || '__________',
+                date: document.querySelectorAll('.bottom-field .editable-field')[2]?.innerText || '__________'
+            };
+            
             const examData = {
-                studentName: document.getElementById('studentName').value,
-                grade: document.getElementById('grade').value,
-                markedBy: document.getElementById('markedBy').value,
-                reviewedBy: document.getElementById('reviewedBy').value,
-                subject: document.getElementById('subjectField').value,
-                academicYear: document.getElementById('academicYearField').value,
-                semester: document.getElementById('semesterField').value,
-                testDate: document.getElementById('testDate').value,
+                header: headerData,
                 questions: questions,
                 savedAt: new Date().toISOString()
             };
@@ -955,43 +1010,80 @@
         function exportExam() {
             saveExam();
             // Create printable version
+            const headerData = {
+                motto: document.querySelector('.motto')?.innerText || 'Passion for Success',
+                name: document.querySelector('.header-field .editable-field')?.innerText || '__________',
+                markedBy: document.querySelectorAll('.header-field .editable-field')[1]?.innerText || '__________',
+                branch: document.querySelectorAll('.header-field .editable-field')[2]?.innerText || '__________',
+                grade: document.querySelectorAll('.header-field .editable-field')[3]?.innerText || '__________',
+                subject: document.querySelectorAll('.header-field .editable-field')[4]?.innerText || '__________',
+                academicYear: document.querySelectorAll('.header-col .editable-field')[5]?.innerText || '__________',
+                preparedBy: document.querySelectorAll('.header-col .editable-field')[6]?.innerText || '__________',
+                reviewedBy: document.querySelectorAll('.header-col .editable-field')[7]?.innerText || '__________',
+                semester: document.querySelectorAll('.bottom-field .editable-field')[0]?.innerText || '__________',
+                test: document.querySelectorAll('.bottom-field .editable-field')[1]?.innerText || '__________',
+                date: document.querySelectorAll('.bottom-field .editable-field')[2]?.innerText || '__________'
+            };
+            
             const printWindow = window.open('', '_blank');
             printWindow.document.write(`
                 <html>
                 <head>
-                    <title>Korahey Academy - Exam</title>
+                    <title>Korahey Academy - Examination</title>
                     <style>
                         body { font-family: 'Inter', sans-serif; padding: 40px; max-width: 900px; margin: 0 auto; }
-                        .school-name { font-size: 2rem; font-weight: 800; text-align: center; margin-bottom: 30px; color: #0071e3; }
-                        .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 30px; }
-                        .info-field { border-bottom: 1px solid #ccc; padding: 5px; }
-                        .motto { text-align: center; font-style: italic; margin-bottom: 30px; }
+                        .school-name { font-size: 2rem; font-weight: 800; text-align: center; margin-bottom: 5px; color: #0071e3; }
+                        .motto { text-align: center; font-style: italic; margin-bottom: 30px; color: #0071e3; }
+                        .header-grid { display: flex; gap: 40px; margin-bottom: 20px; }
+                        .col { flex: 1; }
+                        .field-row { margin-bottom: 8px; }
+                        .field-label { font-weight: 600; display: inline-block; width: 110px; }
+                        .bottom-row { display: flex; justify-content: center; gap: 30px; margin: 20px 0; }
+                        .academy-footer { text-align: center; font-weight: 600; margin-bottom: 30px; color: #0071e3; }
                         .question { margin-bottom: 30px; page-break-inside: avoid; }
-                        .question-number { font-weight: 700; margin-bottom: 10px; }
+                        .question-title { font-weight: 700; margin-bottom: 10px; }
                         .options { margin-left: 30px; }
                         .option { margin: 5px 0; }
                         hr { margin: 20px 0; }
                     </style>
                 </head>
                 <body>
-                    <div class="school-name">KORAHEY ACADEMY</div>
-                    <div class="info-grid">
-                        <div class="info-field">Name: _________________</div>
-                        <div class="info-field">Grade: _________________</div>
-                        <div class="info-field">Subject: ${document.getElementById('subjectField').value}</div>
-                        <div class="info-field">Date: ${document.getElementById('testDate').value || '________'}</div>
+                    <div class="school-name">KORAHLEY ACADEMY</div>
+                    <div class="motto">${headerData.motto}</div>
+                    
+                    <div class="header-grid">
+                        <div class="col">
+                            <div class="field-row"><span class="field-label">Name:</span> ${headerData.name}</div>
+                            <div class="field-row"><span class="field-label">Marked by:</span> ${headerData.markedBy}</div>
+                            <div class="field-row"><span class="field-label">Branch:</span> ${headerData.branch}</div>
+                            <div class="field-row"><span class="field-label">Grade:</span> ${headerData.grade}</div>
+                            <div class="field-row"><span class="field-label">Subject:</span> ${headerData.subject}</div>
+                        </div>
+                        <div class="col">
+                            <div class="field-row"><span class="field-label">Academic Year:</span> ${headerData.academicYear}</div>
+                            <div class="field-row"><span class="field-label">Prepared by:</span> ${headerData.preparedBy}</div>
+                            <div class="field-row"><span class="field-label">Reviewed by:</span> ${headerData.reviewedBy}</div>
+                        </div>
                     </div>
-                    <div class="motto">Passion for Success</div>
+                    
+                    <div class="bottom-row">
+                        <div>Semester: ${headerData.semester}</div>
+                        <div>Test: ${headerData.test}</div>
+                        <div>Date: ${headerData.date}</div>
+                    </div>
+                    
+                    <div class="academy-footer">KORAHLEY ACADEMY</div>
+                    
                     <hr>
                     <h3> Examination Questions</h3>
                     ${questions.map((q, idx) => `
                         <div class="question">
-                            <div class="question-number">Question ${idx + 1} (${q.points} points)</div>
+                            <div class="question-title">Question ${idx + 1} (${q.points} points)</div>
                             <div>${escapeHtml(q.text)}</div>
                             <div class="options">
                                 ${q.type === 'multiple' ? q.options.map((opt, i) => `<div class="option">${String.fromCharCode(65 + i)}. ${escapeHtml(opt)}</div>`).join('') : ''}
                                 ${q.type === 'truefalse' ? `<div class="option">True / False</div>` : ''}
-                                ${q.type === 'essay' ? `<div class="option">Answer: _________________________________</div><br><div class="option">_________________________________</div><div class="option">_________________________________</div>` : ''}
+                                ${q.type === 'essay' ? `<div class="option">Answer: _________________________________</div>` : ''}
                                 ${q.type === 'fillblank' ? `<div class="option">Answer: _____________</div>` : ''}
                             </div>
                         </div>
@@ -1009,14 +1101,22 @@
             const saved = localStorage.getItem('koraheyExam');
             if (saved) {
                 const exam = JSON.parse(saved);
-                if (exam.studentName) document.getElementById('studentName').value = exam.studentName;
-                if (exam.grade) document.getElementById('grade').value = exam.grade;
-                if (exam.markedBy) document.getElementById('markedBy').value = exam.markedBy;
-                if (exam.reviewedBy) document.getElementById('reviewedBy').value = exam.reviewedBy;
-                if (exam.subject) document.getElementById('subjectField').value = exam.subject;
-                if (exam.academicYear) document.getElementById('academicYearField').value = exam.academicYear;
-                if (exam.semester) document.getElementById('semesterField').value = exam.semester;
-                if (exam.testDate) document.getElementById('testDate').value = exam.testDate;
+                if (exam.header) {
+                    const h = exam.header;
+                    if (h.motto) document.querySelector('.motto').innerText = h.motto;
+                    const editableFields = document.querySelectorAll('.editable-field');
+                    if (editableFields[0]) editableFields[0].innerText = h.name || '__________';
+                    if (editableFields[1]) editableFields[1].innerText = h.markedBy || '__________';
+                    if (editableFields[2]) editableFields[2].innerText = h.branch || '__________';
+                    if (editableFields[3]) editableFields[3].innerText = h.grade || '__________';
+                    if (editableFields[4]) editableFields[4].innerText = h.subject || '__________';
+                    if (editableFields[5]) editableFields[5].innerText = h.academicYear || '__________';
+                    if (editableFields[6]) editableFields[6].innerText = h.preparedBy || '__________';
+                    if (editableFields[7]) editableFields[7].innerText = h.reviewedBy || '__________';
+                    if (editableFields[8]) editableFields[8].innerText = h.semester || '__________';
+                    if (editableFields[9]) editableFields[9].innerText = h.test || '__________';
+                    if (editableFields[10]) editableFields[10].innerText = h.date || '__________';
+                }
                 if (exam.questions) {
                     questions = exam.questions;
                     nextId = Math.max(...questions.map(q => q.id), 0) + 1;
@@ -1025,17 +1125,6 @@
                 showToast('Exam loaded');
             }
         }
-
-        // Sync sidebar inputs with header fields
-        document.getElementById('academicYear').addEventListener('input', (e) => {
-            document.getElementById('academicYearField').value = e.target.value;
-        });
-        document.getElementById('semester').addEventListener('change', (e) => {
-            document.getElementById('semesterField').value = e.target.value;
-        });
-        document.getElementById('subject').addEventListener('input', (e) => {
-            document.getElementById('subjectField').value = e.target.value;
-        });
 
         function escapeHtml(str) {
             if (!str) return '';
@@ -1046,5 +1135,4 @@
         loadExam();
     </script>
 </body>
-</html>
 </html>
