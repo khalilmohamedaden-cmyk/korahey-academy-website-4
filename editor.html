@@ -24,7 +24,7 @@
             min-height: 100vh;
         }
 
-        /* Loading Animation */
+        /* Loading Animation - Dots */
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -49,28 +49,35 @@
         }
 
         .loader-logo {
-            font-size: 3rem;
-            font-weight: 800;
-            letter-spacing: -2px;
-            background: linear-gradient(135deg, #1d1d1f 0%, var(--apple-blue) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 20px;
-            animation: pulse 1.5s ease infinite;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: var(--apple-blue);
+            margin-bottom: 30px;
         }
 
-        .loader-spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(0, 113, 227, 0.2);
-            border-top-color: var(--apple-blue);
+        .loader-dots {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .loader-dots span {
+            width: 12px;
+            height: 12px;
+            background: var(--apple-blue);
             border-radius: 50%;
-            margin: 0 auto;
-            animation: spin 1s linear infinite;
+            display: inline-block;
+            animation: dotPulse 1.4s ease infinite;
         }
 
-        @keyframes spin { to { transform: rotate(360deg); } }
-        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(1.05); } }
+        .loader-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .loader-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes dotPulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
 
         /* Top Bar */
         .top-bar {
@@ -89,29 +96,10 @@
         }
 
         .editor-brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .brand-icon {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, var(--apple-blue), #005bb5);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
             font-weight: 700;
-        }
-
-        .brand-text {
-            font-weight: 700;
-            font-size: 1.1rem;
-            background: linear-gradient(135deg, #1d1d1f, var(--apple-blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 1rem;
+            color: #1d1d1f;
+            letter-spacing: 1px;
         }
 
         .menu-bar { display: flex; gap: 4px; }
@@ -225,16 +213,51 @@
         }
         .paper-page:focus { outline: none; }
 
-        /* Left Panel - Pages */
+        /* Left Panel - Pages with Preview */
         .left-panel {
             position: fixed;
             left: 0;
             top: 110px;
             bottom: 60px;
-            width: 260px;
+            width: 280px;
             padding: 20px 16px;
             overflow-y: auto;
             border-right: 1px solid rgba(0, 0, 0, 0.05);
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+            z-index: 50;
+        }
+
+        .left-panel.collapsed {
+            transform: translateX(-100%);
+        }
+
+        .panel-toggle {
+            position: fixed;
+            left: 290px;
+            top: 120px;
+            width: 28px;
+            height: 28px;
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 60;
+            transition: left 0.3s ease;
+            font-size: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .panel-toggle.collapsed {
+            left: 10px;
+        }
+
+        .panel-toggle:hover {
+            background: #f0f0f0;
         }
 
         .panel-title {
@@ -247,7 +270,8 @@
             padding-left: 8px;
         }
 
-        .page-list { display: flex; flex-direction: column; gap: 8px; }
+        .page-list { display: flex; flex-direction: column; gap: 12px; }
+        
         .page-thumb {
             background: white;
             border: 1px solid rgba(0, 0, 0, 0.08);
@@ -256,34 +280,62 @@
             cursor: pointer;
             transition: all 0.2s;
             display: flex;
-            align-items: center;
-            gap: 12px;
+            flex-direction: column;
+            gap: 8px;
         }
-        .page-thumb:hover { border-color: var(--apple-blue); transform: translateX(4px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        .page-thumb.active { border-color: var(--apple-blue); background: rgba(0, 113, 227, 0.05); }
-        .page-number {
-            width: 32px;
-            height: 32px;
-            background: #f5f5f7;
-            border-radius: 8px;
+        
+        .page-thumb:hover { 
+            border-color: var(--apple-blue); 
+            transform: translateX(4px); 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
+        }
+        
+        .page-thumb.active { 
+            border-color: var(--apple-blue); 
+            background: rgba(0, 113, 227, 0.05); 
+        }
+        
+        .thumb-header {
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 12px;
+            justify-content: space-between;
+        }
+        
+        .page-number {
+            background: #f5f5f7;
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-size: 11px;
             font-weight: 600;
         }
-        .page-preview { flex: 1; font-size: 13px; color: #666; }
+        
         .delete-page-btn {
             background: none;
             border: none;
             cursor: pointer;
             color: #999;
-            padding: 4px 8px;
+            padding: 4px 6px;
             border-radius: 6px;
+            font-size: 11px;
         }
+        
         .delete-page-btn:hover { background: rgba(255, 59, 48, 0.1); color: #ff3b30; }
+        
+        .page-preview-content {
+            font-size: 10px;
+            color: #666;
+            line-height: 1.4;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            background: #fafafc;
+            padding: 8px;
+            border-radius: 8px;
+            font-family: 'Times New Roman', serif;
+        }
 
-        /* Bottom Bar - Like Microsoft Word */
+        /* Bottom Bar */
         .bottom-bar {
             position: fixed;
             bottom: 0;
@@ -317,7 +369,7 @@
             background: none;
             border: none;
             cursor: pointer;
-            padding: 4px 8px;
+            padding: 4px 10px;
             border-radius: 6px;
             font-size: 12px;
             color: #666;
@@ -438,7 +490,7 @@
         .toast.show { transform: translateX(-50%) translateY(0); }
 
         @media (max-width: 900px) {
-            .left-panel { width: 200px; }
+            .left-panel { width: 260px; }
             .dynamic-island { padding: 8px 12px; }
             .island-content { flex-wrap: wrap; justify-content: center; }
             .paper-page { width: 100%; padding: 20px; }
@@ -449,20 +501,21 @@
 </head>
 <body>
 
-    <!-- Loading Animation -->
+    <!-- Loading Animation - Dots -->
     <div id="loadingOverlay" class="loading-overlay">
         <div class="loader">
             <div class="loader-logo">KORAHEY</div>
-            <div class="loader-spinner"></div>
+            <div class="loader-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
     </div>
 
     <!-- Top Bar -->
     <div class="top-bar">
-        <div class="editor-brand">
-            <div class="brand-icon">K</div>
-            <div class="brand-text">Korahey Editor</div>
-        </div>
+        <div class="editor-brand">KORAHEY EDITOR</div>
         <div class="menu-bar">
             <div class="menu-item" onclick="toggleDropdown('fileMenu')">File</div>
             <div id="fileMenu" class="dropdown-menu">
@@ -536,10 +589,15 @@
 
     <!-- Main Editor Layout -->
     <div class="main-editor-layout">
-        <!-- Left Panel - Pages -->
-        <div class="left-panel">
-            <div class="panel-title">Pages</div>
+        <!-- Left Panel - Pages with Preview -->
+        <div class="left-panel" id="leftPanel">
+            <div class="panel-title">PAGES</div>
             <div class="page-list" id="pageList"></div>
+        </div>
+
+        <!-- Panel Toggle Button -->
+        <div class="panel-toggle" id="panelToggle" onclick="togglePanel()">
+            <i class="fas fa-chevron-left" id="toggleIcon"></i>
         </div>
 
         <!-- Center Canvas -->
@@ -557,7 +615,7 @@
         </div>
     </div>
 
-    <!-- Bottom Bar - Like Microsoft Word -->
+    <!-- Bottom Bar -->
     <div class="bottom-bar">
         <div class="bottom-left">
             <div class="page-info">
@@ -617,6 +675,7 @@
         let currentActiveButtons = {};
         let currentZoom = 100;
         let currentPageIndex = 0;
+        let panelCollapsed = false;
 
         // Loading animation
         window.addEventListener('load', () => {
@@ -632,6 +691,26 @@
             toast.textContent = message;
             toast.classList.add('show');
             setTimeout(() => { toast.classList.remove('show'); }, 2000);
+        }
+
+        // Panel Toggle
+        function togglePanel() {
+            panelCollapsed = !panelCollapsed;
+            const panel = document.getElementById('leftPanel');
+            const toggle = document.getElementById('panelToggle');
+            const icon = document.getElementById('toggleIcon');
+            
+            if (panelCollapsed) {
+                panel.classList.add('collapsed');
+                toggle.classList.add('collapsed');
+                icon.classList.remove('fa-chevron-left');
+                icon.classList.add('fa-chevron-right');
+            } else {
+                panel.classList.remove('collapsed');
+                toggle.classList.remove('collapsed');
+                icon.classList.remove('fa-chevron-right');
+                icon.classList.add('fa-chevron-left');
+            }
         }
 
         // Word count update
@@ -653,15 +732,24 @@
             document.getElementById('pageCounter').textContent = `Page ${currentPageIndex + 1} of ${pages.length}`;
         }
 
+        // Get page preview text
+        function getPagePreviewText(pageElement) {
+            const text = pageElement.innerText;
+            const preview = text.substring(0, 100);
+            return preview + (text.length > 100 ? '...' : '');
+        }
+
         // Page Management
         function updatePageList() {
             const pages = document.querySelectorAll('.paper-page');
             const container = document.getElementById('pageList');
             container.innerHTML = Array.from(pages).map((page, idx) => `
                 <div class="page-thumb ${idx === currentPageIndex ? 'active' : ''}" onclick="goToPage(${idx})">
-                    <div class="page-number">${idx + 1}</div>
-                    <div class="page-preview">Page ${idx + 1}</div>
-                    ${pages.length > 1 ? `<button class="delete-page-btn" onclick="event.stopPropagation(); deletePage(${idx})"><i class="fas fa-trash"></i></button>` : ''}
+                    <div class="thumb-header">
+                        <span class="page-number">Page ${idx + 1}</span>
+                        ${pages.length > 1 ? `<button class="delete-page-btn" onclick="event.stopPropagation(); deletePage(${idx})"><i class="fas fa-trash"></i> Delete</button>` : ''}
+                    </div>
+                    <div class="page-preview-content">${escapeHtml(getPagePreviewText(page))}</div>
                 </div>
             `).join('');
             updatePageCounter();
@@ -894,6 +982,11 @@
                 }
             });
         });
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m]));
+        }
 
         function loadDocument() {
             const saved = localStorage.getItem('koraheyDocument');
