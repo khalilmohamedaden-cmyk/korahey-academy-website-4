@@ -95,6 +95,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 8px 24px;
+            height: 48px;
         }
 
         .editor-brand {
@@ -160,47 +161,46 @@
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(20px);
             border-radius: 60px;
-            padding: 8px 20px;
+            padding: 6px 20px;
             z-index: 999;
             border: 1px solid rgba(255, 255, 255, 0.4);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
             display: inline-flex;
         }
 
-        .island-content { display: flex; gap: 8px; align-items: center; }
+        .island-content { display: flex; gap: 6px; align-items: center; }
         .action-btn {
             background: transparent;
             border: none;
-            padding: 8px 12px;
+            padding: 6px 10px;
             border-radius: 40px;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 12px;
             transition: all 0.2s;
             color: #555;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
         }
-        .action-btn i { font-size: 14px; }
+        .action-btn i { font-size: 12px; }
         .action-btn:hover { background: rgba(0, 0, 0, 0.08); color: #333; }
         .action-btn.active { background: var(--apple-blue); color: white; }
         .action-btn.active i { color: white; }
-        .separator { width: 1px; height: 28px; background: rgba(0, 0, 0, 0.1); margin: 0 6px; }
+        .separator { width: 1px; height: 24px; background: rgba(0, 0, 0, 0.1); margin: 0 4px; }
         .font-selector, .size-selector {
-            padding: 6px 12px;
+            padding: 4px 10px;
             border-radius: 40px;
             border: 1px solid rgba(0, 0, 0, 0.1);
             background: rgba(255, 255, 255, 0.8);
-            font-size: 12px;
+            font-size: 11px;
             cursor: pointer;
         }
 
         /* Main Layout */
         .main-editor-layout {
             display: flex;
-            flex-direction: column;
             height: 100vh;
-            padding-top: 110px;
+            padding-top: 108px;
         }
 
         /* Canvas Area */
@@ -234,6 +234,8 @@
             transition: transform 0.2s;
             page-break-after: avoid;
             break-inside: avoid;
+            overflow-y: auto;
+            max-height: 297mm;
         }
         
         .paper-page:focus { outline: none; }
@@ -249,6 +251,8 @@
                 padding: 15mm 20mm;
                 width: 100%;
                 page-break-after: always;
+                overflow: visible;
+                max-height: none;
             }
             .paper-container {
                 margin: 0;
@@ -261,12 +265,12 @@
             }
         }
 
-        /* Left Panel - Pages with Mini Paper Preview */
+        /* Left Panel - Touches Top and Bottom */
         .left-panel {
             position: fixed;
             left: 0;
-            top: 110px;
-            bottom: 60px;
+            top: 108px;
+            bottom: 0;
             width: 280px;
             padding: 20px 16px;
             overflow-y: auto;
@@ -415,13 +419,14 @@
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
             border-top: 1px solid rgba(0, 0, 0, 0.05);
-            padding: 8px 24px;
+            padding: 6px 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 100;
             font-size: 12px;
             color: #666;
+            height: 40px;
         }
 
         .bottom-left {
@@ -547,7 +552,7 @@
         .gallery-item img { width: 100%; height: 80px; object-fit: cover; border-radius: 8px; }
         .toast {
             position: fixed;
-            bottom: 60px;
+            bottom: 50px;
             left: 50%;
             transform: translateX(-50%) translateY(100px);
             background: rgba(30,30,35,0.95);
@@ -563,10 +568,10 @@
 
         @media (max-width: 900px) {
             .left-panel { width: 260px; }
-            .dynamic-island { padding: 8px 12px; }
+            .dynamic-island { padding: 6px 12px; }
             .island-content { flex-wrap: wrap; justify-content: center; }
-            .paper-page { width: 100%; padding: 20px; }
-            .bottom-bar { padding: 8px 16px; }
+            .paper-page { width: 100%; padding: 20px; min-height: auto; }
+            .bottom-bar { padding: 6px 16px; }
         }
     </style>
 </head>
@@ -660,7 +665,7 @@
 
     <!-- Main Editor Layout -->
     <div class="main-editor-layout">
-        <!-- Left Panel - Pages with Mini Paper Preview -->
+        <!-- Left Panel - Touches Top and Bottom -->
         <div class="left-panel" id="leftPanel">
             <div class="panel-title">PAGES</div>
             <div class="page-list" id="pageList"></div>
@@ -680,10 +685,12 @@
                     <hr>
                     <p><br></p>
                     <p>Welcome to Korahey UI v1.0 - Document Editor</p>
-                    <p>Start typing here. When the page becomes full, a new page will be created automatically.</p>
+                    <p>Start typing here. When the page becomes full, content will automatically flow to the next page.</p>
                     <p><br></p>
                     <p>This document uses true A4 paper size (210mm x 297mm).</p>
                     <p>The page panel on the left shows mini previews of each page.</p>
+                    <p><br></p>
+                    <p>Type continuously to see how content flows between pages automatically.</p>
                 </div>
             </div>
         </div>
@@ -750,7 +757,7 @@
         let currentZoom = 100;
         let currentPageIndex = 0;
         let panelCollapsed = false;
-        let isAutoCreatingPage = false;
+        let isMovingContent = false;
 
         // Loading animation
         window.addEventListener('load', () => {
@@ -877,87 +884,130 @@
             }
         }
 
-        // Check if page is full - only create new page when actually full
-        function isPageFull(pageElement) {
-            // Get the actual scroll height and client height
-            const scrollHeight = pageElement.scrollHeight;
-            const clientHeight = pageElement.clientHeight;
+        // Move content between pages when page is full
+        function moveExcessContent(pageElement, nextPageElement) {
+            if (isMovingContent) return;
+            isMovingContent = true;
             
-            // Consider page full when content height exceeds available space by 50px or more
-            // This prevents creating new pages when typing a single letter
-            const contentExceeds = scrollHeight - clientHeight > 50;
+            // Get the content that overflows
+            const pageHeight = pageElement.clientHeight;
+            const contentHeight = pageElement.scrollHeight;
             
-            // Also check if there's significant content (not just empty)
-            const textContent = pageElement.innerText.trim();
-            const hasSubstantialContent = textContent.length > 200;
-            
-            return contentExceeds && hasSubstantialContent;
-        }
-
-        // Check and add new page only when current page is truly full
-        function checkAndAddNewPage() {
-            if (isAutoCreatingPage) return;
-            
-            const activePage = document.activeElement.closest('.paper-page');
-            if (!activePage) return;
-            
-            // Check if the page is full
-            if (isPageFull(activePage)) {
-                isAutoCreatingPage = true;
+            if (contentHeight > pageHeight + 50) {
+                // Find where the overflow starts
+                const originalContent = pageElement.innerHTML;
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = originalContent;
+                tempDiv.style.position = 'absolute';
+                tempDiv.style.width = pageElement.clientWidth + 'px';
+                tempDiv.style.fontSize = window.getComputedStyle(pageElement).fontSize;
+                tempDiv.style.fontFamily = window.getComputedStyle(pageElement).fontFamily;
+                tempDiv.style.lineHeight = window.getComputedStyle(pageElement).lineHeight;
+                tempDiv.style.padding = window.getComputedStyle(pageElement).padding;
+                document.body.appendChild(tempDiv);
                 
-                // Get the remaining content that goes beyond the page
-                const allContent = activePage.innerHTML;
+                // Find the split point
+                const children = Array.from(tempDiv.children);
+                let accumulatedHeight = 0;
+                let splitIndex = -1;
                 
-                // Create new page
-                const newPage = document.createElement('div');
-                newPage.className = 'paper-page';
-                newPage.setAttribute('contenteditable', 'true');
-                newPage.innerHTML = '<p><br></p>';
+                for (let i = 0; i < children.length; i++) {
+                    const childHeight = children[i].offsetHeight;
+                    if (accumulatedHeight + childHeight > pageHeight - 50) {
+                        splitIndex = i;
+                        break;
+                    }
+                    accumulatedHeight += childHeight;
+                }
                 
-                // Insert after current page
-                activePage.insertAdjacentElement('afterend', newPage);
+                if (splitIndex > 0) {
+                    // Move remaining content to next page
+                    const remainingContent = children.slice(splitIndex).map(c => c.outerHTML).join('');
+                    const keepContent = children.slice(0, splitIndex).map(c => c.outerHTML).join('');
+                    
+                    pageElement.innerHTML = keepContent;
+                    
+                    if (nextPageElement) {
+                        const existingContent = nextPageElement.innerHTML;
+                        nextPageElement.innerHTML = remainingContent + existingContent;
+                    }
+                }
                 
-                // Focus on new page
-                setTimeout(() => {
-                    newPage.focus();
-                    updatePageList();
-                    showToast('New page added - Page is full');
-                    isAutoCreatingPage = false;
-                }, 100);
-                
-                updatePageList();
+                document.body.removeChild(tempDiv);
             }
+            
+            isMovingContent = false;
         }
 
-        // Also check on scroll events (when user scrolls to bottom)
-        function handleScroll(e) {
-            const activePage = document.activeElement.closest('.paper-page');
-            if (activePage && !isAutoCreatingPage) {
-                const scrollTop = activePage.scrollTop;
-                const scrollHeight = activePage.scrollHeight;
-                const clientHeight = activePage.clientHeight;
+        // Check if page is full and move content
+        function checkAndBalancePages() {
+            const pages = document.querySelectorAll('.paper-page');
+            let hasChanges = false;
+            
+            for (let i = 0; i < pages.length - 1; i++) {
+                const currentPage = pages[i];
+                const nextPage = pages[i + 1];
+                const pageHeight = currentPage.clientHeight;
+                const contentHeight = currentPage.scrollHeight;
                 
-                // If user scrolled to bottom and page is full, add new page
-                if (scrollTop + clientHeight >= scrollHeight - 10 && isPageFull(activePage)) {
-                    checkAndAddNewPage();
+                if (contentHeight > pageHeight + 50) {
+                    moveExcessContent(currentPage, nextPage);
+                    hasChanges = true;
                 }
             }
+            
+            // Check last page for overflow (add new page)
+            const lastPage = pages[pages.length - 1];
+            if (lastPage && lastPage.scrollHeight > lastPage.clientHeight + 100) {
+                addNewPageAfter(lastPage);
+                hasChanges = true;
+            }
+            
+            if (hasChanges) {
+                setTimeout(() => {
+                    updatePageList();
+                    updateWordCount();
+                }, 100);
+            }
         }
 
-        // Listen for input events with debounce to avoid multiple page creations
-        let inputTimeout;
+        function addNewPageAfter(pageElement) {
+            const newPage = document.createElement('div');
+            newPage.className = 'paper-page';
+            newPage.setAttribute('contenteditable', 'true');
+            newPage.innerHTML = '<p><br></p>';
+            pageElement.insertAdjacentElement('afterend', newPage);
+            showToast('New page added');
+        }
+
+        // Debounced page balancing
+        let balanceTimeout;
+        function debouncedBalancePages() {
+            clearTimeout(balanceTimeout);
+            balanceTimeout = setTimeout(() => {
+                checkAndBalancePages();
+                updatePageList();
+            }, 500);
+        }
+
+        // Listen for input events to balance pages
         document.addEventListener('input', function(e) {
             if (e.target.closest('.paper-page')) {
-                clearTimeout(inputTimeout);
-                inputTimeout = setTimeout(() => {
-                    checkAndAddNewPage();
-                    updatePageList();
-                }, 500);
+                debouncedBalancePages();
             }
         });
 
-        // Listen for scroll events
-        document.addEventListener('scroll', handleScroll, true);
+        // Listen for scroll events to check if page is full
+        let scrollTimeout;
+        document.addEventListener('scroll', function(e) {
+            if (e.target.closest('.paper-page')) {
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => {
+                    checkAndBalancePages();
+                    updatePageList();
+                }, 200);
+            }
+        }, true);
 
         // Zoom functions
         function zoomIn() {
@@ -1008,6 +1058,7 @@
                 btn.classList.toggle('active', currentActiveButtons[btnId]);
             }
             hideContextMenu();
+            debouncedBalancePages();
         }
         function setAlignment(command, btnId) {
             document.execCommand(command, false, null);
@@ -1019,6 +1070,7 @@
             const clickedBtn = document.getElementById(btnId);
             if (clickedBtn) { clickedBtn.classList.add('active'); currentActiveButtons[btnId] = true; }
             hideContextMenu();
+            debouncedBalancePages();
         }
         function toggleList(command, btnId) {
             document.execCommand(command, false, null);
@@ -1028,13 +1080,18 @@
                 btn.classList.toggle('active', currentActiveButtons[btnId]);
             }
             hideContextMenu();
+            debouncedBalancePages();
         }
-        function execCommand(command) { document.execCommand(command, false, null); hideContextMenu(); }
+        function execCommand(command) { 
+            document.execCommand(command, false, null); 
+            hideContextMenu();
+            debouncedBalancePages();
+        }
         function selectAll() { document.execCommand('selectAll', false, null); hideContextMenu(); }
 
         function newDocument() {
             if (confirm('Create new document? Unsaved changes will be lost.')) {
-                document.getElementById('paperContainer').innerHTML = `<div class="paper-page" contenteditable="true"><h1 style="text-align: center; font-size: 24pt;">KORAHEY ACADEMY</h1><p style="text-align: center; font-style: italic; font-size: 12pt;">Passion for Success</p><hr><p><br></p><p>Start typing your document here. A new page will only be created when this page becomes full.</p></div>`;
+                document.getElementById('paperContainer').innerHTML = `<div class="paper-page" contenteditable="true"><h1 style="text-align: center; font-size: 24pt;">KORAHEY ACADEMY</h1><p style="text-align: center; font-style: italic; font-size: 12pt;">Passion for Success</p><hr><p><br></p><p>Start typing your document here. Content will automatically flow to new pages when full.</p></div>`;
                 currentPageIndex = 0;
                 updatePageList();
                 showToast('New document created');
@@ -1048,10 +1105,16 @@
         }
         function exportDocument() { saveDocument(); window.print(); }
         function closeEditor() { if (confirm('Close editor?')) window.location.href = 'admin.html'; }
-        function changeFont() { document.execCommand('fontName', false, document.getElementById('fontSelector').value); }
-        function changeFontSize() { document.execCommand('fontSize', false, document.getElementById('sizeSelector').value); }
-        function insertDate() { document.execCommand('insertText', false, new Date().toLocaleString()); }
-        function showAbout() { alert('Korahey UI v1.0\nDocument Editor\n\nTrue A4 Paper Size (210mm x 297mm)\nSmart Page Creation - Only creates new page when current page is actually full\nPage Management with Mini Previews\n\n© 2026 Korahey Academy'); }
+        function changeFont() { 
+            document.execCommand('fontName', false, document.getElementById('fontSelector').value);
+            debouncedBalancePages();
+        }
+        function changeFontSize() { 
+            document.execCommand('fontSize', false, document.getElementById('sizeSelector').value);
+            debouncedBalancePages();
+        }
+        function insertDate() { document.execCommand('insertText', false, new Date().toLocaleString()); debouncedBalancePages(); }
+        function showAbout() { alert('Korahey UI v1.0\nDocument Editor\n\nTrue A4 Paper Size (210mm x 297mm)\nAutomatic Content Flow Between Pages\nPage Panel with Mini Previews\n\n© 2026 Korahey Academy'); }
 
         // Table functions
         function insertTable() {
@@ -1067,6 +1130,7 @@
                 html += '</table><br>';
                 document.execCommand('insertHTML', false, html);
                 showToast(`${rows}x${cols} table inserted`);
+                debouncedBalancePages();
             }
             hideContextMenu();
         }
@@ -1128,7 +1192,7 @@
                     if (range) range.insertNode(img);
                     else page.appendChild(img);
                     showToast('Image inserted');
-                    updatePageList();
+                    debouncedBalancePages();
                 }
             });
         });
