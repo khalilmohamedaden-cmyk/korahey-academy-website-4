@@ -18,7 +18,7 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-            background: #f5f5f7;
+            background: #e8ecf0;
             color: var(--text-main);
             overflow: hidden;
             min-height: 100vh;
@@ -210,22 +210,58 @@
             padding: 20px 40px;
             display: flex;
             justify-content: center;
+            background: #e8ecf0;
         }
 
-        .paper-container { width: 100%; max-width: 900px; }
+        .paper-container { 
+            width: 100%; 
+            max-width: 900px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* TRUE A4 PAPER SIZE - 210mm x 297mm */
         .paper-page {
             background: white;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-            border-radius: 8px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            border-radius: 4px;
             width: 210mm;
             min-height: 297mm;
             margin: 0 auto 30px auto;
-            padding: 20mm 25mm;
+            padding: 15mm 20mm;
+            position: relative;
             transition: transform 0.2s;
+            page-break-after: avoid;
+            break-inside: avoid;
         }
+        
         .paper-page:focus { outline: none; }
 
-        /* Left Panel - Pages with Preview */
+        /* Print styles */
+        @media print {
+            .top-bar, .dynamic-island, .left-panel, .panel-toggle, .bottom-bar, .toast {
+                display: none !important;
+            }
+            .paper-page {
+                box-shadow: none;
+                margin: 0;
+                padding: 15mm 20mm;
+                width: 100%;
+                page-break-after: always;
+            }
+            .paper-container {
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                background: white;
+                margin: 0;
+                padding: 0;
+            }
+        }
+
+        /* Left Panel - Pages with Mini Paper Preview */
         .left-panel {
             position: fixed;
             left: 0;
@@ -286,22 +322,24 @@
 
         .page-list { display: flex; flex-direction: column; gap: 12px; }
         
+        /* Mini Paper Preview in Panel */
         .page-thumb {
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            border-radius: 12px;
-            padding: 12px;
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 10px;
             cursor: pointer;
             transition: all 0.2s;
             display: flex;
             flex-direction: column;
             gap: 8px;
+            width: 100%;
         }
         
         .page-thumb:hover { 
             border-color: var(--apple-blue); 
             transform: translateX(4px); 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
         }
         
         .page-thumb.active { 
@@ -317,9 +355,9 @@
         
         .page-number {
             background: rgba(0, 0, 0, 0.05);
-            border-radius: 6px;
-            padding: 4px 8px;
-            font-size: 11px;
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 10px;
             font-weight: 600;
         }
         
@@ -328,24 +366,43 @@
             border: none;
             cursor: pointer;
             color: #999;
-            padding: 4px 6px;
-            border-radius: 6px;
-            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
         }
         
         .delete-page-btn:hover { background: rgba(255, 59, 48, 0.1); color: #ff3b30; }
         
-        .page-preview-content {
-            font-size: 10px;
+        /* Mini Paper Preview Content */
+        .mini-paper {
+            background: #fafafc;
+            border-radius: 4px;
+            padding: 8px;
+            aspect-ratio: 210 / 297;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .mini-paper-header {
+            font-size: 7px;
+            font-weight: bold;
+            text-align: center;
+            padding-bottom: 4px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 6px;
+        }
+        
+        .mini-paper-content {
+            flex: 1;
+            font-size: 6px;
+            line-height: 1.3;
             color: #666;
-            line-height: 1.4;
             overflow: hidden;
             display: -webkit-box;
-            -webkit-line-clamp: 3;
+            -webkit-line-clamp: 8;
             -webkit-box-orient: vertical;
-            background: rgba(0, 0, 0, 0.02);
-            padding: 8px;
-            border-radius: 8px;
             font-family: 'Times New Roman', serif;
         }
 
@@ -510,13 +567,12 @@
             .island-content { flex-wrap: wrap; justify-content: center; }
             .paper-page { width: 100%; padding: 20px; }
             .bottom-bar { padding: 8px 16px; }
-            .bottom-left, .bottom-right { gap: 12px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Loading Animation - KORAHEY EDITOR with Dots -->
+    <!-- Loading Animation -->
     <div id="loadingOverlay" class="loading-overlay">
         <div class="loader">
             <div class="loader-logo">KORAHEY EDITOR</div>
@@ -569,7 +625,7 @@
         </div>
     </div>
 
-    <!-- Dynamic Island - Blurred Glass Effect -->
+    <!-- Dynamic Island -->
     <div class="dynamic-island">
         <div class="island-content">
             <select id="fontSelector" class="font-selector" onchange="changeFont()">
@@ -604,7 +660,7 @@
 
     <!-- Main Editor Layout -->
     <div class="main-editor-layout">
-        <!-- Left Panel - Pages with Preview -->
+        <!-- Left Panel - Pages with Mini Paper Preview -->
         <div class="left-panel" id="leftPanel">
             <div class="panel-title">PAGES</div>
             <div class="page-list" id="pageList"></div>
@@ -619,12 +675,15 @@
         <div class="canvas-center" id="canvasArea">
             <div class="paper-container" id="paperContainer">
                 <div class="paper-page" contenteditable="true" data-page="1">
-                    <h1 style="text-align: center;">KORAHEY ACADEMY</h1>
-                    <p style="text-align: center; font-style: italic;">Passion for Success</p>
+                    <h1 style="text-align: center; font-size: 24pt;">KORAHEY ACADEMY</h1>
+                    <p style="text-align: center; font-style: italic; font-size: 12pt;">Passion for Success</p>
                     <hr>
                     <p><br></p>
                     <p>Welcome to Korahey UI v1.0 - Document Editor</p>
                     <p>Start typing here. A new page will be created automatically when you fill this one.</p>
+                    <p><br></p>
+                    <p>This document uses true A4 paper size (210mm x 297mm).</p>
+                    <p>The page panel on the left shows mini previews of each page.</p>
                 </div>
             </div>
         </div>
@@ -728,14 +787,31 @@
             }
         }
 
+        // Get page preview text for mini paper
+        function getMiniPaperContent(pageElement) {
+            const text = pageElement.innerText;
+            const preview = text.substring(0, 200);
+            return preview + (text.length > 200 ? '...' : '');
+        }
+
+        // Get page title for mini paper header
+        function getPageTitle(pageElement, pageNum) {
+            const firstLine = pageElement.innerText.split('\n')[0];
+            if (firstLine && firstLine.length > 30) {
+                return firstLine.substring(0, 30) + '...';
+            }
+            return firstLine || `Page ${pageNum}`;
+        }
+
         // Word count update
         function updateWordCount() {
-            const activePage = document.querySelector('.paper-page:focus') || document.querySelector('.paper-page');
-            if (activePage) {
-                const text = activePage.innerText;
+            let totalWords = 0;
+            document.querySelectorAll('.paper-page').forEach(page => {
+                const text = page.innerText;
                 const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;
-                document.getElementById('wordCountDisplay').textContent = words + ' words';
-            }
+                totalWords += words;
+            });
+            document.getElementById('wordCountDisplay').textContent = totalWords + ' words';
         }
 
         document.addEventListener('input', updateWordCount);
@@ -747,13 +823,6 @@
             document.getElementById('pageCounter').textContent = `Page ${currentPageIndex + 1} of ${pages.length}`;
         }
 
-        // Get page preview text
-        function getPagePreviewText(pageElement) {
-            const text = pageElement.innerText;
-            const preview = text.substring(0, 100);
-            return preview + (text.length > 100 ? '...' : '');
-        }
-
         // Page Management
         function updatePageList() {
             const pages = document.querySelectorAll('.paper-page');
@@ -762,12 +831,16 @@
                 <div class="page-thumb ${idx === currentPageIndex ? 'active' : ''}" onclick="goToPage(${idx})">
                     <div class="thumb-header">
                         <span class="page-number">Page ${idx + 1}</span>
-                        ${pages.length > 1 ? `<button class="delete-page-btn" onclick="event.stopPropagation(); deletePage(${idx})"><i class="fas fa-trash"></i> Delete</button>` : ''}
+                        ${pages.length > 1 ? `<button class="delete-page-btn" onclick="event.stopPropagation(); deletePage(${idx})"><i class="fas fa-trash"></i></button>` : ''}
                     </div>
-                    <div class="page-preview-content">${escapeHtml(getPagePreviewText(page))}</div>
+                    <div class="mini-paper">
+                        <div class="mini-paper-header">${escapeHtml(getPageTitle(page, idx + 1))}</div>
+                        <div class="mini-paper-content">${escapeHtml(getMiniPaperContent(page))}</div>
+                    </div>
                 </div>
             `).join('');
             updatePageCounter();
+            updateWordCount();
         }
 
         function goToPage(index) {
@@ -777,7 +850,6 @@
                 pages[index].focus();
                 currentPageIndex = index;
                 updatePageList();
-                updateWordCount();
             }
         }
 
@@ -809,7 +881,8 @@
             if (activePage) {
                 const scrollHeight = activePage.scrollHeight;
                 const clientHeight = activePage.clientHeight;
-                if (scrollHeight - clientHeight < 100) {
+                // Add new page when near bottom
+                if (activePage.scrollTop + clientHeight >= scrollHeight - 100) {
                     const newPage = document.createElement('div');
                     newPage.className = 'paper-page';
                     newPage.setAttribute('contenteditable', 'true');
@@ -825,6 +898,12 @@
             if (e.target.closest('.paper-page')) {
                 checkAndAddNewPage();
                 updatePageList();
+            }
+        });
+
+        document.addEventListener('scroll', function(e) {
+            if (e.target.closest('.canvas-center')) {
+                // Update current page index based on scroll position
             }
         });
 
@@ -900,7 +979,7 @@
 
         function newDocument() {
             if (confirm('Create new document? Unsaved changes will be lost.')) {
-                document.getElementById('paperContainer').innerHTML = `<div class="paper-page" contenteditable="true"><h1 style="text-align: center;">KORAHEY ACADEMY</h1><p style="text-align: center; font-style: italic;">Passion for Success</p><hr><p><br></p><p>Start typing your document here...</p></div>`;
+                document.getElementById('paperContainer').innerHTML = `<div class="paper-page" contenteditable="true"><h1 style="text-align: center; font-size: 24pt;">KORAHEY ACADEMY</h1><p style="text-align: center; font-style: italic; font-size: 12pt;">Passion for Success</p><hr><p><br></p><p>Start typing your document here...</p></div>`;
                 currentPageIndex = 0;
                 updatePageList();
                 showToast('New document created');
@@ -917,7 +996,7 @@
         function changeFont() { document.execCommand('fontName', false, document.getElementById('fontSelector').value); }
         function changeFontSize() { document.execCommand('fontSize', false, document.getElementById('sizeSelector').value); }
         function insertDate() { document.execCommand('insertText', false, new Date().toLocaleString()); }
-        function showAbout() { alert('Korahey UI v1.0\nDocument Editor\n\nA4 Paper | Page Management | Word Count\n\n© 2026 Korahey Academy'); }
+        function showAbout() { alert('Korahey UI v1.0\nDocument Editor\n\nTrue A4 Paper Size (210mm x 297mm)\nPage Management with Mini Previews\n\n© 2026 Korahey Academy'); }
 
         // Table functions
         function insertTable() {
