@@ -117,33 +117,34 @@
             margin: 6px 0;
         }
 
-        /* ========== DYNAMIC ISLAND (STRETCHED, CLEAN) ========== */
+        /* ========== DYNAMIC ISLAND (FITS CONTENT ONLY) ========== */
         .dynamic-island {
             position: fixed;
             top: 56px;
-            left: 24px;
-            right: 24px;
+            left: 50%;
+            transform: translateX(-50%);
             background: #ffffff;
             border-radius: 60px;
-            padding: 8px 24px;
+            padding: 8px 20px;
             z-index: 999;
             border: 1px solid #d0d0d0;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-            transition: all 0.2s ease;
+            display: inline-flex;
+            width: auto;
         }
 
         .island-content {
             display: flex;
-            gap: 12px;
+            gap: 8px;
             align-items: center;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
         }
 
-        /* Action Buttons - Clean, no blurry effects */
+        /* Action Buttons */
         .action-btn {
             background: transparent;
             border: none;
-            padding: 8px 14px;
+            padding: 8px 12px;
             border-radius: 40px;
             cursor: pointer;
             font-size: 13px;
@@ -194,10 +195,10 @@
         .canvas-area {
             height: 100vh;
             overflow-y: auto;
-            padding: 130px 40px 40px 40px;
+            padding: 120px 40px 40px 40px;
         }
 
-        /* Paper Container */
+        /* A4 Paper Size */
         .paper-container {
             max-width: 900px;
             margin: 0 auto;
@@ -207,13 +208,52 @@
             background: white;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             border-radius: 4px;
-            padding: 60px 70px;
-            margin-bottom: 30px;
-            min-height: 500px;
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto 30px auto;
+            padding: 20mm 25mm;
+            position: relative;
         }
 
         .paper-page:focus {
             outline: none;
+        }
+
+        /* Custom Right Click Menu */
+        .custom-context-menu {
+            position: fixed;
+            background: white;
+            border: 1px solid #d0d0d0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            min-width: 200px;
+            z-index: 10000;
+            display: none;
+            padding: 6px 0;
+        }
+
+        .custom-context-menu.show {
+            display: block;
+        }
+
+        .context-menu-item {
+            padding: 8px 20px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .context-menu-item:hover {
+            background: #f0f0f0;
+        }
+
+        .context-divider {
+            height: 1px;
+            background: #e0e0e0;
+            margin: 6px 0;
         }
 
         /* Image styling */
@@ -359,15 +399,26 @@
 
         @media (max-width: 1000px) {
             .dynamic-island {
-                left: 16px;
-                right: 16px;
                 padding: 8px 16px;
             }
             .island-content {
+                flex-wrap: wrap;
                 justify-content: center;
             }
             .paper-page {
-                padding: 30px 20px;
+                width: 100%;
+                padding: 20px;
+            }
+        }
+
+        @media print {
+            .top-bar, .dynamic-island, .toast {
+                display: none;
+            }
+            .paper-page {
+                box-shadow: none;
+                margin: 0;
+                padding: 0;
             }
         }
     </style>
@@ -376,9 +427,7 @@
 
     <!-- Top Bar with Menu and Save/Print -->
     <div class="top-bar">
-        <!-- Menu Bar -->
         <div class="menu-bar">
-            <!-- File Menu -->
             <div class="menu-item" onclick="toggleDropdown('fileMenu')">File</div>
             <div id="fileMenu" class="dropdown-menu">
                 <div class="dropdown-item" onclick="newDocument()">New</div>
@@ -388,7 +437,6 @@
                 <div class="dropdown-item" onclick="closeEditor()">Close</div>
             </div>
 
-            <!-- Edit Menu -->
             <div class="menu-item" onclick="toggleDropdown('editMenu')">Edit</div>
             <div id="editMenu" class="dropdown-menu">
                 <div class="dropdown-item" onclick="execCommand('undo')">Undo</div>
@@ -402,7 +450,6 @@
                 <div class="dropdown-item" onclick="findAndReplace()">Find and Replace</div>
             </div>
 
-            <!-- View Menu -->
             <div class="menu-item" onclick="toggleDropdown('viewMenu')">View</div>
             <div id="viewMenu" class="dropdown-menu">
                 <div class="dropdown-item" onclick="setZoom(100)">Zoom 100%</div>
@@ -410,7 +457,6 @@
                 <div class="dropdown-item" onclick="setZoom(150)">Zoom 150%</div>
             </div>
 
-            <!-- Insert Menu -->
             <div class="menu-item" onclick="toggleDropdown('insertMenu')">Insert</div>
             <div id="insertMenu" class="dropdown-menu">
                 <div class="dropdown-item" onclick="openMediaManager()">Media Manager</div>
@@ -420,7 +466,6 @@
                 <div class="dropdown-item" onclick="insertDate()">Date and Time</div>
             </div>
 
-            <!-- Format Menu -->
             <div class="menu-item" onclick="toggleDropdown('formatMenu')">Format</div>
             <div id="formatMenu" class="dropdown-menu">
                 <div class="dropdown-item" onclick="openFontDialog()">Font</div>
@@ -430,14 +475,12 @@
                 <div class="dropdown-item" onclick="clearFormatting()">Clear Formatting</div>
             </div>
 
-            <!-- Tools Menu -->
             <div class="menu-item" onclick="toggleDropdown('toolsMenu')">Tools</div>
             <div id="toolsMenu" class="dropdown-menu">
                 <div class="dropdown-item" onclick="showWordCount()">Word Count</div>
                 <div class="dropdown-item" onclick="checkSpelling()">Spelling and Grammar</div>
             </div>
 
-            <!-- Table Menu -->
             <div class="menu-item" onclick="toggleDropdown('tableMenu')">Table</div>
             <div id="tableMenu" class="dropdown-menu">
                 <div class="dropdown-item" onclick="insertTable()">Insert Table</div>
@@ -449,7 +492,6 @@
                 <div class="dropdown-item" onclick="deleteSelectedTable()">Delete Table</div>
             </div>
 
-            <!-- Help Menu -->
             <div class="menu-item" onclick="toggleDropdown('helpMenu')">Help</div>
             <div id="helpMenu" class="dropdown-menu">
                 <div class="dropdown-item" onclick="showAbout()">About Korahey UI</div>
@@ -457,14 +499,13 @@
             </div>
         </div>
 
-        <!-- Right Side Buttons (Save & Print) -->
         <div class="right-actions">
             <button class="top-btn" onclick="saveDocument()">Save</button>
             <button class="top-btn" onclick="exportDocument()">Print</button>
         </div>
     </div>
 
-    <!-- Dynamic Island (Stretched, Clean) -->
+    <!-- Dynamic Island (Fits Content Only) -->
     <div class="dynamic-island">
         <div class="island-content">
             <select id="fontSelector" class="font-selector" onchange="changeFont()">
@@ -509,8 +550,42 @@
 
             <div class="separator"></div>
 
-            <button class="action-btn" onclick="openMediaManager()">Insert Image</button>
-            <button class="action-btn" onclick="insertTable()">Insert Table</button>
+            <button class="action-btn" onclick="openMediaManager()">Image</button>
+            <button class="action-btn" onclick="insertTable()">Table</button>
+        </div>
+    </div>
+
+    <!-- Custom Right Click Menu -->
+    <div id="contextMenu" class="custom-context-menu">
+        <div class="context-menu-item" onclick="execCommand('bold'); hideContextMenu()">
+            <i class="fas fa-bold"></i> Bold
+        </div>
+        <div class="context-menu-item" onclick="execCommand('italic'); hideContextMenu()">
+            <i class="fas fa-italic"></i> Italic
+        </div>
+        <div class="context-menu-item" onclick="execCommand('underline'); hideContextMenu()">
+            <i class="fas fa-underline"></i> Underline
+        </div>
+        <div class="context-divider"></div>
+        <div class="context-menu-item" onclick="execCommand('copy'); hideContextMenu()">
+            <i class="fas fa-copy"></i> Copy
+        </div>
+        <div class="context-menu-item" onclick="execCommand('cut'); hideContextMenu()">
+            <i class="fas fa-cut"></i> Cut
+        </div>
+        <div class="context-menu-item" onclick="execCommand('paste'); hideContextMenu()">
+            <i class="fas fa-paste"></i> Paste
+        </div>
+        <div class="context-divider"></div>
+        <div class="context-menu-item" onclick="selectAll(); hideContextMenu()">
+            <i class="fas fa-check-double"></i> Select All
+        </div>
+        <div class="context-divider"></div>
+        <div class="context-menu-item" onclick="insertTable(); hideContextMenu()">
+            <i class="fas fa-table"></i> Insert Table
+        </div>
+        <div class="context-menu-item" onclick="openMediaManager(); hideContextMenu()">
+            <i class="fas fa-image"></i> Insert Image
         </div>
     </div>
 
@@ -525,7 +600,8 @@
                 <p>Welcome to Korahey UI v1.0 - Document Editor</p>
                 <p><br></p>
                 <p>Start typing here. Use the menu bar for File, Edit, View, Insert, Format, Tools, Table, and Help options.</p>
-                <p>Use the dynamic island below for quick formatting actions.</p>
+                <p>Use the dynamic island for quick formatting actions.</p>
+                <p>Right-click anywhere for custom context menu.</p>
             </div>
         </div>
     </div>
@@ -566,6 +642,29 @@
             }, 2000);
         }
 
+        // Right-click context menu
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            const menu = document.getElementById('contextMenu');
+            menu.style.left = e.pageX + 'px';
+            menu.style.top = e.pageY + 'px';
+            menu.classList.add('show');
+        });
+
+        document.addEventListener('click', function(e) {
+            hideContextMenu();
+            if (!e.target.closest('.menu-item') && !e.target.closest('.dropdown-menu')) {
+                if (activeMenu) {
+                    activeMenu.classList.remove('show');
+                    activeMenu = null;
+                }
+            }
+        });
+
+        function hideContextMenu() {
+            document.getElementById('contextMenu').classList.remove('show');
+        }
+
         // Dropdown functions
         function toggleDropdown(menuId) {
             const menu = document.getElementById(menuId);
@@ -575,15 +674,6 @@
             menu.classList.toggle('show');
             activeMenu = menu.classList.contains('show') ? menu : null;
         }
-
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.menu-item') && !e.target.closest('.dropdown-menu')) {
-                if (activeMenu) {
-                    activeMenu.classList.remove('show');
-                    activeMenu = null;
-                }
-            }
-        });
 
         // Formatting functions with active state
         function toggleFormat(command, btnId) {
@@ -598,23 +688,23 @@
                     currentActiveButtons[btnId] = true;
                 }
             }
+            hideContextMenu();
         }
 
         function setAlignment(command, btnId) {
             document.execCommand(command, false, null);
-            // Reset all alignment buttons
             const alignBtns = ['alignLeftBtn', 'alignCenterBtn', 'alignRightBtn', 'alignJustifyBtn'];
             alignBtns.forEach(id => {
                 const btn = document.getElementById(id);
                 if (btn) btn.classList.remove('active');
                 currentActiveButtons[id] = false;
             });
-            // Activate clicked button
             const clickedBtn = document.getElementById(btnId);
             if (clickedBtn) {
                 clickedBtn.classList.add('active');
                 currentActiveButtons[btnId] = true;
             }
+            hideContextMenu();
         }
 
         function toggleList(command, btnId) {
@@ -629,6 +719,7 @@
                     currentActiveButtons[btnId] = true;
                 }
             }
+            hideContextMenu();
         }
 
         // Document functions
@@ -661,26 +752,7 @@
 
         function exportDocument() {
             saveDocument();
-            const allContent = Array.from(document.querySelectorAll('.paper-page')).map(p => p.innerHTML).join('<div style="page-break-before: always;"></div>');
-            const printWindow = window.open('', '_blank');
-            printWindow.document.write(`
-                <html>
-                <head>
-                    <title>Korahey Academy - Document</title>
-                    <style>
-                        body { font-family: 'Times New Roman', serif; padding: 50px; max-width: 900px; margin: 0 auto; }
-                        img { max-width: 100%; height: auto; }
-                        table { border-collapse: collapse; width: 100%; margin: 10px 0; }
-                        th, td { border: 1px solid #ccc; padding: 8px; }
-                    </style>
-                </head>
-                <body>
-                    ${allContent}
-                </body>
-                </html>
-            `);
-            printWindow.document.close();
-            printWindow.print();
+            window.print();
         }
 
         function closeEditor() {
@@ -691,10 +763,12 @@
 
         function execCommand(command) {
             document.execCommand(command, false, null);
+            hideContextMenu();
         }
 
         function selectAll() {
             document.execCommand('selectAll', false, null);
+            hideContextMenu();
         }
 
         function findAndReplace() {
@@ -750,7 +824,6 @@
         function clearFormatting() {
             document.execCommand('removeFormat', false, null);
             showToast('Formatting cleared');
-            // Reset all active buttons
             Object.keys(currentActiveButtons).forEach(btnId => {
                 const btn = document.getElementById(btnId);
                 if (btn) btn.classList.remove('active');
@@ -787,7 +860,7 @@
         }
 
         function showAbout() {
-            alert('Korahey UI v1.0\nDocument Editor\n\nMenu Bar with File, Edit, View, Insert, Format, Tools, Table, Help\nDynamic Island for Formatting Actions\n\n© 2026 Korahey Academy');
+            alert('Korahey UI v1.0\nDocument Editor\n\nA4 Paper Size\nCustom Right-Click Menu\nDynamic Island Toolbar\n\n© 2026 Korahey Academy');
         }
 
         function sendFeedback() {
@@ -804,7 +877,7 @@
             if (rows && cols) {
                 let tableHtml = '<table class="custom-table" border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">';
                 for (let i = 0; i < parseInt(rows); i++) {
-                    tableHtml += '</tr>';
+                    tableHtml += '<tr>';
                     for (let j = 0; j < parseInt(cols); j++) {
                         tableHtml += '<td contenteditable="true"><br></td>';
                     }
@@ -814,6 +887,7 @@
                 document.execCommand('insertHTML', false, tableHtml);
                 showToast(`${rows}x${cols} table inserted`);
             }
+            hideContextMenu();
         }
 
         function addRowAbove() {
@@ -860,6 +934,7 @@
         function openMediaManager() {
             loadImageGallery();
             document.getElementById('mediaModal').classList.add('active');
+            hideContextMenu();
         }
 
         function closeMediaManager() {
@@ -951,8 +1026,8 @@
                 if (src) {
                     const img = document.createElement('img');
                     img.src = src;
-                    img.style.maxWidth = '300px';
-                    img.style.margin = '10px';
+                    img.style.maxWidth = '100%';
+                    img.style.margin = '10px 0';
                     const range = document.caretRangeFromPoint(e.clientX, e.clientY);
                     if (range) {
                         range.insertNode(img);
