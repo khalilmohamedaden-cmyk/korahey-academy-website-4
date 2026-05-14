@@ -47,22 +47,6 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .exam-title-input {
-            background: rgba(0, 0, 0, 0.05);
-            border: none;
-            padding: 10px 20px;
-            border-radius: 30px;
-            font-size: 0.9rem;
-            width: 300px;
-            text-align: center;
-            font-weight: 500;
-        }
-
-        .exam-title-input:focus {
-            outline: none;
-            background: rgba(0, 0, 0, 0.08);
-        }
-
         .nav-actions {
             display: flex;
             gap: 12px;
@@ -80,11 +64,6 @@
 
         .nav-btn.primary {
             background: #0071e3;
-            color: white;
-        }
-
-        .nav-btn.danger {
-            background: #ff3b30;
             color: white;
         }
 
@@ -158,21 +137,10 @@
             font-size: 1.2rem;
         }
 
-        .question-icon.multiple {
-            background: #34c759;
-        }
-
-        .question-icon.truefalse {
-            background: #ff9500;
-        }
-
-        .question-icon.essay {
-            background: #af52de;
-        }
-
-        .question-icon.fillblank {
-            background: #ff3b30;
-        }
+        .question-icon.multiple { background: #34c759; }
+        .question-icon.truefalse { background: #ff9500; }
+        .question-icon.essay { background: #af52de; }
+        .question-icon.fillblank { background: #ff3b30; }
 
         .question-info h4 {
             font-size: 0.85rem;
@@ -193,7 +161,7 @@
         }
 
         .exam-container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
             background: white;
             border-radius: 24px;
@@ -201,25 +169,71 @@
             overflow: hidden;
         }
 
+        /* KORAHLEY ACADEMY HEADER STYLE */
         .exam-header {
-            background: linear-gradient(135deg, #0071e3, #005bb5);
-            color: white;
-            padding: 40px;
+            background: white;
+            padding: 30px 40px;
             text-align: center;
+            border-bottom: 2px solid #0071e3;
         }
 
-        .exam-header h1 {
+        .school-name {
             font-size: 2rem;
-            margin-bottom: 10px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #1d1d1f 0%, #0071e3 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
         }
 
-        .exam-meta {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
+        .exam-info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
             margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .info-field {
+            text-align: left;
+            padding: 5px 10px;
+            border-bottom: 1px solid #e9ecef;
             font-size: 0.85rem;
-            opacity: 0.9;
+        }
+
+        .info-field label {
+            font-weight: 600;
+            color: #555;
+            min-width: 100px;
+            display: inline-block;
+        }
+
+        .info-field span {
+            color: #1d1d1f;
+        }
+
+        .info-field input {
+            border: none;
+            background: transparent;
+            padding: 5px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            width: 200px;
+            border-bottom: 1px dashed #ccc;
+        }
+
+        .info-field input:focus {
+            outline: none;
+            border-bottom-color: #0071e3;
+        }
+
+        .motto {
+            font-size: 0.8rem;
+            color: #0071e3;
+            font-style: italic;
+            margin-top: 15px;
         }
 
         .questions-container {
@@ -314,7 +328,7 @@
         }
 
         .question-text {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 500;
             margin-bottom: 20px;
             padding-left: 30px;
@@ -326,7 +340,7 @@
             padding: 10px;
             border: 1px solid #e9ecef;
             border-radius: 12px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-family: inherit;
         }
 
@@ -362,8 +376,8 @@
         }
 
         .correct-badge {
-            width: 24px;
-            height: 24px;
+            width: 28px;
+            height: 28px;
             background: #e9ecef;
             border-radius: 50%;
             display: flex;
@@ -399,7 +413,7 @@
             resize: vertical;
         }
 
-        /* Right Sidebar - Styling */
+        /* Right Sidebar */
         .style-sidebar {
             width: 280px;
             background: white;
@@ -439,24 +453,6 @@
             transform: scale(1.1);
         }
 
-        .color-dot.active {
-            border-color: #0071e3;
-            box-shadow: 0 0 0 2px rgba(0,113,227,0.2);
-        }
-
-        .font-select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #e9ecef;
-            border-radius: 12px;
-            font-size: 0.85rem;
-        }
-
-        .range-slider {
-            width: 100%;
-        }
-
-        /* Toast */
         .toast-notification {
             position: fixed;
             bottom: 30px;
@@ -476,30 +472,40 @@
             transform: translateX(-50%) translateY(0);
         }
 
-        /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
+        .add-question-btn {
+            width: 100%;
+            padding: 15px;
+            background: #f8f9fa;
+            border: 2px dashed #ccc;
+            border-radius: 20px;
+            cursor: pointer;
+            color: #666;
+            font-weight: 500;
+            transition: all 0.2s;
         }
 
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
+        .add-question-btn:hover {
+            background: #e9ecef;
+            border-color: #0071e3;
         }
 
-        ::-webkit-scrollbar-thumb {
-            background: #ccc;
-            border-radius: 3px;
+        @media (max-width: 900px) {
+            .question-sidebar, .style-sidebar {
+                width: 240px;
+            }
+            .exam-info-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Top Navigation -->
     <div class="exam-nav">
         <div class="logo">Korahey Exam Designer</div>
-        <input type="text" class="exam-title-input" id="examTitle" placeholder="Exam Title" value="Midterm Examination">
         <div class="nav-actions">
-            <button class="nav-btn" onclick="previewExam()">Preview</button>
-            <button class="nav-btn primary" onclick="saveExam()">Save Exam</button>
+            <button class="nav-btn" onclick="saveExam()">Save Exam</button>
+            <button class="nav-btn primary" onclick="exportExam()">Export Exam</button>
             <button class="nav-btn" onclick="window.location.href='admin.html'">Back</button>
         </div>
     </div>
@@ -546,16 +552,19 @@
             <div class="sidebar-section">
                 <div class="sidebar-title">Exam Settings</div>
                 <div class="style-group">
-                    <div class="style-label">Time Limit (minutes)</div>
-                    <input type="number" id="timeLimit" class="font-select" value="60" min="0" step="5">
+                    <div class="style-label">Academic Year</div>
+                    <input type="text" id="academicYear" class="info-field-input" placeholder="2024/2025" value="2024/2025">
                 </div>
                 <div class="style-group">
-                    <div class="style-label">Total Points</div>
-                    <input type="number" id="totalPoints" class="font-select" value="100" min="0" step="5">
+                    <div class="style-label">Semester</div>
+                    <select id="semester" class="info-field-input">
+                        <option>First Semester</option>
+                        <option>Second Semester</option>
+                    </select>
                 </div>
                 <div class="style-group">
-                    <div class="style-label">Passing Score (%)</div>
-                    <input type="number" id="passingScore" class="font-select" value="70" min="0" max="100">
+                    <div class="style-label">Subject</div>
+                    <input type="text" id="subject" class="info-field-input" placeholder="Mathematics" value="Mathematics">
                 </div>
             </div>
         </div>
@@ -563,25 +572,60 @@
         <!-- Center Canvas - Exam Area -->
         <div class="exam-canvas" id="examCanvas" ondragover="dragOver(event)" ondrop="dropQuestion(event)">
             <div class="exam-container" id="examContainer">
-                <div class="exam-header" id="examHeader">
-                    <h1 id="examTitleDisplay">Midterm Examination</h1>
-                    <p id="examDescription">Instructions: Read each question carefully and select the best answer.</p>
-                    <div class="exam-meta">
-                        <span><i class="far fa-clock"></i> <span id="timeLimitDisplay">60</span> minutes</span>
-                        <span><i class="fas fa-star"></i> Total Points: <span id="pointsDisplay">100</span></span>
-                        <span><i class="fas fa-check-circle"></i> Passing: <span id="passingDisplay">70</span>%</span>
+                <!-- KORAHLEY ACADEMY HEADER -->
+                <div class="exam-header">
+                    <div class="school-name">KORAHLEY ACADEMY</div>
+                    
+                    <div class="exam-info-grid">
+                        <div class="info-field">
+                            <label>Name:</label>
+                            <input type="text" id="studentName" placeholder="__________________">
+                        </div>
+                        <div class="info-field">
+                            <label>Grade:</label>
+                            <input type="text" id="grade" placeholder="______">
+                        </div>
+                        <div class="info-field">
+                            <label>Marked by:</label>
+                            <input type="text" id="markedBy" placeholder="______">
+                        </div>
+                        <div class="info-field">
+                            <label>Reviewed by:</label>
+                            <input type="text" id="reviewedBy" placeholder="______">
+                        </div>
+                        <div class="info-field">
+                            <label>Subject:</label>
+                            <input type="text" id="subjectField" placeholder="______" value="Mathematics">
+                        </div>
+                        <div class="info-field">
+                            <label>Grade:</label>
+                            <input type="text" id="gradeField" placeholder="______">
+                        </div>
+                        <div class="info-field">
+                            <label>Academic Year:</label>
+                            <input type="text" id="academicYearField" placeholder="______" value="2024/2025">
+                        </div>
+                        <div class="info-field">
+                            <label>Semester:</label>
+                            <input type="text" id="semesterField" placeholder="______" value="First Semester">
+                        </div>
+                        <div class="info-field">
+                            <label>Test Date:</label>
+                            <input type="date" id="testDate">
+                        </div>
                     </div>
+                    <div class="motto">Passion for Success</div>
                 </div>
+
                 <div class="questions-container" id="questionsContainer">
-                    <!-- Questions will be added here -->
                     <div class="empty-state" style="text-align: center; padding: 60px; color: #999;">
                         <i class="fas fa-drag-drop" style="font-size: 48px; margin-bottom: 15px;"></i>
                         <p>Drag and drop question types from the left sidebar</p>
-                        <p style="font-size: 0.8rem; margin-top: 10px;">or click the + button below to add questions</p>
+                        <p style="font-size: 0.8rem; margin-top: 10px;">or click the button below to add questions</p>
                     </div>
                 </div>
                 <div style="padding: 0 30px 30px 30px;">
-                    <button class="add-question-btn" onclick="addEmptyQuestion()" style="width: 100%; padding: 15px; background: #f8f9fa; border: 2px dashed #ccc; border-radius: 20px; cursor: pointer; color: #666; font-weight: 500;">
+                    <button class="add-question-btn" onclick="addEmptyQuestion()">
                         <i class="fas fa-plus"></i> Add Question
                     </button>
                 </div>
@@ -591,54 +635,21 @@
         <!-- Right Sidebar - Styling -->
         <div class="style-sidebar">
             <div class="sidebar-section">
-                <div class="sidebar-title">Exam Theme</div>
-                <div class="style-group">
-                    <div class="style-label">Header Color</div>
-                    <div class="color-presets" id="headerColorPresets">
-                        <div class="color-dot" style="background: #0071e3;" onclick="setHeaderColor('#0071e3')"></div>
-                        <div class="color-dot" style="background: #5856d6;" onclick="setHeaderColor('#5856d6')"></div>
-                        <div class="color-dot" style="background: #34c759;" onclick="setHeaderColor('#34c759')"></div>
-                        <div class="color-dot" style="background: #ff9500;" onclick="setHeaderColor('#ff9500')"></div>
-                        <div class="color-dot" style="background: #af52de;" onclick="setHeaderColor('#af52de')"></div>
-                        <div class="color-dot" style="background: #1d1d1f;" onclick="setHeaderColor('#1d1d1f')"></div>
-                    </div>
-                    <input type="color" id="customHeaderColor" onchange="setHeaderColor(this.value)" style="margin-top: 10px; width: 100%;">
-                </div>
-            </div>
-
-            <div class="sidebar-section">
-                <div class="sidebar-title">Typography</div>
-                <div class="style-group">
-                    <div class="style-label">Font Family</div>
-                    <select id="fontFamily" class="font-select" onchange="applyFont()">
-                        <option value="'Inter', sans-serif">Inter (Default)</option>
-                        <option value="'Georgia', serif">Georgia</option>
-                        <option value="'Times New Roman', serif">Times New Roman</option>
-                        <option value="'Arial', sans-serif">Arial</option>
-                        <option value="'Courier New', monospace">Courier New</option>
-                    </select>
-                </div>
-                <div class="style-group">
-                    <div class="style-label">Font Size</div>
-                    <input type="range" id="fontSize" class="range-slider" min="12" max="20" value="16" onchange="applyFontSize()">
-                    <span id="fontSizeValue">16px</span>
+                <div class="sidebar-title">Header Color</div>
+                <div class="color-presets">
+                    <div class="color-dot" style="background: #0071e3;" onclick="setAccentColor('#0071e3')"></div>
+                    <div class="color-dot" style="background: #5856d6;" onclick="setAccentColor('#5856d6')"></div>
+                    <div class="color-dot" style="background: #34c759;" onclick="setAccentColor('#34c759')"></div>
+                    <div class="color-dot" style="background: #ff9500;" onclick="setAccentColor('#ff9500')"></div>
+                    <div class="color-dot" style="background: #af52de;" onclick="setAccentColor('#af52de')"></div>
                 </div>
             </div>
 
             <div class="sidebar-section">
                 <div class="sidebar-title">Question Styling</div>
                 <div class="style-group">
-                    <div class="style-label">Question Background</div>
-                    <div class="color-presets">
-                        <div class="color-dot" style="background: #ffffff;" onclick="setQuestionBg('#ffffff')"></div>
-                        <div class="color-dot" style="background: #f8f9fa;" onclick="setQuestionBg('#f8f9fa')"></div>
-                        <div class="color-dot" style="background: #fff8e7;" onclick="setQuestionBg('#fff8e7')"></div>
-                        <div class="color-dot" style="background: #e8f0fe;" onclick="setQuestionBg('#e8f0fe')"></div>
-                    </div>
-                </div>
-                <div class="style-group">
                     <div class="style-label">Border Radius</div>
-                    <input type="range" id="borderRadius" class="range-slider" min="8" max="40" value="20" onchange="applyBorderRadius()">
+                    <input type="range" id="borderRadius" min="8" max="40" value="20" onchange="applyBorderRadius()">
                     <span id="radiusValue">20px</span>
                 </div>
             </div>
@@ -713,7 +724,6 @@
             addQuestion('multiple');
         }
 
-        // Render Questions
         function renderQuestions() {
             const container = document.getElementById('questionsContainer');
             if (questions.length === 0) {
@@ -801,7 +811,6 @@
         function updateQuestionPoints(id, points) {
             const q = questions.find(q => q.id === id);
             if (q) q.points = parseInt(points);
-            updateTotalPoints();
         }
 
         function updateOption(id, optIdx, value) {
@@ -908,28 +917,13 @@
         }
 
         // Styling Functions
-        function setHeaderColor(color) {
-            document.getElementById('examHeader').style.background = `linear-gradient(135deg, ${color}, ${color}dd)`;
+        function setAccentColor(color) {
             document.querySelectorAll('.question-number').forEach(el => {
                 el.style.background = color;
             });
-        }
-
-        function applyFont() {
-            const font = document.getElementById('fontFamily').value;
-            document.querySelector('.exam-container').style.fontFamily = font;
-        }
-
-        function applyFontSize() {
-            const size = document.getElementById('fontSize').value;
-            document.getElementById('fontSizeValue').textContent = size + 'px';
-            document.querySelector('.exam-container').style.fontSize = size + 'px';
-        }
-
-        function setQuestionBg(color) {
-            document.querySelectorAll('.question-card').forEach(card => {
-                card.style.background = color;
-            });
+            document.querySelector('.school-name').style.background = `linear-gradient(135deg, #1d1d1f 0%, ${color} 100%)`;
+            document.querySelector('.school-name').style.webkitBackgroundClip = 'text';
+            document.querySelector('.school-name').style.webkitTextFillColor = 'transparent';
         }
 
         function applyBorderRadius() {
@@ -940,93 +934,117 @@
             });
         }
 
-        // Update displays
-        function updateExamTitle() {
-            const title = document.getElementById('examTitle').value;
-            document.getElementById('examTitleDisplay').textContent = title;
-        }
-
-        function updateTimeLimit() {
-            const time = document.getElementById('timeLimit').value;
-            document.getElementById('timeLimitDisplay').textContent = time;
-        }
-
-        function updateTotalPoints() {
-            const total = questions.reduce((sum, q) => sum + (q.points || 5), 0);
-            document.getElementById('pointsDisplay').textContent = total;
-        }
-
-        function updatePassingScore() {
-            const passing = document.getElementById('passingScore').value;
-            document.getElementById('passingDisplay').textContent = passing;
-        }
-
         // Save Exam
         function saveExam() {
             const examData = {
-                title: document.getElementById('examTitle').value,
-                timeLimit: document.getElementById('timeLimit').value,
-                totalPoints: questions.reduce((sum, q) => sum + (q.points || 5), 0),
-                passingScore: document.getElementById('passingScore').value,
+                studentName: document.getElementById('studentName').value,
+                grade: document.getElementById('grade').value,
+                markedBy: document.getElementById('markedBy').value,
+                reviewedBy: document.getElementById('reviewedBy').value,
+                subject: document.getElementById('subjectField').value,
+                academicYear: document.getElementById('academicYearField').value,
+                semester: document.getElementById('semesterField').value,
+                testDate: document.getElementById('testDate').value,
                 questions: questions,
-                headerColor: document.getElementById('examHeader').style.background,
                 savedAt: new Date().toISOString()
             };
             localStorage.setItem('koraheyExam', JSON.stringify(examData));
             showToast('Exam saved successfully!');
         }
 
-        function previewExam() {
+        function exportExam() {
             saveExam();
-            window.open('preview.html', '_blank');
+            // Create printable version
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>Korahey Academy - Exam</title>
+                    <style>
+                        body { font-family: 'Inter', sans-serif; padding: 40px; max-width: 900px; margin: 0 auto; }
+                        .school-name { font-size: 2rem; font-weight: 800; text-align: center; margin-bottom: 30px; color: #0071e3; }
+                        .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 30px; }
+                        .info-field { border-bottom: 1px solid #ccc; padding: 5px; }
+                        .motto { text-align: center; font-style: italic; margin-bottom: 30px; }
+                        .question { margin-bottom: 30px; page-break-inside: avoid; }
+                        .question-number { font-weight: 700; margin-bottom: 10px; }
+                        .options { margin-left: 30px; }
+                        .option { margin: 5px 0; }
+                        hr { margin: 20px 0; }
+                    </style>
+                </head>
+                <body>
+                    <div class="school-name">KORAHEY ACADEMY</div>
+                    <div class="info-grid">
+                        <div class="info-field">Name: _________________</div>
+                        <div class="info-field">Grade: _________________</div>
+                        <div class="info-field">Subject: ${document.getElementById('subjectField').value}</div>
+                        <div class="info-field">Date: ${document.getElementById('testDate').value || '________'}</div>
+                    </div>
+                    <div class="motto">Passion for Success</div>
+                    <hr>
+                    <h3> Examination Questions</h3>
+                    ${questions.map((q, idx) => `
+                        <div class="question">
+                            <div class="question-number">Question ${idx + 1} (${q.points} points)</div>
+                            <div>${escapeHtml(q.text)}</div>
+                            <div class="options">
+                                ${q.type === 'multiple' ? q.options.map((opt, i) => `<div class="option">${String.fromCharCode(65 + i)}. ${escapeHtml(opt)}</div>`).join('') : ''}
+                                ${q.type === 'truefalse' ? `<div class="option">True / False</div>` : ''}
+                                ${q.type === 'essay' ? `<div class="option">Answer: _________________________________</div><br><div class="option">_________________________________</div><div class="option">_________________________________</div>` : ''}
+                                ${q.type === 'fillblank' ? `<div class="option">Answer: _____________</div>` : ''}
+                            </div>
+                        </div>
+                    `).join('')}
+                    <hr>
+                    <p>End of Examination</p>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
         }
 
-        // Load saved exam
         function loadExam() {
             const saved = localStorage.getItem('koraheyExam');
             if (saved) {
                 const exam = JSON.parse(saved);
-                document.getElementById('examTitle').value = exam.title;
-                document.getElementById('examTitleDisplay').textContent = exam.title;
-                document.getElementById('timeLimit').value = exam.timeLimit;
-                document.getElementById('timeLimitDisplay').textContent = exam.timeLimit;
-                document.getElementById('passingScore').value = exam.passingScore;
-                document.getElementById('passingDisplay').textContent = exam.passingScore;
+                if (exam.studentName) document.getElementById('studentName').value = exam.studentName;
+                if (exam.grade) document.getElementById('grade').value = exam.grade;
+                if (exam.markedBy) document.getElementById('markedBy').value = exam.markedBy;
+                if (exam.reviewedBy) document.getElementById('reviewedBy').value = exam.reviewedBy;
+                if (exam.subject) document.getElementById('subjectField').value = exam.subject;
+                if (exam.academicYear) document.getElementById('academicYearField').value = exam.academicYear;
+                if (exam.semester) document.getElementById('semesterField').value = exam.semester;
+                if (exam.testDate) document.getElementById('testDate').value = exam.testDate;
                 if (exam.questions) {
                     questions = exam.questions;
                     nextId = Math.max(...questions.map(q => q.id), 0) + 1;
                     renderQuestions();
                 }
-                if (exam.headerColor) {
-                    document.getElementById('examHeader').style.background = exam.headerColor;
-                }
-                updateTotalPoints();
                 showToast('Exam loaded');
             }
         }
 
-        // Event listeners
-        document.getElementById('examTitle').addEventListener('input', updateExamTitle);
-        document.getElementById('timeLimit').addEventListener('input', updateTimeLimit);
-        document.getElementById('passingScore').addEventListener('input', updatePassingScore);
-
-        // Add drop zone for canvas
-        document.querySelector('.exam-canvas').addEventListener('dragover', (e) => e.preventDefault());
-        document.querySelector('.exam-canvas').addEventListener('drop', (e) => {
-            e.preventDefault();
-            const type = e.dataTransfer.getData('text/plain');
-            if (type) {
-                addQuestion(type);
-            }
+        // Sync sidebar inputs with header fields
+        document.getElementById('academicYear').addEventListener('input', (e) => {
+            document.getElementById('academicYearField').value = e.target.value;
         });
-
-        // Load existing exam on startup
-        loadExam();
+        document.getElementById('semester').addEventListener('change', (e) => {
+            document.getElementById('semesterField').value = e.target.value;
+        });
+        document.getElementById('subject').addEventListener('input', (e) => {
+            document.getElementById('subjectField').value = e.target.value;
+        });
 
         function escapeHtml(str) {
             if (!str) return '';
             return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m]));
         }
+
+        // Load existing exam
+        loadExam();
     </script>
 </body>
+</html>
 </html>
