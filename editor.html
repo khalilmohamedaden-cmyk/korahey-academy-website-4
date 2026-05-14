@@ -198,12 +198,39 @@
         /* Main Layout */
         .main-editor-layout {
             display: flex;
+            flex-direction: column;
             height: 100vh;
             padding-top: 110px;
         }
 
+        /* Canvas Area */
+        .canvas-center {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .paper-container { width: 100%; max-width: 900px; }
+        .paper-page {
+            background: white;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            border-radius: 8px;
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto 30px auto;
+            padding: 20mm 25mm;
+            transition: transform 0.2s;
+        }
+        .paper-page:focus { outline: none; }
+
         /* Left Panel - Pages */
         .left-panel {
+            position: fixed;
+            left: 0;
+            top: 110px;
+            bottom: 60px;
             width: 260px;
             padding: 20px 16px;
             overflow-y: auto;
@@ -256,54 +283,84 @@
         }
         .delete-page-btn:hover { background: rgba(255, 59, 48, 0.1); color: #ff3b30; }
 
-        /* Center Canvas */
-        .canvas-center {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px 40px;
+        /* Bottom Bar - Like Microsoft Word */
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 8px 24px;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            font-size: 12px;
+            color: #666;
         }
 
-        .paper-container { width: 100%; max-width: 900px; }
-        .paper-page {
-            background: white;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-            border-radius: 8px;
-            width: 210mm;
-            min-height: 297mm;
-            margin: 0 auto 30px auto;
-            padding: 20mm 25mm;
-            transition: transform 0.2s;
-        }
-        .paper-page:focus { outline: none; }
-
-        /* Right Panel - Stats */
-        .right-panel {
-            width: 220px;
-            padding: 20px 16px;
-            border-left: 1px solid rgba(0, 0, 0, 0.05);
+        .bottom-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
         }
 
-        .stat-item {
-            background: white;
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 16px;
-            border: 1px solid rgba(0, 0, 0, 0.05);
+        .page-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        .stat-label { font-size: 11px; color: #86868b; margin-bottom: 8px; }
-        .stat-value { font-size: 28px; font-weight: 700; color: var(--apple-blue); }
-        .zoom-controls { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
-        .zoom-btn {
-            background: rgba(0, 0, 0, 0.05);
+
+        .page-nav-btn {
+            background: none;
             border: none;
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
             cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #666;
         }
-        .zoom-value { font-size: 14px; font-weight: 500; min-width: 50px; text-align: center; }
+
+        .page-nav-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .word-count-info {
+            color: #666;
+        }
+
+        .bottom-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .zoom-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .zoom-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .zoom-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .zoom-value {
+            min-width: 45px;
+            text-align: center;
+        }
 
         /* Custom Right Click Menu */
         .custom-context-menu {
@@ -366,24 +423,27 @@
         .gallery-item img { width: 100%; height: 80px; object-fit: cover; border-radius: 8px; }
         .toast {
             position: fixed;
-            bottom: 30px;
+            bottom: 60px;
             left: 50%;
             transform: translateX(-50%) translateY(100px);
             background: rgba(30,30,35,0.95);
             backdrop-filter: blur(20px);
             color: white;
-            padding: 12px 24px;
+            padding: 10px 20px;
             border-radius: 50px;
+            font-size: 13px;
             z-index: 3000;
             transition: transform 0.3s;
         }
         .toast.show { transform: translateX(-50%) translateY(0); }
 
         @media (max-width: 900px) {
-            .left-panel, .right-panel { width: 180px; }
+            .left-panel { width: 200px; }
             .dynamic-island { padding: 8px 12px; }
             .island-content { flex-wrap: wrap; justify-content: center; }
             .paper-page { width: 100%; padding: 20px; }
+            .bottom-bar { padding: 8px 16px; }
+            .bottom-left, .bottom-right { gap: 12px; }
         }
     </style>
 </head>
@@ -495,20 +555,23 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Right Panel - Stats & Zoom -->
-        <div class="right-panel">
-            <div class="stat-item">
-                <div class="stat-label">Word Count</div>
-                <div class="stat-value" id="wordCount">0</div>
+    <!-- Bottom Bar - Like Microsoft Word -->
+    <div class="bottom-bar">
+        <div class="bottom-left">
+            <div class="page-info">
+                <button class="page-nav-btn" onclick="previousPage()"><i class="fas fa-chevron-left"></i></button>
+                <span id="pageCounter">Page 1 of 1</span>
+                <button class="page-nav-btn" onclick="nextPage()"><i class="fas fa-chevron-right"></i></button>
             </div>
-            <div class="stat-item">
-                <div class="stat-label">Zoom</div>
-                <div class="zoom-controls">
-                    <button class="zoom-btn" onclick="zoomOut()"><i class="fas fa-search-minus"></i></button>
-                    <span class="zoom-value" id="zoomValue">100%</span>
-                    <button class="zoom-btn" onclick="zoomIn()"><i class="fas fa-search-plus"></i></button>
-                </div>
+            <div class="word-count-info" id="wordCountDisplay">0 words</div>
+        </div>
+        <div class="bottom-right">
+            <div class="zoom-control">
+                <button class="zoom-btn" onclick="zoomOut()"><i class="fas fa-search-minus"></i></button>
+                <span class="zoom-value" id="zoomValue">100%</span>
+                <button class="zoom-btn" onclick="zoomIn()"><i class="fas fa-search-plus"></i></button>
             </div>
         </div>
     </div>
@@ -576,13 +639,19 @@
             const activePage = document.querySelector('.paper-page:focus') || document.querySelector('.paper-page');
             if (activePage) {
                 const text = activePage.innerText;
-                const words = text.trim().split(/\s+/).length;
-                document.getElementById('wordCount').textContent = words;
+                const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;
+                document.getElementById('wordCountDisplay').textContent = words + ' words';
             }
         }
 
         document.addEventListener('input', updateWordCount);
-        setInterval(updateWordCount, 1000);
+        setInterval(updateWordCount, 500);
+
+        // Page counter update
+        function updatePageCounter() {
+            const pages = document.querySelectorAll('.paper-page');
+            document.getElementById('pageCounter').textContent = `Page ${currentPageIndex + 1} of ${pages.length}`;
+        }
 
         // Page Management
         function updatePageList() {
@@ -595,6 +664,7 @@
                     ${pages.length > 1 ? `<button class="delete-page-btn" onclick="event.stopPropagation(); deletePage(${idx})"><i class="fas fa-trash"></i></button>` : ''}
                 </div>
             `).join('');
+            updatePageCounter();
         }
 
         function goToPage(index) {
@@ -608,11 +678,24 @@
             }
         }
 
+        function previousPage() {
+            if (currentPageIndex > 0) {
+                goToPage(currentPageIndex - 1);
+            }
+        }
+
+        function nextPage() {
+            const pages = document.querySelectorAll('.paper-page');
+            if (currentPageIndex < pages.length - 1) {
+                goToPage(currentPageIndex + 1);
+            }
+        }
+
         function deletePage(index) {
             const pages = document.querySelectorAll('.paper-page');
             if (pages.length > 1) {
                 pages[index].remove();
-                if (currentPageIndex >= pages.length - 1) currentPageIndex = pages.length - 2;
+                if (currentPageIndex >= pages.length - 1) currentPageIndex = Math.max(0, pages.length - 2);
                 updatePageList();
                 showToast('Page deleted');
             }
@@ -740,7 +823,7 @@
             if (rows && cols) {
                 let html = '<table border="1" cellpadding="8" style="border-collapse: collapse; width: 100%;">';
                 for (let i = 0; i < parseInt(rows); i++) {
-                    html += '</tr>';
+                    html += '<tr>';
                     for (let j = 0; j < parseInt(cols); j++) html += `<td contenteditable="true"><br></td>`;
                     html += '</tr>';
                 }
