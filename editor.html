@@ -27,9 +27,11 @@
             background: #ffffff;
             border-bottom: 1px solid #d0d0d0;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            position: relative;
+            z-index: 100;
         }
 
-        /* Menu Bar - File, Edit, View, etc. */
+        /* Menu Bar */
         .menu-bar {
             display: flex;
             padding: 8px 16px;
@@ -39,6 +41,7 @@
         }
 
         .menu-item {
+            position: relative;
             padding: 6px 12px;
             font-size: 13px;
             color: #333;
@@ -51,6 +54,42 @@
             background: #e8e8e8;
         }
 
+        /* Dropdown Menu */
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border: 1px solid #d0d0d0;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            min-width: 200px;
+            z-index: 1000;
+            display: none;
+            padding: 4px 0;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 8px 20px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background: #e8e8e8;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: #e0e0e0;
+            margin: 4px 0;
+        }
+
         /* Formatting Toolbar */
         .format-toolbar {
             display: flex;
@@ -59,7 +98,6 @@
             flex-wrap: wrap;
             align-items: center;
             background: #ffffff;
-            border-bottom: 1px solid #e8e8e8;
         }
 
         .tool-group {
@@ -85,7 +123,6 @@
             display: inline-flex;
             align-items: center;
             gap: 4px;
-            font-family: 'Segoe UI', sans-serif;
         }
 
         .tool-btn i {
@@ -96,11 +133,6 @@
             background: #e8e8e8;
         }
 
-        .tool-btn.active {
-            background: #0071e3;
-            color: white;
-        }
-
         .font-select, .size-select {
             padding: 4px 8px;
             border: 1px solid #d0d0d0;
@@ -108,10 +140,6 @@
             font-size: 12px;
             background: white;
             cursor: pointer;
-        }
-
-        .font-select:hover, .size-select:hover {
-            border-color: #0071e3;
         }
 
         .separator {
@@ -124,10 +152,10 @@
         /* Main Layout */
         .main-layout {
             display: flex;
-            height: calc(100vh - 110px);
+            height: calc(100vh - 105px);
         }
 
-        /* Center Canvas - Word Document Area */
+        /* Canvas Area */
         .canvas-area {
             flex: 1;
             overflow-y: auto;
@@ -142,281 +170,124 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             border-radius: 4px;
             padding: 50px 60px;
+            min-height: 800px;
             font-family: 'Times New Roman', Georgia, serif;
             font-size: 12pt;
             line-height: 1.5;
         }
 
-        /* Document Header */
-        .header-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .header-logo {
-            width: 80px;
-            height: 80px;
-            object-fit: contain;
-        }
-
-        .header-title {
-            text-align: center;
-        }
-
-        .school-name {
-            font-size: 28px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            color: #1d1d1f;
-            font-family: 'Times New Roman', Georgia, serif;
-        }
-
-        .metadata-bar, .staff-section {
-            background: #f8f9fa;
-            padding: 15px 20px;
-            border-radius: 8px;
-            margin: 20px 0;
-            text-align: center;
-        }
-
-        .metadata-row, .staff-row {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
-
-        .metadata-item, .staff-item {
-            display: inline-flex;
-            align-items: baseline;
-            gap: 8px;
-        }
-
-        .metadata-label {
-            font-weight: 600;
-            color: #333;
-        }
-
-        .student-info {
-            margin: 25px 0;
-            padding: 15px;
-            border: 1px solid #e0e3e8;
-            border-radius: 8px;
-            background: white;
-        }
-
-        .student-row {
-            display: flex;
-            align-items: baseline;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .student-field {
-            display: inline-flex;
-            align-items: baseline;
-            gap: 8px;
-            flex: 1;
-        }
-
-        .student-field .field-label {
-            font-weight: 600;
-            min-width: 60px;
-        }
-
-        hr {
-            margin: 20px 0;
-            border: none;
-            border-top: 1px solid #ccc;
-        }
-
-        /* Editable text styles */
+        /* Editable content */
         [contenteditable="true"] {
             outline: none;
-            padding: 4px 8px;
-            border-radius: 4px;
-            transition: background 0.2s;
-            display: inline-block;
             cursor: text;
-            min-width: 120px;
-            border-bottom: 1px dashed #ccc;
-        }
-
-        [contenteditable="true"]:hover {
-            background: rgba(0, 113, 227, 0.05);
         }
 
         [contenteditable="true"]:focus {
-            background: rgba(0, 113, 227, 0.1);
-            border-bottom-color: #0071e3;
+            outline: none;
         }
 
-        /* Questions Container */
-        .questions-container {
-            margin-top: 30px;
+        /* Image styling */
+        .inserted-image {
+            max-width: 100%;
+            height: auto;
+            margin: 10px 0;
+            cursor: pointer;
+            border-radius: 4px;
         }
 
-        .question-card {
+        .inserted-image:hover {
+            box-shadow: 0 0 0 2px #0071e3;
+        }
+
+        /* Modal for media manager */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
             background: white;
-            border: 1px solid #e0e3e8;
             border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 20px;
-            transition: all 0.2s;
-            position: relative;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 24px;
         }
 
-        .question-card:hover {
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        }
-
-        .question-number {
-            position: absolute;
-            top: -12px;
-            left: 20px;
-            background: #0071e3;
-            color: white;
-            width: 28px;
-            height: 28px;
-            border-radius: 14px;
+        .modal-header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            font-size: 0.75rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e3e8;
+        }
+
+        .modal-title {
+            font-size: 1.2rem;
             font-weight: 600;
         }
 
-        .question-actions {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            display: flex;
-            gap: 6px;
-            opacity: 0;
-            transition: opacity 0.2s;
-        }
-
-        .question-card:hover .question-actions {
-            opacity: 1;
-        }
-
-        .question-action-btn {
-            background: #f3f4f6;
-            border: 1px solid #e0e3e8;
-            width: 30px;
-            height: 30px;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-        .question-action-btn.delete:hover {
-            background: #ff3b30;
-            color: white;
-        }
-
-        .question-text {
-            font-size: 12pt;
-            font-weight: 500;
-            margin-bottom: 20px;
-            padding-right: 70px;
-        }
-
-        .question-text-input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #e0e3e8;
-            border-radius: 8px;
-            font-size: 12pt;
-            font-family: inherit;
-        }
-
-        .options-container {
-            padding-left: 30px;
-        }
-
-        .option-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 10px;
-        }
-
-        .option-letter {
-            width: 28px;
-            height: 28px;
-            background: #f3f4f6;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-size: 11pt;
-        }
-
-        .option-input {
-            flex: 1;
-            padding: 8px 12px;
-            border: 1px solid #e0e3e8;
-            border-radius: 8px;
-            font-size: 11pt;
-        }
-
-        .correct-badge {
-            width: 26px;
-            height: 26px;
-            background: #f3f4f6;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-        .correct-badge.correct {
-            background: #34c759;
-            color: white;
-        }
-
-        .add-option-btn {
+        .close-modal {
             background: none;
-            border: 1px dashed #c8cbd1;
-            padding: 8px;
-            border-radius: 8px;
-            width: 100%;
+            border: none;
+            font-size: 24px;
             cursor: pointer;
-            color: #6c717a;
-            margin-top: 10px;
-            font-size: 11pt;
+            color: #999;
         }
 
-        .essay-answer {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #e0e3e8;
-            border-radius: 8px;
-            font-size: 11pt;
-            font-family: inherit;
-            resize: vertical;
-        }
-
-        .add-question-btn {
-            width: 100%;
-            padding: 12px;
-            background: #f3f4f6;
-            border: 1px solid #e0e3e8;
+        .image-upload-area {
+            border: 2px dashed #ccc;
             border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 20px;
             cursor: pointer;
-            color: #5a5e6a;
-            font-weight: 500;
-            transition: all 0.2s;
+        }
+
+        .image-upload-area:hover {
+            border-color: #0071e3;
+            background: #f0f7ff;
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
             margin-top: 20px;
         }
 
-        .add-question-btn:hover {
-            background: #e8ecf0;
+        .image-item {
+            border: 1px solid #e0e3e8;
+            border-radius: 8px;
+            padding: 10px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .image-item img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .image-item:hover {
             border-color: #0071e3;
+            background: #f0f7ff;
         }
 
         .toast-notification {
@@ -437,24 +308,9 @@
             transform: translateX(-50%) translateY(0);
         }
 
-        .empty-state {
-            text-align: center;
-            padding: 60px;
-            color: #9ca3af;
-        }
-
         @media (max-width: 800px) {
             .word-document {
                 padding: 30px 20px;
-            }
-            .metadata-row, .staff-row, .student-row {
-                flex-direction: column;
-                align-items: center;
-                gap: 10px;
-            }
-            .header-top {
-                flex-direction: column;
-                gap: 15px;
             }
             .format-toolbar {
                 overflow-x: auto;
@@ -466,16 +322,101 @@
 
     <!-- Microsoft Word Style Toolbar -->
     <div class="word-toolbar">
-        <!-- Menu Bar: File, Edit, View, Insert, Format, Tools, Table, Help -->
+        <!-- Menu Bar -->
         <div class="menu-bar">
-            <div class="menu-item" onclick="saveExam()">File</div>
-            <div class="menu-item">Edit</div>
-            <div class="menu-item">View</div>
-            <div class="menu-item" onclick="showInsertMenu()">Insert</div>
-            <div class="menu-item">Format</div>
-            <div class="menu-item">Tools</div>
-            <div class="menu-item">Table</div>
-            <div class="menu-item" onclick="window.open('editor.html', '_blank')">Help</div>
+            <!-- File Menu -->
+            <div class="menu-item" onclick="toggleDropdown('fileDropdown')">File</div>
+            <div id="fileDropdown" class="dropdown-menu">
+                <div class="dropdown-item" onclick="newDocument()">New</div>
+                <div class="dropdown-item" onclick="saveDocument()">Save</div>
+                <div class="dropdown-item" onclick="exportDocument()">Print</div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item" onclick="closeDocument()">Close</div>
+            </div>
+
+            <!-- Edit Menu -->
+            <div class="menu-item" onclick="toggleDropdown('editDropdown')">Edit</div>
+            <div id="editDropdown" class="dropdown-menu">
+                <div class="dropdown-item" onclick="execCommand('undo')">Undo</div>
+                <div class="dropdown-item" onclick="execCommand('redo')">Redo</div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item" onclick="execCommand('cut')">Cut</div>
+                <div class="dropdown-item" onclick="execCommand('copy')">Copy</div>
+                <div class="dropdown-item" onclick="execCommand('paste')">Paste</div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item" onclick="selectAll()">Select All</div>
+                <div class="dropdown-item" onclick="findAndReplace()">Find & Replace</div>
+            </div>
+
+            <!-- View Menu -->
+            <div class="menu-item" onclick="toggleDropdown('viewDropdown')">View</div>
+            <div id="viewDropdown" class="dropdown-menu">
+                <div class="dropdown-item" onclick="toggleZoom(100)">Zoom 100%</div>
+                <div class="dropdown-item" onclick="toggleZoom(125)">Zoom 125%</div>
+                <div class="dropdown-item" onclick="toggleZoom(150)">Zoom 150%</div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item" onclick="toggleRuler()">Show Ruler</div>
+                <div class="dropdown-item" onclick="toggleStatusBar()">Status Bar</div>
+            </div>
+
+            <!-- Insert Menu -->
+            <div class="menu-item" onclick="toggleDropdown('insertDropdown')">Insert</div>
+            <div id="insertDropdown" class="dropdown-menu">
+                <div class="dropdown-item" onclick="openMediaManager()">Media Manager</div>
+                <div class="dropdown-item" onclick="insertImage()">Insert Image</div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item" onclick="insertTable()">Insert Table</div>
+                <div class="dropdown-item" onclick="insertLink()">Insert Link</div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item" onclick="insertPageBreak()">Page Break</div>
+                <div class="dropdown-item" onclick="insertDate()">Date & Time</div>
+            </div>
+
+            <!-- Format Menu -->
+            <div class="menu-item" onclick="toggleDropdown('formatDropdown')">Format</div>
+            <div id="formatDropdown" class="dropdown-menu">
+                <div class="dropdown-item" onclick="openFontDialog()">Font</div>
+                <div class="dropdown-item" onclick="openParagraphDialog()">Paragraph</div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item" onclick="setTextColor()">Text Color</div>
+                <div class="dropdown-item" onclick="setHighlightColor()">Highlight Color</div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item" onclick="changeCase()">Change Case</div>
+                <div class="dropdown-item" onclick="clearFormatting()">Clear Formatting</div>
+            </div>
+
+            <!-- Tools Menu -->
+            <div class="menu-item" onclick="toggleDropdown('toolsDropdown')">Tools</div>
+            <div id="toolsDropdown" class="dropdown-menu">
+                <div class="dropdown-item" onclick="openWordCount()">Word Count</div>
+                <div class="dropdown-item" onclick="checkSpelling()">Spelling & Grammar</div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item" onclick="openThesaurus()">Thesaurus</div>
+                <div class="dropdown-item" onclick="openTranslate()">Translate</div>
+            </div>
+
+            <!-- Table Menu -->
+            <div class="menu-item" onclick="toggleDropdown('tableDropdown')">Table</div>
+            <div id="tableDropdown" class="dropdown-menu">
+                <div class="dropdown-item" onclick="insertTable()">Insert Table</div>
+                <div class="dropdown-item" onclick="insertRowAbove()">Insert Row Above</div>
+                <div class="dropdown-item" onclick="insertRowBelow()">Insert Row Below</div>
+                <div class="dropdown-item" onclick="insertColumnLeft()">Insert Column Left</div>
+                <div class="dropdown-item" onclick="insertColumnRight()">Insert Column Right</div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item" onclick="deleteTable()">Delete Table</div>
+                <div class="dropdown-item" onclick="deleteRow()">Delete Row</div>
+                <div class="dropdown-item" onclick="deleteColumn()">Delete Column</div>
+            </div>
+
+            <!-- Help Menu -->
+            <div class="menu-item" onclick="toggleDropdown('helpDropdown')">Help</div>
+            <div id="helpDropdown" class="dropdown-menu">
+                <div class="dropdown-item" onclick="openHelp()">Help</div>
+                <div class="dropdown-item" onclick="showAbout()">About Korahey Editor</div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item" onclick="sendFeedback()">Send Feedback</div>
+            </div>
         </div>
 
         <!-- Formatting Toolbar -->
@@ -506,124 +447,77 @@
             <div class="separator"></div>
 
             <div class="tool-group">
-                <button class="tool-btn" onclick="formatText('bold')"><b>B</b></button>
-                <button class="tool-btn" onclick="formatText('italic')"><i>I</i></button>
-                <button class="tool-btn" onclick="formatText('underline')"><u>U</u></button>
-                <button class="tool-btn" onclick="formatText('strikeThrough')"><s>S</s></button>
+                <button class="tool-btn" onclick="execCommand('bold')"><b>B</b></button>
+                <button class="tool-btn" onclick="execCommand('italic')"><i>I</i></button>
+                <button class="tool-btn" onclick="execCommand('underline')"><u>U</u></button>
+                <button class="tool-btn" onclick="execCommand('strikeThrough')"><s>S</s></button>
             </div>
 
             <div class="separator"></div>
 
             <div class="tool-group">
-                <button class="tool-btn" onclick="setAlignment('left')"><i class="fas fa-align-left"></i></button>
-                <button class="tool-btn" onclick="setAlignment('center')"><i class="fas fa-align-center"></i></button>
-                <button class="tool-btn" onclick="setAlignment('right')"><i class="fas fa-align-right"></i></button>
-                <button class="tool-btn" onclick="setAlignment('justify')"><i class="fas fa-align-justify"></i></button>
+                <button class="tool-btn" onclick="execCommand('justifyLeft')"><i class="fas fa-align-left"></i></button>
+                <button class="tool-btn" onclick="execCommand('justifyCenter')"><i class="fas fa-align-center"></i></button>
+                <button class="tool-btn" onclick="execCommand('justifyRight')"><i class="fas fa-align-right"></i></button>
+                <button class="tool-btn" onclick="execCommand('justifyFull')"><i class="fas fa-align-justify"></i></button>
             </div>
 
             <div class="separator"></div>
 
             <div class="tool-group">
-                <button class="tool-btn" onclick="setBulletList()"><i class="fas fa-list-ul"></i></button>
-                <button class="tool-btn" onclick="setNumberedList()"><i class="fas fa-list-ol"></i></button>
+                <button class="tool-btn" onclick="execCommand('insertUnorderedList')"><i class="fas fa-list-ul"></i></button>
+                <button class="tool-btn" onclick="execCommand('insertOrderedList')"><i class="fas fa-list-ol"></i></button>
+                <button class="tool-btn" onclick="execCommand('outdent')"><i class="fas fa-outdent"></i></button>
+                <button class="tool-btn" onclick="execCommand('indent')"><i class="fas fa-indent"></i></button>
             </div>
 
             <div class="separator"></div>
 
             <div class="tool-group">
-                <button class="tool-btn" onclick="addQuestion('multiple')"><i class="fas fa-plus"></i> Add MCQ</button>
-                <button class="tool-btn" onclick="addQuestion('essay')"><i class="fas fa-pen"></i> Add Essay</button>
-                <button class="tool-btn" onclick="saveExam()"><i class="fas fa-save"></i> Save</button>
-                <button class="tool-btn" onclick="exportExam()"><i class="fas fa-print"></i> Print</button>
+                <button class="tool-btn" onclick="openMediaManager()"><i class="fas fa-image"></i> Image</button>
+                <button class="tool-btn" onclick="insertTable()"><i class="fas fa-table"></i> Table</button>
+                <button class="tool-btn" onclick="saveDocument()"><i class="fas fa-save"></i> Save</button>
+                <button class="tool-btn" onclick="exportDocument()"><i class="fas fa-print"></i> Print</button>
             </div>
         </div>
     </div>
 
     <div class="main-layout">
-        <!-- Center Canvas - Word Document Area -->
         <div class="canvas-area" id="canvasArea">
-            <div class="word-document" id="examDocument">
-                <!-- HEADER SECTION -->
-                <div class="header-top">
-                    <img src="logo-compressed.jpg" alt="Logo" class="header-logo" onerror="this.src='https://placehold.co/80x80?text=Logo'">
-                    <div class="header-title">
-                        <div class="school-name" contenteditable="true">KORAHY ACADEMY</div>
-                    </div>
-                    <img src="logo-compressed.jpg" alt="Logo" class="header-logo" onerror="this.src='https://placehold.co/80x80?text=Logo'">
-                </div>
-
-                <!-- Metadata Bar -->
-                <div class="metadata-bar">
-                    <div class="metadata-row">
-                        <div class="metadata-item">
-                            <span class="metadata-label">Academic Year:</span>
-                            <span contenteditable="true">__________</span>
-                        </div>
-                        <div class="metadata-item">
-                            <span class="metadata-label">Semester:</span>
-                            <span contenteditable="true">__________</span>
-                        </div>
-                        <div class="metadata-item">
-                            <span class="metadata-label">Test:</span>
-                            <span contenteditable="true">__________</span>
-                        </div>
-                        <div class="metadata-item">
-                            <span class="metadata-label">Date:</span>
-                            <span contenteditable="true">__________</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Staff Section -->
-                <div class="staff-section">
-                    <div class="staff-row">
-                        <div class="staff-item">
-                            <span class="metadata-label">Prepared by:</span>
-                            <span contenteditable="true">__________</span>
-                        </div>
-                        <div class="staff-item">
-                            <span class="metadata-label">Reviewed by:</span>
-                            <span contenteditable="true">__________</span>
-                        </div>
-                        <div class="staff-item">
-                            <span class="metadata-label">Marked by:</span>
-                            <span contenteditable="true">__________</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Student Information -->
-                <div class="student-info">
-                    <div class="student-row">
-                        <div class="student-field">
-                            <span class="field-label">Name:</span>
-                            <span contenteditable="true">________________________________________</span>
-                        </div>
-                        <div class="student-field">
-                            <span class="field-label">Branch:</span>
-                            <span contenteditable="true">__________</span>
-                        </div>
-                        <div class="student-field">
-                            <span class="field-label">Grade:</span>
-                            <span contenteditable="true">__________</span>
-                        </div>
-                        <div class="student-field">
-                            <span class="field-label">Subject:</span>
-                            <span contenteditable="true">__________</span>
-                        </div>
-                    </div>
-                </div>
-
+            <div class="word-document" id="examDocument" contenteditable="true">
+                <!-- Empty document - user can start typing -->
+                <p style="text-align: center; font-size: 24pt; font-weight: bold; margin-top: 50px;">KORAHY ACADEMY</p>
+                <p style="text-align: center; font-style: italic; margin-bottom: 40px;">Passion for Success</p>
                 <hr>
+                <p><br></p>
+                <p>Click here to start typing or use the toolbar to add images, tables, and more...</p>
+                <p><br></p>
+                <p>You can format text using the toolbar buttons or the menu dropdowns.</p>
+            </div>
+        </div>
+    </div>
 
-                <!-- Questions Container -->
-                <div class="questions-container" id="questionsContainer">
-                    <div class="empty-state">
-                        <i class="fas fa-plus-circle" style="font-size: 48px; margin-bottom: 15px; color: #c8cbd1;"></i>
-                        <p>Click "Add MCQ" or "Add Essay" from the toolbar to add questions</p>
-                        <p style="font-size: 12px; margin-top: 8px;">Use the formatting tools to style your exam</p>
-                    </div>
-                </div>
+    <!-- Media Manager Modal -->
+    <div id="mediaModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Media Manager</h3>
+                <button class="close-modal" onclick="closeMediaManager()">&times;</button>
+            </div>
+            
+            <div class="image-upload-area" onclick="document.getElementById('imageUpload').click()">
+                <i class="fas fa-cloud-upload-alt" style="font-size: 48px; color: #0071e3;"></i>
+                <p>Click to upload images</p>
+                <p style="font-size: 12px; color: #999;">Supported: JPG, PNG, GIF</p>
+                <input type="file" id="imageUpload" accept="image/*" multiple style="display: none;" onchange="handleImageUpload(event)">
+            </div>
+            
+            <div id="imageLibrary" class="image-grid">
+                <p style="grid-column: span 3; text-align: center; color: #999;">No images yet. Upload some images to get started.</p>
+            </div>
+            
+            <div style="margin-top: 20px; text-align: center;">
+                <button class="tool-btn" onclick="closeMediaManager()" style="background: #0071e3; color: white;">Close</button>
             </div>
         </div>
     </div>
@@ -631,9 +525,406 @@
     <div id="toast" class="toast-notification"></div>
 
     <script>
-        // ========== EXAM DESIGNER JAVASCRIPT ==========
-        let questions = [];
-        let nextId = 1;
+        // ========== DROPDOWN FUNCTIONS ==========
+        let activeDropdown = null;
+
+        function toggleDropdown(dropdownId) {
+            const dropdown = document.getElementById(dropdownId);
+            if (activeDropdown && activeDropdown !== dropdown) {
+                activeDropdown.classList.remove('show');
+            }
+            dropdown.classList.toggle('show');
+            activeDropdown = dropdown.classList.contains('show') ? dropdown : null;
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.menu-item') && !e.target.closest('.dropdown-menu')) {
+                if (activeDropdown) {
+                    activeDropdown.classList.remove('show');
+                    activeDropdown = null;
+                }
+            }
+        });
+
+        // ========== FILE MENU FUNCTIONS ==========
+        function newDocument() {
+            if (confirm('Create new document? Unsaved changes will be lost.')) {
+                document.getElementById('examDocument').innerHTML = '<p><br></p>';
+                showToast('New document created');
+            }
+        }
+
+        function saveDocument() {
+            const content = document.getElementById('examDocument').innerHTML;
+            localStorage.setItem('koraheyDocument', content);
+            showToast('Document saved successfully!');
+        }
+
+        function exportDocument() {
+            saveDocument();
+            const printWindow = window.open('', '_blank');
+            const content = document.getElementById('examDocument').innerHTML;
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>Korahey Academy - Document</title>
+                    <style>
+                        body { font-family: 'Times New Roman', serif; padding: 50px; max-width: 900px; margin: 0 auto; }
+                        img { max-width: 100%; height: auto; }
+                        table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+                        th, td { border: 1px solid #ccc; padding: 8px; }
+                    </style>
+                </head>
+                <body>
+                    ${content}
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        function closeDocument() {
+            if (confirm('Close the editor?')) {
+                window.location.href = 'admin.html';
+            }
+        }
+
+        // ========== EDIT MENU FUNCTIONS ==========
+        function execCommand(command) {
+            document.execCommand(command, false, null);
+            showToast(`Executed: ${command}`);
+        }
+
+        function selectAll() {
+            document.execCommand('selectAll', false, null);
+            showToast('All text selected');
+        }
+
+        function findAndReplace() {
+            const findText = prompt('Find:');
+            if (findText) {
+                const replaceText = prompt('Replace with:');
+                if (replaceText !== null) {
+                    const content = document.getElementById('examDocument').innerHTML;
+                    const newContent = content.replace(new RegExp(findText, 'g'), replaceText);
+                    document.getElementById('examDocument').innerHTML = newContent;
+                    showToast('Find and replace completed');
+                }
+            }
+        }
+
+        // ========== VIEW MENU FUNCTIONS ==========
+        function toggleZoom(percent) {
+            const doc = document.getElementById('examDocument');
+            doc.style.zoom = percent + '%';
+            showToast(`Zoom set to ${percent}%`);
+        }
+
+        function toggleRuler() {
+            showToast('Ruler feature coming soon');
+        }
+
+        function toggleStatusBar() {
+            showToast('Status bar feature coming soon');
+        }
+
+        // ========== INSERT MENU FUNCTIONS ==========
+        let imageCounter = 0;
+        let imageLibrary = [];
+
+        function openMediaManager() {
+            loadImageLibrary();
+            document.getElementById('mediaModal').classList.add('active');
+        }
+
+        function closeMediaManager() {
+            document.getElementById('mediaModal').classList.remove('active');
+        }
+
+        function handleImageUpload(event) {
+            const files = event.target.files;
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imageData = {
+                        id: Date.now() + i,
+                        src: e.target.result,
+                        name: file.name
+                    };
+                    imageLibrary.push(imageData);
+                    localStorage.setItem('koraheyImageLibrary', JSON.stringify(imageLibrary));
+                    loadImageLibrary();
+                };
+                reader.readAsDataURL(file);
+            }
+            showToast(`${files.length} image(s) uploaded`);
+        }
+
+        function loadImageLibrary() {
+            const saved = localStorage.getItem('koraheyImageLibrary');
+            if (saved) {
+                imageLibrary = JSON.parse(saved);
+            }
+            
+            const libraryDiv = document.getElementById('imageLibrary');
+            if (imageLibrary.length === 0) {
+                libraryDiv.innerHTML = '<p style="grid-column: span 3; text-align: center; color: #999;">No images yet. Upload some images to get started.</p>';
+                return;
+            }
+            
+            libraryDiv.innerHTML = imageLibrary.map(img => `
+                <div class="image-item" onclick="insertImageFromLibrary('${img.src}')">
+                    <img src="${img.src}" alt="${img.name}">
+                    <p style="font-size: 10px; margin-top: 5px;">${img.name.substring(0, 15)}</p>
+                </div>
+            `).join('');
+        }
+
+        function insertImageFromLibrary(src) {
+            insertImageAtCursor(src);
+            closeMediaManager();
+            showToast('Image inserted');
+        }
+
+        function insertImage() {
+            const url = prompt('Enter image URL:', 'https://placehold.co/400x300');
+            if (url) {
+                insertImageAtCursor(url);
+            }
+        }
+
+        function insertImageAtCursor(src) {
+            const img = document.createElement('img');
+            img.src = src;
+            img.className = 'inserted-image';
+            img.style.maxWidth = '100%';
+            img.style.margin = '10px 0';
+            img.ondblclick = function() { removeImage(this); };
+            
+            const selection = window.getSelection();
+            if (selection.rangeCount > 0) {
+                const range = selection.getRangeAt(0);
+                range.deleteContents();
+                range.insertNode(img);
+                range.collapse(false);
+            } else {
+                document.getElementById('examDocument').appendChild(img);
+            }
+            showToast('Image added');
+        }
+
+        function removeImage(img) {
+            if (confirm('Remove this image?')) {
+                img.remove();
+                showToast('Image removed');
+            }
+        }
+
+        function insertTable() {
+            const rows = prompt('Number of rows:', '3');
+            const cols = prompt('Number of columns:', '3');
+            if (rows && cols) {
+                let table = '<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%; margin: 10px 0;">';
+                for (let i = 0; i < parseInt(rows); i++) {
+                    table += '<tr>';
+                    for (let j = 0; j < parseInt(cols); j++) {
+                        table += '<td style="border: 1px solid #ccc; padding: 8px;"><br></td>';
+                    }
+                    table += '</tr>';
+                }
+                table += '</table><br>';
+                document.execCommand('insertHTML', false, table);
+                showToast(`${rows}x${cols} table inserted`);
+            }
+        }
+
+        function insertLink() {
+            const url = prompt('Enter URL:', 'https://');
+            if (url) {
+                document.execCommand('createLink', false, url);
+                showToast('Link added');
+            }
+        }
+
+        function insertPageBreak() {
+            document.execCommand('insertHTML', false, '<div style="page-break-before: always;"><br></div>');
+            showToast('Page break inserted');
+        }
+
+        function insertDate() {
+            const date = new Date().toLocaleString();
+            document.execCommand('insertText', false, date);
+            showToast('Date inserted');
+        }
+
+        // ========== TABLE FUNCTIONS ==========
+        function insertRowAbove() {
+            const selection = window.getSelection();
+            const cell = selection.anchorNode.closest('td, th');
+            if (cell) {
+                const row = cell.closest('tr');
+                const newRow = row.cloneNode(true);
+                row.parentNode.insertBefore(newRow, row);
+                showToast('Row added above');
+            } else {
+                showToast('Place cursor inside a table cell first', 'error');
+            }
+        }
+
+        function insertRowBelow() {
+            const selection = window.getSelection();
+            const cell = selection.anchorNode.closest('td, th');
+            if (cell) {
+                const row = cell.closest('tr');
+                const newRow = row.cloneNode(true);
+                row.parentNode.insertBefore(newRow, row.nextSibling);
+                showToast('Row added below');
+            }
+        }
+
+        function insertColumnLeft() {
+            showToast('Select a table cell first');
+        }
+
+        function insertColumnRight() {
+            showToast('Select a table cell first');
+        }
+
+        function deleteTable() {
+            const selection = window.getSelection();
+            const table = selection.anchorNode.closest('table');
+            if (table) {
+                table.remove();
+                showToast('Table deleted');
+            }
+        }
+
+        function deleteRow() {
+            const selection = window.getSelection();
+            const row = selection.anchorNode.closest('tr');
+            if (row) {
+                row.remove();
+                showToast('Row deleted');
+            }
+        }
+
+        function deleteColumn() {
+            showToast('Select a table cell first');
+        }
+
+        // ========== FORMAT MENU FUNCTIONS ==========
+        function changeFont() {
+            const font = document.getElementById('fontSelect').value;
+            document.execCommand('fontName', false, font);
+        }
+
+        function changeFontSize() {
+            const size = document.getElementById('fontSizeSelect').value;
+            document.execCommand('fontSize', false, size);
+        }
+
+        function openFontDialog() {
+            const font = prompt('Enter font name (e.g., Arial, Times New Roman):', 'Arial');
+            if (font) {
+                document.execCommand('fontName', false, font);
+                showToast(`Font changed to ${font}`);
+            }
+        }
+
+        function openParagraphDialog() {
+            const spacing = prompt('Line spacing (1, 1.5, 2):', '1.5');
+            if (spacing) {
+                document.execCommand('insertHTML', false, `<div style="line-height: ${spacing};">`);
+                showToast(`Line spacing set to ${spacing}`);
+            }
+        }
+
+        function setTextColor() {
+            const color = prompt('Enter color name or hex (e.g., red, #FF0000):', '#000000');
+            if (color) {
+                document.execCommand('foreColor', false, color);
+                showToast(`Text color changed to ${color}`);
+            }
+        }
+
+        function setHighlightColor() {
+            const color = prompt('Enter highlight color (e.g., yellow, #FFFF00):', 'yellow');
+            if (color) {
+                document.execCommand('backColor', false, color);
+                showToast(`Highlight color set to ${color}`);
+            }
+        }
+
+        function changeCase() {
+            const selection = window.getSelection().toString();
+            if (selection) {
+                const upper = confirm('Convert to UPPERCASE? Click Cancel for lowercase.');
+                const newText = upper ? selection.toUpperCase() : selection.toLowerCase();
+                document.execCommand('insertText', false, newText);
+                showToast(`Changed to ${upper ? 'UPPERCASE' : 'lowercase'}`);
+            }
+        }
+
+        function clearFormatting() {
+            document.execCommand('removeFormat', false, null);
+            showToast('Formatting cleared');
+        }
+
+        // ========== TOOLS MENU FUNCTIONS ==========
+        function openWordCount() {
+            const text = document.getElementById('examDocument').innerText;
+            const words = text.trim().split(/\s+/).length;
+            const chars = text.length;
+            alert(`Word Count: ${words} words\nCharacters: ${chars} characters`);
+        }
+
+        function checkSpelling() {
+            showToast('Spelling check coming soon');
+        }
+
+        function openThesaurus() {
+            const word = window.getSelection().toString();
+            if (word) {
+                window.open(`https://www.thesaurus.com/browse/${encodeURIComponent(word)}`, '_blank');
+            } else {
+                showToast('Select a word first');
+            }
+        }
+
+        function openTranslate() {
+            const text = window.getSelection().toString();
+            if (text) {
+                window.open(`https://translate.google.com/?text=${encodeURIComponent(text)}`, '_blank');
+            } else {
+                showToast('Select text to translate');
+            }
+        }
+
+        // ========== HELP MENU FUNCTIONS ==========
+        function openHelp() {
+            showToast('Help documentation - Click for more info');
+        }
+
+        function showAbout() {
+            alert('Korahey Exam Designer\nVersion 1.0\nMicrosoft Word Style Editor\n\nCreate and format documents with ease');
+        }
+
+        function sendFeedback() {
+            prompt('Send your feedback:', '');
+            showToast('Thank you for your feedback!');
+        }
+
+        // Load saved document
+        function loadDocument() {
+            const saved = localStorage.getItem('koraheyDocument');
+            if (saved) {
+                document.getElementById('examDocument').innerHTML = saved;
+                showToast('Document loaded');
+            }
+        }
 
         function showToast(message) {
             const toast = document.getElementById('toast');
@@ -644,375 +935,8 @@
             }, 2000);
         }
 
-        // Formatting functions
-        function formatText(command) {
-            document.execCommand(command, false, null);
-        }
-
-        function changeFont() {
-            const font = document.getElementById('fontSelect').value;
-            document.querySelector('.word-document').style.fontFamily = font;
-        }
-
-        function changeFontSize() {
-            const size = document.getElementById('fontSizeSelect').value;
-            document.querySelector('.word-document').style.fontSize = size + 'pt';
-        }
-
-        function setAlignment(align) {
-            document.execCommand('justify' + align.charAt(0).toUpperCase() + align.slice(1), false, null);
-        }
-
-        function setBulletList() {
-            document.execCommand('insertUnorderedList', false, null);
-        }
-
-        function setNumberedList() {
-            document.execCommand('insertOrderedList', false, null);
-        }
-
-        function showInsertMenu() {
-            showToast('Insert menu - Add tables, images, or special characters');
-        }
-
-        // Add Question
-        function addQuestion(type) {
-            const newQuestion = {
-                id: nextId++,
-                type: type,
-                text: type === 'fillblank' ? '____________ is the capital of France.' : `This is a ${type} question.`,
-                options: type === 'multiple' ? ['Option A', 'Option B', 'Option C', 'Option D'] : [],
-                correctAnswer: type === 'multiple' ? 'A' : '',
-                points: 5
-            };
-            
-            questions.push(newQuestion);
-            renderQuestions();
-            showToast(`Added ${type} question`);
-        }
-
-        function renderQuestions() {
-            const container = document.getElementById('questionsContainer');
-            if (questions.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-plus-circle" style="font-size: 48px; margin-bottom: 15px; color: #c8cbd1;"></i>
-                        <p>Click "Add MCQ" or "Add Essay" from the toolbar to add questions</p>
-                        <p style="font-size: 12px; margin-top: 8px;">Use the formatting tools to style your exam</p>
-                    </div>
-                `;
-                return;
-            }
-
-            container.innerHTML = questions.map((q, idx) => `
-                <div class="question-card" data-id="${q.id}">
-                    <div class="question-number">${idx + 1}</div>
-                    <div class="question-actions">
-                        <button class="question-action-btn" onclick="editQuestion(${q.id})"><i class="fas fa-edit"></i></button>
-                        <button class="question-action-btn" onclick="duplicateQuestion(${q.id})"><i class="fas fa-copy"></i></button>
-                        <button class="question-action-btn delete" onclick="deleteQuestion(${q.id})"><i class="fas fa-trash"></i></button>
-                    </div>
-                    <div class="question-text">
-                        <input type="text" class="question-text-input" value="${escapeHtml(q.text)}" onchange="updateQuestionText(${q.id}, this.value)">
-                    </div>
-                    <div class="options-container">
-                        ${renderOptions(q)}
-                    </div>
-                    <div style="margin-top: 12px;">
-                        <label style="font-size: 0.75rem; color: #6c717a;">Points: </label>
-                        <input type="number" value="${q.points}" style="width: 60px; padding: 4px; border: 1px solid #e0e3e8; border-radius: 6px;" onchange="updateQuestionPoints(${q.id}, this.value)">
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function renderOptions(q) {
-            if (q.type === 'multiple') {
-                return `
-                    ${q.options.map((opt, optIdx) => `
-                        <div class="option-item">
-                            <div class="option-letter">${String.fromCharCode(65 + optIdx)}</div>
-                            <input type="text" class="option-input" value="${escapeHtml(opt)}" onchange="updateOption(${q.id}, ${optIdx}, this.value)">
-                            <div class="correct-badge ${q.correctAnswer === String.fromCharCode(65 + optIdx) ? 'correct' : ''}" onclick="setCorrectAnswer(${q.id}, '${String.fromCharCode(65 + optIdx)}')">
-                                ${q.correctAnswer === String.fromCharCode(65 + optIdx) ? '<i class="fas fa-check"></i>' : ''}
-                            </div>
-                            ${optIdx > 1 ? `<button class="question-action-btn" onclick="removeOption(${q.id}, ${optIdx})" style="background: none;"><i class="fas fa-times"></i></button>` : ''}
-                        </div>
-                    `).join('')}
-                    <button class="add-option-btn" onclick="addOption(${q.id})">+ Add Option</button>
-                `;
-            } else if (q.type === 'truefalse') {
-                return `
-                    <div class="option-item">
-                        <div class="correct-badge ${q.correctAnswer === 'True' ? 'correct' : ''}" onclick="setTrueFalseAnswer(${q.id}, 'True')">
-                            ${q.correctAnswer === 'True' ? '<i class="fas fa-check"></i>' : ''}
-                        </div>
-                        <span>True</span>
-                    </div>
-                    <div class="option-item">
-                        <div class="correct-badge ${q.correctAnswer === 'False' ? 'correct' : ''}" onclick="setTrueFalseAnswer(${q.id}, 'False')">
-                            ${q.correctAnswer === 'False' ? '<i class="fas fa-check"></i>' : ''}
-                        </div>
-                        <span>False</span>
-                    </div>
-                `;
-            } else if (q.type === 'essay') {
-                return `<textarea class="essay-answer" placeholder="Sample answer key..." onchange="updateEssayAnswer(${q.id}, this.value)">${escapeHtml(q.essayAnswer || '')}</textarea>`;
-            } else if (q.type === 'fillblank') {
-                return `
-                    <div class="option-item">
-                        <label style="width: 100%;">Correct Answer: </label>
-                        <input type="text" class="option-input" value="${escapeHtml(q.correctAnswer || '')}" placeholder="Enter the correct word/phrase" onchange="updateFillBlankAnswer(${q.id}, this.value)">
-                    </div>
-                `;
-            }
-            return '';
-        }
-
-        function updateQuestionText(id, text) {
-            const q = questions.find(q => q.id === id);
-            if (q) q.text = text;
-        }
-
-        function updateQuestionPoints(id, points) {
-            const q = questions.find(q => q.id === id);
-            if (q) q.points = parseInt(points);
-        }
-
-        function updateOption(id, optIdx, value) {
-            const q = questions.find(q => q.id === id);
-            if (q && q.options) q.options[optIdx] = value;
-        }
-
-        function addOption(id) {
-            const q = questions.find(q => q.id === id);
-            if (q && q.options) {
-                q.options.push(`Option ${String.fromCharCode(65 + q.options.length)}`);
-                renderQuestions();
-            }
-        }
-
-        function removeOption(id, optIdx) {
-            const q = questions.find(q => q.id === id);
-            if (q && q.options && q.options.length > 2) {
-                q.options.splice(optIdx, 1);
-                renderQuestions();
-            }
-        }
-
-        function setCorrectAnswer(id, answer) {
-            const q = questions.find(q => q.id === id);
-            if (q) q.correctAnswer = answer;
-            renderQuestions();
-        }
-
-        function setTrueFalseAnswer(id, answer) {
-            const q = questions.find(q => q.id === id);
-            if (q) q.correctAnswer = answer;
-            renderQuestions();
-        }
-
-        function updateEssayAnswer(id, answer) {
-            const q = questions.find(q => q.id === id);
-            if (q) q.essayAnswer = answer;
-        }
-
-        function updateFillBlankAnswer(id, answer) {
-            const q = questions.find(q => q.id === id);
-            if (q) q.correctAnswer = answer;
-        }
-
-        function editQuestion(id) {
-            const q = questions.find(q => q.id === id);
-            if (q) {
-                const newText = prompt('Edit question text:', q.text);
-                if (newText) q.text = newText;
-                renderQuestions();
-            }
-        }
-
-        function deleteQuestion(id) {
-            if (confirm('Delete this question?')) {
-                questions = questions.filter(q => q.id !== id);
-                renderQuestions();
-                showToast('Question deleted');
-            }
-        }
-
-        function duplicateQuestion(id) {
-            const original = questions.find(q => q.id === id);
-            if (original) {
-                const duplicate = JSON.parse(JSON.stringify(original));
-                duplicate.id = nextId++;
-                duplicate.text = `${duplicate.text} (Copy)`;
-                questions.push(duplicate);
-                renderQuestions();
-                showToast('Question duplicated');
-            }
-        }
-
-        // Save Exam
-        function saveExam() {
-            const headerData = {
-                schoolName: document.querySelector('.school-name')?.innerText || 'KORAHY ACADEMY',
-                academicYear: document.querySelectorAll('.metadata-row .metadata-item span[contenteditable="true"]')[0]?.innerText || '__________',
-                semester: document.querySelectorAll('.metadata-row .metadata-item span[contenteditable="true"]')[1]?.innerText || '__________',
-                test: document.querySelectorAll('.metadata-row .metadata-item span[contenteditable="true"]')[2]?.innerText || '__________',
-                date: document.querySelectorAll('.metadata-row .metadata-item span[contenteditable="true"]')[3]?.innerText || '__________',
-                preparedBy: document.querySelectorAll('.staff-row .staff-item span[contenteditable="true"]')[0]?.innerText || '__________',
-                reviewedBy: document.querySelectorAll('.staff-row .staff-item span[contenteditable="true"]')[1]?.innerText || '__________',
-                markedBy: document.querySelectorAll('.staff-row .staff-item span[contenteditable="true"]')[2]?.innerText || '__________',
-                name: document.querySelectorAll('.student-field span[contenteditable="true"]')[0]?.innerText || '__________',
-                branch: document.querySelectorAll('.student-field span[contenteditable="true"]')[1]?.innerText || '__________',
-                grade: document.querySelectorAll('.student-field span[contenteditable="true"]')[2]?.innerText || '__________',
-                subject: document.querySelectorAll('.student-field span[contenteditable="true"]')[3]?.innerText || '__________'
-            };
-            
-            const examData = {
-                header: headerData,
-                questions: questions,
-                savedAt: new Date().toISOString()
-            };
-            localStorage.setItem('koraheyExam', JSON.stringify(examData));
-            showToast('Exam saved successfully!');
-        }
-
-        function exportExam() {
-            saveExam();
-            const headerData = {
-                schoolName: document.querySelector('.school-name')?.innerText || 'KORAHY ACADEMY',
-                academicYear: document.querySelectorAll('.metadata-row .metadata-item span[contenteditable="true"]')[0]?.innerText || '__________',
-                semester: document.querySelectorAll('.metadata-row .metadata-item span[contenteditable="true"]')[1]?.innerText || '__________',
-                test: document.querySelectorAll('.metadata-row .metadata-item span[contenteditable="true"]')[2]?.innerText || '__________',
-                date: document.querySelectorAll('.metadata-row .metadata-item span[contenteditable="true"]')[3]?.innerText || '__________',
-                preparedBy: document.querySelectorAll('.staff-row .staff-item span[contenteditable="true"]')[0]?.innerText || '__________',
-                reviewedBy: document.querySelectorAll('.staff-row .staff-item span[contenteditable="true"]')[1]?.innerText || '__________',
-                markedBy: document.querySelectorAll('.staff-row .staff-item span[contenteditable="true"]')[2]?.innerText || '__________',
-                name: document.querySelectorAll('.student-field span[contenteditable="true"]')[0]?.innerText || '__________',
-                branch: document.querySelectorAll('.student-field span[contenteditable="true"]')[1]?.innerText || '__________',
-                grade: document.querySelectorAll('.student-field span[contenteditable="true"]')[2]?.innerText || '__________',
-                subject: document.querySelectorAll('.student-field span[contenteditable="true"]')[3]?.innerText || '__________'
-            };
-            
-            const printWindow = window.open('', '_blank');
-            printWindow.document.write(`
-                <html>
-                <head>
-                    <title>Korahey Academy - Examination</title>
-                    <style>
-                        body { font-family: 'Times New Roman', serif; padding: 50px; max-width: 900px; margin: 0 auto; }
-                        .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-                        .header-logo { width: 80px; height: 80px; object-fit: contain; }
-                        .school-name { font-size: 28px; font-weight: 800; text-align: center; }
-                        .metadata-bar, .staff-section { background: #f8f9fa; padding: 15px; margin: 15px 0; border-radius: 8px; text-align: center; }
-                        .metadata-row, .staff-row { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
-                        .student-info { border: 1px solid #ccc; padding: 15px; margin: 15px 0; border-radius: 8px; }
-                        .student-row { display: flex; gap: 20px; flex-wrap: wrap; }
-                        .field-label { font-weight: 600; }
-                        hr { margin: 20px 0; }
-                        .question { margin-bottom: 25px; }
-                        .question-title { font-weight: 700; margin-bottom: 8px; }
-                        .options { margin-left: 30px; }
-                    </style>
-                </head>
-                <body>
-                    <div class="header-top">
-                        <img src="logo-compressed.jpg" alt="Logo" class="header-logo" onerror="this.style.display='none'">
-                        <div class="school-name">${headerData.schoolName}</div>
-                        <img src="logo-compressed.jpg" alt="Logo" class="header-logo" onerror="this.style.display='none'">
-                    </div>
-                    
-                    <div class="metadata-bar">
-                        <div class="metadata-row">
-                            <span>Academic Year: ${headerData.academicYear}</span>
-                            <span>Semester: ${headerData.semester}</span>
-                            <span>Test: ${headerData.test}</span>
-                            <span>Date: ${headerData.date}</span>
-                        </div>
-                    </div>
-                    
-                    <div class="staff-section">
-                        <div class="staff-row">
-                            <span>Prepared by: ${headerData.preparedBy}</span>
-                            <span>Reviewed by: ${headerData.reviewedBy}</span>
-                            <span>Marked by: ${headerData.markedBy}</span>
-                        </div>
-                    </div>
-                    
-                    <div class="student-info">
-                        <div class="student-row">
-                            <div class="student-field"><span class="field-label">Name:</span> ${headerData.name}</div>
-                            <div class="student-field"><span class="field-label">Branch:</span> ${headerData.branch}</div>
-                            <div class="student-field"><span class="field-label">Grade:</span> ${headerData.grade}</div>
-                            <div class="student-field"><span class="field-label">Subject:</span> ${headerData.subject}</div>
-                        </div>
-                    </div>
-                    
-                    <hr>
-                    <h3>Examination Questions</h3>
-                    ${questions.map((q, idx) => `
-                        <div class="question">
-                            <div class="question-title">Question ${idx + 1} (${q.points} points)</div>
-                            <div>${escapeHtml(q.text)}</div>
-                            <div class="options">
-                                ${q.type === 'multiple' ? q.options.map((opt, i) => `<div>${String.fromCharCode(65 + i)}. ${escapeHtml(opt)}</div>`).join('') : ''}
-                                ${q.type === 'truefalse' ? `<div>True / False</div>` : ''}
-                                ${q.type === 'essay' ? `<div>Answer: _________________________________</div><br><div>_________________________________</div><div>_________________________________</div>` : ''}
-                                ${q.type === 'fillblank' ? `<div>Answer: _____________</div>` : ''}
-                            </div>
-                        </div>
-                    `).join('')}
-                    <hr>
-                    <p>End of Examination</p>
-                </body>
-                </html>
-            `);
-            printWindow.document.close();
-            printWindow.print();
-        }
-
-        function loadExam() {
-            const saved = localStorage.getItem('koraheyExam');
-            if (saved) {
-                const exam = JSON.parse(saved);
-                if (exam.header) {
-                    const h = exam.header;
-                    const schoolName = document.querySelector('.school-name');
-                    if (schoolName) schoolName.innerText = h.schoolName || 'KORAHY ACADEMY';
-                    
-                    const metadataFields = document.querySelectorAll('.metadata-row .metadata-item span[contenteditable="true"]');
-                    if (metadataFields[0]) metadataFields[0].innerText = h.academicYear || '__________';
-                    if (metadataFields[1]) metadataFields[1].innerText = h.semester || '__________';
-                    if (metadataFields[2]) metadataFields[2].innerText = h.test || '__________';
-                    if (metadataFields[3]) metadataFields[3].innerText = h.date || '__________';
-                    
-                    const staffFields = document.querySelectorAll('.staff-row .staff-item span[contenteditable="true"]');
-                    if (staffFields[0]) staffFields[0].innerText = h.preparedBy || '__________';
-                    if (staffFields[1]) staffFields[1].innerText = h.reviewedBy || '__________';
-                    if (staffFields[2]) staffFields[2].innerText = h.markedBy || '__________';
-                    
-                    const studentFields = document.querySelectorAll('.student-field span[contenteditable="true"]');
-                    if (studentFields[0]) studentFields[0].innerText = h.name || '__________';
-                    if (studentFields[1]) studentFields[1].innerText = h.branch || '__________';
-                    if (studentFields[2]) studentFields[2].innerText = h.grade || '__________';
-                    if (studentFields[3]) studentFields[3].innerText = h.subject || '__________';
-                }
-                if (exam.questions) {
-                    questions = exam.questions;
-                    nextId = Math.max(...questions.map(q => q.id), 0) + 1;
-                    renderQuestions();
-                }
-                showToast('Exam loaded');
-            }
-        }
-
-        function escapeHtml(str) {
-            if (!str) return '';
-            return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m]));
-        }
-
-        // Load existing exam
-        loadExam();
+        // Load saved document on startup
+        loadDocument();
     </script>
 </body>
 </html>
