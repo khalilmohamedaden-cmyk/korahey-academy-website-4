@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Korahey Exam Designer | Create Exams</title>
+    <title>Korahey Exam Designer - Microsoft Word Style</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -16,57 +16,57 @@
         }
 
         body {
-            font-family: 'Inter', 'Times New Roman', Georgia, serif;
-            background: #e8ecf0;
+            font-family: 'Segoe UI', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #ffffff;
             overflow: hidden;
             height: 100vh;
         }
 
-        /* Microsoft Word Style Ribbon */
-        .word-ribbon {
+        /* ========== MICROSOFT WORD STYLE TOOLBAR ========== */
+        .word-toolbar {
             background: #ffffff;
-            border-bottom: 1px solid #c8cbd1;
+            border-bottom: 1px solid #d0d0d0;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
-        .ribbon-tabs {
+        /* Menu Bar - File, Edit, View, etc. */
+        .menu-bar {
             display: flex;
-            padding: 0 20px;
-            background: #f3f4f6;
-            border-bottom: 1px solid #e0e3e8;
+            padding: 8px 16px;
+            gap: 4px;
+            background: #ffffff;
+            border-bottom: 1px solid #e8e8e8;
         }
 
-        .ribbon-tab {
-            padding: 10px 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: #5a5e6a;
+        .menu-item {
+            padding: 6px 12px;
+            font-size: 13px;
+            color: #333;
             cursor: pointer;
-            border-bottom: 2px solid transparent;
+            border-radius: 4px;
             transition: all 0.2s;
         }
 
-        .ribbon-tab.active {
-            color: #0071e3;
-            border-bottom-color: #0071e3;
-            background: white;
+        .menu-item:hover {
+            background: #e8e8e8;
         }
 
-        .ribbon-toolbar {
-            padding: 8px 20px;
+        /* Formatting Toolbar */
+        .format-toolbar {
             display: flex;
+            padding: 8px 16px;
             gap: 8px;
             flex-wrap: wrap;
             align-items: center;
-            background: white;
-            border-bottom: 1px solid #e0e3e8;
+            background: #ffffff;
+            border-bottom: 1px solid #e8e8e8;
         }
 
         .tool-group {
             display: flex;
-            gap: 4px;
+            gap: 2px;
             padding: 0 8px;
-            border-right: 1px solid #e0e3e8;
+            border-right: 1px solid #d0d0d0;
         }
 
         .tool-group:last-child {
@@ -76,109 +76,59 @@
         .tool-btn {
             background: none;
             border: none;
-            padding: 8px 12px;
-            border-radius: 6px;
+            padding: 6px 10px;
+            border-radius: 4px;
             cursor: pointer;
-            font-size: 0.8rem;
-            color: #3b3f46;
+            font-size: 13px;
+            color: #333;
             transition: all 0.2s;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
+            font-family: 'Segoe UI', sans-serif;
         }
 
         .tool-btn i {
-            font-size: 1rem;
+            font-size: 14px;
         }
 
         .tool-btn:hover {
-            background: #e8ecf0;
+            background: #e8e8e8;
         }
 
-        .font-size-select {
-            padding: 6px 10px;
-            border: 1px solid #c8cbd1;
-            border-radius: 6px;
-            font-size: 0.8rem;
+        .tool-btn.active {
+            background: #0071e3;
+            color: white;
+        }
+
+        .font-select, .size-select {
+            padding: 4px 8px;
+            border: 1px solid #d0d0d0;
+            border-radius: 4px;
+            font-size: 12px;
             background: white;
+            cursor: pointer;
+        }
+
+        .font-select:hover, .size-select:hover {
+            border-color: #0071e3;
+        }
+
+        .separator {
+            width: 1px;
+            height: 24px;
+            background: #d0d0d0;
+            margin: 0 4px;
         }
 
         /* Main Layout */
-        .word-layout {
+        .main-layout {
             display: flex;
             height: calc(100vh - 110px);
         }
 
-        /* Left Sidebar - Question Types */
-        .insert-sidebar {
-            width: 280px;
-            background: #fafbfc;
-            border-right: 1px solid #e0e3e8;
-            padding: 16px;
-            overflow-y: auto;
-        }
-
-        .sidebar-header {
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #6c717a;
-            margin-bottom: 12px;
-            padding-bottom: 6px;
-            border-bottom: 1px solid #e0e3e8;
-        }
-
-        .question-type {
-            background: white;
-            border: 1px solid #e0e3e8;
-            border-radius: 10px;
-            padding: 12px;
-            margin-bottom: 10px;
-            cursor: grab;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .question-type:hover {
-            background: #f0f6ff;
-            border-color: #0071e3;
-            transform: translateX(4px);
-            cursor: grab;
-        }
-
-        .question-icon {
-            width: 36px;
-            height: 36px;
-            background: #0071e3;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1rem;
-        }
-
-        .question-icon.multiple { background: #34c759; }
-        .question-icon.truefalse { background: #ff9500; }
-        .question-icon.essay { background: #af52de; }
-        .question-icon.fillblank { background: #ff3b30; }
-
-        .question-info h4 {
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 2px;
-        }
-
-        .question-info p {
-            font-size: 0.7rem;
-            color: #6c717a;
-        }
-
         /* Center Canvas - Word Document Area */
-        .word-canvas {
+        .canvas-area {
             flex: 1;
             overflow-y: auto;
             padding: 40px;
@@ -197,7 +147,7 @@
             line-height: 1.5;
         }
 
-        /* ========== HEADER STYLE - EXACTLY LIKE REQUESTED ========== */
+        /* Document Header */
         .header-top {
             display: flex;
             align-items: center;
@@ -223,14 +173,7 @@
             font-family: 'Times New Roman', Georgia, serif;
         }
 
-        .academy-text {
-            font-size: 14px;
-            font-weight: 500;
-            color: #555;
-            margin-top: 4px;
-        }
-
-        .metadata-bar {
+        .metadata-bar, .staff-section {
             background: #f8f9fa;
             padding: 15px 20px;
             border-radius: 8px;
@@ -238,14 +181,14 @@
             text-align: center;
         }
 
-        .metadata-row {
+        .metadata-row, .staff-row {
             display: flex;
             justify-content: center;
             gap: 30px;
             flex-wrap: wrap;
         }
 
-        .metadata-item {
+        .metadata-item, .staff-item {
             display: inline-flex;
             align-items: baseline;
             gap: 8px;
@@ -254,28 +197,6 @@
         .metadata-label {
             font-weight: 600;
             color: #333;
-        }
-
-        .staff-section {
-            background: #f8f9fa;
-            padding: 15px 20px;
-            border-radius: 8px;
-            margin: 20px 0;
-            text-align: center;
-        }
-
-        .staff-row {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            flex-wrap: wrap;
-            margin-bottom: 10px;
-        }
-
-        .staff-item {
-            display: inline-flex;
-            align-items: baseline;
-            gap: 8px;
         }
 
         .student-info {
@@ -332,11 +253,11 @@
             border-bottom-color: #0071e3;
         }
 
+        /* Questions Container */
         .questions-container {
             margin-top: 30px;
         }
 
-        /* Question Card */
         .question-card {
             background: white;
             border: 1px solid #e0e3e8;
@@ -345,17 +266,6 @@
             margin-bottom: 20px;
             transition: all 0.2s;
             position: relative;
-            cursor: grab;
-        }
-
-        .question-card.dragging {
-            opacity: 0.5;
-            cursor: grabbing;
-        }
-
-        .question-card.drag-over {
-            border: 2px dashed #0071e3;
-            background: #f0f6ff;
         }
 
         .question-card:hover {
@@ -406,19 +316,10 @@
             color: white;
         }
 
-        .drag-handle {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            cursor: grab;
-            color: #c8cbd1;
-        }
-
         .question-text {
             font-size: 12pt;
             font-weight: 500;
             margin-bottom: 20px;
-            padding-left: 30px;
             padding-right: 70px;
         }
 
@@ -546,9 +447,6 @@
             .word-document {
                 padding: 30px 20px;
             }
-            .insert-sidebar {
-                width: 220px;
-            }
             .metadata-row, .staff-row, .student-row {
                 flex-direction: column;
                 align-items: center;
@@ -558,94 +456,94 @@
                 flex-direction: column;
                 gap: 15px;
             }
+            .format-toolbar {
+                overflow-x: auto;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Microsoft Word Style Ribbon -->
-    <div class="word-ribbon">
-        <div class="ribbon-tabs">
-            <div class="ribbon-tab active">Home</div>
-            <div class="ribbon-tab">Insert</div>
-            <div class="ribbon-tab">Design</div>
-            <div class="ribbon-tab">Layout</div>
+    <!-- Microsoft Word Style Toolbar -->
+    <div class="word-toolbar">
+        <!-- Menu Bar: File, Edit, View, Insert, Format, Tools, Table, Help -->
+        <div class="menu-bar">
+            <div class="menu-item" onclick="saveExam()">File</div>
+            <div class="menu-item">Edit</div>
+            <div class="menu-item">View</div>
+            <div class="menu-item" onclick="showInsertMenu()">Insert</div>
+            <div class="menu-item">Format</div>
+            <div class="menu-item">Tools</div>
+            <div class="menu-item">Table</div>
+            <div class="menu-item" onclick="window.open('editor.html', '_blank')">Help</div>
         </div>
-        <div class="ribbon-toolbar">
+
+        <!-- Formatting Toolbar -->
+        <div class="format-toolbar">
+            <select id="fontSelect" class="font-select" onchange="changeFont()">
+                <option value="'Times New Roman', Georgia, serif">Times New Roman</option>
+                <option value="'Arial', sans-serif">Arial</option>
+                <option value="'Calibri', sans-serif">Calibri</option>
+                <option value="'Georgia', serif">Georgia</option>
+                <option value="'Verdana', sans-serif">Verdana</option>
+                <option value="'Courier New', monospace">Courier New</option>
+            </select>
+            
+            <select id="fontSizeSelect" class="size-select" onchange="changeFontSize()">
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12" selected>12</option>
+                <option value="14">14</option>
+                <option value="16">16</option>
+                <option value="18">18</option>
+                <option value="20">20</option>
+                <option value="24">24</option>
+                <option value="28">28</option>
+                <option value="36">36</option>
+                <option value="48">48</option>
+            </select>
+
+            <div class="separator"></div>
+
             <div class="tool-group">
-                <button class="tool-btn" onclick="formatText('bold')"><i class="fas fa-bold"></i></button>
-                <button class="tool-btn" onclick="formatText('italic')"><i class="fas fa-italic"></i></button>
-                <button class="tool-btn" onclick="formatText('underline')"><i class="fas fa-underline"></i></button>
+                <button class="tool-btn" onclick="formatText('bold')"><b>B</b></button>
+                <button class="tool-btn" onclick="formatText('italic')"><i>I</i></button>
+                <button class="tool-btn" onclick="formatText('underline')"><u>U</u></button>
+                <button class="tool-btn" onclick="formatText('strikeThrough')"><s>S</s></button>
             </div>
+
+            <div class="separator"></div>
+
             <div class="tool-group">
-                <select id="fontSelect" class="font-size-select" onchange="changeFont()">
-                    <option value="'Times New Roman', Georgia, serif">Times New Roman</option>
-                    <option value="'Inter', sans-serif">Inter</option>
-                    <option value="'Arial', sans-serif">Arial</option>
-                    <option value="'Calibri', sans-serif">Calibri</option>
-                    <option value="'Georgia', serif">Georgia</option>
-                </select>
-                <select id="fontSizeSelect" class="font-size-select" onchange="changeFontSize()">
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12" selected>12</option>
-                    <option value="14">14</option>
-                    <option value="16">16</option>
-                    <option value="18">18</option>
-                    <option value="20">20</option>
-                    <option value="24">24</option>
-                </select>
+                <button class="tool-btn" onclick="setAlignment('left')"><i class="fas fa-align-left"></i></button>
+                <button class="tool-btn" onclick="setAlignment('center')"><i class="fas fa-align-center"></i></button>
+                <button class="tool-btn" onclick="setAlignment('right')"><i class="fas fa-align-right"></i></button>
+                <button class="tool-btn" onclick="setAlignment('justify')"><i class="fas fa-align-justify"></i></button>
             </div>
+
+            <div class="separator"></div>
+
             <div class="tool-group">
+                <button class="tool-btn" onclick="setBulletList()"><i class="fas fa-list-ul"></i></button>
+                <button class="tool-btn" onclick="setNumberedList()"><i class="fas fa-list-ol"></i></button>
+            </div>
+
+            <div class="separator"></div>
+
+            <div class="tool-group">
+                <button class="tool-btn" onclick="addQuestion('multiple')"><i class="fas fa-plus"></i> Add MCQ</button>
+                <button class="tool-btn" onclick="addQuestion('essay')"><i class="fas fa-pen"></i> Add Essay</button>
                 <button class="tool-btn" onclick="saveExam()"><i class="fas fa-save"></i> Save</button>
                 <button class="tool-btn" onclick="exportExam()"><i class="fas fa-print"></i> Print</button>
             </div>
         </div>
     </div>
 
-    <div class="word-layout">
-        <!-- Left Sidebar - Question Types -->
-        <div class="insert-sidebar">
-            <div class="sidebar-header">INSERT QUESTION</div>
-            
-            <div class="question-type" draggable="true" data-type="multiple" ondragstart="dragStart(event)" ondragend="dragEnd(event)">
-                <div class="question-icon multiple"><i class="fas fa-list-ul"></i></div>
-                <div class="question-info">
-                    <h4>Multiple Choice</h4>
-                    <p>Single correct answer</p>
-                </div>
-            </div>
-
-            <div class="question-type" draggable="true" data-type="truefalse" ondragstart="dragStart(event)" ondragend="dragEnd(event)">
-                <div class="question-icon truefalse"><i class="fas fa-check-circle"></i></div>
-                <div class="question-info">
-                    <h4>True / False</h4>
-                    <p>Boolean questions</p>
-                </div>
-            </div>
-
-            <div class="question-type" draggable="true" data-type="essay" ondragstart="dragStart(event)" ondragend="dragEnd(event)">
-                <div class="question-icon essay"><i class="fas fa-pen-fancy"></i></div>
-                <div class="question-info">
-                    <h4>Essay</h4>
-                    <p>Open-ended response</p>
-                </div>
-            </div>
-
-            <div class="question-type" draggable="true" data-type="fillblank" ondragstart="dragStart(event)" ondragend="dragEnd(event)">
-                <div class="question-icon fillblank"><i class="fas fa-font"></i></div>
-                <div class="question-info">
-                    <h4>Fill in the Blank</h4>
-                    <p>Missing word/sentence</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Center Canvas - Word Document -->
-        <div class="word-canvas" id="examCanvas" ondragover="dragOver(event)" ondrop="dropQuestion(event)">
+    <div class="main-layout">
+        <!-- Center Canvas - Word Document Area -->
+        <div class="canvas-area" id="canvasArea">
             <div class="word-document" id="examDocument">
-                <!-- HEADER - EXACTLY LIKE REQUESTED -->
-                <!-- Top row with logos and title -->
+                <!-- HEADER SECTION -->
                 <div class="header-top">
                     <img src="logo-compressed.jpg" alt="Logo" class="header-logo" onerror="this.src='https://placehold.co/80x80?text=Logo'">
                     <div class="header-title">
@@ -654,7 +552,7 @@
                     <img src="logo-compressed.jpg" alt="Logo" class="header-logo" onerror="this.src='https://placehold.co/80x80?text=Logo'">
                 </div>
 
-                <!-- Metadata Bar: Academic Year, Semester, Test, Date -->
+                <!-- Metadata Bar -->
                 <div class="metadata-bar">
                     <div class="metadata-row">
                         <div class="metadata-item">
@@ -676,7 +574,7 @@
                     </div>
                 </div>
 
-                <!-- Staff Section: Prepared by, Reviewed by, Marked by -->
+                <!-- Staff Section -->
                 <div class="staff-section">
                     <div class="staff-row">
                         <div class="staff-item">
@@ -694,7 +592,7 @@
                     </div>
                 </div>
 
-                <!-- Student Information Row -->
+                <!-- Student Information -->
                 <div class="student-info">
                     <div class="student-row">
                         <div class="student-field">
@@ -721,15 +619,11 @@
                 <!-- Questions Container -->
                 <div class="questions-container" id="questionsContainer">
                     <div class="empty-state">
-                        <i class="fas fa-drag-drop" style="font-size: 48px; margin-bottom: 15px; color: #c8cbd1;"></i>
-                        <p>Drag question types from the left panel</p>
-                        <p style="font-size: 12px; margin-top: 8px;">or click "Add Question" below</p>
+                        <i class="fas fa-plus-circle" style="font-size: 48px; margin-bottom: 15px; color: #c8cbd1;"></i>
+                        <p>Click "Add MCQ" or "Add Essay" from the toolbar to add questions</p>
+                        <p style="font-size: 12px; margin-top: 8px;">Use the formatting tools to style your exam</p>
                     </div>
                 </div>
-                
-                <button class="add-question-btn" onclick="addEmptyQuestion()">
-                    <i class="fas fa-plus"></i> Add Question
-                </button>
             </div>
         </div>
     </div>
@@ -737,10 +631,9 @@
     <div id="toast" class="toast-notification"></div>
 
     <script>
-        // ========== PRESERVED JAVASCRIPT - DO NOT MODIFY ==========
+        // ========== EXAM DESIGNER JAVASCRIPT ==========
         let questions = [];
         let nextId = 1;
-        let dragSourceType = null;
 
         function showToast(message) {
             const toast = document.getElementById('toast');
@@ -766,55 +659,36 @@
             document.querySelector('.word-document').style.fontSize = size + 'pt';
         }
 
-        // Drag and Drop
-        function dragStart(e) {
-            dragSourceType = e.target.closest('.question-type')?.dataset.type;
-            if (dragSourceType) {
-                e.dataTransfer.setData('text/plain', dragSourceType);
-                e.target.style.opacity = '0.5';
-            }
+        function setAlignment(align) {
+            document.execCommand('justify' + align.charAt(0).toUpperCase() + align.slice(1), false, null);
         }
 
-        function dragEnd(e) {
-            if (e.target.closest('.question-type')) {
-                e.target.style.opacity = '1';
-            }
-            dragSourceType = null;
+        function setBulletList() {
+            document.execCommand('insertUnorderedList', false, null);
         }
 
-        function dragOver(e) {
-            e.preventDefault();
+        function setNumberedList() {
+            document.execCommand('insertOrderedList', false, null);
         }
 
-        function dropQuestion(e) {
-            e.preventDefault();
-            const type = e.dataTransfer.getData('text/plain');
-            if (type) {
-                addQuestion(type);
-                showToast(`Added ${type} question`);
-            }
+        function showInsertMenu() {
+            showToast('Insert menu - Add tables, images, or special characters');
         }
 
+        // Add Question
         function addQuestion(type) {
             const newQuestion = {
                 id: nextId++,
                 type: type,
                 text: type === 'fillblank' ? '____________ is the capital of France.' : `This is a ${type} question.`,
                 options: type === 'multiple' ? ['Option A', 'Option B', 'Option C', 'Option D'] : [],
-                correctAnswer: type === 'truefalse' ? 'True' : (type === 'multiple' ? 'A' : ''),
+                correctAnswer: type === 'multiple' ? 'A' : '',
                 points: 5
             };
             
-            if (type === 'truefalse') {
-                newQuestion.options = ['True', 'False'];
-            }
-            
             questions.push(newQuestion);
             renderQuestions();
-        }
-
-        function addEmptyQuestion() {
-            addQuestion('multiple');
+            showToast(`Added ${type} question`);
         }
 
         function renderQuestions() {
@@ -822,19 +696,19 @@
             if (questions.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
-                        <i class="fas fa-drag-drop" style="font-size: 48px; margin-bottom: 15px; color: #c8cbd1;"></i>
-                        <p>Drag question types from the left panel</p>
-                        <p style="font-size: 12px; margin-top: 8px;">or click "Add Question" below</p>
+                        <i class="fas fa-plus-circle" style="font-size: 48px; margin-bottom: 15px; color: #c8cbd1;"></i>
+                        <p>Click "Add MCQ" or "Add Essay" from the toolbar to add questions</p>
+                        <p style="font-size: 12px; margin-top: 8px;">Use the formatting tools to style your exam</p>
                     </div>
                 `;
                 return;
             }
 
             container.innerHTML = questions.map((q, idx) => `
-                <div class="question-card" data-id="${q.id}" draggable="true" ondragstart="dragQuestionStart(event, ${q.id})" ondragend="dragQuestionEnd(event)" ondragover="dragQuestionOver(event)" ondrop="dropQuestionReorder(event, ${q.id})">
-                    <div class="drag-handle"><i class="fas fa-grip-vertical"></i></div>
+                <div class="question-card" data-id="${q.id}">
                     <div class="question-number">${idx + 1}</div>
                     <div class="question-actions">
+                        <button class="question-action-btn" onclick="editQuestion(${q.id})"><i class="fas fa-edit"></i></button>
                         <button class="question-action-btn" onclick="duplicateQuestion(${q.id})"><i class="fas fa-copy"></i></button>
                         <button class="question-action-btn delete" onclick="deleteQuestion(${q.id})"><i class="fas fa-trash"></i></button>
                     </div>
@@ -844,7 +718,7 @@
                     <div class="options-container">
                         ${renderOptions(q)}
                     </div>
-                    <div style="margin-top: 12px; padding-left: 30px;">
+                    <div style="margin-top: 12px;">
                         <label style="font-size: 0.75rem; color: #6c717a;">Points: </label>
                         <input type="number" value="${q.points}" style="width: 60px; padding: 4px; border: 1px solid #e0e3e8; border-radius: 6px;" onchange="updateQuestionPoints(${q.id}, this.value)">
                     </div>
@@ -948,10 +822,21 @@
             if (q) q.correctAnswer = answer;
         }
 
+        function editQuestion(id) {
+            const q = questions.find(q => q.id === id);
+            if (q) {
+                const newText = prompt('Edit question text:', q.text);
+                if (newText) q.text = newText;
+                renderQuestions();
+            }
+        }
+
         function deleteQuestion(id) {
-            questions = questions.filter(q => q.id !== id);
-            renderQuestions();
-            showToast('Question deleted');
+            if (confirm('Delete this question?')) {
+                questions = questions.filter(q => q.id !== id);
+                renderQuestions();
+                showToast('Question deleted');
+            }
         }
 
         function duplicateQuestion(id) {
@@ -964,47 +849,6 @@
                 renderQuestions();
                 showToast('Question duplicated');
             }
-        }
-
-        let draggedItemId = null;
-
-        function dragQuestionStart(e, id) {
-            draggedItemId = id;
-            e.dataTransfer.setData('text/plain', id);
-            e.target.closest('.question-card').classList.add('dragging');
-        }
-
-        function dragQuestionEnd(e) {
-            if (e.target.closest('.question-card')) {
-                e.target.closest('.question-card').classList.remove('dragging');
-            }
-            draggedItemId = null;
-        }
-
-        function dragQuestionOver(e) {
-            e.preventDefault();
-            const targetCard = e.target.closest('.question-card');
-            if (targetCard && draggedItemId && targetCard.dataset.id != draggedItemId) {
-                targetCard.classList.add('drag-over');
-            }
-        }
-
-        function dropQuestionReorder(e, targetId) {
-            e.preventDefault();
-            const targetCard = e.target.closest('.question-card');
-            if (targetCard) targetCard.classList.remove('drag-over');
-            
-            if (draggedItemId && draggedItemId !== targetId) {
-                const draggedIndex = questions.findIndex(q => q.id == draggedItemId);
-                const targetIndex = questions.findIndex(q => q.id == targetId);
-                if (draggedIndex !== -1 && targetIndex !== -1) {
-                    const [removed] = questions.splice(draggedIndex, 1);
-                    questions.splice(targetIndex, 0, removed);
-                    renderQuestions();
-                    showToast('Question reordered');
-                }
-            }
-            draggedItemId = null;
         }
 
         // Save Exam
@@ -1064,7 +908,6 @@
                         .metadata-row, .staff-row { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
                         .student-info { border: 1px solid #ccc; padding: 15px; margin: 15px 0; border-radius: 8px; }
                         .student-row { display: flex; gap: 20px; flex-wrap: wrap; }
-                        .student-field { flex: 1; }
                         .field-label { font-weight: 600; }
                         hr { margin: 20px 0; }
                         .question { margin-bottom: 25px; }
@@ -1114,7 +957,7 @@
                             <div class="options">
                                 ${q.type === 'multiple' ? q.options.map((opt, i) => `<div>${String.fromCharCode(65 + i)}. ${escapeHtml(opt)}</div>`).join('') : ''}
                                 ${q.type === 'truefalse' ? `<div>True / False</div>` : ''}
-                                ${q.type === 'essay' ? `<div>Answer: _________________________________</div>` : ''}
+                                ${q.type === 'essay' ? `<div>Answer: _________________________________</div><br><div>_________________________________</div><div>_________________________________</div>` : ''}
                                 ${q.type === 'fillblank' ? `<div>Answer: _____________</div>` : ''}
                             </div>
                         </div>
@@ -1137,7 +980,6 @@
                     const schoolName = document.querySelector('.school-name');
                     if (schoolName) schoolName.innerText = h.schoolName || 'KORAHY ACADEMY';
                     
-                    const editableFields = document.querySelectorAll('[contenteditable="true"]');
                     const metadataFields = document.querySelectorAll('.metadata-row .metadata-item span[contenteditable="true"]');
                     if (metadataFields[0]) metadataFields[0].innerText = h.academicYear || '__________';
                     if (metadataFields[1]) metadataFields[1].innerText = h.semester || '__________';
