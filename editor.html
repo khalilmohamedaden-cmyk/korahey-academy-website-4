@@ -205,7 +205,7 @@
         .canvas-center {
             flex: 1;
             overflow-y: auto;
-            padding: 20px 40px 80px 40px;
+            padding: 20px 40px 100px 40px;
             display: flex;
             justify-content: center;
             background: #e8ecf0;
@@ -239,6 +239,11 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
+        }
+        
+        /* Last page has no bottom margin to create breathing room */
+        .paper-page:last-child {
+            margin-bottom: 0;
         }
         
         .paper-page-content {
@@ -297,12 +302,12 @@
             }
         }
 
-        /* Left Panel - Touches Top and Bottom */
+        /* Left Panel - Touches Top */
         .left-panel {
             position: fixed;
             left: 0;
             top: 108px;
-            bottom: 40px;
+            bottom: 0;
             width: 280px;
             padding: 20px 16px;
             overflow-y: auto;
@@ -706,13 +711,15 @@
             <div class="paper-container" id="paperContainer">
                 <div class="paper-page" data-page="1">
                     <div class="paper-page-content" contenteditable="true">
-                        <h1 style="text-align: center; font-size: 24pt;">KORAHEY ACADEMY</h1>
+                        <h1 style="text-align: center; font-size: 24pt;">KORAHY ACADEMY</h1>
                         <p style="text-align: center; font-style: italic; font-size: 12pt;">Passion for Success</p>
                         <hr>
                         <p><br></p>
                         <p>Welcome to Korahey UI v1.0 - Document Editor</p>
-                        <p>This is a TRUE A4 paper (210mm x 297mm).</p>
-                        <p>Type until the page fills, and a new A4 page will be created automatically.</p>
+                        <p>Start typing here. When this page becomes full, a new page will be created automatically.</p>
+                        <p><br></p>
+                        <p>This document uses true A4 paper size (210mm x 297mm).</p>
+                        <p>The page panel on the left shows mini previews of each page.</p>
                     </div>
                     <div class="page-bottom">— End of Page —</div>
                 </div>
@@ -1108,7 +1115,7 @@
                 document.getElementById('paperContainer').innerHTML = `
                     <div class="paper-page" data-page="1">
                         <div class="paper-page-content" contenteditable="true">
-                            <h1 style="text-align: center; font-size: 24pt;">KORAHEY ACADEMY</h1>
+                            <h1 style="text-align: center; font-size: 24pt;">KORAHY ACADEMY</h1>
                             <p style="text-align: center; font-style: italic; font-size: 12pt;">Passion for Success</p>
                             <hr>
                             <p><br></p>
@@ -1162,7 +1169,7 @@
         }
         
         function showAbout() { 
-            alert('Korahey UI v1.0\nDocument Editor\n\nTRUE A4 Paper Size (210mm x 297mm)\nAutomatic New Page When Full\nPage Panel with Mini Previews\n\n© 2026 Korahey Academy'); 
+            alert('Korahey UI v1.0\nDocument Editor\n\nTRUE A4 Paper Size (210mm x 297mm)\nAutomatic New Page When Full\nPage Panel with Mini Previews\nBreathing Room at Bottom\n\n© 2026 Korahey Academy'); 
         }
 
         function insertTable() {
