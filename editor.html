@@ -301,7 +301,7 @@
             font-family: 'Times New Roman', serif;
             font-size: 12pt;
             line-height: 1.6;
-            overflow-y: visible;
+            overflow-y: auto;
         }
 
         /* Dynamic Island */
@@ -329,7 +329,7 @@
         .tool-btn {
             background: transparent;
             border: none;
-            padding: 8px 12px;
+            padding: 8px 14px;
             border-radius: 40px;
             cursor: pointer;
             font-size: 14px;
@@ -338,6 +338,7 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            font-weight: 500;
         }
 
         .tool-btn i {
@@ -570,9 +571,9 @@
             <option value="20">20</option><option value="24">24</option>
         </select>
         <div class="separator"></div>
-        <button class="tool-btn" id="boldBtn" onclick="toggleFormat('bold', 'boldBtn')"><i class="fas fa-bold"></i></button>
-        <button class="tool-btn" id="italicBtn" onclick="toggleFormat('italic', 'italicBtn')"><i class="fas fa-italic"></i></button>
-        <button class="tool-btn" id="underlineBtn" onclick="toggleFormat('underline', 'underlineBtn')"><i class="fas fa-underline"></i></button>
+        <button class="tool-btn" id="boldBtn" onclick="applyBold()"><i class="fas fa-bold"></i></button>
+        <button class="tool-btn" id="italicBtn" onclick="applyItalic()"><i class="fas fa-italic"></i></button>
+        <button class="tool-btn" id="underlineBtn" onclick="applyUnderline()"><i class="fas fa-underline"></i></button>
         <div class="separator"></div>
         <button class="tool-btn" id="alignLeftBtn" onclick="setAlignment('justifyLeft', 'alignLeftBtn')"><i class="fas fa-align-left"></i></button>
         <button class="tool-btn" id="alignCenterBtn" onclick="setAlignment('justifyCenter', 'alignCenterBtn')"><i class="fas fa-align-center"></i></button>
@@ -602,12 +603,12 @@
     <div class="canvas-center" id="canvas">
         <div id="paperContainer">
             <div class="paper-page" data-page="1">
-                <div class="paper-page-content" contenteditable="true">
+                <div class="paper-page-content" contenteditable="true" id="editorContent">
                     <h1 style="text-align: center;">KORAHEY ACADEMY</h1>
                     <p style="text-align: center; font-style: italic;">Passion for Success</p>
                     <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
-                    <p>Welcome to Korahey Editor. Select text and click the B button - it will turn blue when active!</p>
-                    <p>Try making text <b>bold</b>, <i>italic</i>, or <u>underlined</u>.</p>
+                    <p>Welcome to Korahey Editor. Select text and click the B button - it will turn blue and make text bold!</p>
+                    <p>Try making this text <b>bold</b>, <i>italic</i>, or <u>underlined</u>.</p>
                 </div>
             </div>
         </div>
@@ -630,9 +631,9 @@
 
     <!-- Custom Right Click Menu -->
     <div id="contextMenu" class="custom-context-menu">
-        <div class="context-menu-item" onclick="applyFormat('bold', 'boldBtn')"><i class="fas fa-bold"></i> Bold</div>
-        <div class="context-menu-item" onclick="applyFormat('italic', 'italicBtn')"><i class="fas fa-italic"></i> Italic</div>
-        <div class="context-menu-item" onclick="applyFormat('underline', 'underlineBtn')"><i class="fas fa-underline"></i> Underline</div>
+        <div class="context-menu-item" onclick="applyBoldFromMenu()"><i class="fas fa-bold"></i> Bold</div>
+        <div class="context-menu-item" onclick="applyItalicFromMenu()"><i class="fas fa-italic"></i> Italic</div>
+        <div class="context-menu-item" onclick="applyUnderlineFromMenu()"><i class="fas fa-underline"></i> Underline</div>
         <div class="dropdown-divider"></div>
         <div class="context-menu-item" onclick="execCommand('copy'); hideContextMenu()"><i class="fas fa-copy"></i> Copy</div>
         <div class="context-menu-item" onclick="execCommand('cut'); hideContextMenu()"><i class="fas fa-cut"></i> Cut</div>
@@ -675,6 +676,139 @@
             toast.textContent = message;
             toast.classList.add('show');
             setTimeout(() => { toast.classList.remove('show'); }, 2000);
+        }
+
+        // Get the active editor element
+        function getActiveEditor() {
+            let active = document.activeElement;
+            if (active && active.classList && active.classList.contains('paper-page-content')) {
+                return active;
+            }
+            // Fallback: find the first editable content
+            const editor = document.querySelector('.paper-page-content');
+            if (editor) {
+                editor.focus();
+                return editor;
+            }
+            return null;
+        }
+
+        // ========== BOLD FUNCTION ==========
+        function applyBold() {
+            const editor = getActiveEditor();
+            if (editor) {
+                document.execCommand('bold', false, null);
+                editor.focus();
+                updateBoldButtonState();
+                showToast('Bold applied');
+            } else {
+                showToast('Click on the paper first');
+            }
+        }
+
+        function applyBoldFromMenu() {
+            const editor = getActiveEditor();
+            if (editor) {
+                document.execCommand('bold', false, null);
+                editor.focus();
+                updateBoldButtonState();
+            }
+            hideContextMenu();
+        }
+
+        function updateBoldButtonState() {
+            const boldBtn = document.getElementById('boldBtn');
+            if (boldBtn) {
+                const isBold = document.queryCommandState('bold');
+                if (isBold) {
+                    boldBtn.classList.add('active');
+                    currentActiveButtons['boldBtn'] = true;
+                } else {
+                    boldBtn.classList.remove('active');
+                    currentActiveButtons['boldBtn'] = false;
+                }
+            }
+        }
+
+        // ========== ITALIC FUNCTION ==========
+        function applyItalic() {
+            const editor = getActiveEditor();
+            if (editor) {
+                document.execCommand('italic', false, null);
+                editor.focus();
+                updateItalicButtonState();
+                showToast('Italic applied');
+            } else {
+                showToast('Click on the paper first');
+            }
+        }
+
+        function applyItalicFromMenu() {
+            const editor = getActiveEditor();
+            if (editor) {
+                document.execCommand('italic', false, null);
+                editor.focus();
+                updateItalicButtonState();
+            }
+            hideContextMenu();
+        }
+
+        function updateItalicButtonState() {
+            const italicBtn = document.getElementById('italicBtn');
+            if (italicBtn) {
+                const isItalic = document.queryCommandState('italic');
+                if (isItalic) {
+                    italicBtn.classList.add('active');
+                    currentActiveButtons['italicBtn'] = true;
+                } else {
+                    italicBtn.classList.remove('active');
+                    currentActiveButtons['italicBtn'] = false;
+                }
+            }
+        }
+
+        // ========== UNDERLINE FUNCTION ==========
+        function applyUnderline() {
+            const editor = getActiveEditor();
+            if (editor) {
+                document.execCommand('underline', false, null);
+                editor.focus();
+                updateUnderlineButtonState();
+                showToast('Underline applied');
+            } else {
+                showToast('Click on the paper first');
+            }
+        }
+
+        function applyUnderlineFromMenu() {
+            const editor = getActiveEditor();
+            if (editor) {
+                document.execCommand('underline', false, null);
+                editor.focus();
+                updateUnderlineButtonState();
+            }
+            hideContextMenu();
+        }
+
+        function updateUnderlineButtonState() {
+            const underlineBtn = document.getElementById('underlineBtn');
+            if (underlineBtn) {
+                const isUnderline = document.queryCommandState('underline');
+                if (isUnderline) {
+                    underlineBtn.classList.add('active');
+                    currentActiveButtons['underlineBtn'] = true;
+                } else {
+                    underlineBtn.classList.remove('active');
+                    currentActiveButtons['underlineBtn'] = false;
+                }
+            }
+        }
+
+        // Update all button states
+        function updateAllButtonStates() {
+            updateBoldButtonState();
+            updateItalicButtonState();
+            updateUnderlineButtonState();
         }
 
         // Sidebar Toggle
@@ -889,60 +1023,19 @@
             }
         });
 
-        // Formatting functions - WITH VISUAL ACTIVE STATE (turns blue when active)
-        function toggleFormat(command, btnId) {
+        // Selection change to update button states
+        document.addEventListener('selectionchange', function() {
             const activeElement = document.activeElement;
             if (activeElement && activeElement.classList.contains('paper-page-content')) {
-                document.execCommand(command, false, null);
-                
-                // Check if the formatting is active after the command
-                setTimeout(() => {
-                    const isActive = document.queryCommandState(command);
-                    const btn = document.getElementById(btnId);
-                    if (btn) {
-                        if (isActive) {
-                            btn.classList.add('active');
-                            currentActiveButtons[btnId] = true;
-                        } else {
-                            btn.classList.remove('active');
-                            currentActiveButtons[btnId] = false;
-                        }
-                    }
-                }, 10);
-                
-                activeElement.focus();
+                updateAllButtonStates();
             }
-        }
-
-        // Apply format from context menu with visual update
-        function applyFormat(command, btnId) {
-            const activeElement = document.activeElement;
-            if (activeElement && activeElement.classList.contains('paper-page-content')) {
-                document.execCommand(command, false, null);
-                
-                setTimeout(() => {
-                    const isActive = document.queryCommandState(command);
-                    const btn = document.getElementById(btnId);
-                    if (btn) {
-                        if (isActive) {
-                            btn.classList.add('active');
-                            currentActiveButtons[btnId] = true;
-                        } else {
-                            btn.classList.remove('active');
-                            currentActiveButtons[btnId] = false;
-                        }
-                    }
-                }, 10);
-                
-                activeElement.focus();
-            }
-            hideContextMenu();
-        }
+        });
 
         function setAlignment(command, btnId) {
-            const activeElement = document.activeElement;
-            if (activeElement && activeElement.classList.contains('paper-page-content')) {
+            const editor = getActiveEditor();
+            if (editor) {
                 document.execCommand(command, false, null);
+                editor.focus();
                 ['alignLeftBtn', 'alignCenterBtn', 'alignRightBtn'].forEach(id => {
                     const btn = document.getElementById(id);
                     if (btn) btn.classList.remove('active');
@@ -950,14 +1043,16 @@
                 });
                 const clickedBtn = document.getElementById(btnId);
                 if (clickedBtn) { clickedBtn.classList.add('active'); currentActiveButtons[btnId] = true; }
-                activeElement.focus();
+            } else {
+                showToast('Click on the paper first');
             }
         }
 
         function toggleList(command, btnId) {
-            const activeElement = document.activeElement;
-            if (activeElement && activeElement.classList.contains('paper-page-content')) {
+            const editor = getActiveEditor();
+            if (editor) {
                 document.execCommand(command, false, null);
+                editor.focus();
                 const btn = document.getElementById(btnId);
                 if (btn) {
                     setTimeout(() => {
@@ -971,49 +1066,50 @@
                         }
                     }, 10);
                 }
-                activeElement.focus();
+            } else {
+                showToast('Click on the paper first');
             }
         }
 
         function execCommand(command) {
-            const activeElement = document.activeElement;
-            if (activeElement && activeElement.classList.contains('paper-page-content')) {
+            const editor = getActiveEditor();
+            if (editor) {
                 document.execCommand(command, false, null);
-                activeElement.focus();
+                editor.focus();
             }
             hideContextMenu();
         }
 
         function selectAll() {
-            const activeElement = document.activeElement;
-            if (activeElement && activeElement.classList.contains('paper-page-content')) {
+            const editor = getActiveEditor();
+            if (editor) {
                 document.execCommand('selectAll', false, null);
             }
             hideContextMenu();
         }
 
         function changeFont() {
-            const activeElement = document.activeElement;
-            if (activeElement && activeElement.classList.contains('paper-page-content')) {
+            const editor = getActiveEditor();
+            if (editor) {
                 document.execCommand('fontName', false, document.getElementById('fontSelector').value);
-                activeElement.focus();
+                editor.focus();
             }
         }
 
         function changeFontSize() {
-            const activeElement = document.activeElement;
-            if (activeElement && activeElement.classList.contains('paper-page-content')) {
+            const editor = getActiveEditor();
+            if (editor) {
                 const size = document.getElementById('sizeSelector').value;
                 document.execCommand('fontSize', false, size);
-                activeElement.focus();
+                editor.focus();
             }
         }
 
         function insertDate() {
-            const activeElement = document.activeElement;
-            if (activeElement && activeElement.classList.contains('paper-page-content')) {
+            const editor = getActiveEditor();
+            if (editor) {
                 document.execCommand('insertText', false, new Date().toLocaleString());
-                activeElement.focus();
+                editor.focus();
             }
         }
 
@@ -1028,10 +1124,10 @@
                     html += '</tr>';
                 }
                 html += '</table><br>';
-                const activeElement = document.activeElement;
-                if (activeElement && activeElement.classList.contains('paper-page-content')) {
+                const editor = getActiveEditor();
+                if (editor) {
                     document.execCommand('insertHTML', false, html);
-                    activeElement.focus();
+                    editor.focus();
                 }
                 showToast(`${rows}x${cols} table inserted`);
             }
@@ -1100,15 +1196,15 @@
             const src = e.dataTransfer.getData('text/plain');
             if (src && src.startsWith('data:image')) {
                 e.preventDefault();
-                const activeContent = document.activeElement;
-                if (activeContent && activeContent.classList.contains('paper-page-content')) {
+                const editor = getActiveEditor();
+                if (editor) {
                     const img = document.createElement('img');
                     img.src = src;
                     img.style.maxWidth = '100%';
                     img.style.margin = '10px 0';
                     const range = document.caretRangeFromPoint(e.clientX, e.clientY);
                     if (range) range.insertNode(img);
-                    else activeContent.appendChild(img);
+                    else editor.appendChild(img);
                     showToast('Image inserted');
                 }
             }
@@ -1185,38 +1281,16 @@
             updateWordCount();
         }
 
-        // Update button states based on selection
-        function updateButtonStates() {
-            const commands = ['bold', 'italic', 'underline'];
-            const btnIds = ['boldBtn', 'italicBtn', 'underlineBtn'];
-            
-            for (let i = 0; i < commands.length; i++) {
-                const isActive = document.queryCommandState(commands[i]);
-                const btn = document.getElementById(btnIds[i]);
-                if (btn) {
-                    if (isActive) {
-                        btn.classList.add('active');
-                        currentActiveButtons[btnIds[i]] = true;
-                    } else {
-                        btn.classList.remove('active');
-                        currentActiveButtons[btnIds[i]] = false;
-                    }
-                }
-            }
-        }
-
-        // Listen for selection changes to update button states
-        document.addEventListener('selectionchange', function() {
-            const activeElement = document.activeElement;
-            if (activeElement && activeElement.classList.contains('paper-page-content')) {
-                updateButtonStates();
-            }
-        });
-
         function escapeHtml(str) {
             if (!str) return '';
             return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m]));
         }
+
+        // Focus on editor initially
+        setTimeout(() => {
+            const editor = document.querySelector('.paper-page-content');
+            if (editor) editor.focus();
+        }, 100);
 
         loadDocument();
         setInterval(updateWordCount, 500);
