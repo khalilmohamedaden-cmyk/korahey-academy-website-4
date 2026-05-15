@@ -51,54 +51,6 @@
             letter-spacing: 1px;
         }
 
-        .menu-bar { display: flex; gap: 4px; }
-
-        .menu-item {
-            padding: 6px 14px;
-            font-size: 13px;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.2s;
-            background: none;
-            border: none;
-            color: #333;
-        }
-
-        .menu-item:hover { background: rgba(0, 0, 0, 0.05); }
-
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: white;
-            border-radius: 12px;
-            min-width: 200px;
-            display: none;
-            padding: 8px 0;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            border: 1px solid rgba(0,0,0,0.1);
-            z-index: 1000;
-        }
-
-        .dropdown-menu.show { display: block; }
-        .dropdown-item { padding: 10px 20px; font-size: 13px; cursor: pointer; transition: all 0.2s; }
-        .dropdown-item:hover { background: rgba(0, 0, 0, 0.05); }
-        .dropdown-divider { height: 1px; background: rgba(0, 0, 0, 0.1); margin: 6px 0; }
-
-        .top-btn {
-            background: rgba(0, 0, 0, 0.05);
-            border: none;
-            padding: 6px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            color: #333;
-            transition: all 0.2s;
-        }
-
-        .top-btn:hover { background: rgba(0, 0, 0, 0.1); }
-
         /* Sidebar Layout */
         .left-panel {
             position: fixed;
@@ -111,11 +63,32 @@
             border-right: 1px solid rgba(0, 0, 0, 0.08);
             display: flex;
             flex-direction: column;
-            z-index: 1001; /* Above Top Bar dropdowns when toggled */
+            z-index: 1001;
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .left-panel.collapsed { transform: translateX(-100%); }
+
+        /* The Smart Toggle Button */
+        .panel-toggle-btn {
+            position: fixed;
+            left: 265px; 
+            top: 66px;
+            width: 28px;
+            height: 28px;
+            background: #fff;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            z-index: 1100;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .panel-toggle-btn.sidebar-closed { left: 10px; }
 
         .sidebar-content {
             padding: 20px;
@@ -134,68 +107,7 @@
             letter-spacing: 1.2px;
         }
 
-        .page-list { display: flex; flex-direction: column; gap: 15px; }
-
-        .page-thumb {
-            background: white;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            padding: 10px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .page-thumb:hover { border-color: var(--apple-blue); transform: translateX(4px); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        .page-thumb.active { border-color: var(--apple-blue); background: rgba(0, 113, 227, 0.05); }
-
-        .thumb-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .page-number { background: rgba(0, 0, 0, 0.05); border-radius: 4px; padding: 2px 8px; font-size: 10px; font-weight: 600; }
-        .delete-page-btn { background: none; border: none; cursor: pointer; color: #999; padding: 2px 6px; border-radius: 4px; font-size: 10px; }
-        .delete-page-btn:hover { background: rgba(255, 59, 48, 0.1); color: #ff3b30; }
-
-        .mini-paper {
-            background: #fafafc;
-            border-radius: 4px;
-            padding: 8px;
-            aspect-ratio: 210 / 297;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            margin-bottom: 5px;
-        }
-        
-        .mini-paper-header { font-size: 7px; font-weight: bold; text-align: center; padding-bottom: 3px; border-bottom: 1px solid #eee; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .mini-paper-content { flex: 1; font-size: 6px; line-height: 1.3; color: #666; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 10; -webkit-box-orient: vertical; font-family: 'Times New Roman', serif; }
-
-        /* Panel Toggle Button - INSIDE SIDEBAR */
-        .panel-toggle-btn {
-            position: absolute;
-            right: 8px; /* Moved inside the page area */
-            top: 18px;
-            width: 28px;
-            height: 28px;
-            background: #fff;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            z-index: 1100;
-            transition: all 0.2s;
-        }
-
-        /* Fixed Button when sidebar is collapsed */
-        .panel-toggle-btn.fixed {
-            position: fixed;
-            left: 10px;
-            right: auto;
-            top: 60px;
-        }
-
-        /* Canvas Area */
+        /* Canvas Area - The container for alignment */
         .canvas-center {
             position: absolute;
             top: 48px;
@@ -205,7 +117,10 @@
             overflow-y: auto;
             padding: 40px 40px 150px 40px;
             scroll-behavior: smooth;
-            transition: left 0.3s ease;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* This keeps the paper centered in the workspace */
         }
 
         .canvas-center.expanded { left: 0; }
@@ -215,31 +130,44 @@
             background: white;
             width: 210mm;
             min-width: 210mm;
-            max-width: 210mm;
             height: 297mm;
-            min-height: 297mm;
-            max-height: 297mm;
-            margin: 0 auto 40px auto;
+            margin: 80px 0 40px 0; /* Top margin provides space for the island */
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             padding: 20mm 25mm;
             position: relative;
-            cursor: text;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
         }
 
-        .paper-page-content { flex: 1; overflow-y: auto; outline: none; font-family: 'Times New Roman', serif; font-size: 12pt; line-height: 1.6; scrollbar-width: thin; }
+        .paper-page-content { outline: none; font-family: 'Times New Roman', serif; font-size: 12pt; line-height: 1.6; }
 
-        /* Bottom Bar */
+        /* Dynamic Island - ALIGNED WITH PAPER */
+        .dynamic-island {
+            position: fixed;
+            top: 60px;
+            /* Aligns the island center with the paper center by using the same transition as the canvas */
+            left: calc(50% + 150px); 
+            transform: translateX(-50%);
+            background: #ffffff;
+            border-radius: 50px;
+            padding: 8px 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            z-index: 999;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .dynamic-island.full-width {
+            left: 50%; 
+        }
+
         .bottom-bar {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
             height: 44px;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(10px);
+            background: #fff;
             border-top: 1px solid rgba(0, 0, 0, 0.08);
             padding: 0 24px;
             display: flex;
@@ -248,91 +176,43 @@
             z-index: 1000;
             font-size: 12px;
         }
-
-        /* Dynamic Island - CENTERED with transition */
-        .dynamic-island {
-            position: fixed;
-            top: 60px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #ffffff;
-            border-radius: 50px;
-            padding: 8px 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            border: 1px solid rgba(0,0,0,0.05);
-            z-index: 999;
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            transition: left 0.3s ease; /* Matches canvas transition */
-        }
-
-        .tool-btn { background: transparent; border: none; padding: 8px 12px; border-radius: 40px; cursor: pointer; font-size: 14px; transition: all 0.2s; color: #555; display: inline-flex; align-items: center; gap: 6px; }
-        .tool-btn:hover { background: rgba(0, 0, 0, 0.06); color: #333; }
-        .tool-btn.active { background: var(--apple-blue); color: white; }
-        .separator { width: 1px; height: 24px; background: rgba(0, 0, 0, 0.1); margin: 0 4px; }
-        .font-selector, .size-selector { padding: 6px 12px; border-radius: 40px; border: 1px solid rgba(0, 0, 0, 0.1); background: white; font-size: 12px; cursor: pointer; }
-
-        .toast { position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%) translateY(100px); background: #333; color: white; padding: 10px 20px; border-radius: 50px; font-size: 13px; z-index: 3000; transition: transform 0.3s; }
-        .toast.show { transform: translateX(-50%) translateY(0); }
-
-        .media-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(8px); z-index: 2000; align-items: center; justify-content: center; }
-        .media-modal.active { display: flex; }
-        .media-modal-content { width: 90%; max-width: 600px; background: white; border-radius: 24px; overflow: hidden; }
-        .media-modal-header { padding: 20px 24px; display: flex; justify-content: space-between; border-bottom: 1px solid #eee; }
-        .media-modal-body { padding: 24px; max-height: 60vh; overflow-y: auto; }
-
-        @media (max-width: 900px) {
-            .left-panel { width: 260px; }
-            .canvas-center { left: 260px; }
-        }
     </style>
 </head>
 <body>
 
     <div class="top-bar">
         <div class="editor-brand">KORAHEY EDITOR</div>
-        <div class="menu-bar">
-            <div class="menu-item" onclick="toggleDropdown('fileMenu')">File</div>
-            <div id="fileMenu" class="dropdown-menu">
-                <div class="dropdown-item">New</div>
-                <div class="dropdown-item">Save</div>
-            </div>
-            <div class="menu-item">Edit</div>
-            <div class="menu-item">Insert</div>
-        </div>
-        <button class="top-btn">Save</button>
+        <button style="background:var(--apple-blue); color:white; border:none; padding:6px 15px; border-radius:6px; cursor:pointer;">Save</button>
     </div>
 
-    <div class="dynamic-island" id="dynamicIsland">
-        <select class="font-selector"><option>Times New Roman</option></select>
-        <select class="size-selector"><option selected>12</option></select>
-        <div class="separator"></div>
-        <button class="tool-btn"><i class="fas fa-bold"></i></button>
-        <button class="tool-btn"><i class="fas fa-italic"></i></button>
-        <div class="separator"></div>
-        <button class="tool-btn"><i class="fas fa-align-center"></i></button>
+    <div class="dynamic-island" id="island">
+        <button style="border:none; background:none; cursor:pointer;"><i class="fas fa-bold"></i></button>
+        <button style="border:none; background:none; cursor:pointer;"><i class="fas fa-italic"></i></button>
+        <div style="width:1px; height:20px; background:#ddd;"></div>
+        <button style="border:none; background:none; cursor:pointer;"><i class="fas fa-image"></i></button>
+    </div>
+
+    <div class="panel-toggle-btn" id="toggleBtn" onclick="toggleSidebar()">
+        <i class="fas fa-chevron-left" id="toggleIcon"></i>
     </div>
 
     <div class="left-panel" id="sidebar">
         <div class="sidebar-content">
-            <div class="panel-title">PAGES</div>
-            <div class="page-list" id="pageList"></div>
-        </div>
-        <div class="panel-toggle-btn" id="toggleBtn" onclick="toggleSidebar()">
-            <i class="fas fa-chevron-left" id="toggleIcon"></i>
+            <div class="panel-title">Pages</div>
+            <div style="border: 1px solid #ddd; border-radius: 8px; padding: 10px; cursor:pointer;">
+                <div style="background:#f9f9f9; aspect-ratio: 210/297; border: 1px solid #eee;"></div>
+                <p style="font-size:10px; text-align:center; margin-top:5px;">Page 1</p>
+            </div>
         </div>
     </div>
 
-    <div class="canvas-center" id="mainCanvas">
-        <div id="paperContainer">
-            <div class="paper-page">
-                <div class="paper-page-content" contenteditable="true">
-                    <h1 style="text-align: center;">KORAHEY ACADEMY</h1>
-                    <p style="text-align: center; font-style: italic;">Passion for Success</p>
-                    <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
-                    <p>The sidebar toggle icon is now moved inside the panel. When you toggle the panel, the paper and dynamic island move smoothly with the workspace.</p>
-                </div>
+    <div class="canvas-center" id="canvas">
+        <div class="paper-page">
+            <div class="paper-page-content" contenteditable="true">
+                <h1 style="text-align: center;">KORAHEY ACADEMY</h1>
+                <p style="text-align: center; font-style: italic;">Passion for Success</p>
+                <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+                <p>The Dynamic Island is now perfectly aligned with the paper. Both will move smoothly together whenever you open or close the sidebar!</p>
             </div>
         </div>
     </div>
@@ -340,46 +220,27 @@
     <div class="bottom-bar">
         <span>Page 1 of 1</span>
         <span>0 words</span>
-        <span>100% Zoom</span>
     </div>
-
-    <div id="toast" class="toast"></div>
 
     <script>
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
-            const canvas = document.getElementById('mainCanvas');
-            const island = document.getElementById('dynamicIsland');
+            const canvas = document.getElementById('canvas');
+            const island = document.getElementById('island');
+            const toggleBtn = document.getElementById('toggleBtn');
             const icon = document.getElementById('toggleIcon');
-            const btn = document.getElementById('toggleBtn');
             
             sidebar.classList.toggle('collapsed');
             canvas.classList.toggle('expanded');
-            btn.classList.toggle('fixed'); // Fix the button position when sidebar is gone
+            island.classList.toggle('full-width');
+            toggleBtn.classList.toggle('sidebar-closed');
             
             if(sidebar.classList.contains('collapsed')) {
                 icon.className = 'fas fa-chevron-right';
-                island.style.left = "50%"; // Keeps it centered relative to the whole screen
             } else {
                 icon.className = 'fas fa-chevron-left';
-                island.style.left = "calc(50% + 150px)"; // Shifts it to center relative to the workspace
             }
         }
-
-        // Dropdown toggle logic
-        let activeMenu = null;
-        function toggleDropdown(menuId) {
-            const menu = document.getElementById(menuId);
-            if (activeMenu && activeMenu !== menu) activeMenu.classList.remove('show');
-            menu.classList.toggle('show');
-            activeMenu = menu.classList.contains('show') ? menu : null;
-        }
-
-        // Initialize island position
-        window.onload = () => {
-            const island = document.getElementById('dynamicIsland');
-            island.style.left = "calc(50% + 150px)";
-        };
     </script>
 </body>
 </html>
