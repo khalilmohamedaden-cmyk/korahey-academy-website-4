@@ -151,7 +151,7 @@
         }
         .top-btn:hover { background: rgba(0, 0, 0, 0.1); }
 
-        /* Dynamic Island - CLEAR */
+        /* Dynamic Island */
         .dynamic-island {
             position: fixed;
             top: 56px;
@@ -219,17 +219,21 @@
             align-items: center;
         }
 
-        /* TRUE A4 PAPER SIZE - NO SCROLL INSIDE */
+        /* TRUE A4 PAPER SIZE - FIXED DIMENSIONS */
         .paper-page {
             background: white;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
             border-radius: 4px;
             width: 210mm;
+            min-width: 210mm;
+            max-width: 210mm;
             height: 297mm;
+            min-height: 297mm;
+            max-height: 297mm;
             margin: 0 auto 30px auto;
             padding: 15mm 20mm;
             position: relative;
-            transition: transform 0.2s;
+            transition: all 0.2s;
             page-break-after: avoid;
             break-inside: avoid;
             display: flex;
@@ -239,19 +243,34 @@
         
         .paper-page-content {
             flex: 1;
-            overflow-y: visible;
+            overflow-y: auto;
             outline: none;
+            scrollbar-width: thin;
+        }
+        
+        .paper-page-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .paper-page-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+        
+        .paper-page-content::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 3px;
         }
         
         .paper-page-content:focus { outline: none; }
 
-        /* Page Bottom Indicator - Shows where page ends */
+        /* Page Bottom Indicator */
         .page-bottom {
             text-align: center;
-            margin-top: 5px;
+            margin-top: 8px;
             padding-top: 5px;
             font-size: 9px;
-            color: #ccc;
+            color: #bbb;
             border-top: 1px dashed #e0e0e0;
         }
 
@@ -264,9 +283,9 @@
                 box-shadow: none;
                 margin: 0;
                 padding: 15mm 20mm;
-                width: 100%;
+                width: 210mm;
+                height: 297mm;
                 page-break-after: always;
-                height: auto;
             }
             .paper-page-content {
                 overflow: visible;
@@ -278,7 +297,7 @@
             }
         }
 
-        /* Left Panel - Touches Top of Editor */
+        /* Left Panel */
         .left-panel {
             position: fixed;
             left: 0;
@@ -337,7 +356,6 @@
 
         .page-list { display: flex; flex-direction: column; gap: 12px; }
         
-        /* Mini Paper Preview in Panel */
         .page-thumb {
             background: white;
             border: 1px solid rgba(0, 0, 0, 0.1);
@@ -388,7 +406,6 @@
         
         .delete-page-btn:hover { background: rgba(255, 59, 48, 0.1); color: #ff3b30; }
         
-        /* Mini Paper Preview Content */
         .mini-paper {
             background: #fafafc;
             border-radius: 4px;
@@ -581,7 +598,7 @@
             .left-panel { width: 260px; }
             .dynamic-island { padding: 6px 12px; }
             .island-content { flex-wrap: wrap; justify-content: center; }
-            .paper-page { width: 100%; height: auto; min-height: 500px; }
+            .paper-page { width: 100%; min-width: auto; height: auto; min-height: 500px; }
             .bottom-bar { padding: 6px 16px; }
         }
     </style>
@@ -676,18 +693,15 @@
 
     <!-- Main Editor Layout -->
     <div class="main-editor-layout">
-        <!-- Left Panel -->
         <div class="left-panel" id="leftPanel">
             <div class="panel-title">PAGES</div>
             <div class="page-list" id="pageList"></div>
         </div>
 
-        <!-- Panel Toggle Button -->
         <div class="panel-toggle" id="panelToggle" onclick="togglePanel()">
             <i class="fas fa-chevron-left" id="toggleIcon"></i>
         </div>
 
-        <!-- Center Canvas -->
         <div class="canvas-center" id="canvasArea">
             <div class="paper-container" id="paperContainer">
                 <div class="paper-page" data-page="1">
@@ -697,12 +711,10 @@
                         <hr>
                         <p><br></p>
                         <p>Welcome to Korahey UI v1.0 - Document Editor</p>
-                        <p>Start typing here. When this page becomes full, a new page will be created automatically.</p>
-                        <p><br></p>
-                        <p>This document uses true A4 paper size (210mm x 297mm).</p>
-                        <p>The page panel on the left shows mini previews of each page.</p>
+                        <p>This is a TRUE A4 paper (210mm x 297mm).</p>
+                        <p>Type until the page fills, and a new A4 page will be created automatically.</p>
                     </div>
-                    <div class="page-bottom">— Page End —</div>
+                    <div class="page-bottom">— End of Page —</div>
                 </div>
             </div>
         </div>
@@ -727,7 +739,6 @@
         </div>
     </div>
 
-    <!-- Custom Right Click Menu -->
     <div id="contextMenu" class="custom-context-menu">
         <div class="context-menu-item" onclick="execCommand('bold'); hideContextMenu()"><i class="fas fa-bold"></i> Bold</div>
         <div class="context-menu-item" onclick="execCommand('italic'); hideContextMenu()"><i class="fas fa-italic"></i> Italic</div>
@@ -741,7 +752,6 @@
         <div class="context-menu-item" onclick="openMediaManager(); hideContextMenu()"><i class="fas fa-image"></i> Insert Image</div>
     </div>
 
-    <!-- Media Manager Modal -->
     <div id="mediaModal" class="media-modal">
         <div class="media-modal-content">
             <div class="media-modal-header">
@@ -771,7 +781,6 @@
         let panelCollapsed = false;
         let isCreatingPage = false;
 
-        // Loading animation
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const loader = document.getElementById('loadingOverlay');
@@ -787,7 +796,6 @@
             setTimeout(() => { toast.classList.remove('show'); }, 2000);
         }
 
-        // Panel Toggle
         function togglePanel() {
             panelCollapsed = !panelCollapsed;
             const panel = document.getElementById('leftPanel');
@@ -807,7 +815,6 @@
             }
         }
 
-        // Get page preview text for mini paper
         function getMiniPaperContent(pageElement) {
             const contentDiv = pageElement.querySelector('.paper-page-content');
             const text = contentDiv ? contentDiv.innerText : '';
@@ -815,7 +822,6 @@
             return preview + (text.length > 200 ? '...' : '');
         }
 
-        // Get page title for mini paper header
         function getPageTitle(pageElement, pageNum) {
             const contentDiv = pageElement.querySelector('.paper-page-content');
             const text = contentDiv ? contentDiv.innerText : '';
@@ -826,7 +832,6 @@
             return firstLine || `Page ${pageNum}`;
         }
 
-        // Word count update
         function updateWordCount() {
             let totalWords = 0;
             document.querySelectorAll('.paper-page-content').forEach(content => {
@@ -840,13 +845,11 @@
         document.addEventListener('input', updateWordCount);
         setInterval(updateWordCount, 500);
 
-        // Page counter update
         function updatePageCounter() {
             const pages = document.querySelectorAll('.paper-page');
             document.getElementById('pageCounter').textContent = `Page ${currentPageIndex + 1} of ${pages.length}`;
         }
 
-        // Page Management
         function updatePageList() {
             const pages = document.querySelectorAll('.paper-page');
             const container = document.getElementById('pageList');
@@ -899,16 +902,15 @@
             }
         }
 
-        // Check if page content has reached the bottom (visually)
+        // Check if page is full (content height exceeds A4 height)
         function isPageFull(contentDiv) {
             if (!contentDiv) return false;
-            // Get the actual height of the content
             const contentHeight = contentDiv.scrollHeight;
-            const maxHeight = 297 * 3.7795275591 - 60; // 297mm to pixels minus padding
-            return contentHeight > maxHeight - 50;
+            const maxContentHeight = 240; // A4 height minus padding in mm approx
+            return contentHeight > maxContentHeight - 30;
         }
 
-        // Move content to new page when page is full
+        // Move content to new page
         function moveToNewPage(contentDiv, currentPage) {
             if (isCreatingPage) return;
             isCreatingPage = true;
@@ -916,10 +918,9 @@
             const allPages = document.querySelectorAll('.paper-page');
             const currentIndex = Array.from(allPages).indexOf(currentPage);
             
-            // Get the HTML content
             const html = contentDiv.innerHTML;
             
-            // Find a good split point (look for paragraph breaks)
+            // Find split point
             const splitMarkers = ['</p>', '</div>', '</h1>', '</h2>', '</h3>', '</h4>', '<br>', '</li>', '</ul>', '</ol>'];
             let splitIndex = -1;
             
@@ -932,25 +933,21 @@
             }
             
             if (splitIndex === -1) {
-                // Split by content
-                const halfLength = Math.floor(html.length * 0.7);
-                splitIndex = halfLength;
+                splitIndex = Math.floor(html.length * 0.7);
             }
             
             const keepContent = html.substring(0, splitIndex);
             const moveContent = html.substring(splitIndex);
             
-            // Update current page content
             contentDiv.innerHTML = keepContent;
             
-            // Create or update next page
             let nextPage = allPages[currentIndex + 1];
             if (!nextPage) {
                 nextPage = document.createElement('div');
                 nextPage.className = 'paper-page';
                 nextPage.innerHTML = `
                     <div class="paper-page-content" contenteditable="true"></div>
-                    <div class="page-bottom">— Page End —</div>
+                    <div class="page-bottom">— End of Page —</div>
                 `;
                 currentPage.insertAdjacentElement('afterend', nextPage);
             }
@@ -959,12 +956,10 @@
             const existingContent = nextContent.innerHTML;
             nextContent.innerHTML = moveContent + existingContent;
             
-            // Clean up empty content
             if (contentDiv.innerText.trim() === '') {
                 contentDiv.innerHTML = '<p><br></p>';
             }
             
-            // Focus on current page
             contentDiv.focus();
             
             setTimeout(() => {
@@ -974,7 +969,6 @@
             }, 100);
         }
 
-        // Check and create new page when full
         let checkTimeout;
         function debouncedCheckPageFull() {
             clearTimeout(checkTimeout);
@@ -990,7 +984,6 @@
             }, 300);
         }
 
-        // Listen for input events
         document.addEventListener('input', function(e) {
             if (e.target.closest('.paper-page-content')) {
                 debouncedCheckPageFull();
@@ -998,7 +991,6 @@
             }
         });
 
-        // Listen for paste events
         document.addEventListener('paste', function(e) {
             setTimeout(() => {
                 const activeContent = document.activeElement;
@@ -1012,7 +1004,6 @@
             }, 100);
         });
 
-        // Zoom functions
         function zoomIn() {
             if (currentZoom < 200) { currentZoom += 10; applyZoom(); }
         }
@@ -1028,7 +1019,6 @@
             document.getElementById('zoomValue').textContent = currentZoom + '%';
         }
 
-        // Right-click menu
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
             const menu = document.getElementById('contextMenu');
@@ -1039,7 +1029,6 @@
         document.addEventListener('click', function() { hideContextMenu(); });
         function hideContextMenu() { document.getElementById('contextMenu').classList.remove('show'); }
 
-        // Dropdown
         function toggleDropdown(menuId) {
             const menu = document.getElementById(menuId);
             if (activeMenu && activeMenu !== menu) activeMenu.classList.remove('show');
@@ -1052,7 +1041,6 @@
             }
         });
 
-        // Formatting
         function toggleFormat(command, btnId) {
             const activeElement = document.activeElement;
             if (activeElement && activeElement.classList.contains('paper-page-content')) {
@@ -1123,9 +1111,9 @@
                             <p style="text-align: center; font-style: italic; font-size: 12pt;">Passion for Success</p>
                             <hr>
                             <p><br></p>
-                            <p>Start typing your document here. A new page will be created when this page is full.</p>
+                            <p>Start typing your document here. A new A4 page will be created when this page is full.</p>
                         </div>
-                        <div class="page-bottom">— Page End —</div>
+                        <div class="page-bottom">— End of Page —</div>
                     </div>
                 `;
                 currentPageIndex = 0;
@@ -1173,10 +1161,9 @@
         }
         
         function showAbout() { 
-            alert('Korahey UI v1.0\nDocument Editor\n\nTrue A4 Paper Size (210mm x 297mm)\nAutomatic New Page When Full\nPage Panel with Mini Previews\n\n© 2026 Korahey Academy'); 
+            alert('Korahey UI v1.0\nDocument Editor\n\nTRUE A4 Paper Size (210mm x 297mm)\nAutomatic New Page When Full\nPage Panel with Mini Previews\n\n© 2026 Korahey Academy'); 
         }
 
-        // Table functions
         function insertTable() {
             const rows = prompt('Number of rows:', '3');
             const cols = prompt('Number of columns:', '3');
@@ -1187,7 +1174,7 @@
                     for (let j = 0; j < parseInt(cols); j++) html += `<td contenteditable="true"><br></td>`;
                     html += '</tr>';
                 }
-                html += '<tr><br>';
+                html += '</table><br>';
                 const activeElement = document.activeElement;
                 if (activeElement && activeElement.classList.contains('paper-page-content')) {
                     document.execCommand('insertHTML', false, html);
@@ -1198,7 +1185,6 @@
             hideContextMenu();
         }
 
-        // Media Manager
         function openMediaManager() { loadImageGallery(); document.getElementById('mediaModal').classList.add('active'); hideContextMenu(); }
         function closeMediaManager() { document.getElementById('mediaModal').classList.remove('active'); }
         function loadImageGallery() {
@@ -1273,7 +1259,7 @@
                     document.getElementById('paperContainer').innerHTML = pages.map(p => `
                         <div class="paper-page">
                             <div class="paper-page-content" contenteditable="true">${p.content}</div>
-                            <div class="page-bottom">— Page End —</div>
+                            <div class="page-bottom">— End of Page —</div>
                         </div>
                     `).join('');
                     updatePageList();
