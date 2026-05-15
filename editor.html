@@ -87,8 +87,8 @@
             top: 0;
             left: 0;
             right: 0;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(0, 0, 0, 0.05);
             z-index: 1000;
             display: flex;
@@ -123,14 +123,13 @@
             position: absolute;
             top: 100%;
             left: 0;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(20px);
+            background: white;
             border-radius: 12px;
             min-width: 200px;
             display: none;
             padding: 8px 0;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            border: 1px solid rgba(0,0,0,0.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border: 1px solid rgba(0,0,0,0.1);
             z-index: 1000;
         }
         .dropdown-menu.show { display: block; }
@@ -152,19 +151,18 @@
         }
         .top-btn:hover { background: rgba(0, 0, 0, 0.1); }
 
-        /* Dynamic Island - Blurred Glass Effect */
+        /* Dynamic Island - CLEAR, NOT BLURRY */
         .dynamic-island {
             position: fixed;
             top: 56px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(20px);
+            background: #ffffff;
             border-radius: 60px;
             padding: 6px 20px;
             z-index: 999;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
             display: inline-flex;
         }
 
@@ -183,7 +181,7 @@
             gap: 4px;
         }
         .action-btn i { font-size: 12px; }
-        .action-btn:hover { background: rgba(0, 0, 0, 0.08); color: #333; }
+        .action-btn:hover { background: rgba(0, 0, 0, 0.06); color: #333; }
         .action-btn.active { background: var(--apple-blue); color: white; }
         .action-btn.active i { color: white; }
         .separator { width: 1px; height: 24px; background: rgba(0, 0, 0, 0.1); margin: 0 4px; }
@@ -191,7 +189,7 @@
             padding: 4px 10px;
             border-radius: 40px;
             border: 1px solid rgba(0, 0, 0, 0.1);
-            background: rgba(255, 255, 255, 0.8);
+            background: white;
             font-size: 11px;
             cursor: pointer;
         }
@@ -221,28 +219,60 @@
             align-items: center;
         }
 
-        /* TRUE A4 PAPER SIZE - 210mm x 297mm */
+        /* TRUE A4 PAPER SIZE - NO SCROLL INSIDE */
         .paper-page {
             background: white;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
             border-radius: 4px;
             width: 210mm;
-            min-height: 297mm;
+            height: 297mm;
             margin: 0 auto 30px auto;
             padding: 15mm 20mm;
             position: relative;
             transition: transform 0.2s;
             page-break-after: avoid;
             break-inside: avoid;
-            overflow-y: auto;
-            max-height: 297mm;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
         
-        .paper-page:focus { outline: none; }
+        .paper-page-content {
+            flex: 1;
+            overflow-y: auto;
+            scrollbar-width: thin;
+        }
+        
+        .paper-page-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .paper-page-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+        
+        .paper-page-content::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 3px;
+        }
+        
+        .paper-page-content:focus { outline: none; }
+
+        /* Page End Indicator */
+        .page-end-indicator {
+            text-align: center;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed #ccc;
+            font-size: 10px;
+            color: #999;
+            font-style: italic;
+        }
 
         /* Print styles */
         @media print {
-            .top-bar, .dynamic-island, .left-panel, .panel-toggle, .bottom-bar, .toast {
+            .top-bar, .dynamic-island, .left-panel, .panel-toggle, .bottom-bar, .toast, .page-end-indicator {
                 display: none !important;
             }
             .paper-page {
@@ -251,12 +281,11 @@
                 padding: 15mm 20mm;
                 width: 100%;
                 page-break-after: always;
+                height: auto;
                 overflow: visible;
-                max-height: none;
             }
-            .paper-container {
-                margin: 0;
-                padding: 0;
+            .paper-page-content {
+                overflow: visible;
             }
             body {
                 background: white;
@@ -275,8 +304,7 @@
             padding: 20px 16px;
             overflow-y: auto;
             border-right: 1px solid rgba(0, 0, 0, 0.05);
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.95);
             transition: transform 0.3s ease;
             z-index: 50;
         }
@@ -291,8 +319,7 @@
             top: 120px;
             width: 28px;
             height: 28px;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
+            background: white;
             border: 1px solid rgba(0, 0, 0, 0.1);
             border-radius: 20px;
             display: flex;
@@ -311,7 +338,7 @@
         }
 
         .panel-toggle:hover {
-            background: rgba(0, 0, 0, 0.1);
+            background: #f5f5f5;
         }
 
         .panel-title {
@@ -416,8 +443,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.98);
             border-top: 1px solid rgba(0, 0, 0, 0.05);
             padding: 6px 24px;
             display: flex;
@@ -493,14 +519,13 @@
         /* Custom Right Click Menu */
         .custom-context-menu {
             position: fixed;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(20px);
+            background: white;
             border-radius: 12px;
             min-width: 200px;
             display: none;
             padding: 8px 0;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            border: 1px solid rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.1);
             z-index: 10000;
         }
         .custom-context-menu.show { display: block; }
@@ -555,8 +580,7 @@
             bottom: 50px;
             left: 50%;
             transform: translateX(-50%) translateY(100px);
-            background: rgba(30,30,35,0.95);
-            backdrop-filter: blur(20px);
+            background: #333;
             color: white;
             padding: 10px 20px;
             border-radius: 50px;
@@ -570,7 +594,7 @@
             .left-panel { width: 260px; }
             .dynamic-island { padding: 6px 12px; }
             .island-content { flex-wrap: wrap; justify-content: center; }
-            .paper-page { width: 100%; padding: 20px; min-height: auto; }
+            .paper-page { width: 100%; height: auto; min-height: 500px; }
             .bottom-bar { padding: 6px 16px; }
         }
     </style>
@@ -630,7 +654,7 @@
         </div>
     </div>
 
-    <!-- Dynamic Island -->
+    <!-- Dynamic Island - CLEAR, NOT BLURRY -->
     <div class="dynamic-island">
         <div class="island-content">
             <select id="fontSelector" class="font-selector" onchange="changeFont()">
@@ -679,18 +703,19 @@
         <!-- Center Canvas -->
         <div class="canvas-center" id="canvasArea">
             <div class="paper-container" id="paperContainer">
-                <div class="paper-page" contenteditable="true" data-page="1">
-                    <h1 style="text-align: center; font-size: 24pt;">KORAHEY ACADEMY</h1>
-                    <p style="text-align: center; font-style: italic; font-size: 12pt;">Passion for Success</p>
-                    <hr>
-                    <p><br></p>
-                    <p>Welcome to Korahey UI v1.0 - Document Editor</p>
-                    <p>Start typing here. When the page becomes full, content will automatically flow to the next page.</p>
-                    <p><br></p>
-                    <p>This document uses true A4 paper size (210mm x 297mm).</p>
-                    <p>The page panel on the left shows mini previews of each page.</p>
-                    <p><br></p>
-                    <p>Type continuously to see how content flows between pages automatically.</p>
+                <div class="paper-page" data-page="1">
+                    <div class="paper-page-content" contenteditable="true">
+                        <h1 style="text-align: center; font-size: 24pt;">KORAHEY ACADEMY</h1>
+                        <p style="text-align: center; font-style: italic; font-size: 12pt;">Passion for Success</p>
+                        <hr>
+                        <p><br></p>
+                        <p>Welcome to Korahey UI v1.0 - Document Editor</p>
+                        <p>Start typing here. Content will automatically flow to new pages when you reach the bottom.</p>
+                        <p><br></p>
+                        <p>This document uses true A4 paper size (210mm x 297mm).</p>
+                        <p>The page panel on the left shows mini previews of each page.</p>
+                    </div>
+                    <div class="page-end-indicator">▼ End of Page ▼</div>
                 </div>
             </div>
         </div>
@@ -757,7 +782,7 @@
         let currentZoom = 100;
         let currentPageIndex = 0;
         let panelCollapsed = false;
-        let isMovingContent = false;
+        let isProcessing = false;
 
         // Loading animation
         window.addEventListener('load', () => {
@@ -797,14 +822,17 @@
 
         // Get page preview text for mini paper
         function getMiniPaperContent(pageElement) {
-            const text = pageElement.innerText;
+            const contentDiv = pageElement.querySelector('.paper-page-content');
+            const text = contentDiv ? contentDiv.innerText : pageElement.innerText;
             const preview = text.substring(0, 200);
             return preview + (text.length > 200 ? '...' : '');
         }
 
         // Get page title for mini paper header
         function getPageTitle(pageElement, pageNum) {
-            const firstLine = pageElement.innerText.split('\n')[0];
+            const contentDiv = pageElement.querySelector('.paper-page-content');
+            const text = contentDiv ? contentDiv.innerText : pageElement.innerText;
+            const firstLine = text.split('\n')[0];
             if (firstLine && firstLine.length > 30) {
                 return firstLine.substring(0, 30) + '...';
             }
@@ -814,8 +842,8 @@
         // Word count update
         function updateWordCount() {
             let totalWords = 0;
-            document.querySelectorAll('.paper-page').forEach(page => {
-                const text = page.innerText;
+            document.querySelectorAll('.paper-page-content').forEach(content => {
+                const text = content.innerText;
                 const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;
                 totalWords += words;
             });
@@ -855,7 +883,8 @@
             const pages = document.querySelectorAll('.paper-page');
             if (pages[index]) {
                 pages[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
-                pages[index].focus();
+                const contentDiv = pages[index].querySelector('.paper-page-content');
+                if (contentDiv) contentDiv.focus();
                 currentPageIndex = index;
                 updatePageList();
             }
@@ -884,100 +913,100 @@
             }
         }
 
-        // Move content between pages when page is full
-        function moveExcessContent(pageElement, nextPageElement) {
-            if (isMovingContent) return;
-            isMovingContent = true;
-            
-            // Get the content that overflows
-            const pageHeight = pageElement.clientHeight;
-            const contentHeight = pageElement.scrollHeight;
-            
-            if (contentHeight > pageHeight + 50) {
-                // Find where the overflow starts
-                const originalContent = pageElement.innerHTML;
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = originalContent;
-                tempDiv.style.position = 'absolute';
-                tempDiv.style.width = pageElement.clientWidth + 'px';
-                tempDiv.style.fontSize = window.getComputedStyle(pageElement).fontSize;
-                tempDiv.style.fontFamily = window.getComputedStyle(pageElement).fontFamily;
-                tempDiv.style.lineHeight = window.getComputedStyle(pageElement).lineHeight;
-                tempDiv.style.padding = window.getComputedStyle(pageElement).padding;
-                document.body.appendChild(tempDiv);
-                
-                // Find the split point
-                const children = Array.from(tempDiv.children);
-                let accumulatedHeight = 0;
-                let splitIndex = -1;
-                
-                for (let i = 0; i < children.length; i++) {
-                    const childHeight = children[i].offsetHeight;
-                    if (accumulatedHeight + childHeight > pageHeight - 50) {
-                        splitIndex = i;
-                        break;
-                    }
-                    accumulatedHeight += childHeight;
-                }
-                
-                if (splitIndex > 0) {
-                    // Move remaining content to next page
-                    const remainingContent = children.slice(splitIndex).map(c => c.outerHTML).join('');
-                    const keepContent = children.slice(0, splitIndex).map(c => c.outerHTML).join('');
-                    
-                    pageElement.innerHTML = keepContent;
-                    
-                    if (nextPageElement) {
-                        const existingContent = nextPageElement.innerHTML;
-                        nextPageElement.innerHTML = remainingContent + existingContent;
-                    }
-                }
-                
-                document.body.removeChild(tempDiv);
-            }
-            
-            isMovingContent = false;
+        // Check if at bottom of page content
+        function isAtBottom(contentDiv) {
+            if (!contentDiv) return false;
+            return contentDiv.scrollHeight - contentDiv.scrollTop - contentDiv.clientHeight < 50;
         }
 
-        // Check if page is full and move content
+        // Move content to next page when bottom is reached
+        function moveContentToNextPage(contentDiv, currentPage) {
+            if (isProcessing) return;
+            isProcessing = true;
+            
+            const allPages = document.querySelectorAll('.paper-page');
+            const currentIndex = Array.from(allPages).indexOf(currentPage);
+            let nextPage = allPages[currentIndex + 1];
+            
+            if (!nextPage) {
+                // Create new page
+                nextPage = document.createElement('div');
+                nextPage.className = 'paper-page';
+                nextPage.innerHTML = `
+                    <div class="paper-page-content" contenteditable="true"></div>
+                    <div class="page-end-indicator">▼ End of Page ▼</div>
+                `;
+                currentPage.insertAdjacentElement('afterend', nextPage);
+                updatePageList();
+            }
+            
+            const nextContentDiv = nextPage.querySelector('.paper-page-content');
+            
+            // Get all HTML content from current content div
+            const currentHTML = contentDiv.innerHTML;
+            
+            // Find a good split point (look for paragraph breaks)
+            const splitPoints = [
+                '</p>', '</div>', '</h1>', '</h2>', '</h3>', '</h4>',
+                '<br>', '</li>', '</ul>', '</ol>'
+            ];
+            
+            let splitIndex = -1;
+            for (const point of splitPoints) {
+                const lastIndex = currentHTML.lastIndexOf(point);
+                if (lastIndex > currentHTML.length * 0.7) {
+                    splitIndex = lastIndex + point.length;
+                    break;
+                }
+            }
+            
+            if (splitIndex === -1) {
+                // If no good split point, split by lines
+                const lines = contentDiv.innerText.split('\n');
+                const midPoint = Math.floor(lines.length * 0.7);
+                const keepLines = lines.slice(0, midPoint);
+                const moveLines = lines.slice(midPoint);
+                
+                contentDiv.innerHTML = keepLines.join('\n').replace(/\n/g, '<br>');
+                const existingNextContent = nextContentDiv.innerHTML;
+                nextContentDiv.innerHTML = moveLines.join('\n').replace(/\n/g, '<br>') + existingNextContent;
+            } else {
+                const keepContent = currentHTML.substring(0, splitIndex);
+                const moveContent = currentHTML.substring(splitIndex);
+                
+                contentDiv.innerHTML = keepContent;
+                const existingNextContent = nextContentDiv.innerHTML;
+                nextContentDiv.innerHTML = moveContent + existingNextContent;
+            }
+            
+            // Clean up empty pages
+            if (contentDiv.innerText.trim() === '') {
+                contentDiv.innerHTML = '<p><br></p>';
+            }
+            
+            // Focus back on current content
+            contentDiv.focus();
+            
+            setTimeout(() => {
+                isProcessing = false;
+                updatePageList();
+                updateWordCount();
+            }, 100);
+        }
+
+        // Check all pages and balance content
         function checkAndBalancePages() {
-            const pages = document.querySelectorAll('.paper-page');
-            let hasChanges = false;
+            if (isProcessing) return;
             
-            for (let i = 0; i < pages.length - 1; i++) {
-                const currentPage = pages[i];
-                const nextPage = pages[i + 1];
-                const pageHeight = currentPage.clientHeight;
-                const contentHeight = currentPage.scrollHeight;
-                
-                if (contentHeight > pageHeight + 50) {
-                    moveExcessContent(currentPage, nextPage);
-                    hasChanges = true;
+            const pages = document.querySelectorAll('.paper-page');
+            for (let i = 0; i < pages.length; i++) {
+                const page = pages[i];
+                const contentDiv = page.querySelector('.paper-page-content');
+                if (contentDiv && isAtBottom(contentDiv)) {
+                    moveContentToNextPage(contentDiv, page);
+                    break;
                 }
             }
-            
-            // Check last page for overflow (add new page)
-            const lastPage = pages[pages.length - 1];
-            if (lastPage && lastPage.scrollHeight > lastPage.clientHeight + 100) {
-                addNewPageAfter(lastPage);
-                hasChanges = true;
-            }
-            
-            if (hasChanges) {
-                setTimeout(() => {
-                    updatePageList();
-                    updateWordCount();
-                }, 100);
-            }
-        }
-
-        function addNewPageAfter(pageElement) {
-            const newPage = document.createElement('div');
-            newPage.className = 'paper-page';
-            newPage.setAttribute('contenteditable', 'true');
-            newPage.innerHTML = '<p><br></p>';
-            pageElement.insertAdjacentElement('afterend', newPage);
-            showToast('New page added');
         }
 
         // Debounced page balancing
@@ -986,28 +1015,34 @@
             clearTimeout(balanceTimeout);
             balanceTimeout = setTimeout(() => {
                 checkAndBalancePages();
-                updatePageList();
-            }, 500);
+            }, 300);
         }
 
-        // Listen for input events to balance pages
+        // Listen for scroll events on content divs
+        function setupScrollListeners() {
+            document.querySelectorAll('.paper-page-content').forEach(content => {
+                content.removeEventListener('scroll', handleScroll);
+                content.addEventListener('scroll', handleScroll);
+            });
+        }
+
+        function handleScroll(e) {
+            const contentDiv = e.target;
+            if (isAtBottom(contentDiv)) {
+                const currentPage = contentDiv.closest('.paper-page');
+                moveContentToNextPage(contentDiv, currentPage);
+            }
+        }
+
+        // Listen for input events
         document.addEventListener('input', function(e) {
-            if (e.target.closest('.paper-page')) {
+            if (e.target.closest('.paper-page-content')) {
                 debouncedBalancePages();
+                updateWordCount();
+                updatePageList();
+                setupScrollListeners();
             }
         });
-
-        // Listen for scroll events to check if page is full
-        let scrollTimeout;
-        document.addEventListener('scroll', function(e) {
-            if (e.target.closest('.paper-page')) {
-                clearTimeout(scrollTimeout);
-                scrollTimeout = setTimeout(() => {
-                    checkAndBalancePages();
-                    updatePageList();
-                }, 200);
-            }
-        }, true);
 
         // Zoom functions
         function zoomIn() {
@@ -1051,84 +1086,144 @@
 
         // Formatting
         function toggleFormat(command, btnId) {
-            document.execCommand(command, false, null);
-            const btn = document.getElementById(btnId);
-            if (btn) {
-                currentActiveButtons[btnId] = !currentActiveButtons[btnId];
-                btn.classList.toggle('active', currentActiveButtons[btnId]);
+            const activeElement = document.activeElement;
+            if (activeElement && activeElement.classList.contains('paper-page-content')) {
+                document.execCommand(command, false, null);
+                const btn = document.getElementById(btnId);
+                if (btn) {
+                    currentActiveButtons[btnId] = !currentActiveButtons[btnId];
+                    btn.classList.toggle('active', currentActiveButtons[btnId]);
+                }
             }
             hideContextMenu();
             debouncedBalancePages();
         }
+        
         function setAlignment(command, btnId) {
-            document.execCommand(command, false, null);
-            ['alignLeftBtn', 'alignCenterBtn', 'alignRightBtn'].forEach(id => {
-                const btn = document.getElementById(id);
-                if (btn) btn.classList.remove('active');
-                currentActiveButtons[id] = false;
-            });
-            const clickedBtn = document.getElementById(btnId);
-            if (clickedBtn) { clickedBtn.classList.add('active'); currentActiveButtons[btnId] = true; }
-            hideContextMenu();
-            debouncedBalancePages();
-        }
-        function toggleList(command, btnId) {
-            document.execCommand(command, false, null);
-            const btn = document.getElementById(btnId);
-            if (btn) {
-                currentActiveButtons[btnId] = !currentActiveButtons[btnId];
-                btn.classList.toggle('active', currentActiveButtons[btnId]);
+            const activeElement = document.activeElement;
+            if (activeElement && activeElement.classList.contains('paper-page-content')) {
+                document.execCommand(command, false, null);
+                ['alignLeftBtn', 'alignCenterBtn', 'alignRightBtn'].forEach(id => {
+                    const btn = document.getElementById(id);
+                    if (btn) btn.classList.remove('active');
+                    currentActiveButtons[id] = false;
+                });
+                const clickedBtn = document.getElementById(btnId);
+                if (clickedBtn) { clickedBtn.classList.add('active'); currentActiveButtons[btnId] = true; }
             }
             hideContextMenu();
             debouncedBalancePages();
         }
-        function execCommand(command) { 
-            document.execCommand(command, false, null); 
+        
+        function toggleList(command, btnId) {
+            const activeElement = document.activeElement;
+            if (activeElement && activeElement.classList.contains('paper-page-content')) {
+                document.execCommand(command, false, null);
+                const btn = document.getElementById(btnId);
+                if (btn) {
+                    currentActiveButtons[btnId] = !currentActiveButtons[btnId];
+                    btn.classList.toggle('active', currentActiveButtons[btnId]);
+                }
+            }
             hideContextMenu();
             debouncedBalancePages();
         }
-        function selectAll() { document.execCommand('selectAll', false, null); hideContextMenu(); }
+        
+        function execCommand(command) { 
+            const activeElement = document.activeElement;
+            if (activeElement && activeElement.classList.contains('paper-page-content')) {
+                document.execCommand(command, false, null);
+            }
+            hideContextMenu();
+            debouncedBalancePages();
+        }
+        function selectAll() { 
+            const activeElement = document.activeElement;
+            if (activeElement && activeElement.classList.contains('paper-page-content')) {
+                document.execCommand('selectAll', false, null);
+            }
+            hideContextMenu();
+        }
 
         function newDocument() {
             if (confirm('Create new document? Unsaved changes will be lost.')) {
-                document.getElementById('paperContainer').innerHTML = `<div class="paper-page" contenteditable="true"><h1 style="text-align: center; font-size: 24pt;">KORAHEY ACADEMY</h1><p style="text-align: center; font-style: italic; font-size: 12pt;">Passion for Success</p><hr><p><br></p><p>Start typing your document here. Content will automatically flow to new pages when full.</p></div>`;
+                document.getElementById('paperContainer').innerHTML = `
+                    <div class="paper-page" data-page="1">
+                        <div class="paper-page-content" contenteditable="true">
+                            <h1 style="text-align: center; font-size: 24pt;">KORAHEY ACADEMY</h1>
+                            <p style="text-align: center; font-style: italic; font-size: 12pt;">Passion for Success</p>
+                            <hr>
+                            <p><br></p>
+                            <p>Start typing your document here. Content will automatically flow to new pages when you reach the bottom.</p>
+                        </div>
+                        <div class="page-end-indicator">▼ End of Page ▼</div>
+                    </div>
+                `;
                 currentPageIndex = 0;
                 updatePageList();
+                setupScrollListeners();
                 showToast('New document created');
             }
         }
+        
         function saveDocument() {
             const pages = [];
-            document.querySelectorAll('.paper-page').forEach((page, i) => pages.push({ id: i, content: page.innerHTML }));
+            document.querySelectorAll('.paper-page').forEach((page, i) => {
+                const contentDiv = page.querySelector('.paper-page-content');
+                pages.push({ id: i, content: contentDiv ? contentDiv.innerHTML : '' });
+            });
             localStorage.setItem('koraheyDocument', JSON.stringify(pages));
             showToast('Document saved');
         }
+        
         function exportDocument() { saveDocument(); window.print(); }
         function closeEditor() { if (confirm('Close editor?')) window.location.href = 'admin.html'; }
+        
         function changeFont() { 
-            document.execCommand('fontName', false, document.getElementById('fontSelector').value);
+            const activeElement = document.activeElement;
+            if (activeElement && activeElement.classList.contains('paper-page-content')) {
+                document.execCommand('fontName', false, document.getElementById('fontSelector').value);
+            }
             debouncedBalancePages();
         }
+        
         function changeFontSize() { 
-            document.execCommand('fontSize', false, document.getElementById('sizeSelector').value);
+            const activeElement = document.activeElement;
+            if (activeElement && activeElement.classList.contains('paper-page-content')) {
+                const size = document.getElementById('sizeSelector').value;
+                document.execCommand('fontSize', false, size);
+            }
             debouncedBalancePages();
         }
-        function insertDate() { document.execCommand('insertText', false, new Date().toLocaleString()); debouncedBalancePages(); }
-        function showAbout() { alert('Korahey UI v1.0\nDocument Editor\n\nTrue A4 Paper Size (210mm x 297mm)\nAutomatic Content Flow Between Pages\nPage Panel with Mini Previews\n\n© 2026 Korahey Academy'); }
+        
+        function insertDate() { 
+            const activeElement = document.activeElement;
+            if (activeElement && activeElement.classList.contains('paper-page-content')) {
+                document.execCommand('insertText', false, new Date().toLocaleString());
+            }
+            debouncedBalancePages();
+        }
+        
+        function showAbout() { 
+            alert('Korahey UI v1.0\nDocument Editor\n\nTrue A4 Paper Size (210mm x 297mm)\nAutomatic Content Flow Between Pages\nPage Panel with Mini Previews\nClear Dynamic Island\n\n© 2026 Korahey Academy'); 
+        }
 
         // Table functions
         function insertTable() {
             const rows = prompt('Rows:', '3');
             const cols = prompt('Columns:', '3');
             if (rows && cols) {
-                let html = '<table border="1" cellpadding="8" style="border-collapse: collapse; width: 100%;">';
+                let html = '<table border="1" cellpadding="8" style="border-collapse: collapse; width: 100%; margin: 10px 0;">';
                 for (let i = 0; i < parseInt(rows); i++) {
                     html += '<tr>';
                     for (let j = 0; j < parseInt(cols); j++) html += `<td contenteditable="true"><br></td>`;
                     html += '</tr>';
                 }
-                html += '</table><br>';
-                document.execCommand('insertHTML', false, html);
+                html += '</table>';
+                const activeElement = document.activeElement;
+                if (activeElement && activeElement.classList.contains('paper-page-content')) {
+                    document.execCommand('insertHTML', false, html);
+                }
                 showToast(`${rows}x${cols} table inserted`);
                 debouncedBalancePages();
             }
@@ -1178,9 +1273,9 @@
         function dragImage(e, src) { e.dataTransfer.setData('text/plain', src); }
         document.getElementById('dragDropArea')?.addEventListener('click', () => document.getElementById('imageUpload').click());
 
-        document.querySelectorAll('.paper-page').forEach(page => {
-            page.addEventListener('dragover', e => e.preventDefault());
-            page.addEventListener('drop', e => {
+        document.querySelectorAll('.paper-page-content').forEach(content => {
+            content.addEventListener('dragover', e => e.preventDefault());
+            content.addEventListener('drop', e => {
                 e.preventDefault();
                 const src = e.dataTransfer.getData('text/plain');
                 if (src) {
@@ -1190,7 +1285,7 @@
                     img.style.margin = '10px 0';
                     const range = document.caretRangeFromPoint(e.clientX, e.clientY);
                     if (range) range.insertNode(img);
-                    else page.appendChild(img);
+                    else content.appendChild(img);
                     showToast('Image inserted');
                     debouncedBalancePages();
                 }
@@ -1207,13 +1302,20 @@
             if (saved) {
                 const pages = JSON.parse(saved);
                 if (pages.length > 0) {
-                    document.getElementById('paperContainer').innerHTML = pages.map(p => `<div class="paper-page" contenteditable="true">${p.content}</div>`).join('');
+                    document.getElementById('paperContainer').innerHTML = pages.map(p => `
+                        <div class="paper-page">
+                            <div class="paper-page-content" contenteditable="true">${p.content}</div>
+                            <div class="page-end-indicator">▼ End of Page ▼</div>
+                        </div>
+                    `).join('');
                     updatePageList();
+                    setupScrollListeners();
                     showToast('Document loaded');
                 }
             }
             updatePageList();
             updateWordCount();
+            setupScrollListeners();
         }
 
         loadDocument();
