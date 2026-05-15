@@ -1,1 +1,1284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Korahey Editor | Document Editor</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --apple-blue: #0071e3;
+            --text-main: #1d1d1f;
+        }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+            background: #e8ecf0;
+            color: var(--text-main);
+            overflow: hidden;
+            min-height: 100vh;
+        }
+
+        /* Loading Animation */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ffffff 0%, #eef8ff 100%);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+
+        .loading-overlay.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader {
+            text-align: center;
+        }
+
+        .loader-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #1d1d1f 0%, var(--apple-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 30px;
+        }
+
+        .loader-dots {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .loader-dots span {
+            width: 12px;
+            height: 12px;
+            background: var(--apple-blue);
+            border-radius: 50%;
+            display: inline-block;
+            animation: dotPulse 1.4s ease infinite;
+        }
+
+        .loader-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .loader-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes dotPulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Top Bar */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 24px;
+            height: 48px;
+        }
+
+        .editor-brand {
+            font-weight: 700;
+            font-size: 1rem;
+            background: linear-gradient(135deg, #1d1d1f 0%, var(--apple-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+
+        .menu-bar { display: flex; gap: 4px; }
+        .menu-item {
+            padding: 6px 14px;
+            font-size: 13px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+            position: relative;
+            color: #333;
+        }
+        .menu-item:hover { background: rgba(0, 0, 0, 0.05); }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border-radius: 12px;
+            min-width: 200px;
+            display: none;
+            padding: 8px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border: 1px solid rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        .dropdown-menu.show { display: block; }
+        .dropdown-item { padding: 10px 20px; font-size: 13px; cursor: pointer; transition: all 0.2s; }
+        .dropdown-item:hover { background: rgba(0, 0, 0, 0.05); }
+        .dropdown-divider { height: 1px; background: rgba(0, 0, 0, 0.1); margin: 6px 0; }
+
+        .right-actions { display: flex; gap: 12px; }
+        .top-btn {
+            background: rgba(0, 0, 0, 0.05);
+            border: none;
+            padding: 6px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: #333;
+            transition: all 0.2s;
+        }
+        .top-btn:hover { background: rgba(0, 0, 0, 0.1); }
+
+        /* Dynamic Island */
+        .dynamic-island {
+            position: fixed;
+            top: 56px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ffffff;
+            border-radius: 60px;
+            padding: 6px 20px;
+            z-index: 999;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            display: inline-flex;
+        }
+
+        .island-content { display: flex; gap: 6px; align-items: center; }
+        .action-btn {
+            background: transparent;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+            color: #555;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .action-btn i { font-size: 12px; }
+        .action-btn:hover { background: rgba(0, 0, 0, 0.06); color: #333; }
+        .action-btn.active { background: var(--apple-blue); color: white; }
+        .action-btn.active i { color: white; }
+        .separator { width: 1px; height: 24px; background: rgba(0, 0, 0, 0.1); margin: 0 4px; }
+        .font-selector, .size-selector {
+            padding: 4px 10px;
+            border-radius: 40px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background: white;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        /* Main Layout */
+        .main-editor-layout {
+            display: flex;
+            height: 100vh;
+            padding-top: 108px;
+        }
+
+        /* Canvas Area */
+        .canvas-center {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 40px 120px 40px;
+            display: flex;
+            justify-content: center;
+            background: #e8ecf0;
+        }
+
+        .paper-container { 
+            width: 100%; 
+            max-width: 900px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* TRUE A4 PAPER SIZE */
+        .paper-page {
+            background: white;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            border-radius: 4px;
+            width: 210mm;
+            min-width: 210mm;
+            max-width: 210mm;
+            height: 297mm;
+            min-height: 297mm;
+            max-height: 297mm;
+            margin: 0 auto 30px auto;
+            padding: 15mm 20mm;
+            position: relative;
+            transition: all 0.2s;
+            page-break-after: avoid;
+            break-inside: avoid;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        /* Last page has NO bottom margin to create breathing room at bottom of canvas */
+        .paper-page:last-child {
+            margin-bottom: 0;
+        }
+        
+        .paper-page-content {
+            flex: 1;
+            overflow-y: auto;
+            outline: none;
+            scrollbar-width: thin;
+        }
+        
+        .paper-page-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .paper-page-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+        
+        .paper-page-content::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 3px;
+        }
+        
+        .paper-page-content:focus { outline: none; }
+
+        /* Page Bottom Indicator */
+        .page-bottom {
+            text-align: center;
+            margin-top: 8px;
+            padding-top: 5px;
+            font-size: 9px;
+            color: #bbb;
+            border-top: 1px dashed #e0e0e0;
+        }
+
+        /* Print styles */
+        @media print {
+            .top-bar, .dynamic-island, .left-panel, .panel-toggle, .bottom-bar, .toast, .page-bottom {
+                display: none !important;
+            }
+            .paper-page {
+                box-shadow: none;
+                margin: 0;
+                padding: 15mm 20mm;
+                width: 210mm;
+                height: 297mm;
+                page-break-after: always;
+            }
+            .paper-page-content {
+                overflow: visible;
+            }
+            body {
+                background: white;
+                margin: 0;
+                padding: 0;
+            }
+        }
+
+        /* Left Panel - Touches TOP directly below top bar */
+        .left-panel {
+            position: fixed;
+            left: 0;
+            top: 108px;
+            bottom: 44px;
+            width: 280px;
+            padding: 20px 16px;
+            overflow-y: auto;
+            border-right: 1px solid rgba(0, 0, 0, 0.05);
+            background: rgba(255, 255, 255, 0.95);
+            transition: transform 0.3s ease;
+            z-index: 50;
+        }
+
+        .left-panel.collapsed {
+            transform: translateX(-100%);
+        }
+
+        .panel-toggle {
+            position: fixed;
+            left: 290px;
+            top: 120px;
+            width: 28px;
+            height: 28px;
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 60;
+            transition: left 0.3s ease;
+            font-size: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            color: #666;
+        }
+
+        .panel-toggle.collapsed {
+            left: 10px;
+        }
+
+        .panel-toggle:hover {
+            background: #f5f5f5;
+        }
+
+        .panel-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #86868b;
+            margin-bottom: 16px;
+            padding-left: 8px;
+        }
+
+        .page-list { display: flex; flex-direction: column; gap: 12px; }
+        
+        .page-thumb {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+        }
+        
+        .page-thumb:hover { 
+            border-color: var(--apple-blue); 
+            transform: translateX(4px); 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+        }
+        
+        .page-thumb.active { 
+            border-color: var(--apple-blue); 
+            background: rgba(0, 113, 227, 0.08); 
+        }
+        
+        .thumb-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .page-number {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+        
+        .delete-page-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #999;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+        }
+        
+        .delete-page-btn:hover { background: rgba(255, 59, 48, 0.1); color: #ff3b30; }
+        
+        .mini-paper {
+            background: #fafafc;
+            border-radius: 4px;
+            padding: 8px;
+            aspect-ratio: 210 / 297;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .mini-paper-header {
+            font-size: 7px;
+            font-weight: bold;
+            text-align: center;
+            padding-bottom: 4px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .mini-paper-content {
+            flex: 1;
+            font-size: 6px;
+            line-height: 1.3;
+            color: #666;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 8;
+            -webkit-box-orient: vertical;
+            font-family: 'Times New Roman', serif;
+        }
+
+        /* Bottom Bar */
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.98);
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 8px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            font-size: 12px;
+            color: #666;
+            height: 44px;
+        }
+
+        .bottom-left {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .page-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .page-nav-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .page-nav-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .word-count-info {
+            color: #666;
+        }
+
+        .bottom-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .zoom-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .zoom-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .zoom-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .zoom-value {
+            min-width: 45px;
+            text-align: center;
+        }
+
+        /* Custom Right Click Menu */
+        .custom-context-menu {
+            position: fixed;
+            background: white;
+            border-radius: 12px;
+            min-width: 200px;
+            display: none;
+            padding: 8px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border: 1px solid rgba(0,0,0,0.1);
+            z-index: 10000;
+        }
+        .custom-context-menu.show { display: block; }
+        .context-menu-item { padding: 10px 20px; font-size: 13px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 10px; color: #333; }
+        .context-menu-item i { width: 20px; color: #666; }
+        .context-menu-item:hover { background: rgba(0, 0, 0, 0.05); }
+
+        /* Modal */
+        .media-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        .media-modal.active { display: flex; }
+        .media-modal-content {
+            width: 90%;
+            max-width: 800px;
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+        }
+        .media-modal-header { padding: 20px 24px; display: flex; justify-content: space-between; border-bottom: 1px solid #eee; }
+        .media-modal-body { padding: 24px; max-height: 60vh; overflow-y: auto; }
+        .drag-drop-area {
+            border: 2px dashed #ccc;
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            margin-bottom: 24px;
+        }
+        .drag-drop-area.drag-over { border-color: var(--apple-blue); background: rgba(0,113,227,0.05); }
+        .image-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 12px; }
+        .gallery-item {
+            background: #f5f5f7;
+            border-radius: 12px;
+            padding: 8px;
+            cursor: grab;
+            text-align: center;
+        }
+        .gallery-item img { width: 100%; height: 80px; object-fit: cover; border-radius: 8px; }
+        .toast {
+            position: fixed;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #333;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 13px;
+            z-index: 3000;
+            transition: transform 0.3s;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+
+        @media (max-width: 900px) {
+            .left-panel { width: 260px; }
+            .dynamic-island { padding: 6px 12px; }
+            .island-content { flex-wrap: wrap; justify-content: center; }
+            .paper-page { width: 100%; min-width: auto; height: auto; min-height: 500px; }
+            .bottom-bar { padding: 6px 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Loading Animation -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loader">
+            <div class="loader-logo">KORAHEY EDITOR</div>
+            <div class="loader-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="editor-brand">KORAHEY EDITOR</div>
+        <div class="menu-bar">
+            <div class="menu-item" onclick="toggleDropdown('fileMenu')">File</div>
+            <div id="fileMenu" class="dropdown-menu">
+                <div class="dropdown-item" onclick="newDocument()">New</div>
+                <div class="dropdown-item" onclick="saveDocument()">Save</div>
+                <div class="dropdown-item" onclick="exportDocument()">Print</div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item" onclick="closeEditor()">Close</div>
+            </div>
+            <div class="menu-item" onclick="toggleDropdown('editMenu')">Edit</div>
+            <div id="editMenu" class="dropdown-menu">
+                <div class="dropdown-item" onclick="execCommand('undo')">Undo</div>
+                <div class="dropdown-item" onclick="execCommand('redo')">Redo</div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item" onclick="execCommand('cut')">Cut</div>
+                <div class="dropdown-item" onclick="execCommand('copy')">Copy</div>
+                <div class="dropdown-item" onclick="execCommand('paste')">Paste</div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item" onclick="selectAll()">Select All</div>
+            </div>
+            <div class="menu-item" onclick="toggleDropdown('insertMenu')">Insert</div>
+            <div id="insertMenu" class="dropdown-menu">
+                <div class="dropdown-item" onclick="openMediaManager()">Media Manager</div>
+                <div class="dropdown-item" onclick="insertTable()">Table</div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item" onclick="insertDate()">Date & Time</div>
+            </div>
+            <div class="menu-item" onclick="toggleDropdown('helpMenu')">Help</div>
+            <div id="helpMenu" class="dropdown-menu">
+                <div class="dropdown-item" onclick="showAbout()">About</div>
+            </div>
+        </div>
+        <div class="right-actions">
+            <button class="top-btn" onclick="saveDocument()">Save</button>
+            <button class="top-btn" onclick="exportDocument()">Print</button>
+        </div>
+    </div>
+
+    <!-- Dynamic Island -->
+    <div class="dynamic-island">
+        <div class="island-content">
+            <select id="fontSelector" class="font-selector" onchange="changeFont()">
+                <option value="'Times New Roman', serif">Times New Roman</option>
+                <option value="Arial">Arial</option>
+                <option value="Calibri">Calibri</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Inter">Inter</option>
+            </select>
+            <select id="sizeSelector" class="size-selector" onchange="changeFontSize()">
+                <option value="10">10</option><option value="11">11</option><option value="12" selected>12</option>
+                <option value="14">14</option><option value="16">16</option><option value="18">18</option>
+                <option value="20">20</option><option value="24">24</option><option value="28">28</option>
+                <option value="36">36</option>
+            </select>
+            <div class="separator"></div>
+            <button class="action-btn" id="boldBtn" onclick="toggleFormat('bold', 'boldBtn')"><b>B</b></button>
+            <button class="action-btn" id="italicBtn" onclick="toggleFormat('italic', 'italicBtn')"><i>I</i></button>
+            <button class="action-btn" id="underlineBtn" onclick="toggleFormat('underline', 'underlineBtn')"><u>U</u></button>
+            <div class="separator"></div>
+            <button class="action-btn" id="alignLeftBtn" onclick="setAlignment('justifyLeft', 'alignLeftBtn')"><i class="fas fa-align-left"></i></button>
+            <button class="action-btn" id="alignCenterBtn" onclick="setAlignment('justifyCenter', 'alignCenterBtn')"><i class="fas fa-align-center"></i></button>
+            <button class="action-btn" id="alignRightBtn" onclick="setAlignment('justifyRight', 'alignRightBtn')"><i class="fas fa-align-right"></i></button>
+            <div class="separator"></div>
+            <button class="action-btn" id="bulletBtn" onclick="toggleList('insertUnorderedList', 'bulletBtn')"><i class="fas fa-list-ul"></i></button>
+            <button class="action-btn" id="numberBtn" onclick="toggleList('insertOrderedList', 'numberBtn')"><i class="fas fa-list-ol"></i></button>
+            <div class="separator"></div>
+            <button class="action-btn" onclick="openMediaManager()"><i class="fas fa-image"></i> Image</button>
+            <button class="action-btn" onclick="insertTable()"><i class="fas fa-table"></i> Table</button>
+        </div>
+    </div>
+
+    <!-- Main Editor Layout -->
+    <div class="main-editor-layout">
+        <div class="left-panel" id="leftPanel">
+            <div class="panel-title">PAGES</div>
+            <div class="page-list" id="pageList"></div>
+        </div>
+
+        <div class="panel-toggle" id="panelToggle" onclick="togglePanel()">
+            <i class="fas fa-chevron-left" id="toggleIcon"></i>
+        </div>
+
+        <div class="canvas-center" id="canvasArea">
+            <div class="paper-container" id="paperContainer">
+                <div class="paper-page" data-page="1">
+                    <div class="paper-page-content" contenteditable="true">
+                        <h1 style="text-align: center; font-size: 24pt;">KORAHY ACADEMY</h1>
+                        <p style="text-align: center; font-style: italic; font-size: 12pt;">Passion for Success</p>
+                        <hr>
+                        <p><br></p>
+                        <p>Welcome to Korahey UI v1.0 - Document Editor</p>
+                        <p>Start typing here. When this page becomes full, a new page will be created automatically.</p>
+                        <p><br></p>
+                        <p>This document uses true A4 paper size (210mm x 297mm).</p>
+                        <p>The page panel on the left shows mini previews of each page.</p>
+                    </div>
+                    <div class="page-bottom">— End of Page —</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="bottom-bar">
+        <div class="bottom-left">
+            <div class="page-info">
+                <button class="page-nav-btn" onclick="previousPage()"><i class="fas fa-chevron-left"></i></button>
+                <span id="pageCounter">Page 1 of 1</span>
+                <button class="page-nav-btn" onclick="nextPage()"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="word-count-info" id="wordCountDisplay">0 words</div>
+        </div>
+        <div class="bottom-right">
+            <div class="zoom-control">
+                <button class="zoom-btn" onclick="zoomOut()"><i class="fas fa-search-minus"></i></button>
+                <span class="zoom-value" id="zoomValue">100%</span>
+                <button class="zoom-btn" onclick="zoomIn()"><i class="fas fa-search-plus"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Right Click Menu -->
+    <div id="contextMenu" class="custom-context-menu">
+        <div class="context-menu-item" onclick="execCommand('bold'); hideContextMenu()"><i class="fas fa-bold"></i> Bold</div>
+        <div class="context-menu-item" onclick="execCommand('italic'); hideContextMenu()"><i class="fas fa-italic"></i> Italic</div>
+        <div class="context-menu-item" onclick="execCommand('underline'); hideContextMenu()"><i class="fas fa-underline"></i> Underline</div>
+        <div class="dropdown-divider"></div>
+        <div class="context-menu-item" onclick="execCommand('copy'); hideContextMenu()"><i class="fas fa-copy"></i> Copy</div>
+        <div class="context-menu-item" onclick="execCommand('cut'); hideContextMenu()"><i class="fas fa-cut"></i> Cut</div>
+        <div class="context-menu-item" onclick="execCommand('paste'); hideContextMenu()"><i class="fas fa-paste"></i> Paste</div>
+        <div class="dropdown-divider"></div>
+        <div class="context-menu-item" onclick="insertTable(); hideContextMenu()"><i class="fas fa-table"></i> Insert Table</div>
+        <div class="context-menu-item" onclick="openMediaManager(); hideContextMenu()"><i class="fas fa-image"></i> Insert Image</div>
+    </div>
+
+    <!-- Media Manager Modal -->
+    <div id="mediaModal" class="media-modal">
+        <div class="media-modal-content">
+            <div class="media-modal-header">
+                <h3>Media Manager</h3>
+                <button class="close-modal" onclick="closeMediaManager()">&times;</button>
+            </div>
+            <div class="media-modal-body">
+                <div class="drag-drop-area" id="dragDropArea" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+                    <i class="fas fa-cloud-upload-alt" style="font-size: 48px; color: var(--apple-blue);"></i>
+                    <p>Drag & drop images here or click to upload</p>
+                    <input type="file" id="imageUpload" accept="image/*" multiple style="display: none;" onchange="handleImageUpload(event)">
+                </div>
+                <div class="image-gallery" id="imageGallery"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // ========== KORAHEY UI v1.0 EDITOR ==========
+        let imageLibrary = [];
+        let activeMenu = null;
+        let currentActiveButtons = {};
+        let currentZoom = 100;
+        let currentPageIndex = 0;
+        let panelCollapsed = false;
+        let isCreatingPage = false;
+
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const loader = document.getElementById('loadingOverlay');
+                loader.classList.add('fade-out');
+                setTimeout(() => { loader.style.display = 'none'; }, 600);
+            }, 1500);
+        });
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 2000);
+        }
+
+        function togglePanel() {
+            panelCollapsed = !panelCollapsed;
+            const panel = document.getElementById('leftPanel');
+            const toggle = document.getElementById('panelToggle');
+            const icon = document.getElementById('toggleIcon');
+            
+            if (panelCollapsed) {
+                panel.classList.add('collapsed');
+                toggle.classList.add('collapsed');
+                icon.classList.remove('fa-chevron-left');
+                icon.classList.add('fa-chevron-right');
+            } else {
+                panel.classList.remove('collapsed');
+                toggle.classList.remove('collapsed');
+                icon.classList.remove('fa-chevron-right');
+                icon.classList.add('fa-chevron-left');
+            }
+        }
+
+        function getMiniPaperContent(pageElement) {
+            const contentDiv = pageElement.querySelector('.paper-page-content');
+            const text = contentDiv ? contentDiv.innerText : '';
+            const preview = text.substring(0, 200);
+            return preview + (text.length > 200 ? '...' : '');
+        }
+
+        function getPageTitle(pageElement, pageNum) {
+            const contentDiv = pageElement.querySelector('.paper-page-content');
+            const text = contentDiv ? contentDiv.innerText : '';
+            const firstLine = text.split('\n')[0];
+            if (firstLine && firstLine.length > 30) {
+                return firstLine.substring(0, 30) + '...';
+            }
+            return firstLine || `Page ${pageNum}`;
+        }
+
+        function updateWordCount() {
+            let totalWords = 0;
+            document.querySelectorAll('.paper-page-content').forEach(content => {
+                const text = content.innerText;
+                const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;
+                totalWords += words;
+            });
+            document.getElementById('wordCountDisplay').textContent = totalWords + ' words';
+        }
+
+        document.addEventListener('input', updateWordCount);
+        setInterval(updateWordCount, 500);
+
+        function updatePageCounter() {
+            const pages = document.querySelectorAll('.paper-page');
+            document.getElementById('pageCounter').textContent = `Page ${currentPageIndex + 1} of ${pages.length}`;
+        }
+
+        function updatePageList() {
+            const pages = document.querySelectorAll('.paper-page');
+            const container = document.getElementById('pageList');
+            container.innerHTML = Array.from(pages).map((page, idx) => `
+                <div class="page-thumb ${idx === currentPageIndex ? 'active' : ''}" onclick="goToPage(${idx})">
+                    <div class="thumb-header">
+                        <span class="page-number">Page ${idx + 1}</span>
+                        ${pages.length > 1 ? `<button class="delete-page-btn" onclick="event.stopPropagation(); deletePage(${idx})"><i class="fas fa-trash"></i></button>` : ''}
+                    </div>
+                    <div class="mini-paper">
+                        <div class="mini-paper-header">${escapeHtml(getPageTitle(page, idx + 1))}</div>
+                        <div class="mini-paper-content">${escapeHtml(getMiniPaperContent(page))}</div>
+                    </div>
+                </div>
+            `).join('');
+            updatePageCounter();
+        }
+
+        function goToPage(index) {
+            const pages = document.querySelectorAll('.paper-page');
+            if (pages[index]) {
+                pages[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
+                const contentDiv = pages[index].querySelector('.paper-page-content');
+                if (contentDiv) contentDiv.focus();
+                currentPageIndex = index;
+                updatePageList();
+            }
+        }
+
+        function previousPage() {
+            if (currentPageIndex > 0) {
+                goToPage(currentPageIndex - 1);
+            }
+        }
+
+        function nextPage() {
+            const pages = document.querySelectorAll('.paper-page');
+            if (currentPageIndex < pages.length - 1) {
+                goToPage(currentPageIndex + 1);
+            }
+        }
+
+        function deletePage(index) {
+            const pages = document.querySelectorAll('.paper-page');
+            if (pages.length > 1) {
+                pages[index].remove();
+                if (currentPageIndex >= pages.length - 1) currentPageIndex = Math.max(0, pages.length - 2);
+                updatePageList();
+                showToast('Page deleted');
+            }
+        }
+
+        // Check if page is full
+        function isPageFull(contentDiv) {
+            if (!contentDiv) return false;
+            const contentHeight = contentDiv.scrollHeight;
+            const maxContentHeight = 240;
+            return contentHeight > maxContentHeight - 30;
+        }
+
+        // Move content to new page
+        function moveToNewPage(contentDiv, currentPage) {
+            if (isCreatingPage) return;
+            isCreatingPage = true;
+            
+            const allPages = document.querySelectorAll('.paper-page');
+            const currentIndex = Array.from(allPages).indexOf(currentPage);
+            
+            const html = contentDiv.innerHTML;
+            
+            const splitMarkers = ['</p>', '</div>', '</h1>', '</h2>', '</h3>', '</h4>', '<br>', '</li>', '</ul>', '</ol>'];
+            let splitIndex = -1;
+            
+            for (const marker of splitMarkers) {
+                const lastIndex = html.lastIndexOf(marker);
+                if (lastIndex > html.length * 0.6) {
+                    splitIndex = lastIndex + marker.length;
+                    break;
+                }
+            }
+            
+            if (splitIndex === -1) {
+                splitIndex = Math.floor(html.length * 0.7);
+            }
+            
+            const keepContent = html.substring(0, splitIndex);
+            const moveContent = html.substring(splitIndex);
+            
+            contentDiv.innerHTML = keepContent;
+            
+            let nextPage = allPages[currentIndex + 1];
+            if (!nextPage) {
+                nextPage = document.createElement('div');
+                nextPage.className = 'paper-page';
+                nextPage.innerHTML = `
+                    <div class="paper-page-content" contenteditable="true"></div>
+                    <div class="page-bottom">— End of Page —</div>
+                `;
+                currentPage.insertAdjacentElement('afterend', nextPage);
+            }
+            
+            const nextContent = nextPage.querySelector('.paper-page-content');
+            const existingContent = nextContent.innerHTML;
+            nextContent.innerHTML = moveContent + existingContent;
+            
+            if (contentDiv.innerText.trim() === '') {
+                contentDiv.innerHTML = '<p><br></p>';
+            }
+            
+            contentDiv.focus();
+            
+            setTimeout(() => {
+                isCreatingPage = false;
+                updatePageList();
+                updateWordCount();
+            }, 100);
+        }
+
+        let checkTimeout;
+        function debouncedCheckPageFull() {
+            clearTimeout(checkTimeout);
+            checkTimeout = setTimeout(() => {
+                const activeContent = document.activeElement;
+                if (activeContent && activeContent.classList.contains('.paper-page-content')) {
+                    const currentPage = activeContent.closest('.paper-page');
+                    if (isPageFull(activeContent)) {
+                        moveToNewPage(activeContent, currentPage);
+                    }
+                }
+                updatePageList();
+            }, 300);
+        }
+
+        document.addEventListener('input', function(e) {
+            if (e.target.closest('.paper-page-content')) {
+                debouncedCheckPageFull();
+                updateWordCount();
+            }
+        });
+
+        document.addEventListener('paste', function(e) {
+            setTimeout(() => {
+                const activeContent = document.activeElement;
+                if (activeContent && activeContent.classList.contains('.paper-page-content')) {
+                    const currentPage = activeContent.closest('.paper-page');
+                    if (isPageFull(activeContent)) {
+                        moveToNewPage(activeContent, currentPage);
+                    }
+                    updateWordCount();
+                }
+            }, 100);
+        });
+
+        function zoomIn() {
+            if (currentZoom < 200) { currentZoom += 10; applyZoom(); }
+        }
+        function zoomOut() {
+            if (currentZoom > 50) { currentZoom -= 10; applyZoom(); }
+        }
+        function applyZoom() {
+            const container = document.querySelector('.paper-container');
+            if (container) {
+                container.style.transform = `scale(${currentZoom / 100})`;
+                container.style.transformOrigin = 'top center';
+            }
+            document.getElementById('zoomValue').textContent = currentZoom + '%';
+        }
+
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            const menu = document.getElementById('contextMenu');
+            menu.style.left = e.pageX + 'px';
+            menu.style.top = e.pageY + 'px';
+            menu.classList.add('show');
+        });
+        document.addEventListener('click', function() { hideContextMenu(); });
+        function hideContextMenu() { document.getElementById('contextMenu').classList.remove('show'); }
+
+        function toggleDropdown(menuId) {
+            const menu = document.getElementById(menuId);
+            if (activeMenu && activeMenu !== menu) activeMenu.classList.remove('show');
+            menu.classList.toggle('show');
+            activeMenu = menu.classList.contains('show') ? menu : null;
+        }
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.menu-item') && !e.target.closest('.dropdown-menu')) {
+                if (activeMenu) { activeMenu.classList.remove('show'); activeMenu = null; }
+            }
+        });
+
+        function toggleFormat(command, btnId) {
+            const activeElement = document.activeElement;
+            if (activeElement && activeElement.classList.contains('paper-page-content')) {
+                document.execCommand(command, false, null);
+                const btn = document.getElementById(btnId);
+                if (btn) {
+                    currentActiveButtons[btnId] = !currentActiveButtons[btnId];
+                    btn.classList.toggle('active', currentActiveButtons[btnId]);
+                }
+            }
+            hideContextMenu();
+            debouncedCheckPageFull();
+        }
+        
+        function setAlignment(command, btnId) {
+            const activeElement = document.activeElement;
+            if (activeElement && activeElement.classList.contains('paper-page-content')) {
+                document.execCommand(command, false, null);
+                ['alignLeftBtn', 'alignCenterBtn', 'alignRightBtn'].forEach(id => {
+                    const btn = document.getElementById(id);
+                    if (btn) btn.classList.remove('active');
+                    currentActiveButtons[id] = false;
+                });
+                const clickedBtn = document.getElementById(btnId);
+                if (clickedBtn) { clickedBtn.classList.add('active'); currentActiveButtons[btnId] = true; }
+            }
+            hideContextMenu();
+            debouncedCheckPageFull();
+        }
+        
+        function toggleList(command, btnId) {
+            const activeElement = document.activeElement;
+            if (activeElement && activeElement.classList.contains('paper-page-content')) {
+                document.execCommand(command, false, null);
+                const btn = document.getElementById(btnId);
+                if (btn) {
+                    currentActiveButtons[btnId] = !currentActiveButtons[btnId];
+                    btn.classList.toggle('active', currentActiveButtons[btnId]);
+                }
+            }
+            hideContextMenu();
+            debouncedCheckPageFull();
+        }
+        
+        function execCommand(command) { 
+            const activeElement = document.activeElement;
+            if (activeElement && activeElement.classList.contains('paper-page-content')) {
+                document.execCommand(command, false, null);
+            }
+            hideContextMenu();
+            debouncedCheckPageFull();
+        }
+        
+        function selectAll() { 
+            const activeElement = document.activeElement;
+            if (activeElement && activeElement.classList.contains('paper-page-content')) {
+                document.execCommand('selectAll', false, null);
+            }
+            hideContextMenu();
+        }
+
+        function newDocument() {
+            if (confirm('Create new document? Unsaved changes will be lost.')) {
+                document.getElementById('paperContainer').innerHTML = `
+                    <div class="paper-page" data-page="1">
+                        <div class="paper-page-content" contenteditable="true">
+                            <h1 style="text-align: center; font-size: 24pt;">KORAHY ACADEMY</h1>
+                            <p style="text-align: center; font-style: italic; font-size: 12pt;">Passion for Success</p>
+                            <hr>
+                            <p><br></p>
+                            <p>Start typing your document here. A new A4 page will be created when this page is full.</p>
+                        </div>
+                        <div class="page-bottom">— End of Page —</div>
+                    </div>
+                `;
+                currentPageIndex = 0;
+                updatePageList();
+                showToast('New document created');
+            }
+        }
+        
+        function saveDocument() {
+            const pages = [];
+            document.querySelectorAll('.paper-page').forEach((page, i) => {
+                const contentDiv = page.querySelector('.paper-page-content');
+                pages.push({ id: i, content: contentDiv ? contentDiv.innerHTML : '' });
+            });
+            localStorage.setItem('koraheyDocument', JSON.stringify(pages));
+            showToast('Document saved');
+        }
+        
+        function exportDocument() { saveDocument(); window.print(); }
+        function closeEditor() { if (confirm('Close editor?')) window.location.href = 'admin.html'; }
+        
+        function changeFont() { 
+            const activeElement = document.activeElement;
+            if (activeElement && activeElement.classList.contains('paper-page-content')) {
+                document.execCommand('fontName', false, document.getElementById('fontSelector').value);
+            }
+            debouncedCheckPageFull();
+        }
+        
+        function changeFontSize() { 
+            const activeElement = document.activeElement;
+            if (activeElement && activeElement.classList.contains('paper-page-content')) {
+                const size = document.getElementById('sizeSelector').value;
+                document.execCommand('fontSize', false, size);
+            }
+            debouncedCheckPageFull();
+        }
+        
+        function insertDate() { 
+            const activeElement = document.activeElement;
+            if (activeElement && activeElement.classList.contains('paper-page-content')) {
+                document.execCommand('insertText', false, new Date().toLocaleString());
+            }
+            debouncedCheckPageFull();
+        }
+        
+        function showAbout() { 
+            alert('Korahey UI v1.0\nDocument Editor\n\nTRUE A4 Paper Size (210mm x 297mm)\nAutomatic New Page When Full\nPage Panel with Mini Previews\n\n© 2026 Korahey Academy'); 
+        }
+
+        function insertTable() {
+            const rows = prompt('Number of rows:', '3');
+            const cols = prompt('Number of columns:', '3');
+            if (rows && cols) {
+                let html = '<table border="1" cellpadding="8" style="border-collapse: collapse; width: 100%; margin: 10px 0;">';
+                for (let i = 0; i < parseInt(rows); i++) {
+                    html += '<tr>';
+                    for (let j = 0; j < parseInt(cols); j++) html += `<td contenteditable="true"><br></td>`;
+                    html += '</tr>';
+                }
+                html += '</table><br>';
+                const activeElement = document.activeElement;
+                if (activeElement && activeElement.classList.contains('paper-page-content')) {
+                    document.execCommand('insertHTML', false, html);
+                }
+                showToast(`${rows}x${cols} table inserted`);
+                debouncedCheckPageFull();
+            }
+            hideContextMenu();
+        }
+
+        function openMediaManager() { loadImageGallery(); document.getElementById('mediaModal').classList.add('active'); hideContextMenu(); }
+        function closeMediaManager() { document.getElementById('mediaModal').classList.remove('active'); }
+        function loadImageGallery() {
+            const saved = localStorage.getItem('koraheyImageLibrary');
+            if (saved) imageLibrary = JSON.parse(saved);
+            const gallery = document.getElementById('imageGallery');
+            if (imageLibrary.length === 0) { gallery.innerHTML = '<p style="text-align:center; color:#999;">No images. Upload some.</p>'; return; }
+            gallery.innerHTML = imageLibrary.map(img => `<div class="gallery-item" draggable="true" ondragstart="dragImage(event, '${img.src}')"><img src="${img.src}"><div>${img.name.substring(0, 15)}</div></div>`).join('');
+        }
+        function handleImageUpload(event) {
+            Array.from(event.target.files).forEach((file, i) => {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    imageLibrary.push({ id: Date.now() + i, src: e.target.result, name: file.name });
+                    localStorage.setItem('koraheyImageLibrary', JSON.stringify(imageLibrary));
+                    loadImageGallery();
+                };
+                reader.readAsDataURL(file);
+            });
+            showToast(`${event.target.files.length} image(s) uploaded`);
+        }
+        function onDragOver(e) { e.preventDefault(); document.getElementById('dragDropArea').classList.add('drag-over'); }
+        function onDragLeave(e) { document.getElementById('dragDropArea').classList.remove('drag-over'); }
+        function onDrop(e) {
+            e.preventDefault();
+            document.getElementById('dragDropArea').classList.remove('drag-over');
+            Array.from(e.dataTransfer.files).forEach((file, i) => {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = e => {
+                        imageLibrary.push({ id: Date.now() + i, src: e.target.result, name: file.name });
+                        localStorage.setItem('koraheyImageLibrary', JSON.stringify(imageLibrary));
+                        loadImageGallery();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            showToast(`${e.dataTransfer.files.length} image(s) uploaded`);
+        }
+        function dragImage(e, src) { e.dataTransfer.setData('text/plain', src); }
+        document.getElementById('dragDropArea')?.addEventListener('click', () => document.getElementById('imageUpload').click());
+
+        document.querySelectorAll('.paper-page-content').forEach(content => {
+            content.addEventListener('dragover', e => e.preventDefault());
+            content.addEventListener('drop', e => {
+                e.preventDefault();
+                const src = e.dataTransfer.getData('text/plain');
+                if (src) {
+                    const img = document.createElement('img');
+                    img.src = src;
+                    img.style.maxWidth = '100%';
+                    img.style.margin = '10px 0';
+                    const range = document.caretRangeFromPoint(e.clientX, e.clientY);
+                    if (range) range.insertNode(img);
+                    else content.appendChild(img);
+                    showToast('Image inserted');
+                    debouncedCheckPageFull();
+                }
+            });
+        });
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m]));
+        }
+
+        function loadDocument() {
+            const saved = localStorage.getItem('koraheyDocument');
+            if (saved) {
+                const pages = JSON.parse(saved);
+                if (pages.length > 0) {
+                    document.getElementById('paperContainer').innerHTML = pages.map(p => `
+                        <div class="paper-page">
+                            <div class="paper-page-content" contenteditable="true">${p.content}</div>
+                            <div class="page-bottom">— End of Page —</div>
+                        </div>
+                    `).join('');
+                    updatePageList();
+                    showToast('Document loaded');
+                }
+            }
+            updatePageList();
+            updateWordCount();
+        }
+
+        loadDocument();
+    </script>
+</body>
+</html>
