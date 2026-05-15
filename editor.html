@@ -151,7 +151,7 @@
         }
         .top-btn:hover { background: rgba(0, 0, 0, 0.1); }
 
-        /* Dynamic Island - CLEAR, NOT BLURRY */
+        /* Dynamic Island - CLEAR */
         .dynamic-island {
             position: fixed;
             top: 56px;
@@ -232,47 +232,32 @@
             transition: transform 0.2s;
             page-break-after: avoid;
             break-inside: avoid;
-            overflow: hidden;
             display: flex;
             flex-direction: column;
+            overflow: hidden;
         }
         
         .paper-page-content {
             flex: 1;
-            overflow-y: auto;
-            scrollbar-width: thin;
-        }
-        
-        .paper-page-content::-webkit-scrollbar {
-            width: 6px;
-        }
-        
-        .paper-page-content::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 3px;
-        }
-        
-        .paper-page-content::-webkit-scrollbar-thumb {
-            background: #ccc;
-            border-radius: 3px;
+            overflow-y: visible;
+            outline: none;
         }
         
         .paper-page-content:focus { outline: none; }
 
-        /* Page End Indicator */
-        .page-end-indicator {
+        /* Page Bottom Indicator - Shows where page ends */
+        .page-bottom {
             text-align: center;
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px dashed #ccc;
-            font-size: 10px;
-            color: #999;
-            font-style: italic;
+            margin-top: 5px;
+            padding-top: 5px;
+            font-size: 9px;
+            color: #ccc;
+            border-top: 1px dashed #e0e0e0;
         }
 
         /* Print styles */
         @media print {
-            .top-bar, .dynamic-island, .left-panel, .panel-toggle, .bottom-bar, .toast, .page-end-indicator {
+            .top-bar, .dynamic-island, .left-panel, .panel-toggle, .bottom-bar, .toast, .page-bottom {
                 display: none !important;
             }
             .paper-page {
@@ -282,7 +267,6 @@
                 width: 100%;
                 page-break-after: always;
                 height: auto;
-                overflow: visible;
             }
             .paper-page-content {
                 overflow: visible;
@@ -294,7 +278,7 @@
             }
         }
 
-        /* Left Panel - Touches Top and Bottom */
+        /* Left Panel - Touches Top of Editor */
         .left-panel {
             position: fixed;
             left: 0;
@@ -423,6 +407,9 @@
             padding-bottom: 4px;
             border-bottom: 1px solid #eee;
             margin-bottom: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         
         .mini-paper-content {
@@ -654,7 +641,7 @@
         </div>
     </div>
 
-    <!-- Dynamic Island - CLEAR, NOT BLURRY -->
+    <!-- Dynamic Island -->
     <div class="dynamic-island">
         <div class="island-content">
             <select id="fontSelector" class="font-selector" onchange="changeFont()">
@@ -689,7 +676,7 @@
 
     <!-- Main Editor Layout -->
     <div class="main-editor-layout">
-        <!-- Left Panel - Touches Top and Bottom -->
+        <!-- Left Panel -->
         <div class="left-panel" id="leftPanel">
             <div class="panel-title">PAGES</div>
             <div class="page-list" id="pageList"></div>
@@ -710,12 +697,12 @@
                         <hr>
                         <p><br></p>
                         <p>Welcome to Korahey UI v1.0 - Document Editor</p>
-                        <p>Start typing here. Content will automatically flow to new pages when you reach the bottom.</p>
+                        <p>Start typing here. When this page becomes full, a new page will be created automatically.</p>
                         <p><br></p>
                         <p>This document uses true A4 paper size (210mm x 297mm).</p>
                         <p>The page panel on the left shows mini previews of each page.</p>
                     </div>
-                    <div class="page-end-indicator">▼ End of Page ▼</div>
+                    <div class="page-bottom">— Page End —</div>
                 </div>
             </div>
         </div>
@@ -782,7 +769,7 @@
         let currentZoom = 100;
         let currentPageIndex = 0;
         let panelCollapsed = false;
-        let isProcessing = false;
+        let isCreatingPage = false;
 
         // Loading animation
         window.addEventListener('load', () => {
@@ -823,7 +810,7 @@
         // Get page preview text for mini paper
         function getMiniPaperContent(pageElement) {
             const contentDiv = pageElement.querySelector('.paper-page-content');
-            const text = contentDiv ? contentDiv.innerText : pageElement.innerText;
+            const text = contentDiv ? contentDiv.innerText : '';
             const preview = text.substring(0, 200);
             return preview + (text.length > 200 ? '...' : '');
         }
@@ -831,7 +818,7 @@
         // Get page title for mini paper header
         function getPageTitle(pageElement, pageNum) {
             const contentDiv = pageElement.querySelector('.paper-page-content');
-            const text = contentDiv ? contentDiv.innerText : pageElement.innerText;
+            const text = contentDiv ? contentDiv.innerText : '';
             const firstLine = text.split('\n')[0];
             if (firstLine && firstLine.length > 30) {
                 return firstLine.substring(0, 30) + '...';
@@ -876,7 +863,6 @@
                 </div>
             `).join('');
             updatePageCounter();
-            updateWordCount();
         }
 
         function goToPage(index) {
@@ -913,135 +899,117 @@
             }
         }
 
-        // Check if at bottom of page content
-        function isAtBottom(contentDiv) {
+        // Check if page content has reached the bottom (visually)
+        function isPageFull(contentDiv) {
             if (!contentDiv) return false;
-            return contentDiv.scrollHeight - contentDiv.scrollTop - contentDiv.clientHeight < 50;
+            // Get the actual height of the content
+            const contentHeight = contentDiv.scrollHeight;
+            const maxHeight = 297 * 3.7795275591 - 60; // 297mm to pixels minus padding
+            return contentHeight > maxHeight - 50;
         }
 
-        // Move content to next page when bottom is reached
-        function moveContentToNextPage(contentDiv, currentPage) {
-            if (isProcessing) return;
-            isProcessing = true;
+        // Move content to new page when page is full
+        function moveToNewPage(contentDiv, currentPage) {
+            if (isCreatingPage) return;
+            isCreatingPage = true;
             
             const allPages = document.querySelectorAll('.paper-page');
             const currentIndex = Array.from(allPages).indexOf(currentPage);
-            let nextPage = allPages[currentIndex + 1];
             
-            if (!nextPage) {
-                // Create new page
-                nextPage = document.createElement('div');
-                nextPage.className = 'paper-page';
-                nextPage.innerHTML = `
-                    <div class="paper-page-content" contenteditable="true"></div>
-                    <div class="page-end-indicator">▼ End of Page ▼</div>
-                `;
-                currentPage.insertAdjacentElement('afterend', nextPage);
-                updatePageList();
-            }
-            
-            const nextContentDiv = nextPage.querySelector('.paper-page-content');
-            
-            // Get all HTML content from current content div
-            const currentHTML = contentDiv.innerHTML;
+            // Get the HTML content
+            const html = contentDiv.innerHTML;
             
             // Find a good split point (look for paragraph breaks)
-            const splitPoints = [
-                '</p>', '</div>', '</h1>', '</h2>', '</h3>', '</h4>',
-                '<br>', '</li>', '</ul>', '</ol>'
-            ];
-            
+            const splitMarkers = ['</p>', '</div>', '</h1>', '</h2>', '</h3>', '</h4>', '<br>', '</li>', '</ul>', '</ol>'];
             let splitIndex = -1;
-            for (const point of splitPoints) {
-                const lastIndex = currentHTML.lastIndexOf(point);
-                if (lastIndex > currentHTML.length * 0.7) {
-                    splitIndex = lastIndex + point.length;
+            
+            for (const marker of splitMarkers) {
+                const lastIndex = html.lastIndexOf(marker);
+                if (lastIndex > html.length * 0.6) {
+                    splitIndex = lastIndex + marker.length;
                     break;
                 }
             }
             
             if (splitIndex === -1) {
-                // If no good split point, split by lines
-                const lines = contentDiv.innerText.split('\n');
-                const midPoint = Math.floor(lines.length * 0.7);
-                const keepLines = lines.slice(0, midPoint);
-                const moveLines = lines.slice(midPoint);
-                
-                contentDiv.innerHTML = keepLines.join('\n').replace(/\n/g, '<br>');
-                const existingNextContent = nextContentDiv.innerHTML;
-                nextContentDiv.innerHTML = moveLines.join('\n').replace(/\n/g, '<br>') + existingNextContent;
-            } else {
-                const keepContent = currentHTML.substring(0, splitIndex);
-                const moveContent = currentHTML.substring(splitIndex);
-                
-                contentDiv.innerHTML = keepContent;
-                const existingNextContent = nextContentDiv.innerHTML;
-                nextContentDiv.innerHTML = moveContent + existingNextContent;
+                // Split by content
+                const halfLength = Math.floor(html.length * 0.7);
+                splitIndex = halfLength;
             }
             
-            // Clean up empty pages
+            const keepContent = html.substring(0, splitIndex);
+            const moveContent = html.substring(splitIndex);
+            
+            // Update current page content
+            contentDiv.innerHTML = keepContent;
+            
+            // Create or update next page
+            let nextPage = allPages[currentIndex + 1];
+            if (!nextPage) {
+                nextPage = document.createElement('div');
+                nextPage.className = 'paper-page';
+                nextPage.innerHTML = `
+                    <div class="paper-page-content" contenteditable="true"></div>
+                    <div class="page-bottom">— Page End —</div>
+                `;
+                currentPage.insertAdjacentElement('afterend', nextPage);
+            }
+            
+            const nextContent = nextPage.querySelector('.paper-page-content');
+            const existingContent = nextContent.innerHTML;
+            nextContent.innerHTML = moveContent + existingContent;
+            
+            // Clean up empty content
             if (contentDiv.innerText.trim() === '') {
                 contentDiv.innerHTML = '<p><br></p>';
             }
             
-            // Focus back on current content
+            // Focus on current page
             contentDiv.focus();
             
             setTimeout(() => {
-                isProcessing = false;
+                isCreatingPage = false;
                 updatePageList();
                 updateWordCount();
             }, 100);
         }
 
-        // Check all pages and balance content
-        function checkAndBalancePages() {
-            if (isProcessing) return;
-            
-            const pages = document.querySelectorAll('.paper-page');
-            for (let i = 0; i < pages.length; i++) {
-                const page = pages[i];
-                const contentDiv = page.querySelector('.paper-page-content');
-                if (contentDiv && isAtBottom(contentDiv)) {
-                    moveContentToNextPage(contentDiv, page);
-                    break;
+        // Check and create new page when full
+        let checkTimeout;
+        function debouncedCheckPageFull() {
+            clearTimeout(checkTimeout);
+            checkTimeout = setTimeout(() => {
+                const activeContent = document.activeElement;
+                if (activeContent && activeContent.classList.contains('paper-page-content')) {
+                    const currentPage = activeContent.closest('.paper-page');
+                    if (isPageFull(activeContent)) {
+                        moveToNewPage(activeContent, currentPage);
+                    }
                 }
-            }
-        }
-
-        // Debounced page balancing
-        let balanceTimeout;
-        function debouncedBalancePages() {
-            clearTimeout(balanceTimeout);
-            balanceTimeout = setTimeout(() => {
-                checkAndBalancePages();
+                updatePageList();
             }, 300);
-        }
-
-        // Listen for scroll events on content divs
-        function setupScrollListeners() {
-            document.querySelectorAll('.paper-page-content').forEach(content => {
-                content.removeEventListener('scroll', handleScroll);
-                content.addEventListener('scroll', handleScroll);
-            });
-        }
-
-        function handleScroll(e) {
-            const contentDiv = e.target;
-            if (isAtBottom(contentDiv)) {
-                const currentPage = contentDiv.closest('.paper-page');
-                moveContentToNextPage(contentDiv, currentPage);
-            }
         }
 
         // Listen for input events
         document.addEventListener('input', function(e) {
             if (e.target.closest('.paper-page-content')) {
-                debouncedBalancePages();
+                debouncedCheckPageFull();
                 updateWordCount();
-                updatePageList();
-                setupScrollListeners();
             }
+        });
+
+        // Listen for paste events
+        document.addEventListener('paste', function(e) {
+            setTimeout(() => {
+                const activeContent = document.activeElement;
+                if (activeContent && activeContent.classList.contains('paper-page-content')) {
+                    const currentPage = activeContent.closest('.paper-page');
+                    if (isPageFull(activeContent)) {
+                        moveToNewPage(activeContent, currentPage);
+                    }
+                    updateWordCount();
+                }
+            }, 100);
         });
 
         // Zoom functions
@@ -1096,7 +1064,7 @@
                 }
             }
             hideContextMenu();
-            debouncedBalancePages();
+            debouncedCheckPageFull();
         }
         
         function setAlignment(command, btnId) {
@@ -1112,7 +1080,7 @@
                 if (clickedBtn) { clickedBtn.classList.add('active'); currentActiveButtons[btnId] = true; }
             }
             hideContextMenu();
-            debouncedBalancePages();
+            debouncedCheckPageFull();
         }
         
         function toggleList(command, btnId) {
@@ -1126,7 +1094,7 @@
                 }
             }
             hideContextMenu();
-            debouncedBalancePages();
+            debouncedCheckPageFull();
         }
         
         function execCommand(command) { 
@@ -1135,8 +1103,9 @@
                 document.execCommand(command, false, null);
             }
             hideContextMenu();
-            debouncedBalancePages();
+            debouncedCheckPageFull();
         }
+        
         function selectAll() { 
             const activeElement = document.activeElement;
             if (activeElement && activeElement.classList.contains('paper-page-content')) {
@@ -1154,14 +1123,13 @@
                             <p style="text-align: center; font-style: italic; font-size: 12pt;">Passion for Success</p>
                             <hr>
                             <p><br></p>
-                            <p>Start typing your document here. Content will automatically flow to new pages when you reach the bottom.</p>
+                            <p>Start typing your document here. A new page will be created when this page is full.</p>
                         </div>
-                        <div class="page-end-indicator">▼ End of Page ▼</div>
+                        <div class="page-bottom">— Page End —</div>
                     </div>
                 `;
                 currentPageIndex = 0;
                 updatePageList();
-                setupScrollListeners();
                 showToast('New document created');
             }
         }
@@ -1184,7 +1152,7 @@
             if (activeElement && activeElement.classList.contains('paper-page-content')) {
                 document.execCommand('fontName', false, document.getElementById('fontSelector').value);
             }
-            debouncedBalancePages();
+            debouncedCheckPageFull();
         }
         
         function changeFontSize() { 
@@ -1193,7 +1161,7 @@
                 const size = document.getElementById('sizeSelector').value;
                 document.execCommand('fontSize', false, size);
             }
-            debouncedBalancePages();
+            debouncedCheckPageFull();
         }
         
         function insertDate() { 
@@ -1201,17 +1169,17 @@
             if (activeElement && activeElement.classList.contains('paper-page-content')) {
                 document.execCommand('insertText', false, new Date().toLocaleString());
             }
-            debouncedBalancePages();
+            debouncedCheckPageFull();
         }
         
         function showAbout() { 
-            alert('Korahey UI v1.0\nDocument Editor\n\nTrue A4 Paper Size (210mm x 297mm)\nAutomatic Content Flow Between Pages\nPage Panel with Mini Previews\nClear Dynamic Island\n\n© 2026 Korahey Academy'); 
+            alert('Korahey UI v1.0\nDocument Editor\n\nTrue A4 Paper Size (210mm x 297mm)\nAutomatic New Page When Full\nPage Panel with Mini Previews\n\n© 2026 Korahey Academy'); 
         }
 
         // Table functions
         function insertTable() {
-            const rows = prompt('Rows:', '3');
-            const cols = prompt('Columns:', '3');
+            const rows = prompt('Number of rows:', '3');
+            const cols = prompt('Number of columns:', '3');
             if (rows && cols) {
                 let html = '<table border="1" cellpadding="8" style="border-collapse: collapse; width: 100%; margin: 10px 0;">';
                 for (let i = 0; i < parseInt(rows); i++) {
@@ -1219,13 +1187,13 @@
                     for (let j = 0; j < parseInt(cols); j++) html += `<td contenteditable="true"><br></td>`;
                     html += '</tr>';
                 }
-                html += '</table>';
+                html += '<tr><br>';
                 const activeElement = document.activeElement;
                 if (activeElement && activeElement.classList.contains('paper-page-content')) {
                     document.execCommand('insertHTML', false, html);
                 }
                 showToast(`${rows}x${cols} table inserted`);
-                debouncedBalancePages();
+                debouncedCheckPageFull();
             }
             hideContextMenu();
         }
@@ -1287,7 +1255,7 @@
                     if (range) range.insertNode(img);
                     else content.appendChild(img);
                     showToast('Image inserted');
-                    debouncedBalancePages();
+                    debouncedCheckPageFull();
                 }
             });
         });
@@ -1305,17 +1273,15 @@
                     document.getElementById('paperContainer').innerHTML = pages.map(p => `
                         <div class="paper-page">
                             <div class="paper-page-content" contenteditable="true">${p.content}</div>
-                            <div class="page-end-indicator">▼ End of Page ▼</div>
+                            <div class="page-bottom">— Page End —</div>
                         </div>
                     `).join('');
                     updatePageList();
-                    setupScrollListeners();
                     showToast('Document loaded');
                 }
             }
             updatePageList();
             updateWordCount();
-            setupScrollListeners();
         }
 
         loadDocument();
