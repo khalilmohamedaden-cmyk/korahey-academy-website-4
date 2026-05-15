@@ -12,14 +12,14 @@
         :root {
             --apple-blue: #0071e3;
             --text-main: #1d1d1f;
-            --bg-canvas: #e8ecf0;
+            --bg-canvas: #f5f5f7;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-            background: var(--bg-canvas);
+            background: white;
             color: var(--text-main);
             overflow: hidden;
             min-height: 100vh;
@@ -33,7 +33,7 @@
             right: 0;
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
             z-index: 1000;
             display: flex;
             justify-content: space-between;
@@ -122,15 +122,15 @@
 
         .left-panel.collapsed { transform: translateX(-100%); }
 
-        /* Smart Toggle Button - Moves with sidebar */
+        /* Smart Toggle Button */
         .panel-toggle-btn {
             position: fixed;
             left: 265px;
-            top: 66px;
+            top: 80px;
             width: 28px;
             height: 28px;
             background: #fff;
-            border: 1px solid rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.15);
             border-radius: 50%;
             cursor: pointer;
             display: flex;
@@ -253,7 +253,7 @@
             font-family: 'Times New Roman', serif;
         }
 
-        /* Canvas Area - The container for alignment */
+        /* Canvas Area */
         .canvas-center {
             position: absolute;
             top: 48px;
@@ -267,11 +267,12 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            background: #f5f5f7;
         }
 
         .canvas-center.expanded { left: 0; }
 
-        /* A4 Paper */
+        /* A4 Paper - NO SCROLL INSIDE */
         .paper-page {
             background: white;
             width: 210mm;
@@ -296,48 +297,24 @@
 
         .paper-page-content {
             flex: 1;
-            overflow-y: auto;
             outline: none;
             font-family: 'Times New Roman', serif;
             font-size: 12pt;
             line-height: 1.6;
-            scrollbar-width: thin;
+            overflow-y: visible;
         }
 
-        .paper-page-content::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .paper-page-content::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 3px;
-        }
-
-        .paper-page-content::-webkit-scrollbar-thumb {
-            background: #ccc;
-            border-radius: 3px;
-        }
-
-        .page-end {
-            text-align: center;
-            margin-top: 10px;
-            padding-top: 8px;
-            font-size: 9px;
-            color: #bbb;
-            border-top: 1px dashed #e0e0e0;
-        }
-
-        /* Dynamic Island - ALIGNED WITH PAPER */
+        /* Dynamic Island */
         .dynamic-island {
             position: fixed;
-            top: 60px;
+            top: 80px;
             left: calc(50% + 150px);
             transform: translateX(-50%);
             background: #ffffff;
             border-radius: 50px;
             padding: 8px 20px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            border: 1px solid rgba(0,0,0,0.05);
+            border: 1px solid rgba(0, 0, 0, 0.08);
             z-index: 999;
             display: flex;
             gap: 8px;
@@ -434,6 +411,23 @@
             background: rgba(0, 0, 0, 0.05);
         }
 
+        /* Custom Right Click Menu */
+        .custom-context-menu {
+            position: fixed;
+            background: white;
+            border-radius: 12px;
+            min-width: 200px;
+            display: none;
+            padding: 8px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border: 1px solid rgba(0,0,0,0.1);
+            z-index: 10000;
+        }
+        .custom-context-menu.show { display: block; }
+        .context-menu-item { padding: 10px 20px; font-size: 13px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 10px; color: #333; }
+        .context-menu-item i { width: 20px; color: #666; }
+        .context-menu-item:hover { background: rgba(0, 0, 0, 0.05); }
+
         /* Toast */
         .toast {
             position: fixed;
@@ -503,6 +497,23 @@
             .dynamic-island { left: calc(50% + 130px); }
             .paper-page { width: 100%; min-width: auto; height: auto; min-height: 500px; }
         }
+
+        @media print {
+            .top-bar, .dynamic-island, .left-panel, .panel-toggle-btn, .bottom-bar, .toast {
+                display: none !important;
+            }
+            .canvas-center {
+                left: 0;
+                padding: 0;
+                background: white;
+            }
+            .paper-page {
+                box-shadow: none;
+                margin: 0;
+                padding: 20mm;
+                page-break-after: always;
+            }
+        }
     </style>
 </head>
 <body>
@@ -514,6 +525,7 @@
             <div id="fileMenu" class="dropdown-menu">
                 <div class="dropdown-item" onclick="newDocument()">New</div>
                 <div class="dropdown-item" onclick="saveDocument()">Save</div>
+                <div class="dropdown-item" onclick="printDocument()">Print</div>
                 <div class="dropdown-divider"></div>
                 <div class="dropdown-item" onclick="closeEditor()">Close</div>
             </div>
@@ -538,10 +550,10 @@
                 <div class="dropdown-item" onclick="showAbout()">About</div>
             </div>
         </div>
-        <button class="top-btn" onclick="saveDocument()">Save</button>
+        <button class="top-btn" onclick="printDocument()"><i class="fas fa-print"></i> Print</button>
     </div>
 
-    <!-- Dynamic Island - Aligned with paper -->
+    <!-- Dynamic Island -->
     <div class="dynamic-island" id="island">
         <select id="fontSelector" class="font-selector" onchange="changeFont()">
             <option value="'Times New Roman', serif">Times New Roman</option>
@@ -592,9 +604,8 @@
                     <p style="text-align: center; font-style: italic;">Passion for Success</p>
                     <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
                     <p>Welcome to Korahey Editor. Type until the page fills - only then will a new page be created.</p>
-                    <p>The Dynamic Island moves smoothly with the paper when you toggle the sidebar!</p>
+                    <p>Select text and use the toolbar to format (Bold, Italic, etc.)</p>
                 </div>
-                <div class="page-end">— End of Page —</div>
             </div>
         </div>
     </div>
@@ -612,6 +623,20 @@
             <span id="zoomValue">100%</span>
             <button class="page-nav-btn" onclick="zoomIn()"><i class="fas fa-search-plus"></i></button>
         </div>
+    </div>
+
+    <!-- Custom Right Click Menu -->
+    <div id="contextMenu" class="custom-context-menu">
+        <div class="context-menu-item" onclick="execCommand('bold'); hideContextMenu()"><i class="fas fa-bold"></i> Bold</div>
+        <div class="context-menu-item" onclick="execCommand('italic'); hideContextMenu()"><i class="fas fa-italic"></i> Italic</div>
+        <div class="context-menu-item" onclick="execCommand('underline'); hideContextMenu()"><i class="fas fa-underline"></i> Underline</div>
+        <div class="dropdown-divider"></div>
+        <div class="context-menu-item" onclick="execCommand('copy'); hideContextMenu()"><i class="fas fa-copy"></i> Copy</div>
+        <div class="context-menu-item" onclick="execCommand('cut'); hideContextMenu()"><i class="fas fa-cut"></i> Cut</div>
+        <div class="context-menu-item" onclick="execCommand('paste'); hideContextMenu()"><i class="fas fa-paste"></i> Paste</div>
+        <div class="dropdown-divider"></div>
+        <div class="context-menu-item" onclick="insertTable(); hideContextMenu()"><i class="fas fa-table"></i> Insert Table</div>
+        <div class="context-menu-item" onclick="openMediaManager(); hideContextMenu()"><i class="fas fa-image"></i> Insert Image</div>
     </div>
 
     <!-- Media Manager Modal -->
@@ -649,7 +674,7 @@
             setTimeout(() => { toast.classList.remove('show'); }, 2000);
         }
 
-        // Sidebar Toggle - WITH MOVING ISLAND
+        // Sidebar Toggle
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const canvas = document.getElementById('canvas');
@@ -668,6 +693,18 @@
                 icon.className = 'fas fa-chevron-left';
             }
         }
+
+        // Custom Right Click Menu
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            const menu = document.getElementById('contextMenu');
+            menu.style.left = e.pageX + 'px';
+            menu.style.top = e.pageY + 'px';
+            menu.classList.add('show');
+        });
+
+        document.addEventListener('click', function() { hideContextMenu(); });
+        function hideContextMenu() { document.getElementById('contextMenu').classList.remove('show'); }
 
         // Dropdown
         let activeMenu = null;
@@ -718,7 +755,7 @@
             return firstLine || `Page ${pageNum}`;
         }
 
-        // Update Page List with FULL PREVIEW
+        // Update Page List
         function updatePageList() {
             const pages = document.querySelectorAll('.paper-page');
             const container = document.getElementById('pageList');
@@ -765,7 +802,7 @@
             }
         }
 
-        // Check if page is actually full
+        // Check if page is full
         function isPageReallyFull(contentDiv) {
             if (!contentDiv) return false;
             const scrollHeight = contentDiv.scrollHeight;
@@ -774,7 +811,7 @@
             return scrollHeight > clientHeight + 80 && textLength > 400;
         }
 
-        // Move content to new page ONLY when page is full
+        // Move content to new page
         function moveContentToNewPage(contentDiv, currentPage) {
             if (isCreatingPage) return;
             
@@ -810,7 +847,6 @@
                 nextPage.className = 'paper-page';
                 nextPage.innerHTML = `
                     <div class="paper-page-content" contenteditable="true"></div>
-                    <div class="page-end">— End of Page —</div>
                 `;
                 currentPage.insertAdjacentElement('afterend', nextPage);
             }
@@ -850,16 +886,25 @@
             }
         });
 
-        // Formatting functions
+        // Formatting functions - WORKING with visual active states
         function toggleFormat(command, btnId) {
             const activeElement = document.activeElement;
             if (activeElement && activeElement.classList.contains('paper-page-content')) {
                 document.execCommand(command, false, null);
+                
+                const isActive = document.queryCommandState(command);
                 const btn = document.getElementById(btnId);
                 if (btn) {
-                    currentActiveButtons[btnId] = !currentActiveButtons[btnId];
-                    btn.classList.toggle('active', currentActiveButtons[btnId]);
+                    if (isActive) {
+                        btn.classList.add('active');
+                        currentActiveButtons[btnId] = true;
+                    } else {
+                        btn.classList.remove('active');
+                        currentActiveButtons[btnId] = false;
+                    }
                 }
+                
+                activeElement.focus();
             }
         }
 
@@ -874,6 +919,7 @@
                 });
                 const clickedBtn = document.getElementById(btnId);
                 if (clickedBtn) { clickedBtn.classList.add('active'); currentActiveButtons[btnId] = true; }
+                activeElement.focus();
             }
         }
 
@@ -883,9 +929,16 @@
                 document.execCommand(command, false, null);
                 const btn = document.getElementById(btnId);
                 if (btn) {
-                    currentActiveButtons[btnId] = !currentActiveButtons[btnId];
-                    btn.classList.toggle('active', currentActiveButtons[btnId]);
+                    const isActive = document.queryCommandState(command);
+                    if (isActive) {
+                        btn.classList.add('active');
+                        currentActiveButtons[btnId] = true;
+                    } else {
+                        btn.classList.remove('active');
+                        currentActiveButtons[btnId] = false;
+                    }
                 }
+                activeElement.focus();
             }
         }
 
@@ -893,7 +946,9 @@
             const activeElement = document.activeElement;
             if (activeElement && activeElement.classList.contains('paper-page-content')) {
                 document.execCommand(command, false, null);
+                activeElement.focus();
             }
+            hideContextMenu();
         }
 
         function selectAll() {
@@ -901,12 +956,14 @@
             if (activeElement && activeElement.classList.contains('paper-page-content')) {
                 document.execCommand('selectAll', false, null);
             }
+            hideContextMenu();
         }
 
         function changeFont() {
             const activeElement = document.activeElement;
             if (activeElement && activeElement.classList.contains('paper-page-content')) {
                 document.execCommand('fontName', false, document.getElementById('fontSelector').value);
+                activeElement.focus();
             }
         }
 
@@ -915,6 +972,7 @@
             if (activeElement && activeElement.classList.contains('paper-page-content')) {
                 const size = document.getElementById('sizeSelector').value;
                 document.execCommand('fontSize', false, size);
+                activeElement.focus();
             }
         }
 
@@ -922,6 +980,7 @@
             const activeElement = document.activeElement;
             if (activeElement && activeElement.classList.contains('paper-page-content')) {
                 document.execCommand('insertText', false, new Date().toLocaleString());
+                activeElement.focus();
             }
         }
 
@@ -932,20 +991,26 @@
                 let html = '<table border="1" cellpadding="8" style="border-collapse: collapse; width: 100%; margin: 10px 0;">';
                 for (let i = 0; i < parseInt(rows); i++) {
                     html += '<tr>';
-                    for (let j = 0; j < parseInt(cols); j++) html += `<td contenteditable="true"><br></tr>`;
+                    for (let j = 0; j < parseInt(cols); j++) html += `<td contenteditable="true"><br></td>`;
                     html += '</tr>';
                 }
-                html += '</table><br>';
+                html += '<td><br>';
                 const activeElement = document.activeElement;
                 if (activeElement && activeElement.classList.contains('paper-page-content')) {
                     document.execCommand('insertHTML', false, html);
+                    activeElement.focus();
                 }
                 showToast(`${rows}x${cols} table inserted`);
             }
+            hideContextMenu();
+        }
+
+        function printDocument() {
+            window.print();
         }
 
         // Media Manager
-        function openMediaManager() { loadImageGallery(); document.getElementById('mediaModal').classList.add('active'); }
+        function openMediaManager() { loadImageGallery(); document.getElementById('mediaModal').classList.add('active'); hideContextMenu(); }
         function closeMediaManager() { document.getElementById('mediaModal').classList.remove('active'); }
         
         function loadImageGallery() {
@@ -1043,7 +1108,6 @@
                             <hr>
                             <p>Start typing your document here.</p>
                         </div>
-                        <div class="page-end">— End of Page —</div>
                     </div>
                 `;
                 currentPageIndex = 0;
@@ -1078,7 +1142,6 @@
                     document.getElementById('paperContainer').innerHTML = pages.map(p => `
                         <div class="paper-page">
                             <div class="paper-page-content" contenteditable="true">${p.content}</div>
-                            <div class="page-end">— End of Page —</div>
                         </div>
                     `).join('');
                     updatePageList();
