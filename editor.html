@@ -232,13 +232,13 @@
             font-family: 'Times New Roman', serif;
         }
 
-        /* Panel Toggle Button - FULLY VISIBLE */
+        /* Panel Toggle Button - FIXED POSITION */
         .panel-toggle-btn {
             position: absolute;
-            right: -16px;
-            top: 20px;
-            width: 32px;
-            height: 32px;
+            right: -14px;
+            top: 24px;
+            width: 28px;
+            height: 28px;
             background: white;
             border: 1px solid rgba(0, 0, 0, 0.15);
             border-radius: 50%;
@@ -364,7 +364,7 @@
             background: rgba(0, 0, 0, 0.05);
         }
 
-        /* Dynamic Island */
+        /* Dynamic Island - CENTERED with transition */
         .dynamic-island {
             position: fixed;
             top: 60px;
@@ -379,6 +379,12 @@
             display: flex;
             gap: 8px;
             align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        /* When sidebar is collapsed, dynamic island stays centered */
+        .dynamic-island.shifted {
+            transform: translateX(-50%);
         }
 
         .tool-btn {
@@ -534,8 +540,8 @@
         <button class="top-btn" onclick="saveDocument()">Save</button>
     </div>
 
-    <!-- Dynamic Island with Icons Only -->
-    <div class="dynamic-island">
+    <!-- Dynamic Island -->
+    <div class="dynamic-island" id="dynamicIsland">
         <select id="fontSelector" class="font-selector" onchange="changeFont()">
             <option value="'Times New Roman', serif">Times New Roman</option>
             <option value="Arial">Arial</option>
@@ -639,7 +645,7 @@
             setTimeout(() => { toast.classList.remove('show'); }, 2000);
         }
 
-        // Sidebar Toggle - FIXED
+        // Sidebar Toggle - FIXED with dynamic island adjustment
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const canvas = document.getElementById('mainCanvas');
@@ -653,6 +659,9 @@
             } else {
                 icon.className = 'fas fa-chevron-left';
             }
+            
+            // Dynamic island stays centered - no shift needed since it's fixed centered
+            // The canvas expands to fill space naturally
         }
 
         // Dropdown
@@ -757,7 +766,7 @@
             const scrollHeight = contentDiv.scrollHeight;
             const clientHeight = contentDiv.clientHeight;
             const textLength = contentDiv.innerText.length;
-            return scrollHeight > clientHeight + 100 && textLength > 500;
+            return scrollHeight > clientHeight + 80 && textLength > 400;
         }
 
         // Move content to new page ONLY when page is full
