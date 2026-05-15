@@ -122,7 +122,6 @@
 
         .left-panel.collapsed { transform: translateX(-100%); }
 
-        /* Smart Toggle Button */
         .panel-toggle-btn {
             position: fixed;
             left: 265px;
@@ -216,7 +215,6 @@
             color: #ff3b30;
         }
 
-        /* Full Mini Paper Preview */
         .mini-paper {
             background: #fafafc;
             border-radius: 4px;
@@ -272,7 +270,7 @@
 
         .canvas-center.expanded { left: 0; }
 
-        /* A4 Paper - NO SCROLL INSIDE */
+        /* A4 Paper */
         .paper-page {
             background: white;
             width: 210mm;
@@ -448,7 +446,7 @@
             transform: translateX(-50%) translateY(0);
         }
 
-        /* Modal for Media Manager */
+        /* Media Manager Modal */
         .media-modal {
             display: none;
             position: fixed;
@@ -571,9 +569,9 @@
             <option value="20">20</option><option value="24">24</option>
         </select>
         <div class="separator"></div>
-        <button class="tool-btn" id="boldBtn" onclick="applyBold()"><i class="fas fa-bold"></i></button>
-        <button class="tool-btn" id="italicBtn" onclick="applyItalic()"><i class="fas fa-italic"></i></button>
-        <button class="tool-btn" id="underlineBtn" onclick="applyUnderline()"><i class="fas fa-underline"></i></button>
+        <button class="tool-btn" id="boldBtn" onclick="toggleBold()"><i class="fas fa-bold"></i></button>
+        <button class="tool-btn" id="italicBtn" onclick="toggleItalic()"><i class="fas fa-italic"></i></button>
+        <button class="tool-btn" id="underlineBtn" onclick="toggleUnderline()"><i class="fas fa-underline"></i></button>
         <div class="separator"></div>
         <button class="tool-btn" id="alignLeftBtn" onclick="setAlignment('justifyLeft', 'alignLeftBtn')"><i class="fas fa-align-left"></i></button>
         <button class="tool-btn" id="alignCenterBtn" onclick="setAlignment('justifyCenter', 'alignCenterBtn')"><i class="fas fa-align-center"></i></button>
@@ -607,8 +605,8 @@
                     <h1 style="text-align: center;">KORAHEY ACADEMY</h1>
                     <p style="text-align: center; font-style: italic;">Passion for Success</p>
                     <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
-                    <p>Welcome to Korahey Editor. Select text and click the B button - it will turn blue and make text bold!</p>
-                    <p>Try making this text <b>bold</b>, <i>italic</i>, or <u>underlined</u>.</p>
+                    <p>Click B, I, or U - they turn blue. Then start typing, and your text will be formatted!</p>
+                    <p>Select existing text and click B to make it bold.</p>
                 </div>
             </div>
         </div>
@@ -631,9 +629,9 @@
 
     <!-- Custom Right Click Menu -->
     <div id="contextMenu" class="custom-context-menu">
-        <div class="context-menu-item" onclick="applyBoldFromMenu()"><i class="fas fa-bold"></i> Bold</div>
-        <div class="context-menu-item" onclick="applyItalicFromMenu()"><i class="fas fa-italic"></i> Italic</div>
-        <div class="context-menu-item" onclick="applyUnderlineFromMenu()"><i class="fas fa-underline"></i> Underline</div>
+        <div class="context-menu-item" onclick="applyBoldToSelection()"><i class="fas fa-bold"></i> Bold</div>
+        <div class="context-menu-item" onclick="applyItalicToSelection()"><i class="fas fa-italic"></i> Italic</div>
+        <div class="context-menu-item" onclick="applyUnderlineToSelection()"><i class="fas fa-underline"></i> Underline</div>
         <div class="dropdown-divider"></div>
         <div class="context-menu-item" onclick="execCommand('copy'); hideContextMenu()"><i class="fas fa-copy"></i> Copy</div>
         <div class="context-menu-item" onclick="execCommand('cut'); hideContextMenu()"><i class="fas fa-cut"></i> Cut</div>
@@ -684,33 +682,32 @@
             if (active && active.classList && active.classList.contains('paper-page-content')) {
                 return active;
             }
-            // Fallback: find the first editable content
             const editor = document.querySelector('.paper-page-content');
-            if (editor) {
-                editor.focus();
-                return editor;
-            }
-            return null;
+            return editor;
         }
 
-        // ========== BOLD FUNCTION ==========
-        function applyBold() {
+        // Focus editor
+        function focusEditor() {
+            const editor = getActiveEditor();
+            if (editor) editor.focus();
+        }
+
+        // ========== TOGGLE BOLD (works for both new typing and selection) ==========
+        function toggleBold() {
             const editor = getActiveEditor();
             if (editor) {
+                // Toggle bold command - this will apply to selection OR set state for new typing
                 document.execCommand('bold', false, null);
-                editor.focus();
+                focusEditor();
                 updateBoldButtonState();
-                showToast('Bold applied');
-            } else {
-                showToast('Click on the paper first');
             }
         }
 
-        function applyBoldFromMenu() {
+        function applyBoldToSelection() {
             const editor = getActiveEditor();
             if (editor) {
                 document.execCommand('bold', false, null);
-                editor.focus();
+                focusEditor();
                 updateBoldButtonState();
             }
             hideContextMenu();
@@ -730,24 +727,21 @@
             }
         }
 
-        // ========== ITALIC FUNCTION ==========
-        function applyItalic() {
+        // ========== TOGGLE ITALIC ==========
+        function toggleItalic() {
             const editor = getActiveEditor();
             if (editor) {
                 document.execCommand('italic', false, null);
-                editor.focus();
+                focusEditor();
                 updateItalicButtonState();
-                showToast('Italic applied');
-            } else {
-                showToast('Click on the paper first');
             }
         }
 
-        function applyItalicFromMenu() {
+        function applyItalicToSelection() {
             const editor = getActiveEditor();
             if (editor) {
                 document.execCommand('italic', false, null);
-                editor.focus();
+                focusEditor();
                 updateItalicButtonState();
             }
             hideContextMenu();
@@ -767,24 +761,21 @@
             }
         }
 
-        // ========== UNDERLINE FUNCTION ==========
-        function applyUnderline() {
+        // ========== TOGGLE UNDERLINE ==========
+        function toggleUnderline() {
             const editor = getActiveEditor();
             if (editor) {
                 document.execCommand('underline', false, null);
-                editor.focus();
+                focusEditor();
                 updateUnderlineButtonState();
-                showToast('Underline applied');
-            } else {
-                showToast('Click on the paper first');
             }
         }
 
-        function applyUnderlineFromMenu() {
+        function applyUnderlineToSelection() {
             const editor = getActiveEditor();
             if (editor) {
                 document.execCommand('underline', false, null);
-                editor.focus();
+                focusEditor();
                 updateUnderlineButtonState();
             }
             hideContextMenu();
@@ -810,6 +801,21 @@
             updateItalicButtonState();
             updateUnderlineButtonState();
         }
+
+        // Listen for selection changes and typing to update button states
+        document.addEventListener('selectionchange', function() {
+            const activeElement = document.activeElement;
+            if (activeElement && activeElement.classList && activeElement.classList.contains('paper-page-content')) {
+                updateAllButtonStates();
+            }
+        });
+
+        document.addEventListener('keyup', function() {
+            const activeElement = document.activeElement;
+            if (activeElement && activeElement.classList && activeElement.classList.contains('paper-page-content')) {
+                updateAllButtonStates();
+            }
+        });
 
         // Sidebar Toggle
         function toggleSidebar() {
@@ -875,7 +881,6 @@
             document.getElementById('pageCounter').textContent = `Page ${currentPageIndex + 1} of ${pages.length}`;
         }
 
-        // Get full page preview content
         function getPagePreviewContent(pageElement) {
             const content = pageElement.querySelector('.paper-page-content');
             const text = content ? content.innerText : '';
@@ -892,7 +897,6 @@
             return firstLine || `Page ${pageNum}`;
         }
 
-        // Update Page List
         function updatePageList() {
             const pages = document.querySelectorAll('.paper-page');
             const container = document.getElementById('pageList');
@@ -939,7 +943,7 @@
             }
         }
 
-        // Check if page is full
+        // Auto page creation
         function isPageReallyFull(contentDiv) {
             if (!contentDiv) return false;
             const scrollHeight = contentDiv.scrollHeight;
@@ -948,17 +952,13 @@
             return scrollHeight > clientHeight + 80 && textLength > 400;
         }
 
-        // Move content to new page
         function moveContentToNewPage(contentDiv, currentPage) {
             if (isCreatingPage) return;
-            
             const isFull = isPageReallyFull(contentDiv);
             if (!isFull) return;
             
             isCreatingPage = true;
-            
             const html = contentDiv.innerHTML;
-            
             const splitMarkers = ['</p>', '</div>', '</h1>', '</h2>', '</h3>', '</h4>', '<br>'];
             let splitIndex = -1;
             for (const marker of splitMarkers) {
@@ -972,7 +972,6 @@
             
             const keepContent = html.substring(0, splitIndex);
             const moveContent = html.substring(splitIndex);
-            
             contentDiv.innerHTML = keepContent;
             
             const pages = document.querySelectorAll('.paper-page');
@@ -982,18 +981,13 @@
             if (!nextPage) {
                 nextPage = document.createElement('div');
                 nextPage.className = 'paper-page';
-                nextPage.innerHTML = `
-                    <div class="paper-page-content" contenteditable="true"></div>
-                `;
+                nextPage.innerHTML = `<div class="paper-page-content" contenteditable="true"></div>`;
                 currentPage.insertAdjacentElement('afterend', nextPage);
             }
             
             const nextContent = nextPage.querySelector('.paper-page-content');
             nextContent.innerHTML = moveContent + nextContent.innerHTML;
-            
-            if (contentDiv.innerText.trim() === '') {
-                contentDiv.innerHTML = '<p><br></p>';
-            }
+            if (contentDiv.innerText.trim() === '') contentDiv.innerHTML = '<p><br></p>';
             
             setTimeout(() => {
                 isCreatingPage = false;
@@ -1023,19 +1017,11 @@
             }
         });
 
-        // Selection change to update button states
-        document.addEventListener('selectionchange', function() {
-            const activeElement = document.activeElement;
-            if (activeElement && activeElement.classList.contains('paper-page-content')) {
-                updateAllButtonStates();
-            }
-        });
-
         function setAlignment(command, btnId) {
             const editor = getActiveEditor();
             if (editor) {
                 document.execCommand(command, false, null);
-                editor.focus();
+                focusEditor();
                 ['alignLeftBtn', 'alignCenterBtn', 'alignRightBtn'].forEach(id => {
                     const btn = document.getElementById(id);
                     if (btn) btn.classList.remove('active');
@@ -1043,8 +1029,6 @@
                 });
                 const clickedBtn = document.getElementById(btnId);
                 if (clickedBtn) { clickedBtn.classList.add('active'); currentActiveButtons[btnId] = true; }
-            } else {
-                showToast('Click on the paper first');
             }
         }
 
@@ -1052,7 +1036,7 @@
             const editor = getActiveEditor();
             if (editor) {
                 document.execCommand(command, false, null);
-                editor.focus();
+                focusEditor();
                 const btn = document.getElementById(btnId);
                 if (btn) {
                     setTimeout(() => {
@@ -1066,8 +1050,6 @@
                         }
                     }, 10);
                 }
-            } else {
-                showToast('Click on the paper first');
             }
         }
 
@@ -1075,16 +1057,14 @@
             const editor = getActiveEditor();
             if (editor) {
                 document.execCommand(command, false, null);
-                editor.focus();
+                focusEditor();
             }
             hideContextMenu();
         }
 
         function selectAll() {
             const editor = getActiveEditor();
-            if (editor) {
-                document.execCommand('selectAll', false, null);
-            }
+            if (editor) document.execCommand('selectAll', false, null);
             hideContextMenu();
         }
 
@@ -1092,16 +1072,15 @@
             const editor = getActiveEditor();
             if (editor) {
                 document.execCommand('fontName', false, document.getElementById('fontSelector').value);
-                editor.focus();
+                focusEditor();
             }
         }
 
         function changeFontSize() {
             const editor = getActiveEditor();
             if (editor) {
-                const size = document.getElementById('sizeSelector').value;
-                document.execCommand('fontSize', false, size);
-                editor.focus();
+                document.execCommand('fontSize', false, document.getElementById('sizeSelector').value);
+                focusEditor();
             }
         }
 
@@ -1109,7 +1088,7 @@
             const editor = getActiveEditor();
             if (editor) {
                 document.execCommand('insertText', false, new Date().toLocaleString());
-                editor.focus();
+                focusEditor();
             }
         }
 
@@ -1127,16 +1106,14 @@
                 const editor = getActiveEditor();
                 if (editor) {
                     document.execCommand('insertHTML', false, html);
-                    editor.focus();
+                    focusEditor();
                 }
                 showToast(`${rows}x${cols} table inserted`);
             }
             hideContextMenu();
         }
 
-        function printDocument() {
-            window.print();
-        }
+        function printDocument() { window.print(); }
 
         // Media Manager
         function openMediaManager() { loadImageGallery(); document.getElementById('mediaModal').classList.add('active'); hideContextMenu(); }
@@ -1190,7 +1167,6 @@
         function dragImage(e, src) { e.dataTransfer.setData('text/plain', src); }
         document.getElementById('dragDropArea')?.addEventListener('click', () => document.getElementById('imageUpload').click());
         
-        // Image drop on paper
         document.addEventListener('dragover', e => e.preventDefault());
         document.addEventListener('drop', e => {
             const src = e.dataTransfer.getData('text/plain');
@@ -1210,7 +1186,6 @@
             }
         });
 
-        // Zoom functions
         function zoomIn() {
             if (currentZoom < 200) { currentZoom += 10; applyZoom(); }
         }
@@ -1226,7 +1201,6 @@
             document.getElementById('zoomValue').textContent = currentZoom + '%';
         }
 
-        // Document functions
         function newDocument() {
             if (confirm('Create new document? Unsaved changes will be lost.')) {
                 document.getElementById('paperContainer').innerHTML = `
@@ -1286,7 +1260,7 @@
             return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m]));
         }
 
-        // Focus on editor initially
+        // Initial focus
         setTimeout(() => {
             const editor = document.querySelector('.paper-page-content');
             if (editor) editor.focus();
