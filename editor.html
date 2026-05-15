@@ -205,7 +205,7 @@
         .canvas-center {
             flex: 1;
             overflow-y: auto;
-            padding: 20px 40px;
+            padding: 20px 40px 80px 40px;
             display: flex;
             justify-content: center;
             background: #e8ecf0;
@@ -219,7 +219,7 @@
             align-items: center;
         }
 
-        /* TRUE A4 PAPER SIZE - FIXED DIMENSIONS */
+        /* TRUE A4 PAPER SIZE */
         .paper-page {
             background: white;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
@@ -297,12 +297,12 @@
             }
         }
 
-        /* Left Panel */
+        /* Left Panel - Touches Top and Bottom */
         .left-panel {
             position: fixed;
             left: 0;
             top: 108px;
-            bottom: 0;
+            bottom: 40px;
             width: 280px;
             padding: 20px 16px;
             overflow-y: auto;
@@ -739,6 +739,7 @@
         </div>
     </div>
 
+    <!-- Custom Right Click Menu -->
     <div id="contextMenu" class="custom-context-menu">
         <div class="context-menu-item" onclick="execCommand('bold'); hideContextMenu()"><i class="fas fa-bold"></i> Bold</div>
         <div class="context-menu-item" onclick="execCommand('italic'); hideContextMenu()"><i class="fas fa-italic"></i> Italic</div>
@@ -752,6 +753,7 @@
         <div class="context-menu-item" onclick="openMediaManager(); hideContextMenu()"><i class="fas fa-image"></i> Insert Image</div>
     </div>
 
+    <!-- Media Manager Modal -->
     <div id="mediaModal" class="media-modal">
         <div class="media-modal-content">
             <div class="media-modal-header">
@@ -902,11 +904,11 @@
             }
         }
 
-        // Check if page is full (content height exceeds A4 height)
+        // Check if page is full
         function isPageFull(contentDiv) {
             if (!contentDiv) return false;
             const contentHeight = contentDiv.scrollHeight;
-            const maxContentHeight = 240; // A4 height minus padding in mm approx
+            const maxContentHeight = 240;
             return contentHeight > maxContentHeight - 30;
         }
 
@@ -920,7 +922,6 @@
             
             const html = contentDiv.innerHTML;
             
-            // Find split point
             const splitMarkers = ['</p>', '</div>', '</h1>', '</h2>', '</h3>', '</h4>', '<br>', '</li>', '</ul>', '</ol>'];
             let splitIndex = -1;
             
