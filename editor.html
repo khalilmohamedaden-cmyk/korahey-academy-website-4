@@ -70,7 +70,7 @@
 
         .top-btn:hover { background: rgba(0, 0, 0, 0.1); }
 
-        /* Ribbon Tabs - Hover activated */
+        /* Ribbon Tabs */
         .ribbon-container {
             position: fixed;
             top: 48px;
@@ -109,7 +109,7 @@
             color: white;
         }
 
-        /* Ribbon Panel - Hover dropdown style */
+        /* Ribbon Panel */
         .ribbon-panel {
             position: absolute;
             top: 100%;
@@ -193,7 +193,7 @@
             cursor: pointer;
         }
 
-        /* Dynamic Island - HIGHER Z-INDEX */
+        /* Dynamic Island - MOVES DOWN ON HOVER */
         .dynamic-island {
             position: fixed;
             top: 100px;
@@ -208,6 +208,11 @@
             display: flex;
             gap: 8px;
             align-items: center;
+            transition: top 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .dynamic-island.ribbon-active {
+            top: 220px;
         }
 
         .tool-btn {
@@ -272,7 +277,11 @@
             display: flex;
             flex-direction: column;
             z-index: 998;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), top 0.3s ease;
+        }
+
+        .left-panel.ribbon-active {
+            top: 268px;
         }
 
         .left-panel.collapsed { transform: translateX(-100%); }
@@ -292,7 +301,11 @@
             justify-content: center;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             z-index: 1002;
-            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), top 0.3s ease;
+        }
+
+        .panel-toggle-btn.ribbon-active {
+            top: 280px;
         }
 
         .panel-toggle-btn.sidebar-closed { left: 10px; }
@@ -406,7 +419,7 @@
             font-family: 'Times New Roman', serif;
         }
 
-        /* Canvas Area - UPDATED to move when sidebar closes */
+        /* Canvas Area */
         .canvas-center {
             position: absolute;
             top: 148px;
@@ -416,12 +429,16 @@
             overflow-y: auto;
             padding: 40px 40px 150px 40px;
             scroll-behavior: smooth;
-            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), top 0.3s ease;
             display: flex;
             flex-direction: column;
             align-items: center;
             background: #f5f5f7;
             z-index: 1;
+        }
+
+        .canvas-center.ribbon-active {
+            top: 268px;
         }
 
         .canvas-center.expanded { left: 0; }
@@ -604,8 +621,8 @@
         </div>
     </div>
 
-    <!-- Ribbon Container with Hover Dropdowns -->
-    <div class="ribbon-container">
+    <!-- Ribbon Container -->
+    <div class="ribbon-container" id="ribbonContainer">
         <div class="ribbon-tabs-header">
             <div class="ribbon-tab" data-tab="home" onmouseenter="showRibbonPanel('home')">Home</div>
             <div class="ribbon-tab" data-tab="insert" onmouseenter="showRibbonPanel('insert')">Insert</div>
@@ -723,8 +740,8 @@
         </div>
     </div>
 
-    <!-- Dynamic Island - HIGHER Z-INDEX to stay on top -->
-    <div class="dynamic-island">
+    <!-- Dynamic Island -->
+    <div class="dynamic-island" id="dynamicIsland">
         <select id="fontSelector" class="font-selector" onchange="changeFont()">
             <option value="'Times New Roman', serif">Times New Roman</option>
             <option value="Arial">Arial</option>
@@ -774,6 +791,7 @@
                     <p style="text-align: center; font-style: italic;">Passion for Success</p>
                     <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
                     <p>Welcome to Korahey Editor. Hover over Home, Insert, Design, Layout, Review, or View to see options.</p>
+                    <p>The Dynamic Island moves down when you hover over the ribbon.</p>
                 </div>
             </div>
         </div>
@@ -835,6 +853,7 @@
         let imageLibrary = [];
         let currentActiveButtons = {};
         let hoverTimeout;
+        let isRibbonActive = false;
 
         function showToast(message) {
             const toast = document.getElementById('toast');
@@ -843,10 +862,19 @@
             setTimeout(() => { toast.classList.remove('show'); }, 2000);
         }
 
-        // ========== HOVER RIBBON PANELS ==========
+        // ========== HOVER RIBBON PANELS WITH DYNAMIC ISLAND MOVEMENT ==========
         function showRibbonPanel(tabName) {
             // Clear any pending hide timeout
             if (hoverTimeout) clearTimeout(hoverTimeout);
+            
+            // Move dynamic island and other elements down
+            if (!isRibbonActive) {
+                isRibbonActive = true;
+                document.getElementById('dynamicIsland').classList.add('ribbon-active');
+                document.getElementById('sidebar').classList.add('ribbon-active');
+                document.getElementById('canvas').classList.add('ribbon-active');
+                document.getElementById('toggleBtn').classList.add('ribbon-active');
+            }
             
             // Hide all panels
             document.querySelectorAll('.ribbon-panel').forEach(panel => panel.classList.remove('active'));
@@ -862,6 +890,13 @@
 
         function hideRibbonPanel() {
             hoverTimeout = setTimeout(() => {
+                // Move dynamic island back up
+                isRibbonActive = false;
+                document.getElementById('dynamicIsland').classList.remove('ribbon-active');
+                document.getElementById('sidebar').classList.remove('ribbon-active');
+                document.getElementById('canvas').classList.remove('ribbon-active');
+                document.getElementById('toggleBtn').classList.remove('ribbon-active');
+                
                 document.querySelectorAll('.ribbon-panel').forEach(panel => panel.classList.remove('active'));
                 document.querySelectorAll('.ribbon-tab').forEach(tab => tab.classList.remove('active'));
             }, 200);
@@ -879,432 +914,4 @@
         const ribbonContainer = document.querySelector('.ribbon-container');
         ribbonContainer.addEventListener('mouseleave', hideRibbonPanel);
 
-        // Keep panel open when hovering over the panel itself
-        document.querySelectorAll('.ribbon-panel').forEach(panel => {
-            panel.addEventListener('mouseenter', () => {
-                if (hoverTimeout) clearTimeout(hoverTimeout);
-            });
-            panel.addEventListener('mouseleave', hideRibbonPanel);
-        });
-
-        // ========== EDITOR FUNCTIONS ==========
-        function getActiveEditor() {
-            let active = document.activeElement;
-            if (active && active.classList && active.classList.contains('paper-page-content')) return active;
-            const editor = document.querySelector('.paper-page-content');
-            if (editor) editor.focus();
-            return editor;
-        }
-
-        function focusEditor() {
-            const editor = getActiveEditor();
-            if (editor) editor.focus();
-        }
-
-        function execCommand(command) {
-            const editor = getActiveEditor();
-            if (editor) {
-                document.execCommand(command, false, null);
-                focusEditor();
-            }
-        }
-
-        function pasteText() {
-            navigator.clipboard.readText().then(text => {
-                document.execCommand('insertText', false, text);
-                focusEditor();
-                showToast('Text pasted');
-            }).catch(() => {
-                showToast('Cannot paste - allow clipboard access');
-            });
-            hideContextMenu();
-        }
-
-        function toggleBold() {
-            execCommand('bold');
-            updateButtonState('boldBtn', 'bold');
-        }
-
-        function toggleItalic() {
-            execCommand('italic');
-            updateButtonState('italicBtn', 'italic');
-        }
-
-        function toggleUnderline() {
-            execCommand('underline');
-            updateButtonState('underlineBtn', 'underline');
-        }
-
-        function updateButtonState(btnId, command) {
-            const btn = document.getElementById(btnId);
-            if (btn) {
-                const isActive = document.queryCommandState(command);
-                if (isActive) {
-                    btn.classList.add('active');
-                    currentActiveButtons[btnId] = true;
-                } else {
-                    btn.classList.remove('active');
-                    currentActiveButtons[btnId] = false;
-                }
-            }
-        }
-
-        function setAlignment(command, btnId) {
-            execCommand(command);
-            ['alignLeftBtn', 'alignCenterBtn', 'alignRightBtn'].forEach(id => {
-                const btn = document.getElementById(id);
-                if (btn) btn.classList.remove('active');
-            });
-            const clickedBtn = document.getElementById(btnId);
-            if (clickedBtn) clickedBtn.classList.add('active');
-        }
-
-        function toggleList(command, btnId) {
-            execCommand(command);
-            const btn = document.getElementById(btnId);
-            if (btn) {
-                setTimeout(() => {
-                    const isActive = document.queryCommandState(command);
-                    if (isActive) btn.classList.add('active');
-                    else btn.classList.remove('active');
-                }, 10);
-            }
-        }
-
-        function changeFont() {
-            const font = document.getElementById('fontSelector').value;
-            execCommand('fontName', false, font);
-        }
-
-        function changeFontSize() {
-            const size = document.getElementById('sizeSelector').value;
-            execCommand('fontSize', false, size);
-        }
-
-        function changeCase() {
-            const selection = window.getSelection().toString();
-            if (selection) {
-                const upper = confirm('Convert to UPPERCASE? Click Cancel for lowercase.');
-                document.execCommand('insertText', false, upper ? selection.toUpperCase() : selection.toLowerCase());
-                showToast(`Changed to ${upper ? 'UPPERCASE' : 'lowercase'}`);
-            } else {
-                showToast('Select text first');
-            }
-        }
-
-        function clearFormatting() {
-            execCommand('removeFormat');
-            showToast('Formatting cleared');
-        }
-
-        function insertDate() {
-            const date = new Date().toLocaleString();
-            execCommand('insertText', false, date);
-        }
-
-        function insertTable() {
-            const rows = prompt('Number of rows:', '3');
-            const cols = prompt('Number of columns:', '3');
-            if (rows && cols) {
-                let html = '<table border="1" cellpadding="8" style="border-collapse: collapse; width: 100%; margin: 10px 0;">';
-                for (let i = 0; i < parseInt(rows); i++) {
-                    html += '<tr>';
-                    for (let j = 0; j < parseInt(cols); j++) html += `<td contenteditable="true"><br></td>`;
-                    html += '</tr>';
-                }
-                html += '</table><br>';
-                const editor = getActiveEditor();
-                if (editor) {
-                    document.execCommand('insertHTML', false, html);
-                    focusEditor();
-                }
-                showToast(`${rows}x${cols} table inserted`);
-            }
-            hideContextMenu();
-        }
-
-        function insertPageBreak() {
-            const editor = getActiveEditor();
-            if (editor) {
-                const currentPage = editor.closest('.paper-page');
-                const newPage = document.createElement('div');
-                newPage.className = 'paper-page';
-                newPage.innerHTML = `<div class="paper-page-content" contenteditable="true"><p><br></p></div>`;
-                currentPage.insertAdjacentElement('afterend', newPage);
-                newPage.querySelector('.paper-page-content').focus();
-                updatePageList();
-                showToast('Page break inserted');
-            }
-        }
-
-        function checkSpelling() { showToast('Spelling check: All good!'); }
-        function showWordCount() { updateWordCount(); showToast(document.getElementById('wordCount').textContent); }
-        function setPageColor(color) { document.querySelectorAll('.paper-page').forEach(p => p.style.backgroundColor = color); }
-
-        // Zoom functions
-        function zoomIn() {
-            if (currentZoom < 200) { currentZoom += 10; applyZoom(); }
-        }
-        function zoomOut() {
-            if (currentZoom > 50) { currentZoom -= 10; applyZoom(); }
-        }
-        function setZoom(percent) {
-            currentZoom = percent;
-            applyZoom();
-            showToast(`Zoom: ${percent}%`);
-        }
-        function applyZoom() {
-            const container = document.getElementById('paperContainer');
-            if (container) {
-                container.style.transform = `scale(${currentZoom / 100})`;
-                container.style.transformOrigin = 'top center';
-            }
-            document.getElementById('zoomValue').textContent = currentZoom + '%';
-        }
-
-        // Page Management
-        function updateWordCount() {
-            let totalWords = 0;
-            document.querySelectorAll('.paper-page-content').forEach(content => {
-                const text = content.innerText;
-                const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;
-                totalWords += words;
-            });
-            document.getElementById('wordCount').textContent = totalWords + ' words';
-        }
-
-        function updatePageCounter() {
-            const pages = document.querySelectorAll('.paper-page');
-            document.getElementById('pageCounter').textContent = `Page ${currentPageIndex + 1} of ${pages.length}`;
-        }
-
-        function getPagePreviewContent(pageElement) {
-            const content = pageElement.querySelector('.paper-page-content');
-            const text = content ? content.innerText : '';
-            return text.substring(0, 200) + (text.length > 200 ? '...' : '');
-        }
-
-        function getPageTitle(pageElement, pageNum) {
-            const content = pageElement.querySelector('.paper-page-content');
-            const text = content ? content.innerText : '';
-            const firstLine = text.split('\n')[0];
-            if (firstLine && firstLine.length > 25) return firstLine.substring(0, 25) + '...';
-            return firstLine || `Page ${pageNum}`;
-        }
-
-        function updatePageList() {
-            const pages = document.querySelectorAll('.paper-page');
-            const container = document.getElementById('pageList');
-            container.innerHTML = Array.from(pages).map((page, idx) => `
-                <div class="page-thumb ${idx === currentPageIndex ? 'active' : ''}" onclick="goToPage(${idx})">
-                    <div class="thumb-header">
-                        <span class="page-number">Page ${idx + 1}</span>
-                        ${pages.length > 1 ? `<button class="delete-page-btn" onclick="event.stopPropagation(); deletePage(${idx})"><i class="fas fa-trash"></i></button>` : ''}
-                    </div>
-                    <div class="mini-paper">
-                        <div class="mini-paper-header">${escapeHtml(getPageTitle(page, idx + 1))}</div>
-                        <div class="mini-paper-content">${escapeHtml(getPagePreviewContent(page))}</div>
-                    </div>
-                </div>
-            `).join('');
-            updatePageCounter();
-        }
-
-        function goToPage(index) {
-            const pages = document.querySelectorAll('.paper-page');
-            if (pages[index]) {
-                pages[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
-                currentPageIndex = index;
-                updatePageList();
-            }
-        }
-
-        function previousPage() { if (currentPageIndex > 0) goToPage(currentPageIndex - 1); }
-        function nextPage() {
-            const pages = document.querySelectorAll('.paper-page');
-            if (currentPageIndex < pages.length - 1) goToPage(currentPageIndex + 1);
-        }
-
-        function deletePage(index) {
-            const pages = document.querySelectorAll('.paper-page');
-            if (pages.length > 1) {
-                pages[index].remove();
-                if (currentPageIndex >= pages.length - 1) currentPageIndex = Math.max(0, pages.length - 2);
-                updatePageList();
-                showToast('Page deleted');
-            }
-        }
-
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const canvas = document.getElementById('canvas');
-            const toggleBtn = document.getElementById('toggleBtn');
-            const icon = document.getElementById('toggleIcon');
-            sidebar.classList.toggle('collapsed');
-            canvas.classList.toggle('expanded');
-            toggleBtn.classList.toggle('sidebar-closed');
-            icon.className = sidebar.classList.contains('collapsed') ? 'fas fa-chevron-right' : 'fas fa-chevron-left';
-        }
-
-        // Media Manager
-        function openMediaManager() { loadImageGallery(); document.getElementById('mediaModal').classList.add('active'); hideContextMenu(); }
-        function closeMediaManager() { document.getElementById('mediaModal').classList.remove('active'); }
-        
-        function loadImageGallery() {
-            const saved = localStorage.getItem('koraheyImageLibrary');
-            if (saved) imageLibrary = JSON.parse(saved);
-            const gallery = document.getElementById('imageGallery');
-            if (imageLibrary.length === 0) { gallery.innerHTML = '<p style="text-align:center; color:#999;">No images. Upload some.</p>'; return; }
-            gallery.innerHTML = imageLibrary.map(img => `
-                <div class="gallery-item" draggable="true" ondragstart="dragImage(event, '${img.src}')">
-                    <img src="${img.src}">
-                    <div>${img.name.substring(0, 15)}</div>
-                </div>
-            `).join('');
-        }
-        
-        function handleImageUpload(event) {
-            Array.from(event.target.files).forEach((file, i) => {
-                const reader = new FileReader();
-                reader.onload = e => {
-                    imageLibrary.push({ id: Date.now() + i, src: e.target.result, name: file.name });
-                    localStorage.setItem('koraheyImageLibrary', JSON.stringify(imageLibrary));
-                    loadImageGallery();
-                };
-                reader.readAsDataURL(file);
-            });
-            showToast(`${event.target.files.length} image(s) uploaded`);
-        }
-        
-        function onDragOver(e) { e.preventDefault(); document.getElementById('dragDropArea').classList.add('drag-over'); }
-        function onDragLeave(e) { document.getElementById('dragDropArea').classList.remove('drag-over'); }
-        function onDrop(e) {
-            e.preventDefault();
-            document.getElementById('dragDropArea').classList.remove('drag-over');
-            Array.from(e.dataTransfer.files).forEach((file, i) => {
-                if (file.type.startsWith('image/')) {
-                    const reader = new FileReader();
-                    reader.onload = e => {
-                        imageLibrary.push({ id: Date.now() + i, src: e.target.result, name: file.name });
-                        localStorage.setItem('koraheyImageLibrary', JSON.stringify(imageLibrary));
-                        loadImageGallery();
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-            showToast(`${e.dataTransfer.files.length} image(s) uploaded`);
-        }
-        
-        function dragImage(e, src) { e.dataTransfer.setData('text/plain', src); }
-        document.getElementById('dragDropArea')?.addEventListener('click', () => document.getElementById('imageUpload').click());
-        
-        document.addEventListener('dragover', e => e.preventDefault());
-        document.addEventListener('drop', e => {
-            const src = e.dataTransfer.getData('text/plain');
-            if (src && src.startsWith('data:image')) {
-                e.preventDefault();
-                const editor = getActiveEditor();
-                if (editor) {
-                    const img = document.createElement('img');
-                    img.src = src;
-                    img.style.maxWidth = '100%';
-                    img.style.margin = '10px 0';
-                    const range = document.caretRangeFromPoint(e.clientX, e.clientY);
-                    if (range) range.insertNode(img);
-                    else editor.appendChild(img);
-                    showToast('Image inserted');
-                }
-            }
-        });
-
-        // Right Click Menu
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-            const menu = document.getElementById('contextMenu');
-            menu.style.left = e.pageX + 'px';
-            menu.style.top = e.pageY + 'px';
-            menu.classList.add('show');
-        });
-        document.addEventListener('click', function() { hideContextMenu(); });
-        function hideContextMenu() { document.getElementById('contextMenu').classList.remove('show'); }
-
-        // Document functions
-        function newDocument() {
-            if (confirm('Create new document?')) {
-                document.getElementById('paperContainer').innerHTML = `
-                    <div class="paper-page"><div class="paper-page-content" contenteditable="true">
-                        <h1 style="text-align: center;">KORAHEY ACADEMY</h1>
-                        <p style="text-align: center; font-style: italic;">Passion for Success</p>
-                        <hr><p>Start typing your document here.</p>
-                    </div></div>`;
-                currentPageIndex = 0;
-                updatePageList();
-                showToast('New document created');
-            }
-        }
-
-        function saveDocument() {
-            const pages = [];
-            document.querySelectorAll('.paper-page').forEach((page, i) => {
-                const contentDiv = page.querySelector('.paper-page-content');
-                pages.push({ id: i, content: contentDiv ? contentDiv.innerHTML : '' });
-            });
-            localStorage.setItem('koraheyDocument', JSON.stringify(pages));
-            showToast('Document saved');
-        }
-
-        function printDocument() { window.print(); }
-        function closeEditor() { if (confirm('Close editor?')) window.location.href = 'admin.html'; }
-        function showAbout() { alert('Korahey Complete Editor v1.0\n\nAll features working!\nA4 Paper | Page Management\nFormatting Tools | Image Upload\n\n© 2026 Korahey Academy'); }
-
-        function loadDocument() {
-            const saved = localStorage.getItem('koraheyDocument');
-            if (saved) {
-                const pages = JSON.parse(saved);
-                if (pages.length > 0) {
-                    document.getElementById('paperContainer').innerHTML = pages.map(p => `
-                        <div class="paper-page"><div class="paper-page-content" contenteditable="true">${p.content}</div></div>
-                    `).join('');
-                    updatePageList();
-                    showToast('Document loaded');
-                }
-            }
-            updatePageList();
-            updateWordCount();
-        }
-
-        function escapeHtml(str) {
-            if (!str) return '';
-            return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m]));
-        }
-
-        // Selection change to update button states
-        document.addEventListener('selectionchange', function() {
-            const active = document.activeElement;
-            if (active && active.classList && active.classList.contains('paper-page-content')) {
-                updateButtonState('boldBtn', 'bold');
-                updateButtonState('italicBtn', 'italic');
-                updateButtonState('underlineBtn', 'underline');
-            }
-        });
-
-        document.addEventListener('keyup', function() {
-            const active = document.activeElement;
-            if (active && active.classList && active.classList.contains('paper-page-content')) {
-                updateButtonState('boldBtn', 'bold');
-                updateButtonState('italicBtn', 'italic');
-                updateButtonState('underlineBtn', 'underline');
-            }
-        });
-
-        // Initial setup
-        setTimeout(() => {
-            const editor = document.querySelector('.paper-page-content');
-            if (editor) editor.focus();
-        }, 100);
-
-        loadDocument();
-        setInterval(updateWordCount, 500);
-    </script>
-</body>
-</html>
+        // Keep panel
