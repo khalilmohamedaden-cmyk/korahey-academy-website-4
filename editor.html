@@ -104,7 +104,6 @@
         }
 
         .top-btn:hover { background: rgba(0, 0, 0, 0.1); }
-        .ai-btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
 
         /* Ribbon Container */
         .ribbon-container {
@@ -375,12 +374,13 @@
             min-height: 297mm;
         }
 
-        /* Image Styles */
+        /* Draggable Image Styles */
         .resizable-image {
             display: inline-block;
             position: relative;
             max-width: 100%;
             margin: 10px;
+            cursor: move;
         }
         
         .resizable-image img {
@@ -389,6 +389,7 @@
             cursor: pointer;
             border-radius: 4px;
             transition: all 0.2s;
+            user-select: none;
         }
         
         .resizable-image img:hover {
@@ -470,7 +471,7 @@
             color: #666;
         }
 
-        /* Media Manager Modal - Wix Style */
+        /* Media Manager Modal - Korahey Style */
         .media-modal {
             display: none;
             position: fixed;
@@ -632,15 +633,14 @@
         
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
         }
         
         .gallery-item {
             background: #f5f5f7;
             border-radius: 12px;
             overflow: hidden;
-            cursor: pointer;
             transition: all 0.2s;
             position: relative;
         }
@@ -650,22 +650,70 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.1);
         }
         
-        .gallery-item.selected {
-            outline: 3px solid var(--apple-blue);
-        }
-        
         .gallery-item img {
             width: 100%;
-            height: 150px;
+            height: 160px;
             object-fit: cover;
+            cursor: grab;
         }
+        
+        .gallery-item img:active { cursor: grabbing; }
         
         .gallery-item-info {
             padding: 10px;
             font-size: 11px;
             color: #666;
             text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
+        
+        /* Three Dots Menu */
+        .three-dots {
+            position: relative;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 8px;
+        }
+        
+        .three-dots:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            right: 0;
+            top: 25px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            min-width: 150px;
+            z-index: 100;
+            display: none;
+            overflow: hidden;
+        }
+        
+        .dropdown-menu.show {
+            display: block;
+        }
+        
+        .dropdown-item {
+            padding: 10px 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        
+        .dropdown-item:hover {
+            background: #f0f0f0;
+        }
+        
+        .dropdown-item.delete { color: #ff3b30; }
+        .dropdown-item.delete:hover { background: #ffe5e5; }
         
         .empty-gallery {
             text-align: center;
@@ -688,7 +736,7 @@
             background: rgba(0,113,227,0.05);
         }
         
-        /* Image Alignment Toolbar */
+        /* Image Toolbar */
         .image-toolbar {
             position: fixed;
             background: white;
@@ -813,7 +861,7 @@
             <div class="ribbon-group">
                 <div class="group-title">Images</div>
                 <div class="group-buttons">
-                    <button class="ribbon-btn" onclick="openMediaManager()"><i class="fas fa-image"></i> Pictures</button>
+                    <button class="ribbon-btn" onclick="openMediaManager()"><i class="fas fa-image"></i> Media from Korahey</button>
                     <button class="ribbon-btn" onclick="insertTwoColumnLayout()"><i class="fas fa-columns"></i> Two Columns</button>
                 </div>
             </div>
@@ -914,9 +962,8 @@
                     <h1 style="text-align: center;">KORAHEY ACADEMY</h1>
                     <p style="text-align: center; font-style: italic;">Professional Document Editor</p>
                     <hr>
-                    <p>Welcome to Korahey Editor. Click the Image button to open the Media Manager.</p>
-                    <p>You can drag and drop images, resize them, and align them left/center/right.</p>
-                    <p>Use the "Two Columns" button to create a side-by-side image layout.</p>
+                    <p>Welcome to Korahey Editor. Click "Media from Korahey" to open the Media Manager.</p>
+                    <p>You can drag and drop images directly into the document, resize them, and align them.</p>
                 </div>
             </div>
         </div>
@@ -937,11 +984,11 @@
         </div>
     </div>
 
-    <!-- Media Manager Modal - Wix Style -->
+    <!-- Media Manager Modal - Korahey Style -->
     <div id="mediaModal" class="media-modal">
         <div class="media-modal-content">
             <div class="media-modal-header">
-                <h2><i class="fas fa-images"></i> Choose Media Files</h2>
+                <h2><i class="fas fa-images"></i> Media from Korahey</h2>
                 <button class="close-modal" onclick="closeMediaManager()">&times;</button>
             </div>
             <div class="media-modal-body">
@@ -949,29 +996,14 @@
                 <div class="media-sidebar">
                     <div class="media-nav-section">
                         <div class="media-nav-title">MANAGE</div>
-                        <div class="media-nav-item active" onclick="switchMediaTab('sitefiles')">
-                            <i class="fas fa-folder"></i> Site Files
+                        <div class="media-nav-item active" onclick="switchMediaTab('korahey')">
+                            <i class="fas fa-database"></i> Media from Korahey
                         </div>
                         <div class="media-nav-item" onclick="switchMediaTab('myboards')">
                             <i class="fas fa-columns"></i> My Boards
                         </div>
                         <div class="media-nav-item" onclick="switchMediaTab('trash')">
                             <i class="fas fa-trash"></i> Trash
-                        </div>
-                    </div>
-                    <div class="media-nav-section">
-                        <div class="media-nav-title">EXPLORE</div>
-                        <div class="media-nav-item" onclick="switchMediaTab('wix')">
-                            <i class="fab fa-wix"></i> Media from Wix
-                        </div>
-                        <div class="media-nav-item" onclick="switchMediaTab('shutterstock')">
-                            <i class="fas fa-camera"></i> Shutterstock
-                        </div>
-                        <div class="media-nav-item" onclick="switchMediaTab('unsplash')">
-                            <i class="fas fa-tree"></i> Unsplash
-                        </div>
-                        <div class="media-nav-item" onclick="openAIImageCreator()">
-                            <i class="fas fa-robot"></i> AI Image Creator
                         </div>
                     </div>
                     <div class="media-nav-section">
@@ -987,7 +1019,7 @@
                     <div class="media-toolbar">
                         <div class="search-box">
                             <i class="fas fa-search"></i>
-                            <input type="text" id="mediaSearch" placeholder="Search for business, fashion, fitness & more..." onkeyup="searchImages()">
+                            <input type="text" id="mediaSearch" placeholder="Search for images..." onkeyup="searchImages()">
                         </div>
                         <button class="upload-btn" onclick="triggerFileUpload()">
                             <i class="fas fa-upload"></i> Upload Media
@@ -1018,27 +1050,6 @@
         <button onclick="makeTwoColumns()" title="Make Two Columns"><i class="fas fa-columns"></i></button>
     </div>
 
-    <!-- AI Image Creator Modal -->
-    <div id="aiImageModal" class="media-modal" style="z-index: 2001;">
-        <div class="media-modal-content" style="max-width: 500px;">
-            <div class="media-modal-header">
-                <h2><i class="fas fa-robot"></i> AI Image Creator</h2>
-                <button class="close-modal" onclick="closeAIImageCreator()">&times;</button>
-            </div>
-            <div class="media-modal-body" style="flex-direction: column;">
-                <input type="text" id="aiImagePrompt" class="font-selector" style="width:100%; padding:12px; margin-bottom:12px;" placeholder="Describe the image you want...">
-                <div class="ai-options" style="display: flex; gap: 8px; margin-bottom: 16px;">
-                    <button class="ribbon-btn" onclick="setAIStyle('realistic')">Realistic</button>
-                    <button class="ribbon-btn" onclick="setAIStyle('artistic')">Artistic</button>
-                    <button class="ribbon-btn" onclick="setAIStyle('cartoon')">Cartoon</button>
-                    <button class="ribbon-btn" onclick="setAIStyle('painting')">Painting</button>
-                </div>
-                <button class="upload-btn" onclick="generateAIImage()">Generate Image</button>
-                <div id="aiImageResult" style="margin-top: 20px; text-align: center;"></div>
-            </div>
-        </div>
-    </div>
-
     <div id="toast" class="toast"></div>
 
     <script>
@@ -1049,8 +1060,8 @@
         let hoverTimeout;
         let isRibbonOpen = false;
         let selectedImageElement = null;
-        let currentAIStyle = 'realistic';
-        let currentMediaTab = 'sitefiles';
+        let currentMediaTab = 'korahey';
+        let draggedImage = null;
 
         function showToast(message) {
             const toast = document.getElementById('toast');
@@ -1075,77 +1086,19 @@
             document.querySelectorAll('.media-nav-item').forEach(item => item.classList.remove('active'));
             event.target.closest('.media-nav-item').classList.add('active');
             
-            if (tab === 'sitefiles') {
+            if (tab === 'korahey') {
                 loadImageGallery();
-            } else if (tab === 'unsplash') {
-                loadUnsplashImages();
-            } else if (tab === 'shutterstock') {
-                showToast('Shutterstock integration - demo mode');
-            } else if (tab === 'wix') {
-                showToast('Wix Media integration - demo mode');
             } else if (tab === 'myboards') {
-                showToast('My Boards - organize your images');
+                showToast('My Boards - Create boards to organize your images');
+                const gallery = document.getElementById('galleryGrid');
+                gallery.innerHTML = '<div class="empty-gallery"><i class="fas fa-plus-circle"></i><br>Create a new board to organize your images</div>';
+                document.getElementById('dragDropArea').style.display = 'none';
             } else if (tab === 'trash') {
-                showToast('Trash - recently deleted items');
+                showToast('Trash - Recently deleted items');
+                const gallery = document.getElementById('galleryGrid');
+                gallery.innerHTML = '<div class="empty-gallery"><i class="fas fa-trash"></i><br>Trash is empty</div>';
+                document.getElementById('dragDropArea').style.display = 'none';
             }
-        }
-        
-        function loadUnsplashImages() {
-            const gallery = document.getElementById('galleryGrid');
-            gallery.innerHTML = '<div class="empty-gallery"><i class="fas fa-spinner fa-spin"></i> Loading images...</div>';
-            // Demo Unsplash images
-            const demoImages = [
-                'https://picsum.photos/id/1/200/150',
-                'https://picsum.photos/id/10/200/150',
-                'https://picsum.photos/id/100/200/150',
-                'https://picsum.photos/id/20/200/150',
-                'https://picsum.photos/id/30/200/150',
-                'https://picsum.photos/id/40/200/150'
-            ];
-            setTimeout(() => {
-                gallery.innerHTML = demoImages.map(src => `
-                    <div class="gallery-item" onclick="insertImageFromGallery('${src}')">
-                        <img src="${src}">
-                        <div class="gallery-item-info">Unsplash Image</div>
-                    </div>
-                `).join('');
-            }, 500);
-        }
-        
-        function openAIImageCreator() {
-            document.getElementById('aiImageModal').classList.add('active');
-        }
-        
-        function closeAIImageCreator() {
-            document.getElementById('aiImageModal').classList.remove('active');
-        }
-        
-        function setAIStyle(style) {
-            currentAIStyle = style;
-            showToast(`Style: ${style}`);
-        }
-        
-        function generateAIImage() {
-            const prompt = document.getElementById('aiImagePrompt').value;
-            if (!prompt) { showToast('Enter a description'); return; }
-            
-            const resultDiv = document.getElementById('aiImageResult');
-            resultDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating image...';
-            
-            setTimeout(() => {
-                const imageUrl = `https://picsum.photos/id/${Math.floor(Math.random() * 100)}/300/200`;
-                resultDiv.innerHTML = `
-                    <img src="${imageUrl}" style="max-width:100%; border-radius:12px; margin-bottom:12px;">
-                    <button class="upload-btn" onclick="insertGeneratedImage('${imageUrl}')">Insert into Document</button>
-                `;
-                showToast('AI image generated!');
-            }, 1500);
-        }
-        
-        function insertGeneratedImage(url) {
-            insertImageIntoEditor(url);
-            closeAIImageCreator();
-            showToast('Image inserted');
         }
         
         function updateStorageInfo() {
@@ -1167,12 +1120,55 @@
             
             dragDropArea.style.display = 'none';
             gallery.innerHTML = imageLibrary.map((img, idx) => `
-                <div class="gallery-item" ondblclick="insertImageFromGallery('${img.src}')">
-                    <img src="${img.src}">
-                    <div class="gallery-item-info">${img.name.substring(0, 20)}</div>
-                    <button class="delete-page-btn" style="position:absolute; top:5px; right:5px; background:rgba(0,0,0,0.5); color:white; border-radius:50%;" onclick="event.stopPropagation(); deleteImageFromLibrary(${idx})"><i class="fas fa-trash"></i></button>
+                <div class="gallery-item" data-idx="${idx}">
+                    <img src="${img.src}" draggable="true" ondragstart="startDragImage(event, '${img.src}')" ondblclick="insertImageFromGallery('${img.src}')">
+                    <div class="gallery-item-info">
+                        <span>${img.name.substring(0, 15)}</span>
+                        <div class="three-dots" onclick="showDropdownMenu(event, ${idx})">
+                            <i class="fas fa-ellipsis-v"></i>
+                            <div class="dropdown-menu" id="dropdown-${idx}">
+                                <div class="dropdown-item" onclick="addToBoard(${idx})"><i class="fas fa-plus-circle"></i> Add to Board</div>
+                                <div class="dropdown-item" onclick="copyImageLink(${idx})"><i class="fas fa-link"></i> Copy Link</div>
+                                <div class="dropdown-item delete" onclick="deleteImageFromLibrary(${idx})"><i class="fas fa-trash"></i> Delete</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             `).join('');
+        }
+        
+        function showDropdownMenu(event, idx) {
+            event.stopPropagation();
+            // Close all open dropdowns
+            document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                menu.classList.remove('show');
+            });
+            const dropdown = document.getElementById(`dropdown-${idx}`);
+            dropdown.classList.toggle('show');
+        }
+        
+        function addToBoard(idx) {
+            const boardName = prompt('Enter board name:', 'My Board');
+            if (boardName) {
+                const boards = JSON.parse(localStorage.getItem('koraheyBoards') || '{}');
+                if (!boards[boardName]) boards[boardName] = [];
+                boards[boardName].push(imageLibrary[idx]);
+                localStorage.setItem('koraheyBoards', JSON.stringify(boards));
+                showToast(`Added to "${boardName}" board`);
+            }
+            closeAllDropdowns();
+        }
+        
+        function copyImageLink(idx) {
+            navigator.clipboard.writeText(imageLibrary[idx].src);
+            showToast('Image link copied to clipboard');
+            closeAllDropdowns();
+        }
+        
+        function closeAllDropdowns() {
+            document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                menu.classList.remove('show');
+            });
         }
         
         function searchImages() {
@@ -1194,31 +1190,65 @@
         }
         
         function handleImageUpload(event) {
-            Array.from(event.target.files).forEach((file, i) => {
+            const files = Array.from(event.target.files);
+            files.forEach((file, i) => {
                 const reader = new FileReader();
                 reader.onload = e => {
-                    imageLibrary.unshift({ id: Date.now() + i, src: e.target.result, name: file.name });
+                    imageLibrary.unshift({ 
+                        id: Date.now() + i, 
+                        src: e.target.result, 
+                        name: file.name,
+                        size: file.size,
+                        type: file.type,
+                        date: new Date().toLocaleString()
+                    });
                     localStorage.setItem('koraheyImageLibrary', JSON.stringify(imageLibrary));
                     loadImageGallery();
                     updateStorageInfo();
+                    showToast(`${file.name} uploaded successfully!`);
                 };
                 reader.readAsDataURL(file);
             });
-            showToast(`${event.target.files.length} image(s) uploaded`);
         }
         
         function deleteImageFromLibrary(index) {
-            imageLibrary.splice(index, 1);
-            localStorage.setItem('koraheyImageLibrary', JSON.stringify(imageLibrary));
-            loadImageGallery();
-            updateStorageInfo();
-            showToast('Image deleted from library');
+            if (confirm('Delete this image permanently?')) {
+                imageLibrary.splice(index, 1);
+                localStorage.setItem('koraheyImageLibrary', JSON.stringify(imageLibrary));
+                loadImageGallery();
+                updateStorageInfo();
+                showToast('Image deleted from library');
+            }
+            closeAllDropdowns();
         }
         
         function insertImageFromGallery(src) {
             insertImageIntoEditor(src);
             closeMediaManager();
         }
+        
+        // ========== DRAG AND DROP IMAGES ==========
+        function startDragImage(event, src) {
+            event.dataTransfer.setData('text/plain', src);
+            event.dataTransfer.effectAllowed = 'copy';
+            draggedImage = src;
+        }
+        
+        // Make canvas area accept drops
+        const canvasArea = document.getElementById('canvas');
+        canvasArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'copy';
+        });
+        
+        canvasArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            const src = e.dataTransfer.getData('text/plain');
+            if (src && src.startsWith('data:image')) {
+                insertImageIntoEditor(src);
+                showToast('Image dropped into document');
+            }
+        });
         
         function insertImageIntoEditor(src) {
             const editor = getActiveEditor();
@@ -1228,6 +1258,7 @@
             imgContainer.className = 'resizable-image';
             imgContainer.style.display = 'inline-block';
             imgContainer.style.position = 'relative';
+            imgContainer.setAttribute('draggable', 'true');
             
             const img = document.createElement('img');
             img.src = src;
@@ -1239,6 +1270,12 @@
             img.onclick = function(e) {
                 e.stopPropagation();
                 selectImage(this);
+            };
+            
+            // Make image draggable within document
+            imgContainer.ondragstart = function(e) {
+                e.dataTransfer.setData('text/plain', imgContainer.innerHTML);
+                e.dataTransfer.effectAllowed = 'move';
             };
             
             imgContainer.appendChild(img);
@@ -1314,7 +1351,6 @@
                 return;
             }
             
-            const editor = getActiveEditor();
             const container = selectedImageElement.parentElement;
             const imgSrc = selectedImageElement.src;
             
@@ -1334,7 +1370,7 @@
             `;
             
             container.outerHTML = twoColumnHtml;
-            showToast('Two-column layout created! Click images to edit.');
+            showToast('Two-column layout created!');
             document.getElementById('imageToolbar').style.display = 'none';
             selectedImageElement = null;
         }
@@ -1357,29 +1393,14 @@
             `;
             
             document.execCommand('insertHTML', false, html);
-            showToast('Two-column layout added. Click columns to add images.');
+            showToast('Two-column layout added');
         }
         
-        // Drag and drop for images in editor
-        document.addEventListener('dragover', function(e) {
-            e.preventDefault();
-        });
-        
-        document.addEventListener('drop', function(e) {
-            e.preventDefault();
-            const files = e.dataTransfer.files;
-            if (files.length > 0 && files[0].type.startsWith('image/')) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    insertImageIntoEditor(event.target.result);
-                };
-                reader.readAsDataURL(files[0]);
-                showToast('Image dropped');
-            }
-        });
-        
-        // Close image toolbar when clicking elsewhere
+        // Close dropdown when clicking elsewhere
         document.addEventListener('click', function(e) {
+            if (!e.target.closest('.three-dots')) {
+                closeAllDropdowns();
+            }
             if (!e.target.closest('.resizable-img') && !e.target.closest('#imageToolbar')) {
                 document.getElementById('imageToolbar').style.display = 'none';
                 if (selectedImageElement) {
@@ -1388,32 +1409,6 @@
                 }
             }
         });
-        
-        // Resize images
-        function makeResizable(img) {
-            // Simple resize on drag (basic implementation)
-            let isResizing = false;
-            img.addEventListener('mousedown', function(e) {
-                if (e.offsetX > img.width - 10 && e.offsetY > img.height - 10) {
-                    isResizing = true;
-                    e.preventDefault();
-                }
-            });
-            
-            document.addEventListener('mousemove', function(e) {
-                if (isResizing && img) {
-                    const newWidth = e.clientX - img.getBoundingClientRect().left;
-                    if (newWidth > 50) {
-                        img.style.width = newWidth + 'px';
-                        img.style.height = 'auto';
-                    }
-                }
-            });
-            
-            document.addEventListener('mouseup', function() {
-                isResizing = false;
-            });
-        }
 
         // ========== EDITOR CORE FUNCTIONS ==========
         function getActiveEditor() {
