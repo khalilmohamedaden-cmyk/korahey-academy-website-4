@@ -180,7 +180,7 @@
             color: white;
         }
 
-        /* Dynamic Island - MOVES DOWN ON HOVER */
+        /* Dynamic Island - MOVES DOWN WHEN RIBBON IS OPEN */
         .dynamic-island {
             position: fixed;
             top: 100px;
@@ -195,11 +195,11 @@
             display: flex;
             gap: 8px;
             align-items: center;
-            transition: top 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            transition: top 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
         }
         
-        .dynamic-island.hover-down {
-            top: 155px;
+        .dynamic-island.ribbon-open {
+            top: 175px;
         }
 
         .tool-btn {
@@ -257,7 +257,7 @@
             background: #f5f5f5;
         }
 
-        /* Sidebar Layout - MOVES DOWN WITH ISLAND */
+        /* Sidebar Layout - MOVES DOWN WHEN RIBBON IS OPEN */
         .left-panel {
             position: fixed;
             left: 0;
@@ -270,11 +270,11 @@
             display: flex;
             flex-direction: column;
             z-index: 998;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), top 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), top 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
         }
         
-        .left-panel.move-down {
-            top: 155px;
+        .left-panel.ribbon-open {
+            top: 175px;
         }
 
         .left-panel.collapsed { transform: translateX(-100%); }
@@ -294,11 +294,11 @@
             justify-content: center;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             z-index: 1002;
-            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), top 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), top 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
         }
         
-        .panel-toggle-btn.move-down {
-            top: 167px;
+        .panel-toggle-btn.ribbon-open {
+            top: 187px;
         }
 
         .panel-toggle-btn.sidebar-closed { left: 10px; }
@@ -412,7 +412,7 @@
             font-family: 'Times New Roman', serif;
         }
 
-        /* Canvas Area - MOVES DOWN WITH ISLAND */
+        /* Canvas Area - MOVES DOWN WHEN RIBBON IS OPEN */
         .canvas-center {
             position: absolute;
             top: 100px;
@@ -422,7 +422,7 @@
             overflow-y: auto;
             padding: 40px 40px 150px 40px;
             scroll-behavior: smooth;
-            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), top 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), top 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -430,8 +430,8 @@
             z-index: 1;
         }
         
-        .canvas-center.move-down {
-            top: 155px;
+        .canvas-center.ribbon-open {
+            top: 175px;
         }
 
         .canvas-center.expanded { left: 0; }
@@ -752,7 +752,7 @@
         </div>
     </div>
 
-    <!-- Dynamic Island - MOVES DOWN ON HOVER -->
+    <!-- Dynamic Island -->
     <div class="dynamic-island" id="dynamicIsland">
         <select id="fontSelector" class="font-selector" onchange="changeFont()">
             <option value="'Times New Roman', serif">Times New Roman</option>
@@ -803,7 +803,7 @@
                     <p style="text-align: center; font-style: italic;">Passion for Success</p>
                     <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
                     <p>Welcome to Korahey Editor. Hover over Home, Insert, Design, Layout, Review, or View to see dropdown options.</p>
-                    <p>Hover over the toolbar above to see it move down smoothly with the paper!</p>
+                    <p>When the dropdown opens, the toolbar and paper move down smoothly!</p>
                 </div>
             </div>
         </div>
@@ -872,29 +872,32 @@
             setTimeout(() => { toast.classList.remove('show'); }, 2000);
         }
 
-        // ========== DYNAMIC ISLAND HOVER ANIMATION ==========
+        // ========== MOVE ELEMENTS DOWN WHEN RIBBON OPENS ==========
         const dynamicIsland = document.getElementById('dynamicIsland');
         const sidebar = document.getElementById('sidebar');
         const canvas = document.getElementById('canvas');
         const toggleBtn = document.getElementById('toggleBtn');
         
-        dynamicIsland.addEventListener('mouseenter', () => {
-            dynamicIsland.classList.add('hover-down');
-            sidebar.classList.add('move-down');
-            canvas.classList.add('move-down');
-            toggleBtn.classList.add('move-down');
-        });
+        function moveElementsDown() {
+            dynamicIsland.classList.add('ribbon-open');
+            sidebar.classList.add('ribbon-open');
+            canvas.classList.add('ribbon-open');
+            toggleBtn.classList.add('ribbon-open');
+        }
         
-        dynamicIsland.addEventListener('mouseleave', () => {
-            dynamicIsland.classList.remove('hover-down');
-            sidebar.classList.remove('move-down');
-            canvas.classList.remove('move-down');
-            toggleBtn.classList.remove('move-down');
-        });
+        function moveElementsUp() {
+            dynamicIsland.classList.remove('ribbon-open');
+            sidebar.classList.remove('ribbon-open');
+            canvas.classList.remove('ribbon-open');
+            toggleBtn.classList.remove('ribbon-open');
+        }
 
         // ========== HOVER RIBBON PANELS (DROP DOWN) ==========
         function showRibbonPanel(tabName) {
             if (hoverTimeout) clearTimeout(hoverTimeout);
+            
+            // Move elements down when ribbon panel opens
+            moveElementsDown();
             
             // Hide all panels
             document.querySelectorAll('.ribbon-panel').forEach(panel => panel.classList.remove('active'));
@@ -911,6 +914,9 @@
 
         function hideRibbonPanel() {
             hoverTimeout = setTimeout(() => {
+                // Move elements back up when ribbon panel closes
+                moveElementsUp();
+                
                 document.querySelectorAll('.ribbon-panel').forEach(panel => panel.classList.remove('active'));
                 document.querySelectorAll('.ribbon-tab').forEach(tab => tab.classList.remove('active'));
             }, 200);
