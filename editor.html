@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Korahey Editor | Complete Word Processor</title>
+    <title>Korahey Editor | Document Editor</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -25,24 +25,103 @@
             min-height: 100vh;
         }
 
-        /* Top Bar with Tabs */
-        .ribbon-tabs {
+        /* Top Bar */
+        .top-bar {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            background: #ffffff;
-            border-bottom: 1px solid #e0e0e0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
             z-index: 1000;
             display: flex;
-            padding: 0 20px;
-            gap: 4px;
-            height: 48px;
+            justify-content: space-between;
             align-items: center;
+            padding: 0 24px;
+            height: 48px;
+        }
+
+        .editor-brand {
+            font-weight: 800;
+            font-size: 1rem;
+            background: linear-gradient(135deg, #1d1d1f 0%, var(--apple-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+
+        .menu-bar {
+            display: flex;
+            gap: 4px;
+        }
+
+        .menu-item {
+            padding: 6px 14px;
+            font-size: 13px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+            background: none;
+            border: none;
+            color: #333;
+        }
+
+        .menu-item:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border-radius: 12px;
+            min-width: 200px;
+            display: none;
+            padding: 8px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border: 1px solid rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .dropdown-menu.show { display: block; }
+        .dropdown-item { padding: 10px 20px; font-size: 13px; cursor: pointer; transition: all 0.2s; }
+        .dropdown-item:hover { background: rgba(0, 0, 0, 0.05); }
+        .dropdown-divider { height: 1px; background: rgba(0, 0, 0, 0.1); margin: 6px 0; }
+
+        .top-btn {
+            background: rgba(0, 0, 0, 0.05);
+            border: none;
+            padding: 6px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: #333;
+            transition: all 0.2s;
+        }
+
+        .top-btn:hover { background: rgba(0, 0, 0, 0.1); }
+
+        /* Ribbon Tabs - CENTERED */
+        .ribbon-tabs {
+            position: fixed;
+            top: 48px;
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
+            z-index: 999;
+            display: flex;
+            justify-content: center;
+            gap: 4px;
+            padding: 8px 0;
+            height: 48px;
         }
 
         .ribbon-tab {
-            padding: 8px 16px;
+            padding: 8px 20px;
             font-size: 13px;
             cursor: pointer;
             border-radius: 8px;
@@ -60,21 +139,86 @@
             color: white;
         }
 
-        /* Ribbon Content Panel */
+        /* Dynamic Island */
+        .dynamic-island {
+            position: fixed;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ffffff;
+            border-radius: 50px;
+            padding: 8px 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            z-index: 998;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .tool-btn {
+            background: transparent;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+            color: #555;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+        }
+
+        .tool-btn i {
+            font-size: 16px;
+        }
+
+        .tool-btn:hover {
+            background: rgba(0, 0, 0, 0.06);
+            color: #333;
+        }
+
+        .tool-btn.active {
+            background: var(--apple-blue);
+            color: white;
+        }
+
+        .tool-btn.active i {
+            color: white;
+        }
+
+        .separator {
+            width: 1px;
+            height: 24px;
+            background: rgba(0, 0, 0, 0.1);
+            margin: 0 4px;
+        }
+
+        .font-selector, .size-selector {
+            padding: 6px 12px;
+            border-radius: 40px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background: white;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        /* Ribbon Panel Content */
         .ribbon-panel {
             position: fixed;
-            top: 48px;
+            top: 144px;
             left: 0;
             right: 0;
             background: #ffffff;
             border-bottom: 1px solid #e0e0e0;
             padding: 12px 20px;
-            z-index: 999;
+            z-index: 997;
             display: none;
             flex-wrap: wrap;
             gap: 20px;
-            max-height: 120px;
-            overflow-y: auto;
+            justify-content: center;
         }
 
         .ribbon-panel.active {
@@ -147,7 +291,7 @@
         .left-panel {
             position: fixed;
             left: 0;
-            top: 168px;
+            top: 228px;
             bottom: 44px;
             width: 280px;
             background: rgba(255, 255, 255, 0.98);
@@ -164,7 +308,7 @@
         .panel-toggle-btn {
             position: fixed;
             left: 245px;
-            top: 178px;
+            top: 240px;
             width: 28px;
             height: 28px;
             background: #fff;
@@ -293,7 +437,7 @@
         /* Canvas Area */
         .canvas-center {
             position: absolute;
-            top: 168px;
+            top: 228px;
             left: 280px;
             right: 0;
             bottom: 44px;
@@ -457,62 +601,121 @@
             .panel-toggle-btn { left: 10px; }
             .paper-page { width: 100%; min-width: auto; height: auto; min-height: 500px; }
         }
+
+        @media print {
+            .top-bar, .ribbon-tabs, .dynamic-island, .ribbon-panel, .left-panel, .panel-toggle-btn, .bottom-bar, .toast {
+                display: none !important;
+            }
+            .canvas-center {
+                left: 0;
+                padding: 0;
+                background: white;
+            }
+            .paper-page {
+                box-shadow: none;
+                margin: 0;
+                padding: 20mm;
+                page-break-after: always;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Ribbon Tabs -->
-    <div class="ribbon-tabs">
-        <div class="ribbon-tab active" onclick="showRibbonTab('home')">🏠 Home</div>
-        <div class="ribbon-tab" onclick="showRibbonTab('insert')">➕ Insert</div>
-        <div class="ribbon-tab" onclick="showRibbonTab('design')">🎨 Design</div>
-        <div class="ribbon-tab" onclick="showRibbonTab('layout')">📏 Layout</div>
-        <div class="ribbon-tab" onclick="showRibbonTab('review')">🔍 Review</div>
-        <div class="ribbon-tab" onclick="showRibbonTab('view')">👁️ View</div>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="editor-brand">KORAHEY EDITOR</div>
+        <div class="menu-bar">
+            <div class="menu-item" onclick="toggleDropdown('fileMenu')">File</div>
+            <div id="fileMenu" class="dropdown-menu">
+                <div class="dropdown-item" onclick="newDocument()">New</div>
+                <div class="dropdown-item" onclick="saveDocument()">Save</div>
+                <div class="dropdown-item" onclick="printDocument()">Print</div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item" onclick="closeEditor()">Close</div>
+            </div>
+            <div class="menu-item" onclick="toggleDropdown('editMenu')">Edit</div>
+            <div id="editMenu" class="dropdown-menu">
+                <div class="dropdown-item" onclick="execCommand('undo')">Undo</div>
+                <div class="dropdown-item" onclick="execCommand('redo')">Redo</div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item" onclick="execCommand('cut')">Cut</div>
+                <div class="dropdown-item" onclick="execCommand('copy')">Copy</div>
+                <div class="dropdown-item" onclick="execCommand('paste')">Paste</div>
+            </div>
+            <div class="menu-item" onclick="toggleDropdown('helpMenu')">Help</div>
+            <div id="helpMenu" class="dropdown-menu">
+                <div class="dropdown-item" onclick="showAbout()">About</div>
+            </div>
+        </div>
+        <div class="right-actions" style="display: flex; gap: 12px;">
+            <button class="top-btn" onclick="saveDocument()">Save</button>
+            <button class="top-btn" onclick="printDocument()">Print</button>
+        </div>
     </div>
 
+    <!-- Ribbon Tabs - Centered -->
+    <div class="ribbon-tabs">
+        <div class="ribbon-tab active" onclick="showRibbonTab('home')">Home</div>
+        <div class="ribbon-tab" onclick="showRibbonTab('insert')">Insert</div>
+        <div class="ribbon-tab" onclick="showRibbonTab('design')">Design</div>
+        <div class="ribbon-tab" onclick="showRibbonTab('layout')">Layout</div>
+        <div class="ribbon-tab" onclick="showRibbonTab('review')">Review</div>
+        <div class="ribbon-tab" onclick="showRibbonTab('view')">View</div>
+    </div>
+
+    <!-- Dynamic Island -->
+    <div class="dynamic-island">
+        <select id="fontSelector" class="font-selector" onchange="changeFont()">
+            <option value="'Times New Roman', serif">Times New Roman</option>
+            <option value="Arial">Arial</option>
+            <option value="Calibri">Calibri</option>
+            <option value="Georgia">Georgia</option>
+        </select>
+        <select id="sizeSelector" class="size-selector" onchange="changeFontSize()">
+            <option value="10">10</option><option value="11">11</option><option value="12" selected>12</option>
+            <option value="14">14</option><option value="16">16</option><option value="18">18</option>
+            <option value="20">20</option><option value="24">24</option>
+        </select>
+        <div class="separator"></div>
+        <button class="tool-btn" id="boldBtn" onclick="toggleBold()">B</button>
+        <button class="tool-btn" id="italicBtn" onclick="toggleItalic()">I</button>
+        <button class="tool-btn" id="underlineBtn" onclick="toggleUnderline()">U</button>
+        <div class="separator"></div>
+        <button class="tool-btn" id="alignLeftBtn" onclick="setAlignment('justifyLeft', 'alignLeftBtn')"><i class="fas fa-align-left"></i></button>
+        <button class="tool-btn" id="alignCenterBtn" onclick="setAlignment('justifyCenter', 'alignCenterBtn')"><i class="fas fa-align-center"></i></button>
+        <button class="tool-btn" id="alignRightBtn" onclick="setAlignment('justifyRight', 'alignRightBtn')"><i class="fas fa-align-right"></i></button>
+        <div class="separator"></div>
+        <button class="tool-btn" id="bulletBtn" onclick="toggleList('insertUnorderedList', 'bulletBtn')"><i class="fas fa-list-ul"></i></button>
+        <button class="tool-btn" id="numberBtn" onclick="toggleList('insertOrderedList', 'numberBtn')"><i class="fas fa-list-ol"></i></button>
+        <div class="separator"></div>
+        <button class="tool-btn" onclick="openMediaManager()"><i class="fas fa-image"></i></button>
+        <button class="tool-btn" onclick="insertTable()"><i class="fas fa-table"></i></button>
+    </div>
+
+    <!-- Ribbon Panels -->
     <!-- HOME Tab -->
     <div id="ribbonHome" class="ribbon-panel active">
         <div class="ribbon-group">
             <div class="group-title">Clipboard</div>
             <div class="group-buttons">
-                <button class="ribbon-btn" onclick="execCommand('cut')"><i class="fas fa-cut"></i> Cut</button>
-                <button class="ribbon-btn" onclick="execCommand('copy')"><i class="fas fa-copy"></i> Copy</button>
-                <button class="ribbon-btn" onclick="pasteText()"><i class="fas fa-paste"></i> Paste</button>
+                <button class="ribbon-btn" onclick="execCommand('cut')">Cut</button>
+                <button class="ribbon-btn" onclick="execCommand('copy')">Copy</button>
+                <button class="ribbon-btn" onclick="pasteText()">Paste</button>
             </div>
         </div>
         <div class="ribbon-group">
             <div class="group-title">Font</div>
             <div class="group-buttons">
-                <select id="fontSelect" class="ribbon-select" onchange="changeFont()">
-                    <option value="'Times New Roman', serif">Times New Roman</option>
-                    <option value="Arial">Arial</option>
-                    <option value="Calibri">Calibri</option>
-                    <option value="Georgia">Georgia</option>
-                </select>
-                <select id="sizeSelect" class="ribbon-select" onchange="changeFontSize()">
-                    <option value="10">10</option><option value="11">11</option><option value="12" selected>12</option>
-                    <option value="14">14</option><option value="16">16</option><option value="18">18</option>
-                    <option value="20">20</option><option value="24">24</option><option value="28">28</option>
-                    <option value="36">36</option><option value="48">48</option>
-                </select>
-                <button class="ribbon-btn" id="boldBtn" onclick="toggleBold()"><i class="fas fa-bold"></i></button>
-                <button class="ribbon-btn" id="italicBtn" onclick="toggleItalic()"><i class="fas fa-italic"></i></button>
-                <button class="ribbon-btn" id="underlineBtn" onclick="toggleUnderline()"><i class="fas fa-underline"></i></button>
-                <button class="ribbon-btn" onclick="changeCase()"><i class="fas fa-case"></i> Case</button>
-                <button class="ribbon-btn" onclick="clearFormatting()"><i class="fas fa-eraser"></i> Clear</button>
+                <button class="ribbon-btn" onclick="changeCase()">Change Case</button>
+                <button class="ribbon-btn" onclick="clearFormatting()">Clear Formatting</button>
             </div>
         </div>
         <div class="ribbon-group">
             <div class="group-title">Paragraph</div>
             <div class="group-buttons">
-                <button class="ribbon-btn" id="alignLeftBtn" onclick="setAlignment('justifyLeft', 'alignLeftBtn')"><i class="fas fa-align-left"></i></button>
-                <button class="ribbon-btn" id="alignCenterBtn" onclick="setAlignment('justifyCenter', 'alignCenterBtn')"><i class="fas fa-align-center"></i></button>
-                <button class="ribbon-btn" id="alignRightBtn" onclick="setAlignment('justifyRight', 'alignRightBtn')"><i class="fas fa-align-right"></i></button>
-                <button class="ribbon-btn" id="bulletBtn" onclick="toggleList('insertUnorderedList', 'bulletBtn')"><i class="fas fa-list-ul"></i></button>
-                <button class="ribbon-btn" id="numberBtn" onclick="toggleList('insertOrderedList', 'numberBtn')"><i class="fas fa-list-ol"></i></button>
-                <button class="ribbon-btn" onclick="execCommand('outdent')"><i class="fas fa-outdent"></i></button>
-                <button class="ribbon-btn" onclick="execCommand('indent')"><i class="fas fa-indent"></i></button>
+                <button class="ribbon-btn" onclick="execCommand('outdent')">Decrease Indent</button>
+                <button class="ribbon-btn" onclick="execCommand('indent')">Increase Indent</button>
             </div>
         </div>
     </div>
@@ -522,25 +725,25 @@
         <div class="ribbon-group">
             <div class="group-title">Pages</div>
             <div class="group-buttons">
-                <button class="ribbon-btn" onclick="insertPageBreak()"><i class="fas fa-page-break"></i> Page Break</button>
+                <button class="ribbon-btn" onclick="insertPageBreak()">Page Break</button>
             </div>
         </div>
         <div class="ribbon-group">
             <div class="group-title">Tables</div>
             <div class="group-buttons">
-                <button class="ribbon-btn" onclick="insertTable()"><i class="fas fa-table"></i> Insert Table</button>
+                <button class="ribbon-btn" onclick="insertTable()">Insert Table</button>
             </div>
         </div>
         <div class="ribbon-group">
             <div class="group-title">Illustrations</div>
             <div class="group-buttons">
-                <button class="ribbon-btn" onclick="openMediaManager()"><i class="fas fa-image"></i> Pictures</button>
+                <button class="ribbon-btn" onclick="openMediaManager()">Pictures</button>
             </div>
         </div>
         <div class="ribbon-group">
             <div class="group-title">Text</div>
             <div class="group-buttons">
-                <button class="ribbon-btn" onclick="insertDate()"><i class="far fa-calendar-alt"></i> Date & Time</button>
+                <button class="ribbon-btn" onclick="insertDate()">Date & Time</button>
             </div>
         </div>
     </div>
@@ -550,15 +753,16 @@
         <div class="ribbon-group">
             <div class="group-title">Document Formatting</div>
             <div class="group-buttons">
-                <button class="ribbon-btn" onclick="setTheme('default')"><i class="fas fa-palette"></i> Default</button>
-                <button class="ribbon-btn" onclick="setTheme('dark')"><i class="fas fa-moon"></i> Dark</button>
+                <button class="ribbon-btn" onclick="setZoom(100)">100%</button>
+                <button class="ribbon-btn" onclick="setZoom(125)">125%</button>
+                <button class="ribbon-btn" onclick="setZoom(150)">150%</button>
             </div>
         </div>
         <div class="ribbon-group">
             <div class="group-title">Page Background</div>
             <div class="group-buttons">
-                <button class="ribbon-btn" onclick="setPageColor('#ffffff')"><i class="fas fa-fill-drip"></i> White</button>
-                <button class="ribbon-btn" onclick="setPageColor('#f5e6ca')"><i class="fas fa-fill"></i> Vintage</button>
+                <button class="ribbon-btn" onclick="setPageColor('#ffffff')">White</button>
+                <button class="ribbon-btn" onclick="setPageColor('#f5e6ca')">Vintage</button>
             </div>
         </div>
     </div>
@@ -568,9 +772,8 @@
         <div class="ribbon-group">
             <div class="group-title">Page Setup</div>
             <div class="group-buttons">
-                <button class="ribbon-btn" onclick="setZoom(100)"><i class="fas fa-search"></i> 100%</button>
-                <button class="ribbon-btn" onclick="setZoom(125)">125%</button>
-                <button class="ribbon-btn" onclick="setZoom(150)">150%</button>
+                <button class="ribbon-btn" onclick="zoomIn()">Zoom In</button>
+                <button class="ribbon-btn" onclick="zoomOut()">Zoom Out</button>
             </div>
         </div>
     </div>
@@ -580,9 +783,8 @@
         <div class="ribbon-group">
             <div class="group-title">Proofing</div>
             <div class="group-buttons">
-                <button class="ribbon-btn" onclick="checkSpelling()"><i class="fas fa-spell-check"></i> Spelling</button>
-                <button class="ribbon-btn" onclick="showWordCount()"><i class="fas fa-chart-simple"></i> Word Count</button>
-                <button class="ribbon-btn" onclick="showThesaurus()"><i class="fas fa-book"></i> Thesaurus</button>
+                <button class="ribbon-btn" onclick="checkSpelling()">Spelling</button>
+                <button class="ribbon-btn" onclick="showWordCount()">Word Count</button>
             </div>
         </div>
     </div>
@@ -592,15 +794,9 @@
         <div class="ribbon-group">
             <div class="group-title">Zoom</div>
             <div class="group-buttons">
-                <button class="ribbon-btn" onclick="zoomIn()"><i class="fas fa-search-plus"></i> Zoom In</button>
-                <button class="ribbon-btn" onclick="zoomOut()"><i class="fas fa-search-minus"></i> Zoom Out</button>
                 <button class="ribbon-btn" onclick="setZoom(100)">100%</button>
-            </div>
-        </div>
-        <div class="ribbon-group">
-            <div class="group-title">Show</div>
-            <div class="group-buttons">
-                <button class="ribbon-btn" onclick="toggleRuler()"><i class="fas fa-ruler"></i> Ruler</button>
+                <button class="ribbon-btn" onclick="setZoom(125)">125%</button>
+                <button class="ribbon-btn" onclick="setZoom(150)">150%</button>
             </div>
         </div>
     </div>
@@ -626,8 +822,7 @@
                     <h1 style="text-align: center;">KORAHEY ACADEMY</h1>
                     <p style="text-align: center; font-style: italic;">Passion for Success</p>
                     <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
-                    <p>Welcome to Korahey Complete Editor.</p>
-                    <p>Select text and use the ribbon toolbar to format your document.</p>
+                    <p>Welcome to Korahey Editor. Select text and use the toolbar to format.</p>
                 </div>
             </div>
         </div>
@@ -687,7 +882,6 @@
         let currentZoom = 100;
         let currentPageIndex = 0;
         let imageLibrary = [];
-        let isCreatingPage = false;
         let currentActiveButtons = {};
 
         function showToast(message) {
@@ -727,7 +921,6 @@
             }
         }
 
-        // Paste function
         function pasteText() {
             navigator.clipboard.readText().then(text => {
                 document.execCommand('insertText', false, text);
@@ -739,19 +932,16 @@
             hideContextMenu();
         }
 
-        // Bold
         function toggleBold() {
             execCommand('bold');
             updateButtonState('boldBtn', 'bold');
         }
 
-        // Italic
         function toggleItalic() {
             execCommand('italic');
             updateButtonState('italicBtn', 'italic');
         }
 
-        // Underline
         function toggleUnderline() {
             execCommand('underline');
             updateButtonState('underlineBtn', 'underline');
@@ -794,12 +984,12 @@
         }
 
         function changeFont() {
-            const font = document.getElementById('fontSelect').value;
+            const font = document.getElementById('fontSelector').value;
             execCommand('fontName', false, font);
         }
 
         function changeFontSize() {
-            const size = document.getElementById('sizeSelect').value;
+            const size = document.getElementById('sizeSelector').value;
             execCommand('fontSize', false, size);
         }
 
@@ -834,7 +1024,7 @@
                     for (let j = 0; j < parseInt(cols); j++) html += `<td contenteditable="true"><br></td>`;
                     html += '</tr>';
                 }
-                html += '</table><br>';
+                html += '<table><br>';
                 const editor = getActiveEditor();
                 if (editor) {
                     document.execCommand('insertHTML', false, html);
@@ -861,14 +1051,7 @@
 
         function checkSpelling() { showToast('Spelling check: All good!'); }
         function showWordCount() { updateWordCount(); showToast(document.getElementById('wordCount').textContent); }
-        function showThesaurus() { 
-            const word = window.getSelection().toString();
-            if (word) window.open(`https://www.thesaurus.com/browse/${encodeURIComponent(word)}`, '_blank');
-            else showToast('Select a word first');
-        }
-        function setTheme(theme) { showToast(`Theme: ${theme}`); }
         function setPageColor(color) { document.querySelectorAll('.paper-page').forEach(p => p.style.backgroundColor = color); }
-        function toggleRuler() { showToast('Ruler feature coming soon'); }
 
         // Zoom functions
         function zoomIn() {
@@ -1057,6 +1240,20 @@
         document.addEventListener('click', function() { hideContextMenu(); });
         function hideContextMenu() { document.getElementById('contextMenu').classList.remove('show'); }
 
+        // Dropdown
+        let activeMenu = null;
+        function toggleDropdown(menuId) {
+            const menu = document.getElementById(menuId);
+            if (activeMenu && activeMenu !== menu) activeMenu.classList.remove('show');
+            menu.classList.toggle('show');
+            activeMenu = menu.classList.contains('show') ? menu : null;
+        }
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.menu-item') && !e.target.closest('.dropdown-menu')) {
+                if (activeMenu) { activeMenu.classList.remove('show'); activeMenu = null; }
+            }
+        });
+
         // Document functions
         function newDocument() {
             if (confirm('Create new document?')) {
@@ -1084,7 +1281,7 @@
 
         function printDocument() { window.print(); }
         function closeEditor() { if (confirm('Close editor?')) window.location.href = 'admin.html'; }
-        function showAbout() { alert('Korahey Complete Editor v1.0\n\nAll ribbon features working!\nA4 Paper | Page Management\nFormatting Tools | Image Upload\n\n© 2026 Korahey Academy'); }
+        function showAbout() { alert('Korahey Complete Editor v1.0\n\nAll features working!\nA4 Paper | Page Management\nFormatting Tools | Image Upload\n\n© 2026 Korahey Academy'); }
 
         function loadDocument() {
             const saved = localStorage.getItem('koraheyDocument');
