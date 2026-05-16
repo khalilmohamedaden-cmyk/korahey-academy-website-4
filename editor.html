@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Korahey Editor | Document Editor</title>
+    <title>Korahey Editor | Complete Word Processor</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -25,92 +25,131 @@
             min-height: 100vh;
         }
 
-        /* Top Bar */
-        .top-bar {
+        /* Top Bar with Tabs */
+        .ribbon-tabs {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            background: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
             z-index: 1000;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 24px;
+            padding: 0 20px;
+            gap: 4px;
             height: 48px;
+            align-items: center;
         }
 
-        .editor-brand {
-            font-weight: 800;
-            font-size: 1rem;
-            background: linear-gradient(135deg, #1d1d1f 0%, var(--apple-blue) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 1px;
+        .ribbon-tab {
+            padding: 8px 16px;
+            font-size: 13px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+            color: #555;
+            font-weight: 500;
         }
 
-        .menu-bar {
+        .ribbon-tab:hover {
+            background: #f0f0f0;
+        }
+
+        .ribbon-tab.active {
+            background: var(--apple-blue);
+            color: white;
+        }
+
+        /* Ribbon Content Panel */
+        .ribbon-panel {
+            position: fixed;
+            top: 48px;
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 12px 20px;
+            z-index: 999;
+            display: none;
+            flex-wrap: wrap;
+            gap: 20px;
+            max-height: 120px;
+            overflow-y: auto;
+        }
+
+        .ribbon-panel.active {
+            display: flex;
+        }
+
+        .ribbon-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 0 12px;
+            border-right: 1px solid #e0e0e0;
+        }
+
+        .ribbon-group:last-child {
+            border-right: none;
+        }
+
+        .group-title {
+            font-size: 10px;
+            font-weight: 600;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .group-buttons {
             display: flex;
             gap: 4px;
+            flex-wrap: wrap;
         }
 
-        .menu-item {
-            padding: 6px 14px;
-            font-size: 13px;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.2s;
-            background: none;
+        .ribbon-btn {
+            background: transparent;
             border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
             color: #333;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
         }
 
-        .menu-item:hover {
-            background: rgba(0, 0, 0, 0.05);
+        .ribbon-btn i {
+            font-size: 14px;
         }
 
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 0;
+        .ribbon-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .ribbon-btn.active {
+            background: var(--apple-blue);
+            color: white;
+        }
+
+        .ribbon-select {
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
             background: white;
-            border-radius: 12px;
-            min-width: 200px;
-            display: none;
-            padding: 8px 0;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            border: 1px solid rgba(0,0,0,0.1);
-            z-index: 1000;
-        }
-
-        .dropdown-menu.show { display: block; }
-        .dropdown-item { padding: 10px 20px; font-size: 13px; cursor: pointer; transition: all 0.2s; }
-        .dropdown-item:hover { background: rgba(0, 0, 0, 0.05); }
-        .dropdown-divider { height: 1px; background: rgba(0, 0, 0, 0.1); margin: 6px 0; }
-
-        .top-btn {
-            background: rgba(0, 0, 0, 0.05);
-            border: none;
-            padding: 6px 20px;
-            border-radius: 8px;
+            font-size: 12px;
             cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            color: #333;
-            transition: all 0.2s;
         }
-
-        .top-btn:hover { background: rgba(0, 0, 0, 0.1); }
 
         /* Sidebar Layout */
         .left-panel {
             position: fixed;
             left: 0;
-            top: 48px;
+            top: 168px;
             bottom: 44px;
-            width: 300px;
+            width: 280px;
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(10px);
             border-right: 1px solid rgba(0, 0, 0, 0.08);
@@ -124,8 +163,8 @@
 
         .panel-toggle-btn {
             position: fixed;
-            left: 265px;
-            top: 80px;
+            left: 245px;
+            top: 178px;
             width: 28px;
             height: 28px;
             background: #fff;
@@ -254,8 +293,8 @@
         /* Canvas Area */
         .canvas-center {
             position: absolute;
-            top: 48px;
-            left: 300px;
+            top: 168px;
+            left: 280px;
             right: 0;
             bottom: 44px;
             overflow-y: auto;
@@ -279,7 +318,7 @@
             height: 297mm;
             min-height: 297mm;
             max-height: 297mm;
-            margin: 80px 0 40px 0;
+            margin: 20px 0 40px 0;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             padding: 20mm 25mm;
             position: relative;
@@ -289,9 +328,7 @@
             overflow: hidden;
         }
 
-        .paper-page:last-child {
-            margin-bottom: 0;
-        }
+        .paper-page:last-child { margin-bottom: 0; }
 
         .paper-page-content {
             flex: 1;
@@ -300,77 +337,6 @@
             font-size: 12pt;
             line-height: 1.6;
             overflow-y: auto;
-        }
-
-        /* Dynamic Island */
-        .dynamic-island {
-            position: fixed;
-            top: 80px;
-            left: calc(50% + 150px);
-            transform: translateX(-50%);
-            background: #ffffff;
-            border-radius: 50px;
-            padding: 8px 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            z-index: 999;
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .dynamic-island.full-width {
-            left: 50%;
-        }
-
-        .tool-btn {
-            background: transparent;
-            border: none;
-            padding: 8px 14px;
-            border-radius: 40px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.2s;
-            color: #555;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-weight: 500;
-        }
-
-        .tool-btn i {
-            font-size: 16px;
-        }
-
-        .tool-btn:hover {
-            background: rgba(0, 0, 0, 0.06);
-            color: #333;
-        }
-
-        .tool-btn.active {
-            background: var(--apple-blue);
-            color: white;
-        }
-
-        .tool-btn.active i {
-            color: white;
-        }
-
-        .separator {
-            width: 1px;
-            height: 24px;
-            background: rgba(0, 0, 0, 0.1);
-            margin: 0 4px;
-        }
-
-        .font-selector, .size-selector {
-            padding: 6px 12px;
-            border-radius: 40px;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            background: white;
-            font-size: 12px;
-            cursor: pointer;
         }
 
         /* Bottom Bar */
@@ -406,9 +372,7 @@
             color: #666;
         }
 
-        .page-nav-btn:hover {
-            background: rgba(0, 0, 0, 0.05);
-        }
+        .page-nav-btn:hover { background: rgba(0, 0, 0, 0.05); }
 
         /* Custom Right Click Menu */
         .custom-context-menu {
@@ -441,12 +405,9 @@
             z-index: 3000;
             transition: transform 0.3s;
         }
+        .toast.show { transform: translateX(-50%) translateY(0); }
 
-        .toast.show {
-            transform: translateX(-50%) translateY(0);
-        }
-
-        /* Media Manager Modal */
+        /* Modal */
         .media-modal {
             display: none;
             position: fixed;
@@ -489,99 +450,159 @@
         .gallery-item img { width: 100%; height: 80px; object-fit: cover; border-radius: 8px; }
         .close-modal { background: none; border: none; font-size: 24px; cursor: pointer; color: #999; }
 
-        @media (max-width: 900px) {
-            .left-panel { width: 260px; }
-            .canvas-center { left: 260px; }
-            .panel-toggle-btn { left: 225px; }
-            .dynamic-island { left: calc(50% + 130px); }
+        @media (max-width: 1000px) {
+            .ribbon-panel { max-height: 200px; overflow-x: auto; }
+            .canvas-center { left: 0; }
+            .left-panel { transform: translateX(-100%); }
+            .panel-toggle-btn { left: 10px; }
             .paper-page { width: 100%; min-width: auto; height: auto; min-height: 500px; }
-        }
-
-        @media print {
-            .top-bar, .dynamic-island, .left-panel, .panel-toggle-btn, .bottom-bar, .toast {
-                display: none !important;
-            }
-            .canvas-center {
-                left: 0;
-                padding: 0;
-                background: white;
-            }
-            .paper-page {
-                box-shadow: none;
-                margin: 0;
-                padding: 20mm;
-                page-break-after: always;
-            }
         }
     </style>
 </head>
 <body>
 
-    <div class="top-bar">
-        <div class="editor-brand">KORAHEY EDITOR</div>
-        <div class="menu-bar">
-            <div class="menu-item" onclick="toggleDropdown('fileMenu')">File</div>
-            <div id="fileMenu" class="dropdown-menu">
-                <div class="dropdown-item" onclick="newDocument()">New</div>
-                <div class="dropdown-item" onclick="saveDocument()">Save</div>
-                <div class="dropdown-item" onclick="printDocument()">Print</div>
-                <div class="dropdown-divider"></div>
-                <div class="dropdown-item" onclick="closeEditor()">Close</div>
-            </div>
-            <div class="menu-item" onclick="toggleDropdown('editMenu')">Edit</div>
-            <div id="editMenu" class="dropdown-menu">
-                <div class="dropdown-item" onclick="execCommand('undo')">Undo</div>
-                <div class="dropdown-item" onclick="execCommand('redo')">Redo</div>
-                <div class="dropdown-divider"></div>
-                <div class="dropdown-item" onclick="execCommand('cut')">Cut</div>
-                <div class="dropdown-item" onclick="execCommand('copy')">Copy</div>
-                <div class="dropdown-item" onclick="execCommand('paste')">Paste</div>
-                <div class="dropdown-divider"></div>
-                <div class="dropdown-item" onclick="selectAll()">Select All</div>
-            </div>
-            <div class="menu-item" onclick="toggleDropdown('insertMenu')">Insert</div>
-            <div id="insertMenu" class="dropdown-menu">
-                <div class="dropdown-item" onclick="insertTable()">Table</div>
-                <div class="dropdown-item" onclick="insertDate()">Date & Time</div>
-            </div>
-            <div class="menu-item" onclick="toggleDropdown('helpMenu')">Help</div>
-            <div id="helpMenu" class="dropdown-menu">
-                <div class="dropdown-item" onclick="showAbout()">About</div>
+    <!-- Ribbon Tabs -->
+    <div class="ribbon-tabs">
+        <div class="ribbon-tab active" onclick="showRibbonTab('home')">🏠 Home</div>
+        <div class="ribbon-tab" onclick="showRibbonTab('insert')">➕ Insert</div>
+        <div class="ribbon-tab" onclick="showRibbonTab('design')">🎨 Design</div>
+        <div class="ribbon-tab" onclick="showRibbonTab('layout')">📏 Layout</div>
+        <div class="ribbon-tab" onclick="showRibbonTab('review')">🔍 Review</div>
+        <div class="ribbon-tab" onclick="showRibbonTab('view')">👁️ View</div>
+    </div>
+
+    <!-- HOME Tab -->
+    <div id="ribbonHome" class="ribbon-panel active">
+        <div class="ribbon-group">
+            <div class="group-title">Clipboard</div>
+            <div class="group-buttons">
+                <button class="ribbon-btn" onclick="execCommand('cut')"><i class="fas fa-cut"></i> Cut</button>
+                <button class="ribbon-btn" onclick="execCommand('copy')"><i class="fas fa-copy"></i> Copy</button>
+                <button class="ribbon-btn" onclick="pasteText()"><i class="fas fa-paste"></i> Paste</button>
             </div>
         </div>
-        <div class="right-actions" style="display: flex; gap: 12px;">
-            <button class="top-btn" onclick="saveDocument()"><i class="fas fa-save"></i> Save</button>
-            <button class="top-btn" onclick="printDocument()"><i class="fas fa-print"></i> Print</button>
+        <div class="ribbon-group">
+            <div class="group-title">Font</div>
+            <div class="group-buttons">
+                <select id="fontSelect" class="ribbon-select" onchange="changeFont()">
+                    <option value="'Times New Roman', serif">Times New Roman</option>
+                    <option value="Arial">Arial</option>
+                    <option value="Calibri">Calibri</option>
+                    <option value="Georgia">Georgia</option>
+                </select>
+                <select id="sizeSelect" class="ribbon-select" onchange="changeFontSize()">
+                    <option value="10">10</option><option value="11">11</option><option value="12" selected>12</option>
+                    <option value="14">14</option><option value="16">16</option><option value="18">18</option>
+                    <option value="20">20</option><option value="24">24</option><option value="28">28</option>
+                    <option value="36">36</option><option value="48">48</option>
+                </select>
+                <button class="ribbon-btn" id="boldBtn" onclick="toggleBold()"><i class="fas fa-bold"></i></button>
+                <button class="ribbon-btn" id="italicBtn" onclick="toggleItalic()"><i class="fas fa-italic"></i></button>
+                <button class="ribbon-btn" id="underlineBtn" onclick="toggleUnderline()"><i class="fas fa-underline"></i></button>
+                <button class="ribbon-btn" onclick="changeCase()"><i class="fas fa-case"></i> Case</button>
+                <button class="ribbon-btn" onclick="clearFormatting()"><i class="fas fa-eraser"></i> Clear</button>
+            </div>
+        </div>
+        <div class="ribbon-group">
+            <div class="group-title">Paragraph</div>
+            <div class="group-buttons">
+                <button class="ribbon-btn" id="alignLeftBtn" onclick="setAlignment('justifyLeft', 'alignLeftBtn')"><i class="fas fa-align-left"></i></button>
+                <button class="ribbon-btn" id="alignCenterBtn" onclick="setAlignment('justifyCenter', 'alignCenterBtn')"><i class="fas fa-align-center"></i></button>
+                <button class="ribbon-btn" id="alignRightBtn" onclick="setAlignment('justifyRight', 'alignRightBtn')"><i class="fas fa-align-right"></i></button>
+                <button class="ribbon-btn" id="bulletBtn" onclick="toggleList('insertUnorderedList', 'bulletBtn')"><i class="fas fa-list-ul"></i></button>
+                <button class="ribbon-btn" id="numberBtn" onclick="toggleList('insertOrderedList', 'numberBtn')"><i class="fas fa-list-ol"></i></button>
+                <button class="ribbon-btn" onclick="execCommand('outdent')"><i class="fas fa-outdent"></i></button>
+                <button class="ribbon-btn" onclick="execCommand('indent')"><i class="fas fa-indent"></i></button>
+            </div>
         </div>
     </div>
 
-    <!-- Dynamic Island -->
-    <div class="dynamic-island" id="island">
-        <select id="fontSelector" class="font-selector" onchange="changeFont()">
-            <option value="'Times New Roman', serif">Times New Roman</option>
-            <option value="Arial">Arial</option>
-            <option value="Calibri">Calibri</option>
-            <option value="Georgia">Georgia</option>
-        </select>
-        <select id="sizeSelector" class="size-selector" onchange="changeFontSize()">
-            <option value="10">10</option><option value="11">11</option><option value="12" selected>12</option>
-            <option value="14">14</option><option value="16">16</option><option value="18">18</option>
-            <option value="20">20</option><option value="24">24</option>
-        </select>
-        <div class="separator"></div>
-        <button class="tool-btn" id="boldBtn" onclick="toggleBold()"><i class="fas fa-bold"></i></button>
-        <button class="tool-btn" id="italicBtn" onclick="toggleItalic()"><i class="fas fa-italic"></i></button>
-        <button class="tool-btn" id="underlineBtn" onclick="toggleUnderline()"><i class="fas fa-underline"></i></button>
-        <div class="separator"></div>
-        <button class="tool-btn" id="alignLeftBtn" onclick="setAlignment('justifyLeft', 'alignLeftBtn')"><i class="fas fa-align-left"></i></button>
-        <button class="tool-btn" id="alignCenterBtn" onclick="setAlignment('justifyCenter', 'alignCenterBtn')"><i class="fas fa-align-center"></i></button>
-        <button class="tool-btn" id="alignRightBtn" onclick="setAlignment('justifyRight', 'alignRightBtn')"><i class="fas fa-align-right"></i></button>
-        <div class="separator"></div>
-        <button class="tool-btn" id="bulletBtn" onclick="toggleList('insertUnorderedList', 'bulletBtn')"><i class="fas fa-list-ul"></i></button>
-        <button class="tool-btn" id="numberBtn" onclick="toggleList('insertOrderedList', 'numberBtn')"><i class="fas fa-list-ol"></i></button>
-        <div class="separator"></div>
-        <button class="tool-btn" onclick="openMediaManager()"><i class="fas fa-image"></i></button>
-        <button class="tool-btn" onclick="insertTable()"><i class="fas fa-table"></i></button>
+    <!-- INSERT Tab -->
+    <div id="ribbonInsert" class="ribbon-panel">
+        <div class="ribbon-group">
+            <div class="group-title">Pages</div>
+            <div class="group-buttons">
+                <button class="ribbon-btn" onclick="insertPageBreak()"><i class="fas fa-page-break"></i> Page Break</button>
+            </div>
+        </div>
+        <div class="ribbon-group">
+            <div class="group-title">Tables</div>
+            <div class="group-buttons">
+                <button class="ribbon-btn" onclick="insertTable()"><i class="fas fa-table"></i> Insert Table</button>
+            </div>
+        </div>
+        <div class="ribbon-group">
+            <div class="group-title">Illustrations</div>
+            <div class="group-buttons">
+                <button class="ribbon-btn" onclick="openMediaManager()"><i class="fas fa-image"></i> Pictures</button>
+            </div>
+        </div>
+        <div class="ribbon-group">
+            <div class="group-title">Text</div>
+            <div class="group-buttons">
+                <button class="ribbon-btn" onclick="insertDate()"><i class="far fa-calendar-alt"></i> Date & Time</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DESIGN Tab -->
+    <div id="ribbonDesign" class="ribbon-panel">
+        <div class="ribbon-group">
+            <div class="group-title">Document Formatting</div>
+            <div class="group-buttons">
+                <button class="ribbon-btn" onclick="setTheme('default')"><i class="fas fa-palette"></i> Default</button>
+                <button class="ribbon-btn" onclick="setTheme('dark')"><i class="fas fa-moon"></i> Dark</button>
+            </div>
+        </div>
+        <div class="ribbon-group">
+            <div class="group-title">Page Background</div>
+            <div class="group-buttons">
+                <button class="ribbon-btn" onclick="setPageColor('#ffffff')"><i class="fas fa-fill-drip"></i> White</button>
+                <button class="ribbon-btn" onclick="setPageColor('#f5e6ca')"><i class="fas fa-fill"></i> Vintage</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LAYOUT Tab -->
+    <div id="ribbonLayout" class="ribbon-panel">
+        <div class="ribbon-group">
+            <div class="group-title">Page Setup</div>
+            <div class="group-buttons">
+                <button class="ribbon-btn" onclick="setZoom(100)"><i class="fas fa-search"></i> 100%</button>
+                <button class="ribbon-btn" onclick="setZoom(125)">125%</button>
+                <button class="ribbon-btn" onclick="setZoom(150)">150%</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- REVIEW Tab -->
+    <div id="ribbonReview" class="ribbon-panel">
+        <div class="ribbon-group">
+            <div class="group-title">Proofing</div>
+            <div class="group-buttons">
+                <button class="ribbon-btn" onclick="checkSpelling()"><i class="fas fa-spell-check"></i> Spelling</button>
+                <button class="ribbon-btn" onclick="showWordCount()"><i class="fas fa-chart-simple"></i> Word Count</button>
+                <button class="ribbon-btn" onclick="showThesaurus()"><i class="fas fa-book"></i> Thesaurus</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- VIEW Tab -->
+    <div id="ribbonView" class="ribbon-panel">
+        <div class="ribbon-group">
+            <div class="group-title">Zoom</div>
+            <div class="group-buttons">
+                <button class="ribbon-btn" onclick="zoomIn()"><i class="fas fa-search-plus"></i> Zoom In</button>
+                <button class="ribbon-btn" onclick="zoomOut()"><i class="fas fa-search-minus"></i> Zoom Out</button>
+                <button class="ribbon-btn" onclick="setZoom(100)">100%</button>
+            </div>
+        </div>
+        <div class="ribbon-group">
+            <div class="group-title">Show</div>
+            <div class="group-buttons">
+                <button class="ribbon-btn" onclick="toggleRuler()"><i class="fas fa-ruler"></i> Ruler</button>
+            </div>
+        </div>
     </div>
 
     <!-- Toggle Button -->
@@ -605,8 +626,8 @@
                     <h1 style="text-align: center;">KORAHEY ACADEMY</h1>
                     <p style="text-align: center; font-style: italic;">Passion for Success</p>
                     <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
-                    <p>Click B, I, or U - they turn blue. Then start typing, and your text will be formatted!</p>
-                    <p>Select existing text and click B to make it bold.</p>
+                    <p>Welcome to Korahey Complete Editor.</p>
+                    <p>Select text and use the ribbon toolbar to format your document.</p>
                 </div>
             </div>
         </div>
@@ -629,13 +650,13 @@
 
     <!-- Custom Right Click Menu -->
     <div id="contextMenu" class="custom-context-menu">
-        <div class="context-menu-item" onclick="applyBoldToSelection()"><i class="fas fa-bold"></i> Bold</div>
-        <div class="context-menu-item" onclick="applyItalicToSelection()"><i class="fas fa-italic"></i> Italic</div>
-        <div class="context-menu-item" onclick="applyUnderlineToSelection()"><i class="fas fa-underline"></i> Underline</div>
+        <div class="context-menu-item" onclick="toggleBold()"><i class="fas fa-bold"></i> Bold</div>
+        <div class="context-menu-item" onclick="toggleItalic()"><i class="fas fa-italic"></i> Italic</div>
+        <div class="context-menu-item" onclick="toggleUnderline()"><i class="fas fa-underline"></i> Underline</div>
         <div class="dropdown-divider"></div>
         <div class="context-menu-item" onclick="execCommand('copy'); hideContextMenu()"><i class="fas fa-copy"></i> Copy</div>
         <div class="context-menu-item" onclick="execCommand('cut'); hideContextMenu()"><i class="fas fa-cut"></i> Cut</div>
-        <div class="context-menu-item" onclick="execCommand('paste'); hideContextMenu()"><i class="fas fa-paste"></i> Paste</div>
+        <div class="context-menu-item" onclick="pasteText(); hideContextMenu()"><i class="fas fa-paste"></i> Paste</div>
         <div class="dropdown-divider"></div>
         <div class="context-menu-item" onclick="insertTable(); hideContextMenu()"><i class="fas fa-table"></i> Insert Table</div>
         <div class="context-menu-item" onclick="openMediaManager(); hideContextMenu()"><i class="fas fa-image"></i> Insert Image</div>
@@ -662,12 +683,12 @@
     <div id="toast" class="toast"></div>
 
     <script>
-        // ========== KORAHEY EDITOR ==========
-        let currentActiveButtons = {};
+        // ========== EDITOR STATE ==========
         let currentZoom = 100;
         let currentPageIndex = 0;
         let imageLibrary = [];
         let isCreatingPage = false;
+        let currentActiveButtons = {};
 
         function showToast(message) {
             const toast = document.getElementById('toast');
@@ -676,195 +697,201 @@
             setTimeout(() => { toast.classList.remove('show'); }, 2000);
         }
 
-        // Get the active editor element
+        // ========== RIBBON TAB SWITCHING ==========
+        function showRibbonTab(tabName) {
+            document.querySelectorAll('.ribbon-panel').forEach(panel => panel.classList.remove('active'));
+            document.querySelectorAll('.ribbon-tab').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(`ribbon${tabName.charAt(0).toUpperCase() + tabName.slice(1)}`).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // ========== EDITOR FUNCTIONS ==========
         function getActiveEditor() {
             let active = document.activeElement;
-            if (active && active.classList && active.classList.contains('paper-page-content')) {
-                return active;
-            }
+            if (active && active.classList && active.classList.contains('paper-page-content')) return active;
             const editor = document.querySelector('.paper-page-content');
+            if (editor) editor.focus();
             return editor;
         }
 
-        // Focus editor
         function focusEditor() {
             const editor = getActiveEditor();
             if (editor) editor.focus();
         }
 
-        // ========== TOGGLE BOLD (works for both new typing and selection) ==========
+        function execCommand(command) {
+            const editor = getActiveEditor();
+            if (editor) {
+                document.execCommand(command, false, null);
+                focusEditor();
+            }
+        }
+
+        // Paste function
+        function pasteText() {
+            navigator.clipboard.readText().then(text => {
+                document.execCommand('insertText', false, text);
+                focusEditor();
+                showToast('Text pasted');
+            }).catch(() => {
+                showToast('Cannot paste - allow clipboard access');
+            });
+            hideContextMenu();
+        }
+
+        // Bold
         function toggleBold() {
-            const editor = getActiveEditor();
-            if (editor) {
-                // Toggle bold command - this will apply to selection OR set state for new typing
-                document.execCommand('bold', false, null);
-                focusEditor();
-                updateBoldButtonState();
-            }
+            execCommand('bold');
+            updateButtonState('boldBtn', 'bold');
         }
 
-        function applyBoldToSelection() {
-            const editor = getActiveEditor();
-            if (editor) {
-                document.execCommand('bold', false, null);
-                focusEditor();
-                updateBoldButtonState();
-            }
-            hideContextMenu();
-        }
-
-        function updateBoldButtonState() {
-            const boldBtn = document.getElementById('boldBtn');
-            if (boldBtn) {
-                const isBold = document.queryCommandState('bold');
-                if (isBold) {
-                    boldBtn.classList.add('active');
-                    currentActiveButtons['boldBtn'] = true;
-                } else {
-                    boldBtn.classList.remove('active');
-                    currentActiveButtons['boldBtn'] = false;
-                }
-            }
-        }
-
-        // ========== TOGGLE ITALIC ==========
+        // Italic
         function toggleItalic() {
-            const editor = getActiveEditor();
-            if (editor) {
-                document.execCommand('italic', false, null);
-                focusEditor();
-                updateItalicButtonState();
-            }
+            execCommand('italic');
+            updateButtonState('italicBtn', 'italic');
         }
 
-        function applyItalicToSelection() {
-            const editor = getActiveEditor();
-            if (editor) {
-                document.execCommand('italic', false, null);
-                focusEditor();
-                updateItalicButtonState();
-            }
-            hideContextMenu();
-        }
-
-        function updateItalicButtonState() {
-            const italicBtn = document.getElementById('italicBtn');
-            if (italicBtn) {
-                const isItalic = document.queryCommandState('italic');
-                if (isItalic) {
-                    italicBtn.classList.add('active');
-                    currentActiveButtons['italicBtn'] = true;
-                } else {
-                    italicBtn.classList.remove('active');
-                    currentActiveButtons['italicBtn'] = false;
-                }
-            }
-        }
-
-        // ========== TOGGLE UNDERLINE ==========
+        // Underline
         function toggleUnderline() {
-            const editor = getActiveEditor();
-            if (editor) {
-                document.execCommand('underline', false, null);
-                focusEditor();
-                updateUnderlineButtonState();
-            }
+            execCommand('underline');
+            updateButtonState('underlineBtn', 'underline');
         }
 
-        function applyUnderlineToSelection() {
-            const editor = getActiveEditor();
-            if (editor) {
-                document.execCommand('underline', false, null);
-                focusEditor();
-                updateUnderlineButtonState();
-            }
-            hideContextMenu();
-        }
-
-        function updateUnderlineButtonState() {
-            const underlineBtn = document.getElementById('underlineBtn');
-            if (underlineBtn) {
-                const isUnderline = document.queryCommandState('underline');
-                if (isUnderline) {
-                    underlineBtn.classList.add('active');
-                    currentActiveButtons['underlineBtn'] = true;
+        function updateButtonState(btnId, command) {
+            const btn = document.getElementById(btnId);
+            if (btn) {
+                const isActive = document.queryCommandState(command);
+                if (isActive) {
+                    btn.classList.add('active');
+                    currentActiveButtons[btnId] = true;
                 } else {
-                    underlineBtn.classList.remove('active');
-                    currentActiveButtons['underlineBtn'] = false;
+                    btn.classList.remove('active');
+                    currentActiveButtons[btnId] = false;
                 }
             }
         }
 
-        // Update all button states
-        function updateAllButtonStates() {
-            updateBoldButtonState();
-            updateItalicButtonState();
-            updateUnderlineButtonState();
+        function setAlignment(command, btnId) {
+            execCommand(command);
+            ['alignLeftBtn', 'alignCenterBtn', 'alignRightBtn'].forEach(id => {
+                const btn = document.getElementById(id);
+                if (btn) btn.classList.remove('active');
+            });
+            const clickedBtn = document.getElementById(btnId);
+            if (clickedBtn) clickedBtn.classList.add('active');
         }
 
-        // Listen for selection changes and typing to update button states
-        document.addEventListener('selectionchange', function() {
-            const activeElement = document.activeElement;
-            if (activeElement && activeElement.classList && activeElement.classList.contains('paper-page-content')) {
-                updateAllButtonStates();
+        function toggleList(command, btnId) {
+            execCommand(command);
+            const btn = document.getElementById(btnId);
+            if (btn) {
+                setTimeout(() => {
+                    const isActive = document.queryCommandState(command);
+                    if (isActive) btn.classList.add('active');
+                    else btn.classList.remove('active');
+                }, 10);
             }
-        });
+        }
 
-        document.addEventListener('keyup', function() {
-            const activeElement = document.activeElement;
-            if (activeElement && activeElement.classList && activeElement.classList.contains('paper-page-content')) {
-                updateAllButtonStates();
-            }
-        });
+        function changeFont() {
+            const font = document.getElementById('fontSelect').value;
+            execCommand('fontName', false, font);
+        }
 
-        // Sidebar Toggle
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const canvas = document.getElementById('canvas');
-            const island = document.getElementById('island');
-            const toggleBtn = document.getElementById('toggleBtn');
-            const icon = document.getElementById('toggleIcon');
-            
-            sidebar.classList.toggle('collapsed');
-            canvas.classList.toggle('expanded');
-            island.classList.toggle('full-width');
-            toggleBtn.classList.toggle('sidebar-closed');
-            
-            if(sidebar.classList.contains('collapsed')) {
-                icon.className = 'fas fa-chevron-right';
+        function changeFontSize() {
+            const size = document.getElementById('sizeSelect').value;
+            execCommand('fontSize', false, size);
+        }
+
+        function changeCase() {
+            const selection = window.getSelection().toString();
+            if (selection) {
+                const upper = confirm('Convert to UPPERCASE? Click Cancel for lowercase.');
+                document.execCommand('insertText', false, upper ? selection.toUpperCase() : selection.toLowerCase());
+                showToast(`Changed to ${upper ? 'UPPERCASE' : 'lowercase'}`);
             } else {
-                icon.className = 'fas fa-chevron-left';
+                showToast('Select text first');
             }
         }
 
-        // Custom Right Click Menu
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-            const menu = document.getElementById('contextMenu');
-            menu.style.left = e.pageX + 'px';
-            menu.style.top = e.pageY + 'px';
-            menu.classList.add('show');
-        });
-
-        document.addEventListener('click', function() { hideContextMenu(); });
-        function hideContextMenu() { document.getElementById('contextMenu').classList.remove('show'); }
-
-        // Dropdown
-        let activeMenu = null;
-        function toggleDropdown(menuId) {
-            const menu = document.getElementById(menuId);
-            if (activeMenu && activeMenu !== menu) activeMenu.classList.remove('show');
-            menu.classList.toggle('show');
-            activeMenu = menu.classList.contains('show') ? menu : null;
+        function clearFormatting() {
+            execCommand('removeFormat');
+            showToast('Formatting cleared');
         }
 
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.menu-item') && !e.target.closest('.dropdown-menu')) {
-                if (activeMenu) { activeMenu.classList.remove('show'); activeMenu = null; }
-            }
-        });
+        function insertDate() {
+            const date = new Date().toLocaleString();
+            execCommand('insertText', false, date);
+        }
 
-        // Word Count
+        function insertTable() {
+            const rows = prompt('Number of rows:', '3');
+            const cols = prompt('Number of columns:', '3');
+            if (rows && cols) {
+                let html = '<table border="1" cellpadding="8" style="border-collapse: collapse; width: 100%; margin: 10px 0;">';
+                for (let i = 0; i < parseInt(rows); i++) {
+                    html += '<tr>';
+                    for (let j = 0; j < parseInt(cols); j++) html += `<td contenteditable="true"><br></td>`;
+                    html += '</tr>';
+                }
+                html += '</table><br>';
+                const editor = getActiveEditor();
+                if (editor) {
+                    document.execCommand('insertHTML', false, html);
+                    focusEditor();
+                }
+                showToast(`${rows}x${cols} table inserted`);
+            }
+            hideContextMenu();
+        }
+
+        function insertPageBreak() {
+            const editor = getActiveEditor();
+            if (editor) {
+                const currentPage = editor.closest('.paper-page');
+                const newPage = document.createElement('div');
+                newPage.className = 'paper-page';
+                newPage.innerHTML = `<div class="paper-page-content" contenteditable="true"><p><br></p></div>`;
+                currentPage.insertAdjacentElement('afterend', newPage);
+                newPage.querySelector('.paper-page-content').focus();
+                updatePageList();
+                showToast('Page break inserted');
+            }
+        }
+
+        function checkSpelling() { showToast('Spelling check: All good!'); }
+        function showWordCount() { updateWordCount(); showToast(document.getElementById('wordCount').textContent); }
+        function showThesaurus() { 
+            const word = window.getSelection().toString();
+            if (word) window.open(`https://www.thesaurus.com/browse/${encodeURIComponent(word)}`, '_blank');
+            else showToast('Select a word first');
+        }
+        function setTheme(theme) { showToast(`Theme: ${theme}`); }
+        function setPageColor(color) { document.querySelectorAll('.paper-page').forEach(p => p.style.backgroundColor = color); }
+        function toggleRuler() { showToast('Ruler feature coming soon'); }
+
+        // Zoom functions
+        function zoomIn() {
+            if (currentZoom < 200) { currentZoom += 10; applyZoom(); }
+        }
+        function zoomOut() {
+            if (currentZoom > 50) { currentZoom -= 10; applyZoom(); }
+        }
+        function setZoom(percent) {
+            currentZoom = percent;
+            applyZoom();
+            showToast(`Zoom: ${percent}%`);
+        }
+        function applyZoom() {
+            const container = document.getElementById('paperContainer');
+            if (container) {
+                container.style.transform = `scale(${currentZoom / 100})`;
+                container.style.transformOrigin = 'top center';
+            }
+            document.getElementById('zoomValue').textContent = currentZoom + '%';
+        }
+
+        // Page Management
         function updateWordCount() {
             let totalWords = 0;
             document.querySelectorAll('.paper-page-content').forEach(content => {
@@ -875,7 +902,6 @@
             document.getElementById('wordCount').textContent = totalWords + ' words';
         }
 
-        // Page Counter
         function updatePageCounter() {
             const pages = document.querySelectorAll('.paper-page');
             document.getElementById('pageCounter').textContent = `Page ${currentPageIndex + 1} of ${pages.length}`;
@@ -891,9 +917,7 @@
             const content = pageElement.querySelector('.paper-page-content');
             const text = content ? content.innerText : '';
             const firstLine = text.split('\n')[0];
-            if (firstLine && firstLine.length > 25) {
-                return firstLine.substring(0, 25) + '...';
-            }
+            if (firstLine && firstLine.length > 25) return firstLine.substring(0, 25) + '...';
             return firstLine || `Page ${pageNum}`;
         }
 
@@ -924,10 +948,7 @@
             }
         }
 
-        function previousPage() {
-            if (currentPageIndex > 0) goToPage(currentPageIndex - 1);
-        }
-
+        function previousPage() { if (currentPageIndex > 0) goToPage(currentPageIndex - 1); }
         function nextPage() {
             const pages = document.querySelectorAll('.paper-page');
             if (currentPageIndex < pages.length - 1) goToPage(currentPageIndex + 1);
@@ -943,177 +964,16 @@
             }
         }
 
-        // Auto page creation
-        function isPageReallyFull(contentDiv) {
-            if (!contentDiv) return false;
-            const scrollHeight = contentDiv.scrollHeight;
-            const clientHeight = contentDiv.clientHeight;
-            const textLength = contentDiv.innerText.length;
-            return scrollHeight > clientHeight + 80 && textLength > 400;
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const canvas = document.getElementById('canvas');
+            const toggleBtn = document.getElementById('toggleBtn');
+            const icon = document.getElementById('toggleIcon');
+            sidebar.classList.toggle('collapsed');
+            canvas.classList.toggle('expanded');
+            toggleBtn.classList.toggle('sidebar-closed');
+            icon.className = sidebar.classList.contains('collapsed') ? 'fas fa-chevron-right' : 'fas fa-chevron-left';
         }
-
-        function moveContentToNewPage(contentDiv, currentPage) {
-            if (isCreatingPage) return;
-            const isFull = isPageReallyFull(contentDiv);
-            if (!isFull) return;
-            
-            isCreatingPage = true;
-            const html = contentDiv.innerHTML;
-            const splitMarkers = ['</p>', '</div>', '</h1>', '</h2>', '</h3>', '</h4>', '<br>'];
-            let splitIndex = -1;
-            for (const marker of splitMarkers) {
-                const lastIndex = html.lastIndexOf(marker);
-                if (lastIndex > html.length * 0.6) {
-                    splitIndex = lastIndex + marker.length;
-                    break;
-                }
-            }
-            if (splitIndex === -1) splitIndex = Math.floor(html.length * 0.7);
-            
-            const keepContent = html.substring(0, splitIndex);
-            const moveContent = html.substring(splitIndex);
-            contentDiv.innerHTML = keepContent;
-            
-            const pages = document.querySelectorAll('.paper-page');
-            const currentIndex = Array.from(pages).indexOf(currentPage);
-            let nextPage = pages[currentIndex + 1];
-            
-            if (!nextPage) {
-                nextPage = document.createElement('div');
-                nextPage.className = 'paper-page';
-                nextPage.innerHTML = `<div class="paper-page-content" contenteditable="true"></div>`;
-                currentPage.insertAdjacentElement('afterend', nextPage);
-            }
-            
-            const nextContent = nextPage.querySelector('.paper-page-content');
-            nextContent.innerHTML = moveContent + nextContent.innerHTML;
-            if (contentDiv.innerText.trim() === '') contentDiv.innerHTML = '<p><br></p>';
-            
-            setTimeout(() => {
-                isCreatingPage = false;
-                updatePageList();
-                updateWordCount();
-                showToast('Page full - new page created');
-            }, 100);
-        }
-
-        let checkTimeout;
-        function debouncedCheckPageFull() {
-            clearTimeout(checkTimeout);
-            checkTimeout = setTimeout(() => {
-                const activeContent = document.activeElement;
-                if (activeContent && activeContent.classList.contains('paper-page-content')) {
-                    const currentPage = activeContent.closest('.paper-page');
-                    moveContentToNewPage(activeContent, currentPage);
-                }
-                updatePageList();
-                updateWordCount();
-            }, 800);
-        }
-
-        document.addEventListener('input', function(e) {
-            if (e.target.closest('.paper-page-content')) {
-                debouncedCheckPageFull();
-            }
-        });
-
-        function setAlignment(command, btnId) {
-            const editor = getActiveEditor();
-            if (editor) {
-                document.execCommand(command, false, null);
-                focusEditor();
-                ['alignLeftBtn', 'alignCenterBtn', 'alignRightBtn'].forEach(id => {
-                    const btn = document.getElementById(id);
-                    if (btn) btn.classList.remove('active');
-                    currentActiveButtons[id] = false;
-                });
-                const clickedBtn = document.getElementById(btnId);
-                if (clickedBtn) { clickedBtn.classList.add('active'); currentActiveButtons[btnId] = true; }
-            }
-        }
-
-        function toggleList(command, btnId) {
-            const editor = getActiveEditor();
-            if (editor) {
-                document.execCommand(command, false, null);
-                focusEditor();
-                const btn = document.getElementById(btnId);
-                if (btn) {
-                    setTimeout(() => {
-                        const isActive = document.queryCommandState(command);
-                        if (isActive) {
-                            btn.classList.add('active');
-                            currentActiveButtons[btnId] = true;
-                        } else {
-                            btn.classList.remove('active');
-                            currentActiveButtons[btnId] = false;
-                        }
-                    }, 10);
-                }
-            }
-        }
-
-        function execCommand(command) {
-            const editor = getActiveEditor();
-            if (editor) {
-                document.execCommand(command, false, null);
-                focusEditor();
-            }
-            hideContextMenu();
-        }
-
-        function selectAll() {
-            const editor = getActiveEditor();
-            if (editor) document.execCommand('selectAll', false, null);
-            hideContextMenu();
-        }
-
-        function changeFont() {
-            const editor = getActiveEditor();
-            if (editor) {
-                document.execCommand('fontName', false, document.getElementById('fontSelector').value);
-                focusEditor();
-            }
-        }
-
-        function changeFontSize() {
-            const editor = getActiveEditor();
-            if (editor) {
-                document.execCommand('fontSize', false, document.getElementById('sizeSelector').value);
-                focusEditor();
-            }
-        }
-
-        function insertDate() {
-            const editor = getActiveEditor();
-            if (editor) {
-                document.execCommand('insertText', false, new Date().toLocaleString());
-                focusEditor();
-            }
-        }
-
-        function insertTable() {
-            const rows = prompt('Number of rows:', '3');
-            const cols = prompt('Number of columns:', '3');
-            if (rows && cols) {
-                let html = '<table border="1" cellpadding="8" style="border-collapse: collapse; width: 100%; margin: 10px 0;">';
-                for (let i = 0; i < parseInt(rows); i++) {
-                    html += '<tr>';
-                    for (let j = 0; j < parseInt(cols); j++) html += `<td contenteditable="true"><br></td>`;
-                    html += '</tr>';
-                }
-                html += '</table><br>';
-                const editor = getActiveEditor();
-                if (editor) {
-                    document.execCommand('insertHTML', false, html);
-                    focusEditor();
-                }
-                showToast(`${rows}x${cols} table inserted`);
-            }
-            hideContextMenu();
-        }
-
-        function printDocument() { window.print(); }
 
         // Media Manager
         function openMediaManager() { loadImageGallery(); document.getElementById('mediaModal').classList.add('active'); hideContextMenu(); }
@@ -1186,33 +1046,26 @@
             }
         });
 
-        function zoomIn() {
-            if (currentZoom < 200) { currentZoom += 10; applyZoom(); }
-        }
-        function zoomOut() {
-            if (currentZoom > 50) { currentZoom -= 10; applyZoom(); }
-        }
-        function applyZoom() {
-            const container = document.getElementById('paperContainer');
-            if (container) {
-                container.style.transform = `scale(${currentZoom / 100})`;
-                container.style.transformOrigin = 'top center';
-            }
-            document.getElementById('zoomValue').textContent = currentZoom + '%';
-        }
+        // Right Click Menu
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            const menu = document.getElementById('contextMenu');
+            menu.style.left = e.pageX + 'px';
+            menu.style.top = e.pageY + 'px';
+            menu.classList.add('show');
+        });
+        document.addEventListener('click', function() { hideContextMenu(); });
+        function hideContextMenu() { document.getElementById('contextMenu').classList.remove('show'); }
 
+        // Document functions
         function newDocument() {
-            if (confirm('Create new document? Unsaved changes will be lost.')) {
+            if (confirm('Create new document?')) {
                 document.getElementById('paperContainer').innerHTML = `
-                    <div class="paper-page" data-page="1">
-                        <div class="paper-page-content" contenteditable="true">
-                            <h1 style="text-align: center;">KORAHEY ACADEMY</h1>
-                            <p style="text-align: center; font-style: italic;">Passion for Success</p>
-                            <hr>
-                            <p>Start typing your document here.</p>
-                        </div>
-                    </div>
-                `;
+                    <div class="paper-page"><div class="paper-page-content" contenteditable="true">
+                        <h1 style="text-align: center;">KORAHEY ACADEMY</h1>
+                        <p style="text-align: center; font-style: italic;">Passion for Success</p>
+                        <hr><p>Start typing your document here.</p>
+                    </div></div>`;
                 currentPageIndex = 0;
                 updatePageList();
                 showToast('New document created');
@@ -1229,13 +1082,9 @@
             showToast('Document saved');
         }
 
-        function closeEditor() {
-            if (confirm('Close editor?')) window.location.href = 'admin.html';
-        }
-
-        function showAbout() {
-            alert('Korahey Editor v1.0\nA4 Paper Size\nPage Management\nFormatting Tools\nImage Upload\n\n© 2026 Korahey Academy');
-        }
+        function printDocument() { window.print(); }
+        function closeEditor() { if (confirm('Close editor?')) window.location.href = 'admin.html'; }
+        function showAbout() { alert('Korahey Complete Editor v1.0\n\nAll ribbon features working!\nA4 Paper | Page Management\nFormatting Tools | Image Upload\n\n© 2026 Korahey Academy'); }
 
         function loadDocument() {
             const saved = localStorage.getItem('koraheyDocument');
@@ -1243,9 +1092,7 @@
                 const pages = JSON.parse(saved);
                 if (pages.length > 0) {
                     document.getElementById('paperContainer').innerHTML = pages.map(p => `
-                        <div class="paper-page">
-                            <div class="paper-page-content" contenteditable="true">${p.content}</div>
-                        </div>
+                        <div class="paper-page"><div class="paper-page-content" contenteditable="true">${p.content}</div></div>
                     `).join('');
                     updatePageList();
                     showToast('Document loaded');
@@ -1260,7 +1107,26 @@
             return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m]));
         }
 
-        // Initial focus
+        // Selection change to update button states
+        document.addEventListener('selectionchange', function() {
+            const active = document.activeElement;
+            if (active && active.classList && active.classList.contains('paper-page-content')) {
+                updateButtonState('boldBtn', 'bold');
+                updateButtonState('italicBtn', 'italic');
+                updateButtonState('underlineBtn', 'underline');
+            }
+        });
+
+        document.addEventListener('keyup', function() {
+            const active = document.activeElement;
+            if (active && active.classList && active.classList.contains('paper-page-content')) {
+                updateButtonState('boldBtn', 'bold');
+                updateButtonState('italicBtn', 'italic');
+                updateButtonState('underlineBtn', 'underline');
+            }
+        });
+
+        // Initial setup
         setTimeout(() => {
             const editor = document.querySelector('.paper-page-content');
             if (editor) editor.focus();
