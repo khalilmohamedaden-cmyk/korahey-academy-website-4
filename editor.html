@@ -34,7 +34,7 @@
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-            z-index: 1000;
+            z-index: 1001;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -70,7 +70,7 @@
 
         .top-btn:hover { background: rgba(0, 0, 0, 0.1); }
 
-        /* Ribbon Tabs Container */
+        /* Ribbon Tabs - Hover activated */
         .ribbon-container {
             position: fixed;
             top: 48px;
@@ -78,15 +78,9 @@
             right: 0;
             background: #ffffff;
             border-bottom: 1px solid #e0e0e0;
-            z-index: 999;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
         }
 
-        .ribbon-container.collapsed {
-            transform: translateY(-100%);
-        }
-
-        /* Ribbon Tabs Header */
         .ribbon-tabs-header {
             display: flex;
             justify-content: center;
@@ -103,6 +97,7 @@
             transition: all 0.2s;
             color: #555;
             font-weight: 500;
+            position: relative;
         }
 
         .ribbon-tab:hover {
@@ -114,40 +109,22 @@
             color: white;
         }
 
-        /* Ribbon Toggle Button */
-        .ribbon-toggle-btn {
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 28px;
-            height: 28px;
-            background: #f5f5f5;
-            border: 1px solid #e0e0e0;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-            color: #666;
-            z-index: 1000;
-        }
-
-        .ribbon-toggle-btn:hover {
-            background: #e8e8e8;
-            transform: translateY(-50%) scale(1.05);
-        }
-
-        /* Ribbon Panel Content */
+        /* Ribbon Panel - Hover dropdown style */
         .ribbon-panel {
-            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            border-top: 1px solid #e0e0e0;
+            border-bottom: 1px solid #e0e0e0;
             padding: 12px 20px;
+            display: none;
             flex-wrap: wrap;
             gap: 20px;
             justify-content: center;
-            border-top: 1px solid #e0e0e0;
-            transition: all 0.3s ease;
+            z-index: 999;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
 
         .ribbon-panel.active {
@@ -216,7 +193,7 @@
             cursor: pointer;
         }
 
-        /* Dynamic Island - FIXED: Higher z-index */
+        /* Dynamic Island - HIGHER Z-INDEX */
         .dynamic-island {
             position: fixed;
             top: 100px;
@@ -225,17 +202,12 @@
             background: #ffffff;
             border-radius: 50px;
             padding: 8px 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
             border: 1px solid rgba(0, 0, 0, 0.08);
             z-index: 1002;
             display: flex;
             gap: 8px;
             align-items: center;
-            transition: top 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .dynamic-island.ribbon-collapsed {
-            top: 60px;
         }
 
         .tool-btn {
@@ -299,12 +271,8 @@
             border-right: 1px solid rgba(0, 0, 0, 0.08);
             display: flex;
             flex-direction: column;
-            z-index: 1001;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), top 0.3s ease;
-        }
-
-        .left-panel.ribbon-collapsed {
-            top: 108px;
+            z-index: 998;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .left-panel.collapsed { transform: translateX(-100%); }
@@ -323,12 +291,8 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            z-index: 1100;
-            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), top 0.3s ease;
-        }
-
-        .panel-toggle-btn.ribbon-collapsed {
-            top: 120px;
+            z-index: 1002;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .panel-toggle-btn.sidebar-closed { left: 10px; }
@@ -442,7 +406,7 @@
             font-family: 'Times New Roman', serif;
         }
 
-        /* Canvas Area */
+        /* Canvas Area - UPDATED to move when sidebar closes */
         .canvas-center {
             position: absolute;
             top: 148px;
@@ -452,11 +416,12 @@
             overflow-y: auto;
             padding: 40px 40px 150px 40px;
             scroll-behavior: smooth;
-            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), top 0.3s ease;
-        }
-
-        .canvas-center.ribbon-collapsed {
-            top: 108px;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #f5f5f7;
+            z-index: 1;
         }
 
         .canvas-center.expanded { left: 0; }
@@ -639,22 +604,19 @@
         </div>
     </div>
 
-    <!-- Ribbon Container with Toggle -->
-    <div class="ribbon-container" id="ribbonContainer">
+    <!-- Ribbon Container with Hover Dropdowns -->
+    <div class="ribbon-container">
         <div class="ribbon-tabs-header">
-            <div class="ribbon-tab active" data-tab="home" onclick="showRibbonTab('home')">Home</div>
-            <div class="ribbon-tab" data-tab="insert" onclick="showRibbonTab('insert')">Insert</div>
-            <div class="ribbon-tab" data-tab="design" onclick="showRibbonTab('design')">Design</div>
-            <div class="ribbon-tab" data-tab="layout" onclick="showRibbonTab('layout')">Layout</div>
-            <div class="ribbon-tab" data-tab="review" onclick="showRibbonTab('review')">Review</div>
-            <div class="ribbon-tab" data-tab="view" onclick="showRibbonTab('view')">View</div>
-            <div class="ribbon-toggle-btn" id="ribbonToggleBtn" onclick="toggleRibbon()">
-                <i class="fas fa-chevron-up" id="ribbonToggleIcon"></i>
-            </div>
+            <div class="ribbon-tab" data-tab="home" onmouseenter="showRibbonPanel('home')">Home</div>
+            <div class="ribbon-tab" data-tab="insert" onmouseenter="showRibbonPanel('insert')">Insert</div>
+            <div class="ribbon-tab" data-tab="design" onmouseenter="showRibbonPanel('design')">Design</div>
+            <div class="ribbon-tab" data-tab="layout" onmouseenter="showRibbonPanel('layout')">Layout</div>
+            <div class="ribbon-tab" data-tab="review" onmouseenter="showRibbonPanel('review')">Review</div>
+            <div class="ribbon-tab" data-tab="view" onmouseenter="showRibbonPanel('view')">View</div>
         </div>
 
-        <!-- HOME Tab -->
-        <div id="ribbonHome" class="ribbon-panel active">
+        <!-- HOME Panel -->
+        <div id="ribbonHome" class="ribbon-panel">
             <div class="ribbon-group">
                 <div class="group-title">Clipboard</div>
                 <div class="group-buttons">
@@ -679,7 +641,7 @@
             </div>
         </div>
 
-        <!-- INSERT Tab -->
+        <!-- INSERT Panel -->
         <div id="ribbonInsert" class="ribbon-panel">
             <div class="ribbon-group">
                 <div class="group-title">Pages</div>
@@ -707,7 +669,7 @@
             </div>
         </div>
 
-        <!-- DESIGN Tab -->
+        <!-- DESIGN Panel -->
         <div id="ribbonDesign" class="ribbon-panel">
             <div class="ribbon-group">
                 <div class="group-title">Document Formatting</div>
@@ -726,7 +688,7 @@
             </div>
         </div>
 
-        <!-- LAYOUT Tab -->
+        <!-- LAYOUT Panel -->
         <div id="ribbonLayout" class="ribbon-panel">
             <div class="ribbon-group">
                 <div class="group-title">Page Setup</div>
@@ -737,7 +699,7 @@
             </div>
         </div>
 
-        <!-- REVIEW Tab -->
+        <!-- REVIEW Panel -->
         <div id="ribbonReview" class="ribbon-panel">
             <div class="ribbon-group">
                 <div class="group-title">Proofing</div>
@@ -748,7 +710,7 @@
             </div>
         </div>
 
-        <!-- VIEW Tab -->
+        <!-- VIEW Panel -->
         <div id="ribbonView" class="ribbon-panel">
             <div class="ribbon-group">
                 <div class="group-title">Zoom</div>
@@ -761,8 +723,8 @@
         </div>
     </div>
 
-    <!-- Dynamic Island -->
-    <div class="dynamic-island" id="dynamicIsland">
+    <!-- Dynamic Island - HIGHER Z-INDEX to stay on top -->
+    <div class="dynamic-island">
         <select id="fontSelector" class="font-selector" onchange="changeFont()">
             <option value="'Times New Roman', serif">Times New Roman</option>
             <option value="Arial">Arial</option>
@@ -775,9 +737,9 @@
             <option value="20">20</option><option value="24">24</option>
         </select>
         <div class="separator"></div>
-        <button class="tool-btn" id="boldBtn" onclick="toggleBold()"><b>B</b></button>
-        <button class="tool-btn" id="italicBtn" onclick="toggleItalic()"><i>I</i></button>
-        <button class="tool-btn" id="underlineBtn" onclick="toggleUnderline()"><u>U</u></button>
+        <button class="tool-btn" id="boldBtn" onclick="toggleBold()">B</button>
+        <button class="tool-btn" id="italicBtn" onclick="toggleItalic()">I</button>
+        <button class="tool-btn" id="underlineBtn" onclick="toggleUnderline()">U</button>
         <div class="separator"></div>
         <button class="tool-btn" id="alignLeftBtn" onclick="setAlignment('justifyLeft', 'alignLeftBtn')"><i class="fas fa-align-left"></i></button>
         <button class="tool-btn" id="alignCenterBtn" onclick="setAlignment('justifyCenter', 'alignCenterBtn')"><i class="fas fa-align-center"></i></button>
@@ -811,7 +773,7 @@
                     <h1 style="text-align: center;">KORAHEY ACADEMY</h1>
                     <p style="text-align: center; font-style: italic;">Passion for Success</p>
                     <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
-                    <p>Welcome to Korahey Editor. Select text and use the toolbar to format.</p>
+                    <p>Welcome to Korahey Editor. Hover over Home, Insert, Design, Layout, Review, or View to see options.</p>
                 </div>
             </div>
         </div>
@@ -872,7 +834,7 @@
         let currentPageIndex = 0;
         let imageLibrary = [];
         let currentActiveButtons = {};
-        let ribbonCollapsed = false;
+        let hoverTimeout;
 
         function showToast(message) {
             const toast = document.getElementById('toast');
@@ -881,49 +843,49 @@
             setTimeout(() => { toast.classList.remove('show'); }, 2000);
         }
 
-        // ========== TOGGLE RIBBON ==========
-        function toggleRibbon() {
-            const ribbonContainer = document.getElementById('ribbonContainer');
-            const dynamicIsland = document.getElementById('dynamicIsland');
-            const leftPanel = document.getElementById('sidebar');
-            const canvas = document.getElementById('canvas');
-            const panelToggle = document.getElementById('toggleBtn');
-            const icon = document.getElementById('ribbonToggleIcon');
+        // ========== HOVER RIBBON PANELS ==========
+        function showRibbonPanel(tabName) {
+            // Clear any pending hide timeout
+            if (hoverTimeout) clearTimeout(hoverTimeout);
             
-            ribbonCollapsed = !ribbonCollapsed;
-            
-            if (ribbonCollapsed) {
-                ribbonContainer.classList.add('collapsed');
-                dynamicIsland.classList.add('ribbon-collapsed');
-                leftPanel.classList.add('ribbon-collapsed');
-                canvas.classList.add('ribbon-collapsed');
-                panelToggle.classList.add('ribbon-collapsed');
-                icon.classList.remove('fa-chevron-up');
-                icon.classList.add('fa-chevron-down');
-            } else {
-                ribbonContainer.classList.remove('collapsed');
-                dynamicIsland.classList.remove('ribbon-collapsed');
-                leftPanel.classList.remove('ribbon-collapsed');
-                canvas.classList.remove('ribbon-collapsed');
-                panelToggle.classList.remove('ribbon-collapsed');
-                icon.classList.remove('fa-chevron-down');
-                icon.classList.add('fa-chevron-up');
-            }
-        }
-
-        // ========== RIBBON TAB SWITCHING ==========
-        function showRibbonTab(tabName) {
             // Hide all panels
             document.querySelectorAll('.ribbon-panel').forEach(panel => panel.classList.remove('active'));
-            // Remove active class from all tabs
             document.querySelectorAll('.ribbon-tab').forEach(tab => tab.classList.remove('active'));
+            
             // Show selected panel
-            const panelId = `ribbon${tabName.charAt(0).toUpperCase() + tabName.slice(1)}`;
-            const selectedPanel = document.getElementById(panelId);
-            if (selectedPanel) selectedPanel.classList.add('active');
-            // Add active class to clicked tab
-            event.target.classList.add('active');
+            const panel = document.getElementById(`ribbon${tabName.charAt(0).toUpperCase() + tabName.slice(1)}`);
+            const tab = document.querySelector(`.ribbon-tab[data-tab="${tabName}"]`);
+            
+            if (panel) panel.classList.add('active');
+            if (tab) tab.classList.add('active');
         }
+
+        function hideRibbonPanel() {
+            hoverTimeout = setTimeout(() => {
+                document.querySelectorAll('.ribbon-panel').forEach(panel => panel.classList.remove('active'));
+                document.querySelectorAll('.ribbon-tab').forEach(tab => tab.classList.remove('active'));
+            }, 200);
+        }
+
+        // Add hover listeners to ribbon tabs
+        document.querySelectorAll('.ribbon-tab').forEach(tab => {
+            tab.addEventListener('mouseenter', () => {
+                const tabName = tab.getAttribute('data-tab');
+                showRibbonPanel(tabName);
+            });
+        });
+
+        // Hide panel when mouse leaves the ribbon container
+        const ribbonContainer = document.querySelector('.ribbon-container');
+        ribbonContainer.addEventListener('mouseleave', hideRibbonPanel);
+
+        // Keep panel open when hovering over the panel itself
+        document.querySelectorAll('.ribbon-panel').forEach(panel => {
+            panel.addEventListener('mouseenter', () => {
+                if (hoverTimeout) clearTimeout(hoverTimeout);
+            });
+            panel.addEventListener('mouseleave', hideRibbonPanel);
+        });
 
         // ========== EDITOR FUNCTIONS ==========
         function getActiveEditor() {
@@ -1047,7 +1009,7 @@
                 let html = '<table border="1" cellpadding="8" style="border-collapse: collapse; width: 100%; margin: 10px 0;">';
                 for (let i = 0; i < parseInt(rows); i++) {
                     html += '<tr>';
-                    for (let j = 0; j < parseInt(cols); j++) html += `<td contenteditable="true"><br><td>`;
+                    for (let j = 0; j < parseInt(cols); j++) html += `<td contenteditable="true"><br></td>`;
                     html += '</tr>';
                 }
                 html += '</table><br>';
@@ -1100,7 +1062,7 @@
             document.getElementById('zoomValue').textContent = currentZoom + '%';
         }
 
-        // Page Management - FIXED: Better page closing behavior
+        // Page Management
         function updateWordCount() {
             let totalWords = 0;
             document.querySelectorAll('.paper-page-content').forEach(content => {
@@ -1157,41 +1119,19 @@
             }
         }
 
-        function previousPage() { 
-            if (currentPageIndex > 0) goToPage(currentPageIndex - 1); 
-        }
-        
+        function previousPage() { if (currentPageIndex > 0) goToPage(currentPageIndex - 1); }
         function nextPage() {
             const pages = document.querySelectorAll('.paper-page');
             if (currentPageIndex < pages.length - 1) goToPage(currentPageIndex + 1);
         }
 
-        // FIXED: Delete page with proper navigation
         function deletePage(index) {
             const pages = document.querySelectorAll('.paper-page');
             if (pages.length > 1) {
-                // Remove the page
                 pages[index].remove();
-                
-                // Adjust current page index
-                if (currentPageIndex >= pages.length - 1) {
-                    currentPageIndex = Math.max(0, pages.length - 2);
-                } else if (currentPageIndex > index) {
-                    currentPageIndex--;
-                }
-                
-                // Update UI
+                if (currentPageIndex >= pages.length - 1) currentPageIndex = Math.max(0, pages.length - 2);
                 updatePageList();
-                
-                // Scroll to the now-active page
-                const newPages = document.querySelectorAll('.paper-page');
-                if (newPages[currentPageIndex]) {
-                    newPages[currentPageIndex].scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-                
                 showToast('Page deleted');
-            } else {
-                showToast('Cannot delete the last page');
             }
         }
 
