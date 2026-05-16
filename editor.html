@@ -175,7 +175,7 @@
 
         .ribbon-btn:hover { background: #f0f0f0; }
 
-        /* Dynamic Island - FIXED POSITION (moved down more) */
+        /* Dynamic Island */
         .dynamic-island {
             position: fixed;
             top: 100px;
@@ -193,9 +193,7 @@
             transition: top 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
         }
         
-        .dynamic-island.ribbon-open { 
-            top: 200px; 
-        }
+        .dynamic-island.ribbon-open { top: 200px; }
 
         .tool-btn {
             background: transparent;
@@ -231,7 +229,7 @@
             cursor: pointer;
         }
 
-        /* Sidebar Layout - FIXED POSITION */
+        /* Sidebar */
         .left-panel {
             position: fixed;
             left: 0;
@@ -336,7 +334,7 @@
             overflow: hidden;
         }
 
-        /* Canvas Area - FIXED POSITION */
+        /* Canvas Area */
         .canvas-center {
             position: absolute;
             top: 100px;
@@ -375,6 +373,152 @@
             line-height: 1.6;
             min-height: 297mm;
         }
+
+        /* Media Manager Modal */
+        .media-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .media-modal.active { display: flex; }
+        
+        .media-modal-content {
+            width: 90%;
+            max-width: 900px;
+            max-height: 80vh;
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+        }
+        
+        .media-modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .media-modal-header h2 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+        }
+        
+        .close-modal:hover { color: #333; }
+        
+        .media-modal-body {
+            padding: 24px;
+            overflow-y: auto;
+        }
+        
+        .upload-area {
+            border: 2px dashed #ccc;
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            margin-bottom: 24px;
+            transition: all 0.2s;
+        }
+        
+        .upload-area.drag-over {
+            border-color: var(--apple-blue);
+            background: rgba(0,113,227,0.05);
+        }
+        
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 16px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .image-card {
+            background: #f5f5f7;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+        
+        .image-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        
+        .image-card img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+        }
+        
+        .image-card-info {
+            padding: 8px;
+            font-size: 11px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .delete-image-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #999;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        
+        .delete-image-btn:hover {
+            background: rgba(255,59,48,0.1);
+            color: #ff3b30;
+        }
+
+        /* Image Toolbar */
+        .image-toolbar {
+            position: fixed;
+            background: white;
+            border-radius: 40px;
+            padding: 8px 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: none;
+            gap: 8px;
+            z-index: 1005;
+        }
+        
+        .image-toolbar button {
+            background: none;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+        
+        .image-toolbar button:hover { background: #f0f0f0; }
 
         /* Bottom Bar */
         .bottom-bar {
@@ -468,7 +612,6 @@
     <div class="ribbon-container" id="ribbonContainer">
         <!-- HOME TAB -->
         <div id="ribbonHome" class="ribbon-panel active">
-            <!-- Clipboard Group -->
             <div class="ribbon-group">
                 <div class="group-title">CLIPBOARD</div>
                 <div class="group-buttons">
@@ -479,7 +622,6 @@
                     <button class="ribbon-btn" onclick="execCommand('redo')"><i class="fas fa-redo"></i> Redo</button>
                 </div>
             </div>
-            <!-- Paragraph Group -->
             <div class="ribbon-group">
                 <div class="group-title">PARAGRAPH</div>
                 <div class="group-buttons">
@@ -497,7 +639,6 @@
                     </select>
                 </div>
             </div>
-            <!-- Font Group -->
             <div class="ribbon-group">
                 <div class="group-title">FONT</div>
                 <div class="group-buttons">
@@ -525,7 +666,6 @@
                     <button class="ribbon-btn" onclick="clearFormatting()"><i class="fas fa-eraser"></i> Clear</button>
                 </div>
             </div>
-            <!-- Styles Group -->
             <div class="ribbon-group">
                 <div class="group-title">STYLES</div>
                 <div class="group-buttons">
@@ -555,7 +695,7 @@
             <div class="ribbon-group">
                 <div class="group-title">Images</div>
                 <div class="group-buttons">
-                    <button class="ribbon-btn" onclick="insertImage()"><i class="fas fa-image"></i> Picture</button>
+                    <button class="ribbon-btn" onclick="openMediaManager()"><i class="fas fa-image"></i> Media from Korahey</button>
                 </div>
             </div>
             <div class="ribbon-group">
@@ -665,13 +805,39 @@
                     <h1 style="text-align: center;">KORAHEY ACADEMY</h1>
                     <p style="text-align: center; font-style: italic;">Professional Document Editor</p>
                     <hr>
-                    <p>Welcome to Korahey Editor. All buttons are fully functional!</p>
-                    <p><b>Features:</b> Bold, Italic, Underline, Strike, Text Color, Highlight, Clear Formatting</p>
-                    <p>Alignment: Left, Center, Right, Justify | Lists: Bullets, Numbering | Indent, Outdent</p>
-                    <p>Line Spacing: 1.0, 1.15, 1.5, 2.0, 2.5, 3.0 | Styles: Normal, Heading 1, Heading 2, Title, Subtitle</p>
+                    <p>Welcome to Korahey Editor. Click "Media from Korahey" in the Insert tab to open the Media Manager.</p>
+                    <p>You can upload images, then double-click to insert them into your document.</p>
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Media Manager Modal -->
+    <div id="mediaModal" class="media-modal">
+        <div class="media-modal-content">
+            <div class="media-modal-header">
+                <h2><i class="fas fa-images"></i> Media from Korahey</h2>
+                <button class="close-modal" onclick="closeMediaManager()">&times;</button>
+            </div>
+            <div class="media-modal-body">
+                <div class="upload-area" id="uploadArea">
+                    <i class="fas fa-cloud-upload-alt" style="font-size: 48px; color: var(--apple-blue);"></i>
+                    <p>Drag & drop images here or click to upload</p>
+                    <input type="file" id="fileInput" accept="image/*" multiple style="display: none;">
+                    <button class="top-btn" style="margin-top: 12px;" onclick="triggerFileUpload()">Select Files</button>
+                </div>
+                <div class="image-grid" id="imageGrid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Toolbar -->
+    <div id="imageToolbar" class="image-toolbar">
+        <button onclick="alignImage('left')" title="Align Left"><i class="fas fa-align-left"></i></button>
+        <button onclick="alignImage('center')" title="Align Center"><i class="fas fa-align-center"></i></button>
+        <button onclick="alignImage('right')" title="Align Right"><i class="fas fa-align-right"></i></button>
+        <button onclick="alignImage('reset')" title="Reset"><i class="fas fa-undo"></i></button>
+        <button onclick="deleteSelectedImage()" title="Delete"><i class="fas fa-trash"></i></button>
     </div>
 
     <!-- Bottom Bar -->
@@ -697,6 +863,8 @@
         let currentPageIndex = 0;
         let hoverTimeout;
         let isRibbonOpen = false;
+        let imageLibrary = [];
+        let selectedImageElement = null;
 
         function showToast(message) {
             const toast = document.getElementById('toast');
@@ -704,6 +872,172 @@
             toast.classList.add('show');
             setTimeout(() => { toast.classList.remove('show'); }, 2000);
         }
+
+        // ========== MEDIA MANAGER ==========
+        function openMediaManager() {
+            loadImages();
+            document.getElementById('mediaModal').classList.add('active');
+        }
+        
+        function closeMediaManager() {
+            document.getElementById('mediaModal').classList.remove('active');
+        }
+        
+        function triggerFileUpload() {
+            document.getElementById('fileInput').click();
+        }
+        
+        function loadImages() {
+            const saved = localStorage.getItem('koraheyImageLibrary');
+            if (saved) imageLibrary = JSON.parse(saved);
+            const grid = document.getElementById('imageGrid');
+            if (imageLibrary.length === 0) {
+                grid.innerHTML = '<p style="text-align:center; color:#999; padding:40px;">No images yet. Upload some!</p>';
+                return;
+            }
+            grid.innerHTML = imageLibrary.map((img, idx) => `
+                <div class="image-card" ondblclick="insertImageFromLibrary('${img.src}')">
+                    <img src="${img.src}">
+                    <div class="image-card-info">
+                        <span>${img.name.substring(0, 15)}</span>
+                        <button class="delete-image-btn" onclick="event.stopPropagation(); deleteImage(${idx})"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function deleteImage(index) {
+            if (confirm('Delete this image permanently?')) {
+                imageLibrary.splice(index, 1);
+                localStorage.setItem('koraheyImageLibrary', JSON.stringify(imageLibrary));
+                loadImages();
+                showToast('Image deleted');
+            }
+        }
+        
+        function insertImageFromLibrary(src) {
+            insertImageIntoEditor(src);
+            closeMediaManager();
+        }
+        
+        function insertImageIntoEditor(src) {
+            const editor = getActiveEditor();
+            if (!editor) return;
+            const img = `<img src="${src}" style="max-width:300px; margin:10px; cursor:pointer; border-radius:4px;" class="editable-image" onclick="selectImage(this)">`;
+            document.execCommand('insertHTML', false, img);
+            showToast('Image inserted');
+        }
+        
+        // Setup file upload
+        const fileInput = document.getElementById('fileInput');
+        fileInput.onchange = function(e) {
+            const files = Array.from(e.target.files);
+            files.forEach((file, i) => {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    imageLibrary.push({
+                        id: Date.now() + i,
+                        src: event.target.result,
+                        name: file.name
+                    });
+                    localStorage.setItem('koraheyImageLibrary', JSON.stringify(imageLibrary));
+                    loadImages();
+                    showToast(`${file.name} uploaded`);
+                };
+                reader.readAsDataURL(file);
+            });
+        };
+        
+        // Drag and drop for upload area
+        const uploadArea = document.getElementById('uploadArea');
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('drag-over');
+        });
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('drag-over');
+        });
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('drag-over');
+            const files = Array.from(e.dataTransfer.files);
+            files.forEach((file, i) => {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        imageLibrary.push({
+                            id: Date.now() + i,
+                            src: event.target.result,
+                            name: file.name
+                        });
+                        localStorage.setItem('koraheyImageLibrary', JSON.stringify(imageLibrary));
+                        loadImages();
+                        showToast(`${file.name} uploaded`);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+        uploadArea.addEventListener('click', () => fileInput.click());
+        
+        // ========== IMAGE SELECTION & ALIGNMENT ==========
+        function selectImage(img) {
+            if (selectedImageElement) {
+                selectedImageElement.classList.remove('image-selected');
+            }
+            selectedImageElement = img;
+            selectedImageElement.classList.add('image-selected');
+            
+            const toolbar = document.getElementById('imageToolbar');
+            const rect = img.getBoundingClientRect();
+            toolbar.style.display = 'flex';
+            toolbar.style.left = rect.left + 'px';
+            toolbar.style.top = (rect.top - 50) + 'px';
+        }
+        
+        function alignImage(alignment) {
+            if (!selectedImageElement) return;
+            if (alignment === 'left') {
+                selectedImageElement.style.float = 'left';
+                selectedImageElement.style.margin = '10px 20px 10px 0';
+                selectedImageElement.style.display = 'block';
+            } else if (alignment === 'center') {
+                selectedImageElement.style.float = 'none';
+                selectedImageElement.style.display = 'block';
+                selectedImageElement.style.margin = '10px auto';
+            } else if (alignment === 'right') {
+                selectedImageElement.style.float = 'right';
+                selectedImageElement.style.margin = '10px 0 10px 20px';
+                selectedImageElement.style.display = 'block';
+            } else if (alignment === 'reset') {
+                selectedImageElement.style.float = 'none';
+                selectedImageElement.style.display = 'inline-block';
+                selectedImageElement.style.margin = '10px';
+            }
+            showToast(`Image aligned ${alignment}`);
+            document.getElementById('imageToolbar').style.display = 'none';
+            selectedImageElement.classList.remove('image-selected');
+            selectedImageElement = null;
+        }
+        
+        function deleteSelectedImage() {
+            if (selectedImageElement) {
+                selectedImageElement.remove();
+                showToast('Image deleted');
+                document.getElementById('imageToolbar').style.display = 'none';
+                selectedImageElement = null;
+            }
+        }
+        
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.editable-image') && !e.target.closest('#imageToolbar')) {
+                document.getElementById('imageToolbar').style.display = 'none';
+                if (selectedImageElement) {
+                    selectedImageElement.classList.remove('image-selected');
+                    selectedImageElement = null;
+                }
+            }
+        });
 
         // ========== EDITOR CORE FUNCTIONS ==========
         function getActiveEditor() {
@@ -776,12 +1110,12 @@
         }
         
         function changeTextColor() {
-            const color = prompt('Enter color name or hex (e.g., red, #ff0000):', '#000000');
+            const color = prompt('Enter color name or hex:', '#000000');
             if (color) execCommand('foreColor', color);
         }
         
         function changeHighlight() {
-            const color = prompt('Enter highlight color (e.g., yellow, #ffff00):', '#ffff00');
+            const color = prompt('Enter highlight color:', '#ffff00');
             if (color) execCommand('backColor', color);
         }
         
@@ -831,15 +1165,6 @@
                 html += '</table>';
                 execCommand('insertHTML', html);
                 showToast(`${rows}x${cols} table inserted`);
-            }
-        }
-        
-        function insertImage() {
-            const url = prompt('Enter image URL:', 'https://picsum.photos/300/200');
-            if (url) {
-                const img = `<img src="${url}" style="max-width:100%; margin:10px 0; border-radius:4px;">`;
-                execCommand('insertHTML', img);
-                showToast('Image inserted');
             }
         }
         
