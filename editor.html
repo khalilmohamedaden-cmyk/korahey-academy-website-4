@@ -107,15 +107,21 @@
             left: 0;
             right: 0;
             background: #ffffff;
-            border-bottom: 1px solid #e0e0e0;
             z-index: 999;
+            overflow: hidden;
+            height: 0;
+            transition: height 0.3s ease;
+        }
+        
+        .ribbon-container.open {
+            height: auto;
+            border-bottom: 1px solid #e0e0e0;
         }
 
         /* Ribbon Panel - Dropdown style */
         .ribbon-panel {
             display: none;
             background: #ffffff;
-            border-top: 1px solid #e0e0e0;
             padding: 12px 20px;
             flex-wrap: wrap;
             gap: 20px;
@@ -864,6 +870,7 @@
         let currentPageIndex = 0;
         let imageLibrary = [];
         let hoverTimeout;
+        let isRibbonOpen = false;
 
         function showToast(message) {
             const toast = document.getElementById('toast');
@@ -877,19 +884,28 @@
         const sidebar = document.getElementById('sidebar');
         const canvas = document.getElementById('canvas');
         const toggleBtn = document.getElementById('toggleBtn');
+        const ribbonContainer = document.getElementById('ribbonContainer');
         
         function moveElementsDown() {
-            dynamicIsland.classList.add('ribbon-open');
-            sidebar.classList.add('ribbon-open');
-            canvas.classList.add('ribbon-open');
-            toggleBtn.classList.add('ribbon-open');
+            if (!isRibbonOpen) {
+                isRibbonOpen = true;
+                dynamicIsland.classList.add('ribbon-open');
+                sidebar.classList.add('ribbon-open');
+                canvas.classList.add('ribbon-open');
+                toggleBtn.classList.add('ribbon-open');
+                ribbonContainer.classList.add('open');
+            }
         }
         
         function moveElementsUp() {
-            dynamicIsland.classList.remove('ribbon-open');
-            sidebar.classList.remove('ribbon-open');
-            canvas.classList.remove('ribbon-open');
-            toggleBtn.classList.remove('ribbon-open');
+            if (isRibbonOpen) {
+                isRibbonOpen = false;
+                dynamicIsland.classList.remove('ribbon-open');
+                sidebar.classList.remove('ribbon-open');
+                canvas.classList.remove('ribbon-open');
+                toggleBtn.classList.remove('ribbon-open');
+                ribbonContainer.classList.remove('open');
+            }
         }
 
         // ========== HOVER RIBBON PANELS (DROP DOWN) ==========
@@ -931,9 +947,8 @@
         });
 
         // Hide panel when mouse leaves the ribbon container
-        const ribbonContainerEl = document.getElementById('ribbonContainer');
-        if (ribbonContainerEl) {
-            ribbonContainerEl.addEventListener('mouseleave', hideRibbonPanel);
+        if (ribbonContainer) {
+            ribbonContainer.addEventListener('mouseleave', hideRibbonPanel);
         }
 
         // Keep panel open when hovering over the panel itself
