@@ -105,7 +105,7 @@
 
         .top-btn:hover { background: rgba(0, 0, 0, 0.1); }
 
-        /* Ribbon Container */
+        /* Ribbon Container - NO WHITE SPACE WHEN CLOSED */
         .ribbon-container {
             position: fixed;
             top: 48px;
@@ -113,9 +113,9 @@
             right: 0;
             background: #ffffff;
             z-index: 999;
-            overflow: hidden;
+            overflow: visible;
             height: 0;
-            transition: height 0.3s ease;
+            transition: height 0.25s ease-out;
         }
         
         .ribbon-container.open {
@@ -126,11 +126,11 @@
         .ribbon-panel {
             display: none;
             background: #ffffff;
-            padding: 12px 20px;
+            padding: 8px 16px;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 16px;
             justify-content: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
         .ribbon-panel.active { display: flex; }
@@ -138,8 +138,8 @@
         .ribbon-group {
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            padding: 0 12px;
+            gap: 6px;
+            padding: 0 10px;
             border-right: 1px solid var(--border-light);
         }
 
@@ -162,7 +162,7 @@
         .ribbon-btn {
             background: transparent;
             border: none;
-            padding: 6px 12px;
+            padding: 4px 10px;
             border-radius: 6px;
             cursor: pointer;
             font-size: 12px;
@@ -175,33 +175,33 @@
 
         .ribbon-btn:hover { background: #f0f0f0; }
 
-        /* Dynamic Island - MOVED DOWN MORE */
+        /* Dynamic Island - PERFECT POSITION */
         .dynamic-island {
             position: fixed;
-            top: 130px;
+            top: 56px;
             left: 50%;
             transform: translateX(-50%);
             background: #ffffff;
             border-radius: 40px;
-            padding: 6px 16px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            padding: 4px 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             border: 1px solid var(--border-light);
             z-index: 1002;
             display: flex;
-            gap: 6px;
+            gap: 4px;
             align-items: center;
-            transition: top 0.3s ease;
+            transition: top 0.25s ease;
         }
         
-        .dynamic-island.ribbon-open { top: 200px; }
+        .dynamic-island.ribbon-open { top: 160px; }
 
         .tool-btn {
             background: transparent;
             border: none;
-            padding: 6px 12px;
+            padding: 5px 10px;
             border-radius: 30px;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 12px;
             transition: all 0.2s;
             color: #555;
             font-weight: 500;
@@ -212,14 +212,14 @@
 
         .separator {
             width: 1px;
-            height: 24px;
+            height: 20px;
             background: rgba(0, 0, 0, 0.1);
             margin: 0 4px;
         }
 
         .font-selector, .size-selector {
-            padding: 6px 12px;
-            border-radius: 40px;
+            padding: 4px 10px;
+            border-radius: 30px;
             border: 1px solid var(--border-light);
             background: white;
             font-size: 12px;
@@ -230,7 +230,7 @@
         .left-panel {
             position: fixed;
             left: 0;
-            top: 130px;
+            top: 56px;
             bottom: 44px;
             width: 280px;
             background: rgba(255, 255, 255, 0.98);
@@ -239,18 +239,18 @@
             display: flex;
             flex-direction: column;
             z-index: 998;
-            transition: transform 0.3s, top 0.3s ease;
+            transition: transform 0.3s, top 0.25s ease;
         }
         
-        .left-panel.ribbon-open { top: 200px; }
+        .left-panel.ribbon-open { top: 160px; }
         .left-panel.collapsed { transform: translateX(-100%); }
 
         .panel-toggle-btn {
             position: fixed;
             left: 245px;
-            top: 142px;
-            width: 28px;
-            height: 28px;
+            top: 68px;
+            width: 26px;
+            height: 26px;
             background: #fff;
             border: 1px solid var(--border-light);
             border-radius: 50%;
@@ -258,19 +258,19 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
             z-index: 1002;
-            transition: left 0.3s, top 0.3s ease;
+            transition: left 0.3s, top 0.25s ease;
         }
         
-        .panel-toggle-btn.ribbon-open { top: 212px; }
+        .panel-toggle-btn.ribbon-open { top: 172px; }
         .panel-toggle-btn.sidebar-closed { left: 10px; }
 
         .sidebar-content {
-            padding: 20px;
+            padding: 16px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 16px;
             overflow-y: auto;
             flex: 1;
         }
@@ -281,20 +281,20 @@
             text-transform: uppercase;
             color: #86868b;
             letter-spacing: 1.2px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .page-list {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
         }
 
         .page-thumb {
             background: white;
             border: 1px solid var(--border-light);
             border-radius: 8px;
-            padding: 10px;
+            padding: 8px;
             cursor: pointer;
             transition: all 0.2s;
         }
@@ -305,42 +305,27 @@
         .thumb-header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .page-number {
             background: rgba(0, 0, 0, 0.05);
             border-radius: 4px;
-            padding: 2px 8px;
+            padding: 2px 6px;
             font-size: 10px;
             font-weight: 600;
-        }
-
-        .delete-page-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: #999;
-        }
-
-        .mini-paper {
-            background: #fafafc;
-            border-radius: 4px;
-            padding: 8px;
-            aspect-ratio: 210 / 297;
-            overflow: hidden;
         }
 
         /* Canvas Area */
         .canvas-center {
             position: absolute;
-            top: 130px;
+            top: 56px;
             left: 280px;
             right: 0;
             bottom: 44px;
             overflow-y: auto;
-            padding: 40px;
-            transition: left 0.3s, top 0.3s ease;
+            padding: 30px;
+            transition: left 0.3s, top 0.25s ease;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -348,7 +333,7 @@
             z-index: 1;
         }
         
-        .canvas-center.ribbon-open { top: 200px; }
+        .canvas-center.ribbon-open { top: 160px; }
         .canvas-center.expanded { left: 0; }
 
         .paper-page {
@@ -357,8 +342,8 @@
             min-width: 210mm;
             max-width: 210mm;
             min-height: 297mm;
-            margin: 20px auto;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin: 0 auto;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
             position: relative;
         }
 
@@ -367,7 +352,7 @@
             outline: none;
             font-family: 'Times New Roman', serif;
             font-size: 12pt;
-            line-height: 1.6;
+            line-height: 1.5;
             min-height: 297mm;
         }
 
@@ -375,7 +360,7 @@
         .resizable-image {
             position: relative;
             display: inline-block;
-            margin: 10px;
+            margin: 8px;
             cursor: default;
         }
         
@@ -385,15 +370,10 @@
             cursor: grab;
             user-select: none;
             border-radius: 4px;
-            transition: all 0.1s ease;
+            transition: box-shadow 0.1s;
         }
         
         .resizable-image img:active { cursor: grabbing; }
-        
-        .resizable-image.dragging {
-            opacity: 0.5;
-            cursor: grabbing;
-        }
         
         .resizable-image.selected {
             outline: 2px solid var(--apple-blue);
@@ -405,33 +385,20 @@
             position: absolute;
             bottom: 0;
             right: 0;
-            width: 16px;
-            height: 16px;
+            width: 14px;
+            height: 14px;
             background: var(--apple-blue);
             cursor: nw-resize;
             border-radius: 2px;
             opacity: 0;
-            transition: opacity 0.2s;
+            transition: opacity 0.15s;
         }
         
         .resizable-image:hover .resize-handle {
             opacity: 1;
         }
-        
-        .image-placeholder {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,113,227,0.2);
-            border: 2px dashed var(--apple-blue);
-            border-radius: 8px;
-            pointer-events: none;
-            z-index: 999;
-        }
 
-        /* Media Manager Modal */
+        /* Media Manager */
         .media-modal {
             display: none;
             position: fixed;
@@ -449,30 +416,30 @@
         .media-modal.active { display: flex; }
         
         .media-modal-content {
-            width: 90%;
-            max-width: 1200px;
-            height: 85vh;
+            width: 85%;
+            max-width: 1000px;
+            height: 80vh;
             background: white;
-            border-radius: 24px;
+            border-radius: 20px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
         }
         
         .media-modal-header {
-            padding: 20px 24px;
+            padding: 16px 20px;
             border-bottom: 1px solid var(--border-light);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         
-        .media-modal-header h2 { font-size: 20px; font-weight: 600; }
+        .media-modal-header h2 { font-size: 18px; font-weight: 600; }
         
         .close-modal {
             background: none;
             border: none;
-            font-size: 24px;
+            font-size: 22px;
             cursor: pointer;
             color: #999;
         }
@@ -484,14 +451,11 @@
         }
         
         .media-sidebar {
-            width: 260px;
+            width: 220px;
             background: var(--sidebar-bg);
             border-right: 1px solid var(--border-light);
-            padding: 20px 0;
-            overflow-y: auto;
+            padding: 16px 0;
         }
-        
-        .media-nav-section { margin-bottom: 24px; }
         
         .media-nav-title {
             padding: 8px 20px;
@@ -502,17 +466,17 @@
         }
         
         .media-nav-item {
-            padding: 10px 20px;
+            padding: 8px 20px;
             display: flex;
             align-items: center;
             gap: 12px;
             cursor: pointer;
             transition: all 0.2s;
-            font-size: 14px;
+            font-size: 13px;
             color: #555;
         }
         
-        .media-nav-item i { width: 20px; }
+        .media-nav-item i { width: 18px; }
         .media-nav-item:hover { background: rgba(0, 0, 0, 0.05); }
         .media-nav-item.active {
             background: rgba(0, 113, 227, 0.1);
@@ -528,7 +492,7 @@
         }
         
         .media-toolbar {
-            padding: 16px 24px;
+            padding: 12px 20px;
             border-bottom: 1px solid var(--border-light);
             display: flex;
             justify-content: space-between;
@@ -539,9 +503,9 @@
             display: flex;
             align-items: center;
             background: #f5f5f7;
-            border-radius: 10px;
-            padding: 8px 16px;
-            width: 250px;
+            border-radius: 8px;
+            padding: 6px 12px;
+            width: 220px;
         }
         
         .search-box input {
@@ -550,32 +514,34 @@
             outline: none;
             margin-left: 8px;
             width: 100%;
+            font-size: 13px;
         }
         
         .upload-btn {
             background: var(--apple-blue);
             color: white;
             border: none;
-            padding: 8px 20px;
+            padding: 6px 16px;
             border-radius: 20px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            font-size: 12px;
         }
         
         .image-grid {
             flex: 1;
             overflow-y: auto;
-            padding: 20px;
+            padding: 16px;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
         }
         
         .image-card {
             background: #f5f5f7;
-            border-radius: 12px;
+            border-radius: 10px;
             overflow: hidden;
             cursor: grab;
             transition: all 0.2s;
@@ -583,21 +549,21 @@
         }
         
         .image-card:active { cursor: grabbing; }
-        .image-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .image-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         
         .image-card img {
             width: 100%;
-            height: 140px;
+            height: 120px;
             object-fit: cover;
             pointer-events: none;
         }
         
         .image-card-actions {
             position: absolute;
-            top: 8px;
-            right: 8px;
+            top: 6px;
+            right: 6px;
             display: none;
-            gap: 8px;
+            gap: 6px;
         }
         
         .image-card:hover .image-card-actions { display: flex; }
@@ -607,30 +573,32 @@
             color: white;
             border: none;
             border-radius: 50%;
-            width: 28px;
-            height: 28px;
+            width: 24px;
+            height: 24px;
             cursor: pointer;
+            font-size: 10px;
         }
 
         /* Image Toolbar */
         .image-toolbar {
             position: fixed;
             background: white;
-            border-radius: 40px;
-            padding: 8px 16px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 30px;
+            padding: 6px 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
             display: none;
-            gap: 8px;
+            gap: 6px;
             z-index: 1005;
         }
         
         .image-toolbar button {
             background: none;
             border: none;
-            padding: 8px;
+            padding: 6px;
             cursor: pointer;
             border-radius: 50%;
             transition: all 0.2s;
+            font-size: 12px;
         }
         
         .image-toolbar button:hover { background: #f0f0f0; }
@@ -641,11 +609,11 @@
             bottom: 0;
             left: 0;
             right: 0;
-            height: 44px;
+            height: 40px;
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(10px);
             border-top: 1px solid var(--border-light);
-            padding: 0 24px;
+            padding: 0 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -655,7 +623,7 @@
 
         .bottom-left {
             display: flex;
-            gap: 24px;
+            gap: 20px;
             align-items: center;
         }
 
@@ -663,7 +631,7 @@
             background: none;
             border: none;
             cursor: pointer;
-            padding: 4px 8px;
+            padding: 4px 6px;
             border-radius: 4px;
             color: #666;
         }
@@ -674,9 +642,9 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,113,227,0.08);
+            background: rgba(0,113,227,0.05);
             border: 2px dashed var(--apple-blue);
-            z-index: 10000;
+            z-index: 9999;
             display: none;
             pointer-events: none;
         }
@@ -689,9 +657,9 @@
             transform: translateX(-50%) translateY(100px);
             background: #333;
             color: white;
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-size: 13px;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-size: 12px;
             z-index: 3000;
             transition: transform 0.3s;
         }
@@ -702,14 +670,6 @@
             .left-panel { transform: translateX(-100%); }
             .panel-toggle-btn { left: 10px; }
             .paper-page { width: 100%; min-width: auto; }
-        }
-
-        @media print {
-            .top-bar, .ribbon-container, .dynamic-island, .left-panel, .panel-toggle-btn, .bottom-bar {
-                display: none !important;
-            }
-            .canvas-center { left: 0; padding: 0; top: 0; }
-            .paper-page { box-shadow: none; margin: 0; page-break-after: always; }
         }
     </style>
 </head>
@@ -745,89 +705,44 @@
                     <button class="ribbon-btn" onclick="execCommand('cut')"><i class="fas fa-cut"></i> Cut</button>
                     <button class="ribbon-btn" onclick="execCommand('copy')"><i class="fas fa-copy"></i> Copy</button>
                     <button class="ribbon-btn" onclick="pasteText()"><i class="fas fa-paste"></i> Paste</button>
-                    <button class="ribbon-btn" onclick="execCommand('undo')"><i class="fas fa-undo"></i> Undo</button>
-                    <button class="ribbon-btn" onclick="execCommand('redo')"><i class="fas fa-redo"></i> Redo</button>
                 </div>
             </div>
             <div class="ribbon-group">
                 <div class="group-title">FONT</div>
                 <div class="group-buttons">
-                    <select id="fontSelector" class="font-selector" onchange="changeFont()" style="width:140px">
+                    <select id="fontSelector" class="font-selector" onchange="changeFont()" style="width:130px">
                         <option value="'Times New Roman', serif">Times New Roman</option>
                         <option value="Arial">Arial</option>
                         <option value="Calibri">Calibri</option>
                         <option value="Georgia">Georgia</option>
-                        <option value="'Courier New', monospace">Courier New</option>
-                        <option value="Verdana">Verdana</option>
                     </select>
-                    <select id="sizeSelector" class="size-selector" onchange="changeFontSize()" style="width:65px">
-                        <option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option>
-                        <option value="12" selected>12</option><option value="14">14</option><option value="16">16</option>
-                        <option value="18">18</option><option value="20">20</option><option value="22">22</option><option value="24">24</option>
-                        <option value="26">26</option><option value="28">28</option><option value="32">32</option><option value="36">36</option>
-                        <option value="48">48</option><option value="72">72</option>
+                    <select id="sizeSelector" class="size-selector" onchange="changeFontSize()" style="width:60px">
+                        <option value="10">10</option><option value="11">11</option><option value="12" selected>12</option>
+                        <option value="14">14</option><option value="16">16</option><option value="18">18</option>
+                        <option value="20">20</option><option value="24">24</option>
                     </select>
-                    <button class="ribbon-btn" id="boldBtn" onclick="toggleBold()"><b>Bold</b></button>
-                    <button class="ribbon-btn" id="italicBtn" onclick="toggleItalic()"><i>Italic</i></button>
-                    <button class="ribbon-btn" id="underlineBtn" onclick="toggleUnderline()"><u>Underline</u></button>
-                    <button class="ribbon-btn" onclick="toggleStrikethrough()"><s>Strike</s></button>
-                    <button class="ribbon-btn" onclick="changeTextColor()"><i class="fas fa-palette"></i> Color</button>
-                    <button class="ribbon-btn" onclick="changeHighlight()"><i class="fas fa-highlighter"></i> Highlight</button>
-                    <button class="ribbon-btn" onclick="clearFormatting()"><i class="fas fa-eraser"></i> Clear</button>
+                    <button class="ribbon-btn" id="boldBtn" onclick="toggleBold()"><b>B</b></button>
+                    <button class="ribbon-btn" id="italicBtn" onclick="toggleItalic()"><i>I</i></button>
+                    <button class="ribbon-btn" id="underlineBtn" onclick="toggleUnderline()"><u>U</u></button>
                 </div>
             </div>
             <div class="ribbon-group">
                 <div class="group-title">PARAGRAPH</div>
                 <div class="group-buttons">
-                    <button class="ribbon-btn" id="alignLeftBtn" onclick="setAlignment('justifyLeft')"><i class="fas fa-align-left"></i> Left</button>
-                    <button class="ribbon-btn" id="alignCenterBtn" onclick="setAlignment('justifyCenter')"><i class="fas fa-align-center"></i> Center</button>
-                    <button class="ribbon-btn" id="alignRightBtn" onclick="setAlignment('justifyRight')"><i class="fas fa-align-right"></i> Right</button>
-                    <button class="ribbon-btn" onclick="execCommand('justifyFull')"><i class="fas fa-align-justify"></i> Justify</button>
-                    <button class="ribbon-btn" onclick="toggleList('insertUnorderedList')"><i class="fas fa-list-ul"></i> Bullets</button>
-                    <button class="ribbon-btn" onclick="toggleList('insertOrderedList')"><i class="fas fa-list-ol"></i> Numbering</button>
-                    <button class="ribbon-btn" onclick="execCommand('outdent')"><i class="fas fa-outdent"></i> Outdent</button>
-                    <button class="ribbon-btn" onclick="execCommand('indent')"><i class="fas fa-indent"></i> Indent</button>
-                    <select id="lineSpacingSelect" class="size-selector" onchange="changeLineSpacing()" style="width:65px">
-                        <option value="1">1.0</option><option value="1.15">1.15</option><option value="1.5" selected>1.5</option>
-                        <option value="2">2.0</option><option value="2.5">2.5</option><option value="3">3.0</option>
-                    </select>
-                </div>
-            </div>
-            <div class="ribbon-group">
-                <div class="group-title">STYLES</div>
-                <div class="group-buttons">
-                    <button class="ribbon-btn" onclick="applyStyle('normal')">Normal</button>
-                    <button class="ribbon-btn" onclick="applyStyle('heading1')"><b>Heading 1</b></button>
-                    <button class="ribbon-btn" onclick="applyStyle('heading2')"><b>Heading 2</b></button>
-                    <button class="ribbon-btn" onclick="applyStyle('title')">Title</button>
-                    <button class="ribbon-btn" onclick="applyStyle('subtitle')">Subtitle</button>
+                    <button class="ribbon-btn" onclick="execCommand('justifyLeft')"><i class="fas fa-align-left"></i></button>
+                    <button class="ribbon-btn" onclick="execCommand('justifyCenter')"><i class="fas fa-align-center"></i></button>
+                    <button class="ribbon-btn" onclick="execCommand('justifyRight')"><i class="fas fa-align-right"></i></button>
+                    <button class="ribbon-btn" onclick="toggleList('insertUnorderedList')"><i class="fas fa-list-ul"></i></button>
+                    <button class="ribbon-btn" onclick="toggleList('insertOrderedList')"><i class="fas fa-list-ol"></i></button>
                 </div>
             </div>
         </div>
 
         <div id="ribbonInsert" class="ribbon-panel">
             <div class="ribbon-group">
-                <div class="group-title">Pages</div>
-                <div class="group-buttons">
-                    <button class="ribbon-btn" onclick="insertPageBreak()"><i class="fas fa-page-break"></i> Page Break</button>
-                </div>
-            </div>
-            <div class="ribbon-group">
-                <div class="group-title">Tables</div>
-                <div class="group-buttons">
-                    <button class="ribbon-btn" onclick="insertTable()"><i class="fas fa-table"></i> Insert Table</button>
-                </div>
-            </div>
-            <div class="ribbon-group">
                 <div class="group-title">Images</div>
                 <div class="group-buttons">
                     <button class="ribbon-btn" onclick="openMediaManager()"><i class="fas fa-image"></i> Media from Korahey</button>
-                </div>
-            </div>
-            <div class="ribbon-group">
-                <div class="group-title">Text</div>
-                <div class="group-buttons">
-                    <button class="ribbon-btn" onclick="insertDate()"><i class="fas fa-calendar"></i> Date & Time</button>
                 </div>
             </div>
         </div>
@@ -838,15 +753,6 @@
                 <div class="group-buttons">
                     <button class="ribbon-btn" onclick="setPageColor('#ffffff')">White</button>
                     <button class="ribbon-btn" onclick="setPageColor('#f5e6ca')">Vintage</button>
-                    <button class="ribbon-btn" onclick="setPageColor('#e8f4f8')">Light Blue</button>
-                    <button class="ribbon-btn" onclick="setPageColor('#f0f8e8')">Mint</button>
-                </div>
-            </div>
-            <div class="ribbon-group">
-                <div class="group-title">Page Borders</div>
-                <div class="group-buttons">
-                    <button class="ribbon-btn" onclick="addPageBorder()"><i class="fas fa-border-all"></i> Add Border</button>
-                    <button class="ribbon-btn" onclick="removeBorder()"><i class="fas fa-border-none"></i> Remove Border</button>
                 </div>
             </div>
         </div>
@@ -860,20 +766,12 @@
                     <button class="ribbon-btn" onclick="setMargins('wide')">Wide</button>
                 </div>
             </div>
-            <div class="ribbon-group">
-                <div class="group-title">Orientation</div>
-                <div class="group-buttons">
-                    <button class="ribbon-btn" onclick="setOrientation('portrait')">Portrait</button>
-                    <button class="ribbon-btn" onclick="setOrientation('landscape')">Landscape</button>
-                </div>
-            </div>
         </div>
 
         <div id="ribbonReview" class="ribbon-panel">
             <div class="ribbon-group">
                 <div class="group-title">Proofing</div>
                 <div class="group-buttons">
-                    <button class="ribbon-btn" onclick="checkSpelling()"><i class="fas fa-spell-check"></i> Spelling</button>
                     <button class="ribbon-btn" onclick="showWordCount()"><i class="fas fa-calculator"></i> Word Count</button>
                 </div>
             </div>
@@ -883,8 +781,8 @@
             <div class="ribbon-group">
                 <div class="group-title">Zoom</div>
                 <div class="group-buttons">
-                    <button class="ribbon-btn" onclick="zoomIn()"><i class="fas fa-search-plus"></i> Zoom In</button>
-                    <button class="ribbon-btn" onclick="zoomOut()"><i class="fas fa-search-minus"></i> Zoom Out</button>
+                    <button class="ribbon-btn" onclick="zoomIn()"><i class="fas fa-search-plus"></i></button>
+                    <button class="ribbon-btn" onclick="zoomOut()"><i class="fas fa-search-minus"></i></button>
                     <button class="ribbon-btn" onclick="setZoom(100)">100%</button>
                 </div>
             </div>
@@ -915,7 +813,7 @@
         <div class="sidebar-content">
             <div class="panel-title">📄 PAGES</div>
             <div class="page-list" id="pageList"></div>
-            <button class="ribbon-btn" onclick="addBlankPage()" style="width:100%; margin-top:12px;"><i class="fas fa-plus"></i> Add Page</button>
+            <button class="ribbon-btn" onclick="addBlankPage()" style="width:100%"><i class="fas fa-plus"></i> Add Page</button>
         </div>
     </div>
 
@@ -927,8 +825,8 @@
                     <h1 style="text-align: center;">KORAHEY ACADEMY</h1>
                     <p style="text-align: center; font-style: italic;">Professional Document Editor</p>
                     <hr>
-                    <p>Welcome to Korahey Editor! Drag & drop images from the Media Manager directly onto this page.</p>
-                    <p>Click any image to see alignment options. Drag the corner to resize!</p>
+                    <p>Drag & drop images from the Media Manager directly onto this page!</p>
+                    <p>Click any image → alignment toolbar appears. Drag the corner to resize.</p>
                 </div>
             </div>
         </div>
@@ -943,14 +841,9 @@
             </div>
             <div class="media-modal-body">
                 <div class="media-sidebar">
-                    <div class="media-nav-section">
-                        <div class="media-nav-title">MANAGE</div>
-                        <div class="media-nav-item active" onclick="switchMediaTab('all')">
-                            <i class="fas fa-database"></i> All Media
-                        </div>
-                        <div class="media-nav-item" onclick="switchMediaTab('uploads')">
-                            <i class="fas fa-upload"></i> Uploads
-                        </div>
+                    <div class="media-nav-title">MANAGE</div>
+                    <div class="media-nav-item active" onclick="switchMediaTab('all')">
+                        <i class="fas fa-database"></i> All Media
                     </div>
                 </div>
                 <div class="media-main">
@@ -971,9 +864,9 @@
 
     <!-- Image Toolbar -->
     <div id="imageToolbar" class="image-toolbar">
-        <button onclick="alignImage('left')" title="Align Left"><i class="fas fa-align-left"></i></button>
-        <button onclick="alignImage('center')" title="Align Center"><i class="fas fa-align-center"></i></button>
-        <button onclick="alignImage('right')" title="Align Right"><i class="fas fa-align-right"></i></button>
+        <button onclick="alignImage('left')" title="Left"><i class="fas fa-align-left"></i></button>
+        <button onclick="alignImage('center')" title="Center"><i class="fas fa-align-center"></i></button>
+        <button onclick="alignImage('right')" title="Right"><i class="fas fa-align-right"></i></button>
         <button onclick="alignImage('reset')" title="Reset"><i class="fas fa-undo"></i></button>
         <button onclick="deleteSelectedImage()" title="Delete"><i class="fas fa-trash"></i></button>
     </div>
@@ -994,6 +887,7 @@
         let isResizing = false;
         let currentResizeImage = null;
         let startX, startY, startWidth;
+        let draggedImageSrc = null;
 
         function showToast(message) {
             const toast = document.getElementById('toast');
@@ -1014,7 +908,7 @@
         
         function switchMediaTab(tab) {
             document.querySelectorAll('.media-nav-item').forEach(item => item.classList.remove('active'));
-            event.target.closest('.media-nav-item').classList.add('active');
+            if(event.target.closest('.media-nav-item')) event.target.closest('.media-nav-item').classList.add('active');
             loadImageGallery();
         }
         
@@ -1045,7 +939,6 @@
                         id: Date.now() + i,
                         src: e.target.result,
                         name: file.name,
-                        type: 'upload'
                     });
                     localStorage.setItem('koraheyImageLibrary', JSON.stringify(imageLibrary));
                     loadImageGallery();
@@ -1060,7 +953,7 @@
             if (saved) imageLibrary = JSON.parse(saved);
             const grid = document.getElementById('imageGrid');
             if (imageLibrary.length === 0) {
-                grid.innerHTML = '<div style="text-align:center; padding:60px; color:#999;"><i class="fas fa-cloud-upload-alt" style="font-size:48px;"></i><br>No images yet. Upload some!</div>';
+                grid.innerHTML = '<div style="text-align:center; padding:40px; color:#999;"><i class="fas fa-cloud-upload-alt" style="font-size:40px;"></i><br>No images yet. Upload some!</div>';
                 return;
             }
             grid.innerHTML = imageLibrary.map((img, idx) => `
@@ -1089,15 +982,13 @@
         }
         
         // ========== SUPERIOR DRAG & DROP ==========
-        let draggedImageSrc = null;
-        
         function dragStartHandler(e) {
             const card = e.target.closest('.image-card');
             if (card) {
                 draggedImageSrc = card.getAttribute('data-src');
                 e.dataTransfer.setData('text/plain', draggedImageSrc);
                 e.dataTransfer.effectAllowed = 'copy';
-                e.target.style.opacity = '0.5';
+                e.target.style.opacity = '0.4';
             }
         }
         
@@ -1142,7 +1033,7 @@
             
             const img = document.createElement('img');
             img.src = src;
-            img.style.maxWidth = '250px';
+            img.style.maxWidth = '200px';
             img.style.height = 'auto';
             img.style.cursor = 'grab';
             img.draggable = false;
@@ -1163,7 +1054,7 @@
             const range = selection.getRangeAt(0);
             range.insertNode(container);
             
-            showToast('Image added! Drag corner to resize.');
+            showToast('Image added! Drag the blue corner to resize.');
         }
         
         // ========== RESIZE FUNCTION ==========
@@ -1207,28 +1098,28 @@
             const rect = container.getBoundingClientRect();
             toolbar.style.display = 'flex';
             toolbar.style.left = rect.left + 'px';
-            toolbar.style.top = (rect.top - 50) + 'px';
+            toolbar.style.top = (rect.top - 45) + 'px';
         }
         
         function alignImage(alignment) {
             if (!selectedImageContainer) return;
             if (alignment === 'left') {
                 selectedImageContainer.style.float = 'left';
-                selectedImageContainer.style.margin = '10px 20px 10px 0';
+                selectedImageContainer.style.margin = '8px 16px 8px 0';
                 selectedImageContainer.style.display = 'block';
             } else if (alignment === 'center') {
                 selectedImageContainer.style.float = 'none';
                 selectedImageContainer.style.display = 'block';
-                selectedImageContainer.style.margin = '10px auto';
+                selectedImageContainer.style.margin = '8px auto';
                 selectedImageContainer.style.textAlign = 'center';
             } else if (alignment === 'right') {
                 selectedImageContainer.style.float = 'right';
-                selectedImageContainer.style.margin = '10px 0 10px 20px';
+                selectedImageContainer.style.margin = '8px 0 8px 16px';
                 selectedImageContainer.style.display = 'block';
             } else if (alignment === 'reset') {
                 selectedImageContainer.style.float = 'none';
                 selectedImageContainer.style.display = 'inline-block';
-                selectedImageContainer.style.margin = '10px';
+                selectedImageContainer.style.margin = '8px';
             }
             showToast(`Image aligned ${alignment}`);
             document.getElementById('imageToolbar').style.display = 'none';
@@ -1255,7 +1146,7 @@
             }
         });
 
-        // ========== EDITOR CORE FUNCTIONS ==========
+        // ========== EDITOR CORE ==========
         function getActiveEditor() {
             let active = document.activeElement;
             if (active && active.classList && active.classList.contains('paper-page-content')) return active;
@@ -1283,7 +1174,6 @@
         function toggleBold() { execCommand('bold'); updateButtonStates(); }
         function toggleItalic() { execCommand('italic'); updateButtonStates(); }
         function toggleUnderline() { execCommand('underline'); updateButtonStates(); }
-        function toggleStrikethrough() { execCommand('strikeThrough'); updateButtonStates(); }
         
         function updateButtonStates() {
             const boldBtn = document.getElementById('boldBtn');
@@ -1294,119 +1184,9 @@
             if (underlineBtn) underlineBtn.classList.toggle('active', document.queryCommandState('underline'));
         }
         
-        function setAlignment(command) {
-            execCommand(command);
-            const leftBtn = document.getElementById('alignLeftBtn');
-            const centerBtn = document.getElementById('alignCenterBtn');
-            const rightBtn = document.getElementById('alignRightBtn');
-            if (leftBtn) leftBtn.classList.remove('active');
-            if (centerBtn) centerBtn.classList.remove('active');
-            if (rightBtn) rightBtn.classList.remove('active');
-            if (command === 'justifyLeft' && leftBtn) leftBtn.classList.add('active');
-            if (command === 'justifyCenter' && centerBtn) centerBtn.classList.add('active');
-            if (command === 'justifyRight' && rightBtn) rightBtn.classList.add('active');
-        }
-        
         function toggleList(command) { execCommand(command); }
-        
         function changeFont() { execCommand('fontName', document.getElementById('fontSelector').value); }
         function changeFontSize() { execCommand('fontSize', document.getElementById('sizeSelector').value); }
-        function changeLineSpacing() { execCommand('lineHeight', document.getElementById('lineSpacingSelect').value); showToast('Line spacing changed'); }
-        function changeTextColor() { const color = prompt('Enter color:', '#000000'); if(color) execCommand('foreColor', color); }
-        function changeHighlight() { const color = prompt('Enter highlight color:', '#ffff00'); if(color) execCommand('backColor', color); }
-        function clearFormatting() { execCommand('removeFormat'); showToast('Formatting cleared'); }
-        
-        function applyStyle(style) {
-            if (style === 'normal') {
-                document.execCommand('formatBlock', false, '<p>');
-                execCommand('fontSize', '12');
-                execCommand('removeFormat');
-            } else if (style === 'heading1') {
-                document.execCommand('formatBlock', false, '<h1>');
-                execCommand('fontSize', '28');
-            } else if (style === 'heading2') {
-                document.execCommand('formatBlock', false, '<h2>');
-                execCommand('fontSize', '22');
-            } else if (style === 'title') {
-                document.execCommand('formatBlock', false, '<h1>');
-                execCommand('fontSize', '32');
-                document.execCommand('justifyCenter');
-            } else if (style === 'subtitle') {
-                document.execCommand('formatBlock', false, '<h3>');
-                execCommand('fontSize', '16');
-                execCommand('italic');
-            }
-            showToast(`Applied ${style} style`);
-        }
-        
-        function insertDate() { execCommand('insertText', new Date().toLocaleString()); }
-        
-        function insertTable() {
-            const rows = prompt('Rows:', '3');
-            const cols = prompt('Columns:', '3');
-            if (rows && cols) {
-                let html = '<table border="1" cellpadding="8" style="border-collapse:collapse; width:100%; margin:10px 0;">';
-                for (let i = 0; i < parseInt(rows); i++) {
-                    html += '<tr>';
-                    for (let j = 0; j < parseInt(cols); j++) html += `<td><br></td>`;
-                    html += '</tr>';
-                }
-                html += '</table>';
-                execCommand('insertHTML', html);
-                showToast(`${rows}x${cols} table inserted`);
-            }
-        }
-        
-        function insertPageBreak() {
-            const editor = getActiveEditor();
-            if (editor) {
-                const currentPage = editor.closest('.paper-page');
-                const newPage = document.createElement('div');
-                newPage.className = 'paper-page';
-                newPage.innerHTML = `<div class="paper-page-content" contenteditable="true"><p><br></p></div>`;
-                currentPage.insertAdjacentElement('afterend', newPage);
-                updatePageList();
-                showToast('Page break inserted');
-            }
-        }
-        
-        function addBlankPage() {
-            const container = document.getElementById('paperContainer');
-            const newPage = document.createElement('div');
-            newPage.className = 'paper-page';
-            newPage.innerHTML = `<div class="paper-page-content" contenteditable="true"><p><br></p></div>`;
-            container.appendChild(newPage);
-            updatePageList();
-            goToPage(document.querySelectorAll('.paper-page').length - 1);
-            showToast('New page added');
-        }
-        
-        function checkSpelling() { showToast('Spelling check: No errors found!'); }
-        function showWordCount() { updateWordCountDisplay(); showToast(document.getElementById('wordCount').textContent); }
-        
-        function setPageColor(color) { document.querySelectorAll('.paper-page').forEach(p => p.style.backgroundColor = color); showToast('Page color changed'); }
-        function addPageBorder() { document.querySelectorAll('.paper-page').forEach(p => p.style.border = '2px solid #0071e3'); showToast('Border added'); }
-        function removeBorder() { document.querySelectorAll('.paper-page').forEach(p => p.style.border = 'none'); showToast('Border removed'); }
-        
-        function setMargins(type) {
-            const pages = document.querySelectorAll('.paper-page-content');
-            let padding;
-            if (type === 'narrow') padding = '10mm 15mm';
-            else if (type === 'wide') padding = '30mm 35mm';
-            else padding = '20mm 25mm';
-            pages.forEach(p => p.style.padding = padding);
-            showToast(`${type} margins applied`);
-        }
-        
-        function setOrientation(orientation) {
-            const pages = document.querySelectorAll('.paper-page');
-            if (orientation === 'landscape') {
-                pages.forEach(p => { p.style.width = '297mm'; p.style.minWidth = '297mm'; });
-            } else {
-                pages.forEach(p => { p.style.width = '210mm'; p.style.minWidth = '210mm'; });
-            }
-            showToast(`${orientation} orientation`);
-        }
         
         function zoomIn() { if (currentZoom < 200) { currentZoom += 10; applyZoom(); } }
         function zoomOut() { if (currentZoom > 50) { currentZoom -= 10; applyZoom(); } }
@@ -1421,15 +1201,32 @@
             document.getElementById('zoomValue').textContent = currentZoom + '%';
         }
         
-        function updateWordCountDisplay() {
+        function setPageColor(color) {
+            document.querySelectorAll('.paper-page').forEach(p => p.style.backgroundColor = color);
+            showToast('Page color changed');
+        }
+        
+        function setMargins(type) {
+            const pages = document.querySelectorAll('.paper-page-content');
+            let padding;
+            if (type === 'narrow') padding = '10mm 15mm';
+            else if (type === 'wide') padding = '30mm 35mm';
+            else padding = '20mm 25mm';
+            pages.forEach(p => p.style.padding = padding);
+            showToast(`${type} margins`);
+        }
+        
+        function showWordCount() {
             let total = 0;
             document.querySelectorAll('.paper-page-content').forEach(content => {
                 const text = content.innerText;
                 total += text.trim().split(/\s+/).filter(w => w.length > 0).length;
             });
+            showToast(total + ' words');
             document.getElementById('wordCount').textContent = total + ' words';
         }
         
+        // Page Management
         function updatePageCounter() {
             const pages = document.querySelectorAll('.paper-page');
             document.getElementById('pageCounter').textContent = `Page ${currentPageIndex + 1} of ${pages.length}`;
@@ -1445,9 +1242,7 @@
                         <span class="page-number">Page ${idx + 1}</span>
                         ${pages.length > 1 ? `<button class="delete-page-btn" onclick="event.stopPropagation(); deletePage(${idx})"><i class="fas fa-trash"></i></button>` : ''}
                     </div>
-                    <div class="mini-paper">
-                        <div class="mini-paper-header">Page ${idx + 1}</div>
-                    </div>
+                    <div style="font-size:10px; color:#999;">Page ${idx + 1}</div>
                 </div>
             `).join('');
             updatePageCounter();
@@ -1475,19 +1270,28 @@
                 if (currentPageIndex >= pages.length - 1) currentPageIndex = Math.max(0, pages.length - 2);
                 updatePageList();
                 showToast('Page deleted');
-            } else {
-                showToast('Cannot delete the last page');
             }
+        }
+        
+        function addBlankPage() {
+            const container = document.getElementById('paperContainer');
+            const newPage = document.createElement('div');
+            newPage.className = 'paper-page';
+            newPage.innerHTML = `<div class="paper-page-content" contenteditable="true"><p><br></p></div>`;
+            container.appendChild(newPage);
+            updatePageList();
+            goToPage(document.querySelectorAll('.paper-page').length - 1);
+            showToast('New page added');
         }
         
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const canvas = document.getElementById('canvas');
-            const toggleBtn = document.getElementById('toggleBtn');
+            const toggle = document.getElementById('toggleBtn');
             const icon = document.getElementById('toggleIcon');
             sidebar.classList.toggle('collapsed');
             canvas.classList.toggle('expanded');
-            toggleBtn.classList.toggle('sidebar-closed');
+            toggle.classList.toggle('sidebar-closed');
             icon.className = sidebar.classList.contains('collapsed') ? 'fas fa-chevron-right' : 'fas fa-chevron-left';
         }
         
@@ -1532,7 +1336,7 @@
                     updatePageList();
                 }
             }
-            updateWordCountDisplay();
+            showWordCount();
         }
         
         // Ribbon Hover
@@ -1580,7 +1384,7 @@
                 moveElementsUp();
                 document.querySelectorAll('.ribbon-panel').forEach(p => p.classList.remove('active'));
                 document.querySelectorAll('.ribbon-tab').forEach(t => t.classList.remove('active'));
-            }, 200);
+            }, 150);
         }
         
         document.querySelectorAll('.ribbon-tab').forEach(tab => {
@@ -1605,7 +1409,6 @@
         }, 100);
         
         loadDocument();
-        setInterval(updateWordCountDisplay, 500);
     </script>
 </body>
 </html>
