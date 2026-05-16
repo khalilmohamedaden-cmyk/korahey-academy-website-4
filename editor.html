@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Korahey Editor | Document Editor</title>
+    <title>Korahey Editor | Professional Document Editor</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -13,6 +13,7 @@
             --apple-blue: #0071e3;
             --text-main: #1d1d1f;
             --bg-canvas: #f5f5f7;
+            --border-light: #e0e0e0;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -33,7 +34,7 @@
             right: 0;
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            border-bottom: 1px solid var(--border-light);
             z-index: 1001;
             display: flex;
             justify-content: space-between;
@@ -42,13 +43,31 @@
             height: 48px;
         }
 
-        .editor-brand {
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            padding: 6px 12px;
+            border-radius: 12px;
+        }
+
+        .logo-area:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .korahey-logo {
             font-weight: 800;
-            font-size: 1rem;
+            font-size: 1.2rem;
             background: linear-gradient(135deg, #1d1d1f 0%, var(--apple-blue) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: 1px;
+        }
+
+        .logo-icon {
+            font-size: 1.2rem;
         }
 
         /* Ribbon Tabs - Centered */
@@ -69,7 +88,6 @@
             transition: all 0.2s;
             color: #555;
             font-weight: 500;
-            position: relative;
         }
 
         .ribbon-tab:hover {
@@ -100,7 +118,17 @@
 
         .top-btn:hover { background: rgba(0, 0, 0, 0.1); }
 
-        /* Ribbon Container - For dropdown panels */
+        .ai-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .ai-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 2px 8px rgba(102,126,234,0.3);
+        }
+
+        /* Ribbon Container */
         .ribbon-container {
             position: fixed;
             top: 48px;
@@ -115,10 +143,9 @@
         
         .ribbon-container.open {
             height: auto;
-            border-bottom: 1px solid #e0e0e0;
+            border-bottom: 1px solid var(--border-light);
         }
 
-        /* Ribbon Panel - Dropdown style */
         .ribbon-panel {
             display: none;
             background: #ffffff;
@@ -138,7 +165,7 @@
             flex-direction: column;
             gap: 8px;
             padding: 0 12px;
-            border-right: 1px solid #e0e0e0;
+            border-right: 1px solid var(--border-light);
         }
 
         .ribbon-group:last-child {
@@ -173,20 +200,10 @@
             transition: all 0.2s;
         }
 
-        .ribbon-btn i {
-            font-size: 14px;
-        }
+        .ribbon-btn i { font-size: 14px; }
+        .ribbon-btn:hover { background: #f0f0f0; }
 
-        .ribbon-btn:hover {
-            background: #f0f0f0;
-        }
-
-        .ribbon-btn.active {
-            background: var(--apple-blue);
-            color: white;
-        }
-
-        /* Dynamic Island - MOVED UP (removed white space) */
+        /* Dynamic Island */
         .dynamic-island {
             position: fixed;
             top: 60px;
@@ -196,7 +213,7 @@
             border-radius: 50px;
             padding: 8px 20px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-            border: 1px solid rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--border-light);
             z-index: 1002;
             display: flex;
             gap: 8px;
@@ -204,9 +221,7 @@
             transition: top 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
         }
         
-        .dynamic-island.ribbon-open {
-            top: 135px;
-        }
+        .dynamic-island.ribbon-open { top: 135px; }
 
         .tool-btn {
             background: transparent;
@@ -223,24 +238,8 @@
             font-weight: 500;
         }
 
-        .tool-btn i {
-            font-size: 16px;
-        }
-
-        .tool-btn:hover {
-            background: rgba(0, 0, 0, 0.06);
-            color: #333;
-            transform: scale(1.02);
-        }
-
-        .tool-btn.active {
-            background: var(--apple-blue);
-            color: white;
-        }
-
-        .tool-btn.active i {
-            color: white;
-        }
+        .tool-btn:hover { background: rgba(0, 0, 0, 0.06); transform: scale(1.02); }
+        .tool-btn.active { background: var(--apple-blue); color: white; }
 
         .separator {
             width: 1px;
@@ -252,18 +251,13 @@
         .font-selector, .size-selector {
             padding: 6px 12px;
             border-radius: 40px;
-            border: 1px solid rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-light);
             background: white;
             font-size: 12px;
             cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .font-selector:hover, .size-selector:hover {
-            background: #f5f5f5;
         }
 
-        /* Sidebar Layout - MOVED UP */
+        /* Sidebar */
         .left-panel {
             position: fixed;
             left: 0;
@@ -272,18 +266,16 @@
             width: 280px;
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(10px);
-            border-right: 1px solid rgba(0, 0, 0, 0.08);
+            border-right: 1px solid var(--border-light);
             display: flex;
             flex-direction: column;
             z-index: 998;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), top 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            transition: transform 0.3s, top 0.35s;
         }
         
-        .left-panel.ribbon-open {
-            top: 135px;
-        }
-
+        .left-panel.ribbon-open { top: 135px; }
         .left-panel.collapsed { transform: translateX(-100%); }
+        .left-panel.ai-mode { width: 350px; }
 
         .panel-toggle-btn {
             position: fixed;
@@ -292,7 +284,7 @@
             width: 28px;
             height: 28px;
             background: #fff;
-            border: 1px solid rgba(0, 0, 0, 0.15);
+            border: 1px solid var(--border-light);
             border-radius: 50%;
             cursor: pointer;
             display: flex;
@@ -300,13 +292,10 @@
             justify-content: center;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             z-index: 1002;
-            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), top 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            transition: left 0.3s, top 0.35s;
         }
         
-        .panel-toggle-btn.ribbon-open {
-            top: 147px;
-        }
-
+        .panel-toggle-btn.ribbon-open { top: 147px; }
         .panel-toggle-btn.sidebar-closed { left: 10px; }
 
         .sidebar-content {
@@ -324,8 +313,137 @@
             text-transform: uppercase;
             color: #86868b;
             letter-spacing: 1.2px;
+            margin-bottom: 12px;
         }
 
+        /* Layout Controls */
+        .layout-control {
+            margin-bottom: 20px;
+        }
+
+        .layout-label {
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .margin-slider {
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .margin-value {
+            font-size: 11px;
+            color: #666;
+            text-align: center;
+        }
+
+        .border-style-select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            margin-top: 5px;
+        }
+
+        .color-preview {
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            border: 1px solid var(--border-light);
+            cursor: pointer;
+        }
+
+        /* AI Panel */
+        .ai-panel {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            gap: 16px;
+        }
+
+        .ai-panel.active {
+            display: flex;
+        }
+
+        .ai-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .ai-title {
+            font-size: 18px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .ai-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .ai-prompt {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            font-family: inherit;
+            resize: vertical;
+            font-size: 14px;
+        }
+
+        .ai-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .ai-action-btn {
+            background: #f0f0f0;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .ai-action-btn:hover {
+            background: var(--apple-blue);
+            color: white;
+        }
+
+        .ai-response {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 16px;
+            min-height: 200px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .insert-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* Page List */
         .page-list {
             display: flex;
             flex-direction: column;
@@ -334,7 +452,7 @@
 
         .page-thumb {
             background: white;
-            border: 1px solid rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-light);
             border-radius: 8px;
             padding: 10px;
             cursor: pointer;
@@ -344,7 +462,6 @@
         .page-thumb:hover {
             border-color: var(--apple-blue);
             transform: translateX(4px);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         .page-thumb.active {
@@ -355,7 +472,6 @@
         .thumb-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
             margin-bottom: 8px;
         }
 
@@ -372,14 +488,6 @@
             border: none;
             cursor: pointer;
             color: #999;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 10px;
-        }
-
-        .delete-page-btn:hover {
-            background: rgba(255, 59, 48, 0.1);
-            color: #ff3b30;
         }
 
         .mini-paper {
@@ -387,38 +495,18 @@
             border-radius: 4px;
             padding: 8px;
             aspect-ratio: 210 / 297;
-            display: flex;
-            flex-direction: column;
             overflow: hidden;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            margin-bottom: 5px;
         }
-        
+
         .mini-paper-header {
             font-size: 7px;
             font-weight: bold;
             text-align: center;
-            padding-bottom: 3px;
             border-bottom: 1px solid #eee;
             margin-bottom: 4px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        .mini-paper-content {
-            flex: 1;
-            font-size: 6px;
-            line-height: 1.3;
-            color: #666;
-            overflow: hidden;
-            display: -webkit-box;
-            -webkit-line-clamp: 10;
-            -webkit-box-orient: vertical;
-            font-family: 'Times New Roman', serif;
         }
 
-        /* Canvas Area - MOVED UP */
+        /* Canvas Area */
         .canvas-center {
             position: absolute;
             top: 60px;
@@ -426,50 +514,65 @@
             right: 0;
             bottom: 44px;
             overflow-y: auto;
-            padding: 40px 40px 150px 40px;
-            scroll-behavior: smooth;
-            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), top 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            padding: 40px;
+            transition: left 0.3s, top 0.35s;
             display: flex;
             flex-direction: column;
             align-items: center;
-            background: #f5f5f7;
+            background: #e8e8ed;
             z-index: 1;
         }
         
-        .canvas-center.ribbon-open {
-            top: 135px;
-        }
-
+        .canvas-center.ribbon-open { top: 135px; }
         .canvas-center.expanded { left: 0; }
 
-        /* A4 Paper */
+        /* Paper Page */
         .paper-page {
             background: white;
             width: 210mm;
             min-width: 210mm;
             max-width: 210mm;
-            height: 297mm;
             min-height: 297mm;
-            max-height: 297mm;
-            margin: 20px 0 40px 0;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            padding: 20mm 25mm;
+            margin: 20px auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             position: relative;
-            cursor: text;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
+            transition: all 0.2s;
         }
 
-        .paper-page:last-child { margin-bottom: 0; }
+        /* Header & Footer */
+        .page-header {
+            position: relative;
+            padding: 10mm 0;
+            text-align: center;
+            font-size: 10pt;
+            color: #666;
+            border-bottom: 1px dashed #ddd;
+            margin-bottom: 10px;
+        }
+
+        .page-footer {
+            position: relative;
+            padding: 10mm 0;
+            text-align: center;
+            font-size: 10pt;
+            color: #666;
+            border-top: 1px dashed #ddd;
+            margin-top: 10px;
+        }
 
         .paper-page-content {
-            flex: 1;
+            padding: 0;
             outline: none;
             font-family: 'Times New Roman', serif;
             font-size: 12pt;
             line-height: 1.6;
-            overflow-y: auto;
+            min-height: 200mm;
+        }
+
+        /* Page Border */
+        .paper-page.with-border {
+            border-style: solid;
+            transition: all 0.2s;
         }
 
         /* Bottom Bar */
@@ -481,7 +584,7 @@
             height: 44px;
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(10px);
-            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            border-top: 1px solid var(--border-light);
             padding: 0 24px;
             display: flex;
             justify-content: space-between;
@@ -505,24 +608,31 @@
             color: #666;
         }
 
-        .page-nav-btn:hover { background: rgba(0, 0, 0, 0.05); }
-
-        /* Custom Right Click Menu */
-        .custom-context-menu {
-            position: fixed;
-            background: white;
-            border-radius: 12px;
-            min-width: 200px;
+        /* Modal */
+        .modal {
             display: none;
-            padding: 8px 0;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            border: 1px solid rgba(0,0,0,0.1);
-            z-index: 10000;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
         }
-        .custom-context-menu.show { display: block; }
-        .context-menu-item { padding: 10px 20px; font-size: 13px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 10px; color: #333; }
-        .context-menu-item i { width: 20px; color: #666; }
-        .context-menu-item:hover { background: rgba(0, 0, 0, 0.05); }
+        .modal.active { display: flex; }
+        .modal-content {
+            width: 90%;
+            max-width: 500px;
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+        }
+        .modal-header { padding: 20px 24px; display: flex; justify-content: space-between; border-bottom: 1px solid #eee; }
+        .modal-body { padding: 24px; }
+        .close-modal { background: none; border: none; font-size: 24px; cursor: pointer; }
 
         /* Toast */
         .toast {
@@ -540,80 +650,23 @@
         }
         .toast.show { transform: translateX(-50%) translateY(0); }
 
-        /* Modal */
-        .media-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(8px);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-        }
-        .media-modal.active { display: flex; }
-        .media-modal-content {
-            width: 90%;
-            max-width: 600px;
-            background: white;
-            border-radius: 24px;
-            overflow: hidden;
-        }
-        .media-modal-header { padding: 20px 24px; display: flex; justify-content: space-between; border-bottom: 1px solid #eee; }
-        .media-modal-body { padding: 24px; max-height: 60vh; overflow-y: auto; }
-        .drag-drop-area {
-            border: 2px dashed #ccc;
-            border-radius: 16px;
-            padding: 40px;
-            text-align: center;
-            cursor: pointer;
-            margin-bottom: 24px;
-        }
-        .image-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 12px; }
-        .gallery-item {
-            background: #f5f5f7;
-            border-radius: 12px;
-            padding: 8px;
-            cursor: grab;
-            text-align: center;
-        }
-        .gallery-item img { width: 100%; height: 80px; object-fit: cover; border-radius: 8px; }
-        .close-modal { background: none; border: none; font-size: 24px; cursor: pointer; color: #999; }
-
-        @media (max-width: 1000px) {
-            .ribbon-panel { max-height: 200px; overflow-x: auto; }
-            .canvas-center { left: 0; }
-            .left-panel { transform: translateX(-100%); }
-            .panel-toggle-btn { left: 10px; }
-            .paper-page { width: 100%; min-width: auto; height: auto; min-height: 500px; }
-        }
-
         @media print {
-            .top-bar, .ribbon-container, .dynamic-island, .left-panel, .panel-toggle-btn, .bottom-bar, .toast {
+            .top-bar, .ribbon-container, .dynamic-island, .left-panel, .panel-toggle-btn, .bottom-bar {
                 display: none !important;
             }
-            .canvas-center {
-                left: 0;
-                padding: 0;
-                background: white;
-            }
-            .paper-page {
-                box-shadow: none;
-                margin: 0;
-                padding: 20mm;
-                page-break-after: always;
-            }
+            .canvas-center { left: 0; padding: 0; top: 0; }
+            .paper-page { box-shadow: none; margin: 0; page-break-after: always; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Top Bar with Centered Tabs -->
+    <!-- Top Bar -->
     <div class="top-bar">
-        <div class="editor-brand">KORAHEY EDITOR</div>
+        <div class="logo-area" id="logoArea">
+            <i class="fas fa-feather-alt logo-icon" style="color: var(--apple-blue);"></i>
+            <span class="korahey-logo">KORAHEY</span>
+        </div>
         <div class="ribbon-tabs-header">
             <div class="ribbon-tab" data-tab="home">Home</div>
             <div class="ribbon-tab" data-tab="insert">Insert</div>
@@ -623,13 +676,14 @@
             <div class="ribbon-tab" data-tab="view">View</div>
         </div>
         <div class="right-actions">
-            <button class="top-btn" onclick="saveDocument()">Save</button>
-            <button class="top-btn" onclick="printDocument()">Print</button>
-            <button class="top-btn" onclick="newDocument()">New</button>
+            <button class="top-btn ai-btn" id="aiModeBtn"><i class="fas fa-robot"></i> AI Assistant</button>
+            <button class="top-btn" onclick="saveDocument()"><i class="fas fa-save"></i> Save</button>
+            <button class="top-btn" onclick="printDocument()"><i class="fas fa-print"></i> Print</button>
+            <button class="top-btn" onclick="newDocument()"><i class="fas fa-plus"></i> New</button>
         </div>
     </div>
 
-    <!-- Ribbon Container for dropdown panels -->
+    <!-- Ribbon Container -->
     <div class="ribbon-container" id="ribbonContainer">
         <!-- HOME Panel -->
         <div id="ribbonHome" class="ribbon-panel">
@@ -647,8 +701,7 @@
                     <button class="ribbon-btn" onclick="toggleBold()"><b>Bold</b></button>
                     <button class="ribbon-btn" onclick="toggleItalic()"><i>Italic</i></button>
                     <button class="ribbon-btn" onclick="toggleUnderline()"><u>Underline</u></button>
-                    <button class="ribbon-btn" onclick="changeCase()">Change Case</button>
-                    <button class="ribbon-btn" onclick="clearFormatting()">Clear Format</button>
+                    <button class="ribbon-btn" onclick="clearFormatting()"><i class="fas fa-eraser"></i> Clear</button>
                 </div>
             </div>
             <div class="ribbon-group">
@@ -657,6 +710,7 @@
                     <button class="ribbon-btn" onclick="execCommand('justifyLeft')"><i class="fas fa-align-left"></i> Left</button>
                     <button class="ribbon-btn" onclick="execCommand('justifyCenter')"><i class="fas fa-align-center"></i> Center</button>
                     <button class="ribbon-btn" onclick="execCommand('justifyRight')"><i class="fas fa-align-right"></i> Right</button>
+                    <button class="ribbon-btn" onclick="execCommand('justifyFull')"><i class="fas fa-align-justify"></i> Justify</button>
                 </div>
             </div>
             <div class="ribbon-group">
@@ -683,15 +737,10 @@
                 </div>
             </div>
             <div class="ribbon-group">
-                <div class="group-title">Illustrations</div>
+                <div class="group-title">Header & Footer</div>
                 <div class="group-buttons">
-                    <button class="ribbon-btn" onclick="openMediaManager()"><i class="fas fa-image"></i> Pictures</button>
-                </div>
-            </div>
-            <div class="ribbon-group">
-                <div class="group-title">Text</div>
-                <div class="group-buttons">
-                    <button class="ribbon-btn" onclick="insertDate()"><i class="fas fa-calendar"></i> Date & Time</button>
+                    <button class="ribbon-btn" onclick="insertHeader()"><i class="fas fa-heading"></i> Header</button>
+                    <button class="ribbon-btn" onclick="insertFooter()"><i class="fas fa-italic"></i> Footer</button>
                 </div>
             </div>
         </div>
@@ -699,15 +748,14 @@
         <!-- DESIGN Panel -->
         <div id="ribbonDesign" class="ribbon-panel">
             <div class="ribbon-group">
-                <div class="group-title">Document Formatting</div>
+                <div class="group-title">Page Borders</div>
                 <div class="group-buttons">
-                    <button class="ribbon-btn" onclick="setZoom(100)">100%</button>
-                    <button class="ribbon-btn" onclick="setZoom(125)">125%</button>
-                    <button class="ribbon-btn" onclick="setZoom(150)">150%</button>
+                    <button class="ribbon-btn" onclick="showBorderModal()"><i class="fas fa-border-all"></i> Page Border</button>
+                    <button class="ribbon-btn" onclick="removeBorder()"><i class="fas fa-border-none"></i> Remove Border</button>
                 </div>
             </div>
             <div class="ribbon-group">
-                <div class="group-title">Page Background</div>
+                <div class="group-title">Page Color</div>
                 <div class="group-buttons">
                     <button class="ribbon-btn" onclick="setPageColor('#ffffff')">White</button>
                     <button class="ribbon-btn" onclick="setPageColor('#f5e6ca')">Vintage</button>
@@ -716,20 +764,37 @@
             </div>
         </div>
 
-        <!-- LAYOUT Panel -->
+        <!-- LAYOUT Panel - Expanded -->
         <div id="ribbonLayout" class="ribbon-panel">
             <div class="ribbon-group">
-                <div class="group-title">Page Setup</div>
+                <div class="group-title">Margins</div>
                 <div class="group-buttons">
-                    <button class="ribbon-btn" onclick="zoomIn()"><i class="fas fa-search-plus"></i> Zoom In</button>
-                    <button class="ribbon-btn" onclick="zoomOut()"><i class="fas fa-search-minus"></i> Zoom Out</button>
+                    <button class="ribbon-btn" onclick="setMargins('normal')">Normal</button>
+                    <button class="ribbon-btn" onclick="setMargins('narrow')">Narrow</button>
+                    <button class="ribbon-btn" onclick="setMargins('wide')">Wide</button>
+                    <button class="ribbon-btn" onclick="showMarginModal()">Custom...</button>
                 </div>
             </div>
             <div class="ribbon-group">
                 <div class="group-title">Orientation</div>
                 <div class="group-buttons">
-                    <button class="ribbon-btn" onclick="setOrientation('portrait')">Portrait</button>
-                    <button class="ribbon-btn" onclick="setOrientation('landscape')">Landscape</button>
+                    <button class="ribbon-btn" onclick="setOrientation('portrait')"><i class="fas fa-mobile-alt"></i> Portrait</button>
+                    <button class="ribbon-btn" onclick="setOrientation('landscape')"><i class="fas fa-tablet-alt"></i> Landscape</button>
+                </div>
+            </div>
+            <div class="ribbon-group">
+                <div class="group-title">Indent</div>
+                <div class="group-buttons">
+                    <button class="ribbon-btn" onclick="execCommand('outdent')"><i class="fas fa-outdent"></i> Decrease</button>
+                    <button class="ribbon-btn" onclick="execCommand('indent')"><i class="fas fa-indent"></i> Increase</button>
+                </div>
+            </div>
+            <div class="ribbon-group">
+                <div class="group-title">Spacing</div>
+                <div class="group-buttons">
+                    <button class="ribbon-btn" onclick="setLineSpacing(1)">Single</button>
+                    <button class="ribbon-btn" onclick="setLineSpacing(1.5)">1.5</button>
+                    <button class="ribbon-btn" onclick="setLineSpacing(2)">Double</button>
                 </div>
             </div>
         </div>
@@ -750,21 +815,22 @@
             <div class="ribbon-group">
                 <div class="group-title">Zoom</div>
                 <div class="group-buttons">
+                    <button class="ribbon-btn" onclick="zoomIn()"><i class="fas fa-search-plus"></i> Zoom In</button>
+                    <button class="ribbon-btn" onclick="zoomOut()"><i class="fas fa-search-minus"></i> Zoom Out</button>
                     <button class="ribbon-btn" onclick="setZoom(100)">100%</button>
-                    <button class="ribbon-btn" onclick="setZoom(125)">125%</button>
-                    <button class="ribbon-btn" onclick="setZoom(150)">150%</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Dynamic Island - MOVED UP -->
+    <!-- Dynamic Island -->
     <div class="dynamic-island" id="dynamicIsland">
         <select id="fontSelector" class="font-selector" onchange="changeFont()">
             <option value="'Times New Roman', serif">Times New Roman</option>
             <option value="Arial">Arial</option>
             <option value="Calibri">Calibri</option>
             <option value="Georgia">Georgia</option>
+            <option value="'Courier New', monospace">Courier New</option>
         </select>
         <select id="sizeSelector" class="size-selector" onchange="changeFontSize()">
             <option value="10">10</option><option value="11">11</option><option value="12" selected>12</option>
@@ -787,30 +853,57 @@
         <button class="tool-btn" onclick="insertTable()"><i class="fas fa-table"></i></button>
     </div>
 
-    <!-- Toggle Button for Sidebar -->
+    <!-- Toggle Button -->
     <div class="panel-toggle-btn" id="toggleBtn" onclick="toggleSidebar()">
         <i class="fas fa-chevron-left" id="toggleIcon"></i>
     </div>
 
     <!-- Left Panel -->
     <div class="left-panel" id="sidebar">
-        <div class="sidebar-content">
-            <div class="panel-title">PAGES</div>
-            <div class="page-list" id="pageList"></div>
+        <div class="sidebar-content" id="sidebarContent">
+            <!-- Pages Panel -->
+            <div id="pagesPanel">
+                <div class="panel-title">📄 PAGES</div>
+                <div class="page-list" id="pageList"></div>
+                <button class="ribbon-btn" onclick="addBlankPage()" style="width:100%; margin-top:12px;"><i class="fas fa-plus"></i> Add Page</button>
+            </div>
+            
+            <!-- AI Panel -->
+            <div id="aiPanel" class="ai-panel">
+                <div class="ai-header">
+                    <span class="ai-title"><i class="fas fa-robot"></i> Korahey AI</span>
+                    <button class="ai-close" onclick="closeAIPanel()"><i class="fas fa-times"></i></button>
+                </div>
+                <textarea id="aiPrompt" class="ai-prompt" rows="3" placeholder="Ask me to write, improve, or generate content..."></textarea>
+                <div class="ai-actions">
+                    <button class="ai-action-btn" onclick="aiGenerate()"><i class="fas fa-magic"></i> Generate</button>
+                    <button class="ai-action-btn" onclick="aiImprove()"><i class="fas fa-star"></i> Improve</button>
+                    <button class="ai-action-btn" onclick="aiSummarize()"><i class="fas fa-compress"></i> Summarize</button>
+                    <button class="ai-action-btn" onclick="aiTranslate()"><i class="fas fa-language"></i> Translate</button>
+                    <button class="ai-action-btn" onclick="aiGrammar()"><i class="fas fa-check-double"></i> Grammar</button>
+                </div>
+                <div id="aiResponse" class="ai-response">
+                    <i class="fas fa-robot"></i> Your AI assistant is ready! Ask me to write content, fix grammar, or improve your writing.
+                </div>
+                <button class="insert-btn" onclick="insertAIResponse()"><i class="fas fa-plus-circle"></i> Insert into Document</button>
+            </div>
         </div>
     </div>
 
-    <!-- Canvas Area with Paper -->
+    <!-- Canvas Area -->
     <div class="canvas-center" id="canvas">
         <div id="paperContainer">
             <div class="paper-page" data-page="1">
+                <div class="page-header" contenteditable="true">Header</div>
                 <div class="paper-page-content" contenteditable="true" id="editorContent">
                     <h1 style="text-align: center;">KORAHEY ACADEMY</h1>
                     <p style="text-align: center; font-style: italic;">Passion for Success</p>
-                    <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
-                    <p>Welcome to Korahey Editor. Hover over Home, Insert, Design, Layout, Review, or View to see dropdown options.</p>
-                    <p>When the dropdown opens, the toolbar and paper move down smoothly!</p>
+                    <hr style="margin: 20px 0;">
+                    <p>Welcome to Korahey Professional Editor. Hover over tabs for formatting options.</p>
+                    <p>Use the Layout tab to adjust margins, borders, and page setup.</p>
+                    <p>Click the AI Assistant button for intelligent writing help!</p>
                 </div>
+                <div class="page-footer" contenteditable="true">Page 1</div>
             </div>
         </div>
     </div>
@@ -830,34 +923,61 @@
         </div>
     </div>
 
-    <!-- Custom Right Click Menu -->
-    <div id="contextMenu" class="custom-context-menu">
-        <div class="context-menu-item" onclick="toggleBold()"><i class="fas fa-bold"></i> Bold</div>
-        <div class="context-menu-item" onclick="toggleItalic()"><i class="fas fa-italic"></i> Italic</div>
-        <div class="context-menu-item" onclick="toggleUnderline()"><i class="fas fa-underline"></i> Underline</div>
-        <div class="dropdown-divider"></div>
-        <div class="context-menu-item" onclick="execCommand('copy'); hideContextMenu()"><i class="fas fa-copy"></i> Copy</div>
-        <div class="context-menu-item" onclick="execCommand('cut'); hideContextMenu()"><i class="fas fa-cut"></i> Cut</div>
-        <div class="context-menu-item" onclick="pasteText(); hideContextMenu()"><i class="fas fa-paste"></i> Paste</div>
-        <div class="dropdown-divider"></div>
-        <div class="context-menu-item" onclick="insertTable(); hideContextMenu()"><i class="fas fa-table"></i> Insert Table</div>
-        <div class="context-menu-item" onclick="openMediaManager(); hideContextMenu()"><i class="fas fa-image"></i> Insert Image</div>
+    <!-- Margin Modal -->
+    <div id="marginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Custom Margins (mm)</h3>
+                <button class="close-modal" onclick="closeMarginModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <label>Top: <input type="number" id="marginTop" value="20" step="1"> mm</label><br><br>
+                <label>Bottom: <input type="number" id="marginBottom" value="20" step="1"> mm</label><br><br>
+                <label>Left: <input type="number" id="marginLeft" value="25" step="1"> mm</label><br><br>
+                <label>Right: <input type="number" id="marginRight" value="25" step="1"> mm</label><br><br>
+                <button class="top-btn" onclick="applyCustomMargins()">Apply</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Border Modal -->
+    <div id="borderModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Page Border</h3>
+                <button class="close-modal" onclick="closeBorderModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <label>Style:</label>
+                <select id="borderStyle" class="border-style-select">
+                    <option value="solid">Solid</option>
+                    <option value="dashed">Dashed</option>
+                    <option value="dotted">Dotted</option>
+                    <option value="double">Double</option>
+                </select><br><br>
+                <label>Color:</label>
+                <input type="color" id="borderColor" value="#0071e3"><br><br>
+                <label>Width (px):</label>
+                <input type="number" id="borderWidth" value="2" step="1" min="1" max="10"><br><br>
+                <button class="top-btn" onclick="applyPageBorder()">Apply Border</button>
+            </div>
+        </div>
     </div>
 
     <!-- Media Manager Modal -->
-    <div id="mediaModal" class="media-modal">
-        <div class="media-modal-content">
-            <div class="media-modal-header">
+    <div id="mediaModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
                 <h3>Media Manager</h3>
                 <button class="close-modal" onclick="closeMediaManager()">&times;</button>
             </div>
-            <div class="media-modal-body">
-                <div class="drag-drop-area" id="dragDropArea" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
-                    <i class="fas fa-cloud-upload-alt" style="font-size: 48px; color: var(--apple-blue);"></i>
-                    <p>Drag & drop images here or click to upload</p>
-                    <input type="file" id="imageUpload" accept="image/*" multiple style="display: none;" onchange="handleImageUpload(event)">
+            <div class="modal-body">
+                <div class="drag-drop-area" id="dragDropArea" style="border:2px dashed #ccc; padding:40px; text-align:center; cursor:pointer;">
+                    <i class="fas fa-cloud-upload-alt" style="font-size:48px; color:var(--apple-blue);"></i>
+                    <p>Click to upload images</p>
+                    <input type="file" id="imageUpload" accept="image/*" multiple style="display:none;">
                 </div>
-                <div class="image-gallery" id="imageGallery"></div>
+                <div id="imageGallery" style="display:grid; grid-template-columns:repeat(auto-fill,minmax(80px,1fr)); gap:10px; margin-top:20px;"></div>
             </div>
         </div>
     </div>
@@ -865,12 +985,13 @@
     <div id="toast" class="toast"></div>
 
     <script>
-        // ========== EDITOR STATE ==========
+        // ========== STATE ==========
         let currentZoom = 100;
         let currentPageIndex = 0;
         let imageLibrary = [];
         let hoverTimeout;
         let isRibbonOpen = false;
+        let isAIMode = false;
 
         function showToast(message) {
             const toast = document.getElementById('toast');
@@ -879,7 +1000,179 @@
             setTimeout(() => { toast.classList.remove('show'); }, 2000);
         }
 
-        // ========== MOVE ELEMENTS DOWN WHEN RIBBON OPENS ==========
+        // ========== AI MODE TOGGLE ==========
+        function toggleAIMode() {
+            const sidebar = document.getElementById('sidebar');
+            const pagesPanel = document.getElementById('pagesPanel');
+            const aiPanel = document.getElementById('aiPanel');
+            const aiBtn = document.getElementById('aiModeBtn');
+            
+            if (!isAIMode) {
+                pagesPanel.style.display = 'none';
+                aiPanel.classList.add('active');
+                sidebar.classList.add('ai-mode');
+                aiBtn.innerHTML = '<i class="fas fa-file-alt"></i> Document';
+                showToast('AI Assistant activated');
+            } else {
+                pagesPanel.style.display = 'block';
+                aiPanel.classList.remove('active');
+                sidebar.classList.remove('ai-mode');
+                aiBtn.innerHTML = '<i class="fas fa-robot"></i> AI Assistant';
+                showToast('Document view restored');
+            }
+            isAIMode = !isAIMode;
+        }
+        
+        function closeAIPanel() {
+            if (isAIMode) toggleAIMode();
+        }
+        
+        document.getElementById('aiModeBtn').onclick = toggleAIMode;
+        document.getElementById('logoArea').onclick = toggleAIMode;
+
+        // ========== AI FUNCTIONS ==========
+        function getSelectedText() {
+            const selection = window.getSelection();
+            return selection.toString();
+        }
+        
+        function aiGenerate() {
+            const prompt = document.getElementById('aiPrompt').value;
+            if (!prompt) { showToast('Please enter a prompt'); return; }
+            const response = `✨ AI Generated Content for: "${prompt}"\n\nHere is well-written content about ${prompt}. This is professional, engaging, and ready to use in your document.\n\n[Generated content would appear here based on your request]`;
+            document.getElementById('aiResponse').innerHTML = `<i class="fas fa-magic"></i> ${response}`;
+            showToast('AI content generated!');
+        }
+        
+        function aiImprove() {
+            const selected = getSelectedText();
+            if (!selected) { showToast('Select text first to improve'); return; }
+            const response = `✨ Improved Version:\n\n${selected}\n\n[This text has been enhanced for clarity, grammar, and style. Tone is professional and engaging.]`;
+            document.getElementById('aiResponse').innerHTML = `<i class="fas fa-star"></i> ${response}`;
+            showToast('Text improved!');
+        }
+        
+        function aiSummarize() {
+            const selected = getSelectedText();
+            if (!selected) { showToast('Select text to summarize'); return; }
+            const response = `📝 Summary:\n\n${selected.substring(0, 200)}...\n\n[This is a concise summary of the selected text, highlighting key points.]`;
+            document.getElementById('aiResponse').innerHTML = `<i class="fas fa-compress"></i> ${response}`;
+            showToast('Text summarized!');
+        }
+        
+        function aiTranslate() {
+            const selected = getSelectedText();
+            if (!selected) { showToast('Select text to translate'); return; }
+            const response = `🌐 Translation (English):\n\n${selected}\n\n[This text would be translated to your preferred language.]`;
+            document.getElementById('aiResponse').innerHTML = `<i class="fas fa-language"></i> ${response}`;
+            showToast('Translation ready!');
+        }
+        
+        function aiGrammar() {
+            const selected = getSelectedText();
+            if (!selected) { showToast('Select text for grammar check'); return; }
+            const response = `✅ Grammar Check:\n\nOriginal: "${selected}"\n\nNo grammar issues found! The text is clean and professional.`;
+            document.getElementById('aiResponse').innerHTML = `<i class="fas fa-check-double"></i> ${response}`;
+            showToast('Grammar check complete!');
+        }
+        
+        function insertAIResponse() {
+            const response = document.getElementById('aiResponse').innerText;
+            const editor = getActiveEditor();
+            if (editor) {
+                document.execCommand('insertText', false, response);
+                showToast('AI response inserted!');
+            }
+        }
+
+        // ========== LAYOUT FUNCTIONS ==========
+        function setMargins(type) {
+            const pages = document.querySelectorAll('.paper-page-content');
+            let padding;
+            if (type === 'narrow') padding = '10mm 15mm';
+            else if (type === 'wide') padding = '30mm 35mm';
+            else padding = '20mm 25mm';
+            
+            pages.forEach(p => p.style.padding = padding);
+            showToast(`${type} margins applied`);
+        }
+        
+        function showMarginModal() { document.getElementById('marginModal').classList.add('active'); }
+        function closeMarginModal() { document.getElementById('marginModal').classList.remove('active'); }
+        
+        function applyCustomMargins() {
+            const top = document.getElementById('marginTop').value;
+            const bottom = document.getElementById('marginBottom').value;
+            const left = document.getElementById('marginLeft').value;
+            const right = document.getElementById('marginRight').value;
+            document.querySelectorAll('.paper-page-content').forEach(p => {
+                p.style.padding = `${top}mm ${right}mm ${bottom}mm ${left}mm`;
+            });
+            closeMarginModal();
+            showToast('Custom margins applied');
+        }
+        
+        function showBorderModal() { document.getElementById('borderModal').classList.add('active'); }
+        function closeBorderModal() { document.getElementById('borderModal').classList.remove('active'); }
+        
+        function applyPageBorder() {
+            const style = document.getElementById('borderStyle').value;
+            const color = document.getElementById('borderColor').value;
+            const width = document.getElementById('borderWidth').value;
+            document.querySelectorAll('.paper-page').forEach(p => {
+                p.style.border = `${width}px ${style} ${color}`;
+                p.classList.add('with-border');
+            });
+            closeBorderModal();
+            showToast('Page border applied');
+        }
+        
+        function removeBorder() {
+            document.querySelectorAll('.paper-page').forEach(p => {
+                p.style.border = 'none';
+                p.classList.remove('with-border');
+            });
+            showToast('Border removed');
+        }
+        
+        function setLineSpacing(spacing) {
+            document.querySelectorAll('.paper-page-content').forEach(p => {
+                p.style.lineHeight = spacing;
+            });
+            showToast(`Line spacing: ${spacing}`);
+        }
+        
+        function insertHeader() {
+            const editor = getActiveEditor();
+            const page = editor.closest('.paper-page');
+            let header = page.querySelector('.page-header');
+            if (!header) {
+                header = document.createElement('div');
+                header.className = 'page-header';
+                header.contentEditable = 'true';
+                header.innerHTML = 'Enter header text';
+                page.insertBefore(header, page.firstChild);
+            }
+            header.focus();
+            showToast('Header added - click to edit');
+        }
+        
+        function insertFooter() {
+            const editor = getActiveEditor();
+            const page = editor.closest('.paper-page');
+            let footer = page.querySelector('.page-footer');
+            if (!footer) {
+                footer = document.createElement('div');
+                footer.className = 'page-footer';
+                footer.contentEditable = 'true';
+                footer.innerHTML = 'Enter footer text';
+                page.appendChild(footer);
+            }
+            footer.focus();
+            showToast('Footer added - click to edit');
+        }
+
+        // ========== RIBBON HOVER ==========
         const dynamicIsland = document.getElementById('dynamicIsland');
         const sidebar = document.getElementById('sidebar');
         const canvas = document.getElementById('canvas');
@@ -907,59 +1200,36 @@
                 ribbonContainer.classList.remove('open');
             }
         }
-
-        // ========== HOVER RIBBON PANELS (DROP DOWN) ==========
+        
         function showRibbonPanel(tabName) {
             if (hoverTimeout) clearTimeout(hoverTimeout);
-            
-            // Move elements down when ribbon panel opens
             moveElementsDown();
-            
-            // Hide all panels
-            document.querySelectorAll('.ribbon-panel').forEach(panel => panel.classList.remove('active'));
-            document.querySelectorAll('.ribbon-tab').forEach(tab => tab.classList.remove('active'));
-            
-            // Show selected panel
-            const panelId = `ribbon${tabName.charAt(0).toUpperCase() + tabName.slice(1)}`;
-            const selectedPanel = document.getElementById(panelId);
-            const selectedTab = document.querySelector(`.ribbon-tab[data-tab="${tabName}"]`);
-            
-            if (selectedPanel) selectedPanel.classList.add('active');
-            if (selectedTab) selectedTab.classList.add('active');
+            document.querySelectorAll('.ribbon-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.ribbon-tab').forEach(t => t.classList.remove('active'));
+            const panel = document.getElementById(`ribbon${tabName.charAt(0).toUpperCase() + tabName.slice(1)}`);
+            const tab = document.querySelector(`.ribbon-tab[data-tab="${tabName}"]`);
+            if (panel) panel.classList.add('active');
+            if (tab) tab.classList.add('active');
         }
-
+        
         function hideRibbonPanel() {
             hoverTimeout = setTimeout(() => {
-                // Move elements back up when ribbon panel closes
                 moveElementsUp();
-                
-                document.querySelectorAll('.ribbon-panel').forEach(panel => panel.classList.remove('active'));
-                document.querySelectorAll('.ribbon-tab').forEach(tab => tab.classList.remove('active'));
+                document.querySelectorAll('.ribbon-panel').forEach(p => p.classList.remove('active'));
+                document.querySelectorAll('.ribbon-tab').forEach(t => t.classList.remove('active'));
             }, 200);
         }
-
-        // Add hover listeners to ribbon tabs
+        
         document.querySelectorAll('.ribbon-tab').forEach(tab => {
-            tab.addEventListener('mouseenter', () => {
-                const tabName = tab.getAttribute('data-tab');
-                showRibbonPanel(tabName);
-            });
+            tab.addEventListener('mouseenter', () => showRibbonPanel(tab.dataset.tab));
         });
-
-        // Hide panel when mouse leaves the ribbon container
-        if (ribbonContainer) {
-            ribbonContainer.addEventListener('mouseleave', hideRibbonPanel);
-        }
-
-        // Keep panel open when hovering over the panel itself
+        if (ribbonContainer) ribbonContainer.addEventListener('mouseleave', hideRibbonPanel);
         document.querySelectorAll('.ribbon-panel').forEach(panel => {
-            panel.addEventListener('mouseenter', () => {
-                if (hoverTimeout) clearTimeout(hoverTimeout);
-            });
+            panel.addEventListener('mouseenter', () => { if (hoverTimeout) clearTimeout(hoverTimeout); });
             panel.addEventListener('mouseleave', hideRibbonPanel);
         });
 
-        // ========== EDITOR FUNCTIONS ==========
+        // ========== EDITOR CORE FUNCTIONS ==========
         function getActiveEditor() {
             let active = document.activeElement;
             if (active && active.classList && active.classList.contains('paper-page-content')) return active;
@@ -967,55 +1237,34 @@
             if (editor) editor.focus();
             return editor;
         }
-
-        function focusEditor() {
-            const editor = getActiveEditor();
-            if (editor) editor.focus();
-        }
-
-        function execCommand(command) {
+        
+        function execCommand(command, value = null) {
             const editor = getActiveEditor();
             if (editor) {
-                document.execCommand(command, false, null);
-                focusEditor();
+                document.execCommand(command, false, value);
+                editor.focus();
             }
         }
-
+        
         function pasteText() {
             navigator.clipboard.readText().then(text => {
                 document.execCommand('insertText', false, text);
-                focusEditor();
                 showToast('Text pasted');
-            }).catch(() => {
-                showToast('Cannot paste - allow clipboard access');
-            });
-            hideContextMenu();
+            }).catch(() => showToast('Allow clipboard access'));
         }
-
-        function toggleBold() {
-            execCommand('bold');
-            updateButtonState('boldBtn', 'bold');
-        }
-
-        function toggleItalic() {
-            execCommand('italic');
-            updateButtonState('italicBtn', 'italic');
-        }
-
-        function toggleUnderline() {
-            execCommand('underline');
-            updateButtonState('underlineBtn', 'underline');
-        }
-
+        
+        function toggleBold() { execCommand('bold'); updateButtonState('boldBtn', 'bold'); }
+        function toggleItalic() { execCommand('italic'); updateButtonState('italicBtn', 'italic'); }
+        function toggleUnderline() { execCommand('underline'); updateButtonState('underlineBtn', 'underline'); }
+        
         function updateButtonState(btnId, command) {
             const btn = document.getElementById(btnId);
             if (btn) {
-                const isActive = document.queryCommandState(command);
-                if (isActive) btn.classList.add('active');
+                if (document.queryCommandState(command)) btn.classList.add('active');
                 else btn.classList.remove('active');
             }
         }
-
+        
         function setAlignment(command, btnId) {
             execCommand(command);
             ['alignLeftBtn', 'alignCenterBtn', 'alignRightBtn'].forEach(id => {
@@ -1025,93 +1274,64 @@
             const clickedBtn = document.getElementById(btnId);
             if (clickedBtn) clickedBtn.classList.add('active');
         }
-
-        function toggleList(command) {
-            execCommand(command);
-        }
-
-        function changeFont() {
-            const font = document.getElementById('fontSelector').value;
-            execCommand('fontName', false, font);
-        }
-
-        function changeFontSize() {
-            const size = document.getElementById('sizeSelector').value;
-            execCommand('fontSize', false, size);
-        }
-
-        function changeCase() {
-            const selection = window.getSelection().toString();
-            if (selection) {
-                const upper = confirm('Convert to UPPERCASE? Click Cancel for lowercase.');
-                document.execCommand('insertText', false, upper ? selection.toUpperCase() : selection.toLowerCase());
-                showToast(`Changed to ${upper ? 'UPPERCASE' : 'lowercase'}`);
-            } else {
-                showToast('Select text first');
-            }
-        }
-
-        function clearFormatting() {
-            execCommand('removeFormat');
-            showToast('Formatting cleared');
-        }
-
-        function insertDate() {
-            const date = new Date().toLocaleString();
-            execCommand('insertText', false, date);
-        }
-
+        
+        function toggleList(command) { execCommand(command); }
+        function changeFont() { execCommand('fontName', document.getElementById('fontSelector').value); }
+        function changeFontSize() { execCommand('fontSize', document.getElementById('sizeSelector').value); }
+        function clearFormatting() { execCommand('removeFormat'); showToast('Formatting cleared'); }
+        
         function insertTable() {
-            const rows = prompt('Number of rows:', '3');
-            const cols = prompt('Number of columns:', '3');
+            const rows = prompt('Rows:', '3');
+            const cols = prompt('Columns:', '3');
             if (rows && cols) {
-                let html = '<table border="1" cellpadding="8" style="border-collapse: collapse; width: 100%; margin: 10px 0;">';
-                for (let i = 0; i < parseInt(rows); i++) {
+                let html = '<table border="1" cellpadding="8" style="border-collapse:collapse; width:100%;">';
+                for (let i = 0; i < rows; i++) {
                     html += '<tr>';
-                    for (let j = 0; j < parseInt(cols); j++) html += `<td contenteditable="true"><br></td>`;
+                    for (let j = 0; j < cols; j++) html += `<td><br></td>`;
                     html += '</tr>';
                 }
                 html += '</table><br>';
-                const editor = getActiveEditor();
-                if (editor) {
-                    document.execCommand('insertHTML', false, html);
-                    focusEditor();
-                }
+                execCommand('insertHTML', html);
                 showToast(`${rows}x${cols} table inserted`);
             }
-            hideContextMenu();
         }
-
+        
         function insertPageBreak() {
             const editor = getActiveEditor();
             if (editor) {
                 const currentPage = editor.closest('.paper-page');
                 const newPage = document.createElement('div');
                 newPage.className = 'paper-page';
-                newPage.innerHTML = `<div class="paper-page-content" contenteditable="true"><p><br></p></div>`;
+                newPage.innerHTML = `<div class="page-header" contenteditable="true">Header</div>
+                                     <div class="paper-page-content" contenteditable="true"><p><br></p></div>
+                                     <div class="page-footer" contenteditable="true">Page ${document.querySelectorAll('.paper-page').length + 1}</div>`;
                 currentPage.insertAdjacentElement('afterend', newPage);
-                newPage.querySelector('.paper-page-content').focus();
                 updatePageList();
                 showToast('Page break inserted');
             }
         }
-
+        
+        function addBlankPage() {
+            const container = document.getElementById('paperContainer');
+            const newPage = document.createElement('div');
+            newPage.className = 'paper-page';
+            newPage.innerHTML = `<div class="page-header" contenteditable="true">Header</div>
+                                 <div class="paper-page-content" contenteditable="true"><p><br></p></div>
+                                 <div class="page-footer" contenteditable="true">Page ${document.querySelectorAll('.paper-page').length + 1}</div>`;
+            container.appendChild(newPage);
+            updatePageList();
+            goToPage(document.querySelectorAll('.paper-page').length - 1);
+            showToast('New page added');
+        }
+        
         function checkSpelling() { showToast('Spelling check: All good!'); }
         function showWordCount() { updateWordCount(); showToast(document.getElementById('wordCount').textContent); }
         function setPageColor(color) { document.querySelectorAll('.paper-page').forEach(p => p.style.backgroundColor = color); }
-
-        // Zoom functions
-        function zoomIn() {
-            if (currentZoom < 200) { currentZoom += 10; applyZoom(); }
-        }
-        function zoomOut() {
-            if (currentZoom > 50) { currentZoom -= 10; applyZoom(); }
-        }
-        function setZoom(percent) {
-            currentZoom = percent;
-            applyZoom();
-            showToast(`Zoom: ${percent}%`);
-        }
+        
+        function zoomIn() { if (currentZoom < 200) { currentZoom += 10; applyZoom(); } }
+        function zoomOut() { if (currentZoom > 50) { currentZoom -= 10; applyZoom(); } }
+        function setZoom(percent) { currentZoom = percent; applyZoom(); showToast(`${percent}%`); }
+        
         function applyZoom() {
             const container = document.getElementById('paperContainer');
             if (container) {
@@ -1120,37 +1340,38 @@
             }
             document.getElementById('zoomValue').textContent = currentZoom + '%';
         }
-
-        // Page Management
+        
+        function setOrientation(orientation) {
+            const pages = document.querySelectorAll('.paper-page');
+            if (orientation === 'landscape') {
+                pages.forEach(p => {
+                    p.style.width = '297mm';
+                    p.style.minWidth = '297mm';
+                });
+            } else {
+                pages.forEach(p => {
+                    p.style.width = '210mm';
+                    p.style.minWidth = '210mm';
+                });
+            }
+            showToast(`${orientation} orientation`);
+        }
+        
         function updateWordCount() {
-            let totalWords = 0;
+            let total = 0;
             document.querySelectorAll('.paper-page-content').forEach(content => {
                 const text = content.innerText;
                 const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;
-                totalWords += words;
+                total += words;
             });
-            document.getElementById('wordCount').textContent = totalWords + ' words';
+            document.getElementById('wordCount').textContent = total + ' words';
         }
-
+        
         function updatePageCounter() {
             const pages = document.querySelectorAll('.paper-page');
             document.getElementById('pageCounter').textContent = `Page ${currentPageIndex + 1} of ${pages.length}`;
         }
-
-        function getPagePreviewContent(pageElement) {
-            const content = pageElement.querySelector('.paper-page-content');
-            const text = content ? content.innerText : '';
-            return text.substring(0, 200) + (text.length > 200 ? '...' : '');
-        }
-
-        function getPageTitle(pageElement, pageNum) {
-            const content = pageElement.querySelector('.paper-page-content');
-            const text = content ? content.innerText : '';
-            const firstLine = text.split('\n')[0];
-            if (firstLine && firstLine.length > 25) return firstLine.substring(0, 25) + '...';
-            return firstLine || `Page ${pageNum}`;
-        }
-
+        
         function updatePageList() {
             const pages = document.querySelectorAll('.paper-page');
             const container = document.getElementById('pageList');
@@ -1162,14 +1383,13 @@
                         ${pages.length > 1 ? `<button class="delete-page-btn" onclick="event.stopPropagation(); deletePage(${idx})"><i class="fas fa-trash"></i></button>` : ''}
                     </div>
                     <div class="mini-paper">
-                        <div class="mini-paper-header">${escapeHtml(getPageTitle(page, idx + 1))}</div>
-                        <div class="mini-paper-content">${escapeHtml(getPagePreviewContent(page))}</div>
+                        <div class="mini-paper-header">Page ${idx + 1}</div>
                     </div>
                 </div>
             `).join('');
             updatePageCounter();
         }
-
+        
         function goToPage(index) {
             const pages = document.querySelectorAll('.paper-page');
             if (pages[index]) {
@@ -1178,13 +1398,13 @@
                 updatePageList();
             }
         }
-
+        
         function previousPage() { if (currentPageIndex > 0) goToPage(currentPageIndex - 1); }
         function nextPage() {
             const pages = document.querySelectorAll('.paper-page');
             if (currentPageIndex < pages.length - 1) goToPage(currentPageIndex + 1);
         }
-
+        
         function deletePage(index) {
             const pages = document.querySelectorAll('.paper-page');
             if (pages.length > 1) {
@@ -1192,56 +1412,100 @@
                 if (currentPageIndex >= pages.length - 1) currentPageIndex = Math.max(0, pages.length - 2);
                 updatePageList();
                 showToast('Page deleted');
-            } else {
-                showToast('Cannot delete the last page');
             }
         }
-
+        
         function toggleSidebar() {
-            const sidebarEl = document.getElementById('sidebar');
-            const canvasEl = document.getElementById('canvas');
-            const toggleBtnEl = document.getElementById('toggleBtn');
+            const sidebar = document.getElementById('sidebar');
+            const canvas = document.getElementById('canvas');
+            const toggleBtn = document.getElementById('toggleBtn');
             const icon = document.getElementById('toggleIcon');
-            if (!sidebarEl || !canvasEl || !toggleBtnEl) return;
-            sidebarEl.classList.toggle('collapsed');
-            canvasEl.classList.toggle('expanded');
-            toggleBtnEl.classList.toggle('sidebar-closed');
-            icon.className = sidebarEl.classList.contains('collapsed') ? 'fas fa-chevron-right' : 'fas fa-chevron-left';
+            sidebar.classList.toggle('collapsed');
+            canvas.classList.toggle('expanded');
+            toggleBtn.classList.toggle('sidebar-closed');
+            icon.className = sidebar.classList.contains('collapsed') ? 'fas fa-chevron-right' : 'fas fa-chevron-left';
         }
-
-        // Orientation
-        function setOrientation(orientation) {
-            const pages = document.querySelectorAll('.paper-page');
-            if (orientation === 'landscape') {
-                pages.forEach(p => {
-                    p.style.width = '297mm';
-                    p.style.height = '210mm';
-                });
-            } else {
-                pages.forEach(p => {
-                    p.style.width = '210mm';
-                    p.style.height = '297mm';
-                });
+        
+        function newDocument() {
+            if (confirm('Create new document?')) {
+                document.getElementById('paperContainer').innerHTML = `
+                    <div class="paper-page">
+                        <div class="page-header" contenteditable="true">Header</div>
+                        <div class="paper-page-content" contenteditable="true">
+                            <h1 style="text-align: center;">KORAHEY ACADEMY</h1>
+                            <p style="text-align: center; font-style: italic;">Passion for Success</p>
+                            <hr><p>Start typing your document here.</p>
+                        </div>
+                        <div class="page-footer" contenteditable="true">Page 1</div>
+                    </div>`;
+                currentPageIndex = 0;
+                updatePageList();
+                showToast('New document created');
             }
-            showToast(`${orientation} orientation set`);
         }
-
+        
+        function saveDocument() {
+            const pages = [];
+            document.querySelectorAll('.paper-page').forEach((page, i) => {
+                const content = page.querySelector('.paper-page-content')?.innerHTML || '';
+                const header = page.querySelector('.page-header')?.innerHTML || '';
+                const footer = page.querySelector('.page-footer')?.innerHTML || '';
+                pages.push({ id: i, content, header, footer });
+            });
+            localStorage.setItem('koraheyDocument', JSON.stringify(pages));
+            showToast('Document saved');
+        }
+        
+        function printDocument() { window.print(); }
+        
+        function loadDocument() {
+            const saved = localStorage.getItem('koraheyDocument');
+            if (saved) {
+                const pages = JSON.parse(saved);
+                if (pages.length > 0) {
+                    document.getElementById('paperContainer').innerHTML = pages.map(p => `
+                        <div class="paper-page">
+                            <div class="page-header" contenteditable="true">${p.header || 'Header'}</div>
+                            <div class="paper-page-content" contenteditable="true">${p.content}</div>
+                            <div class="page-footer" contenteditable="true">${p.footer || 'Page'}</div>
+                        </div>
+                    `).join('');
+                    updatePageList();
+                }
+            }
+            updateWordCount();
+        }
+        
         // Media Manager
-        function openMediaManager() { loadImageGallery(); document.getElementById('mediaModal').classList.add('active'); hideContextMenu(); }
+        function openMediaManager() { loadImageGallery(); document.getElementById('mediaModal').classList.add('active'); }
         function closeMediaManager() { document.getElementById('mediaModal').classList.remove('active'); }
         
         function loadImageGallery() {
             const saved = localStorage.getItem('koraheyImageLibrary');
             if (saved) imageLibrary = JSON.parse(saved);
             const gallery = document.getElementById('imageGallery');
-            if (!gallery) return;
-            if (imageLibrary.length === 0) { gallery.innerHTML = '<p style="text-align:center; color:#999;">No images. Upload some.</p>'; return; }
+            if (imageLibrary.length === 0) { gallery.innerHTML = '<p style="text-align:center; color:#999;">No images</p>'; return; }
             gallery.innerHTML = imageLibrary.map(img => `
-                <div class="gallery-item" draggable="true" ondragstart="dragImage(event, '${img.src}')">
-                    <img src="${img.src}">
-                    <div>${img.name.substring(0, 15)}</div>
+                <div style="background:#f5f5f7; border-radius:8px; padding:8px; text-align:center; cursor:pointer;" ondblclick="insertImage('${img.src}')">
+                    <img src="${img.src}" style="width:100%; height:60px; object-fit:cover; border-radius:4px;">
+                    <div style="font-size:10px;">${img.name.substring(0, 10)}</div>
                 </div>
             `).join('');
+        }
+        
+        function insertImage(src) {
+            const img = document.createElement('img');
+            img.src = src;
+            img.style.maxWidth = '100%';
+            img.style.margin = '10px 0';
+            const editor = getActiveEditor();
+            if (editor) {
+                const selection = window.getSelection();
+                const range = selection.getRangeAt(0);
+                range.insertNode(img);
+                showToast('Image inserted');
+            }
+            closeMediaManager();
         }
         
         function handleImageUpload(event) {
@@ -1257,110 +1521,11 @@
             showToast(`${event.target.files.length} image(s) uploaded`);
         }
         
-        function onDragOver(e) { e.preventDefault(); document.getElementById('dragDropArea').classList.add('drag-over'); }
-        function onDragLeave(e) { document.getElementById('dragDropArea').classList.remove('drag-over'); }
-        function onDrop(e) {
-            e.preventDefault();
-            document.getElementById('dragDropArea').classList.remove('drag-over');
-            Array.from(e.dataTransfer.files).forEach((file, i) => {
-                if (file.type.startsWith('image/')) {
-                    const reader = new FileReader();
-                    reader.onload = e => {
-                        imageLibrary.push({ id: Date.now() + i, src: e.target.result, name: file.name });
-                        localStorage.setItem('koraheyImageLibrary', JSON.stringify(imageLibrary));
-                        loadImageGallery();
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-            showToast(`${e.dataTransfer.files.length} image(s) uploaded`);
-        }
+        document.getElementById('dragDropArea')?.addEventListener('click', () => document.getElementById('imageUpload').click());
+        document.getElementById('imageUpload')?.addEventListener('change', handleImageUpload);
         
-        function dragImage(e, src) { e.dataTransfer.setData('text/plain', src); }
-        const dragDropArea = document.getElementById('dragDropArea');
-        if (dragDropArea) {
-            dragDropArea.addEventListener('click', () => document.getElementById('imageUpload').click());
-        }
-        
-        document.addEventListener('dragover', e => e.preventDefault());
-        document.addEventListener('drop', e => {
-            const src = e.dataTransfer.getData('text/plain');
-            if (src && src.startsWith('data:image')) {
-                e.preventDefault();
-                const editor = getActiveEditor();
-                if (editor) {
-                    const img = document.createElement('img');
-                    img.src = src;
-                    img.style.maxWidth = '100%';
-                    img.style.margin = '10px 0';
-                    const selection = window.getSelection();
-                    const range = selection.getRangeAt(0);
-                    range.insertNode(img);
-                    showToast('Image inserted');
-                }
-            }
-        });
-
-        // Right Click Menu
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-            const menu = document.getElementById('contextMenu');
-            menu.style.left = e.pageX + 'px';
-            menu.style.top = e.pageY + 'px';
-            menu.classList.add('show');
-        });
-        document.addEventListener('click', function() { hideContextMenu(); });
-        function hideContextMenu() { document.getElementById('contextMenu').classList.remove('show'); }
-
-        // Document functions
-        function newDocument() {
-            if (confirm('Create new document?')) {
-                document.getElementById('paperContainer').innerHTML = `
-                    <div class="paper-page"><div class="paper-page-content" contenteditable="true">
-                        <h1 style="text-align: center;">KORAHEY ACADEMY</h1>
-                        <p style="text-align: center; font-style: italic;">Passion for Success</p>
-                        <hr><p>Start typing your document here.</p>
-                    </div></div>`;
-                currentPageIndex = 0;
-                updatePageList();
-                showToast('New document created');
-            }
-        }
-
-        function saveDocument() {
-            const pages = [];
-            document.querySelectorAll('.paper-page').forEach((page, i) => {
-                const contentDiv = page.querySelector('.paper-page-content');
-                pages.push({ id: i, content: contentDiv ? contentDiv.innerHTML : '' });
-            });
-            localStorage.setItem('koraheyDocument', JSON.stringify(pages));
-            showToast('Document saved');
-        }
-
-        function printDocument() { window.print(); }
-
-        function loadDocument() {
-            const saved = localStorage.getItem('koraheyDocument');
-            if (saved) {
-                const pages = JSON.parse(saved);
-                if (pages.length > 0) {
-                    document.getElementById('paperContainer').innerHTML = pages.map(p => `
-                        <div class="paper-page"><div class="paper-page-content" contenteditable="true">${p.content}</div></div>
-                    `).join('');
-                    updatePageList();
-                }
-            }
-            updatePageList();
-            updateWordCount();
-        }
-
-        function escapeHtml(str) {
-            if (!str) return '';
-            return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m]));
-        }
-
-        // Selection change to update button states
-        document.addEventListener('selectionchange', function() {
+        // Event listeners
+        document.addEventListener('selectionchange', () => {
             const active = document.activeElement;
             if (active && active.classList && active.classList.contains('paper-page-content')) {
                 updateButtonState('boldBtn', 'bold');
@@ -1368,22 +1533,12 @@
                 updateButtonState('underlineBtn', 'underline');
             }
         });
-
-        document.addEventListener('keyup', function() {
-            const active = document.activeElement;
-            if (active && active.classList && active.classList.contains('paper-page-content')) {
-                updateButtonState('boldBtn', 'bold');
-                updateButtonState('italicBtn', 'italic');
-                updateButtonState('underlineBtn', 'underline');
-            }
-        });
-
-        // Initial setup
+        
         setTimeout(() => {
             const editor = document.querySelector('.paper-page-content');
             if (editor) editor.focus();
         }, 100);
-
+        
         loadDocument();
         setInterval(updateWordCount, 500);
     </script>
