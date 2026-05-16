@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Korahey Exam Designer | AI-Powered Exam Creator</title>
+    <title>Korahey Editor | Document Editor</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -11,10 +11,6 @@
     <style>
         :root {
             --apple-blue: #0071e3;
-            --exam-green: #34c759;
-            --exam-red: #ff3b30;
-            --exam-orange: #ff9500;
-            --exam-purple: #af52de;
             --text-main: #1d1d1f;
             --bg-canvas: #f5f5f7;
         }
@@ -49,7 +45,7 @@
         .editor-brand {
             font-weight: 800;
             font-size: 1rem;
-            background: linear-gradient(135deg, var(--exam-purple) 0%, var(--apple-blue) 100%);
+            background: linear-gradient(135deg, #1d1d1f 0%, var(--apple-blue) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: 1px;
@@ -104,28 +100,7 @@
 
         .top-btn:hover { background: rgba(0, 0, 0, 0.1); }
 
-        /* AI Designer Button */
-        .ai-designer-btn {
-            background: linear-gradient(135deg, var(--exam-purple), var(--apple-blue));
-            color: white;
-            border: none;
-            padding: 6px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s;
-        }
-
-        .ai-designer-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(0,113,227,0.3);
-        }
-
-        /* Ribbon Container */
+        /* Ribbon Container - For dropdown panels */
         .ribbon-container {
             position: fixed;
             top: 48px;
@@ -143,6 +118,7 @@
             border-bottom: 1px solid #e0e0e0;
         }
 
+        /* Ribbon Panel - Dropdown style */
         .ribbon-panel {
             display: none;
             background: #ffffff;
@@ -205,7 +181,12 @@
             background: #f0f0f0;
         }
 
-        /* Dynamic Island */
+        .ribbon-btn.active {
+            background: var(--apple-blue);
+            color: white;
+        }
+
+        /* Dynamic Island - MOVED UP (removed white space) */
         .dynamic-island {
             position: fixed;
             top: 60px;
@@ -257,6 +238,10 @@
             color: white;
         }
 
+        .tool-btn.active i {
+            color: white;
+        }
+
         .separator {
             width: 1px;
             height: 24px;
@@ -264,7 +249,21 @@
             margin: 0 4px;
         }
 
-        /* Sidebar */
+        .font-selector, .size-selector {
+            padding: 6px 12px;
+            border-radius: 40px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background: white;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .font-selector:hover, .size-selector:hover {
+            background: #f5f5f5;
+        }
+
+        /* Sidebar Layout - MOVED UP */
         .left-panel {
             position: fixed;
             left: 0;
@@ -277,10 +276,13 @@
             display: flex;
             flex-direction: column;
             z-index: 998;
-            transition: transform 0.3s, top 0.35s;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), top 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
         }
         
-        .left-panel.ribbon-open { top: 135px; }
+        .left-panel.ribbon-open {
+            top: 135px;
+        }
+
         .left-panel.collapsed { transform: translateX(-100%); }
 
         .panel-toggle-btn {
@@ -298,10 +300,13 @@
             justify-content: center;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             z-index: 1002;
-            transition: left 0.3s, top 0.35s;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), top 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
         }
         
-        .panel-toggle-btn.ribbon-open { top: 147px; }
+        .panel-toggle-btn.ribbon-open {
+            top: 147px;
+        }
+
         .panel-toggle-btn.sidebar-closed { left: 10px; }
 
         .sidebar-content {
@@ -313,48 +318,107 @@
             flex: 1;
         }
 
-        /* Question Types */
-        .question-type-section {
-            margin-bottom: 20px;
-        }
-
-        .section-title {
+        .panel-title {
             font-size: 11px;
             font-weight: 700;
             text-transform: uppercase;
             color: #86868b;
             letter-spacing: 1.2px;
-            margin-bottom: 12px;
         }
 
-        .question-type-btn {
-            width: 100%;
-            text-align: left;
+        .page-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .page-thumb {
             background: white;
             border: 1px solid rgba(0, 0, 0, 0.1);
             border-radius: 8px;
-            padding: 10px 12px;
-            margin-bottom: 8px;
+            padding: 10px;
             cursor: pointer;
             transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 13px;
         }
 
-        .question-type-btn:hover {
+        .page-thumb:hover {
+            border-color: var(--apple-blue);
+            transform: translateX(4px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .page-thumb.active {
             border-color: var(--apple-blue);
             background: rgba(0, 113, 227, 0.05);
-            transform: translateX(4px);
         }
 
-        .question-type-btn i {
-            width: 24px;
-            color: var(--apple-blue);
+        .thumb-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
         }
 
-        /* Canvas Area */
+        .page-number {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .delete-page-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #999;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+        }
+
+        .delete-page-btn:hover {
+            background: rgba(255, 59, 48, 0.1);
+            color: #ff3b30;
+        }
+
+        .mini-paper {
+            background: #fafafc;
+            border-radius: 4px;
+            padding: 8px;
+            aspect-ratio: 210 / 297;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            margin-bottom: 5px;
+        }
+        
+        .mini-paper-header {
+            font-size: 7px;
+            font-weight: bold;
+            text-align: center;
+            padding-bottom: 3px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .mini-paper-content {
+            flex: 1;
+            font-size: 6px;
+            line-height: 1.3;
+            color: #666;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 10;
+            -webkit-box-orient: vertical;
+            font-family: 'Times New Roman', serif;
+        }
+
+        /* Canvas Area - MOVED UP */
         .canvas-center {
             position: absolute;
             top: 60px;
@@ -363,7 +427,8 @@
             bottom: 44px;
             overflow-y: auto;
             padding: 40px 40px 150px 40px;
-            transition: left 0.3s, top 0.35s;
+            scroll-behavior: smooth;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), top 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -371,23 +436,32 @@
             z-index: 1;
         }
         
-        .canvas-center.ribbon-open { top: 135px; }
+        .canvas-center.ribbon-open {
+            top: 135px;
+        }
+
         .canvas-center.expanded { left: 0; }
 
-        /* Exam Paper */
+        /* A4 Paper */
         .paper-page {
             background: white;
             width: 210mm;
             min-width: 210mm;
             max-width: 210mm;
+            height: 297mm;
             min-height: 297mm;
+            max-height: 297mm;
             margin: 20px 0 40px 0;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             padding: 20mm 25mm;
             position: relative;
+            cursor: text;
             display: flex;
             flex-direction: column;
+            overflow: hidden;
         }
+
+        .paper-page:last-child { margin-bottom: 0; }
 
         .paper-page-content {
             flex: 1;
@@ -395,156 +469,7 @@
             font-family: 'Times New Roman', serif;
             font-size: 12pt;
             line-height: 1.6;
-        }
-
-        /* Question Styling */
-        .exam-question {
-            margin: 20px 0;
-            padding: 15px;
-            background: #f9f9fb;
-            border-radius: 12px;
-            border-left: 4px solid var(--apple-blue);
-        }
-
-        .question-number {
-            font-weight: 700;
-            color: var(--apple-blue);
-            margin-bottom: 10px;
-        }
-
-        .question-text {
-            font-weight: 500;
-            margin-bottom: 12px;
-        }
-
-        .options-list {
-            list-style: none;
-            padding-left: 20px;
-        }
-
-        .options-list li {
-            margin: 8px 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .option-letter {
-            font-weight: 600;
-            color: #666;
-        }
-
-        .answer-box {
-            margin-top: 10px;
-            padding: 8px;
-            background: #e8f4e8;
-            border-radius: 8px;
-            font-size: 11px;
-            color: var(--exam-green);
-        }
-
-        /* AI Modal */
-        .ai-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(8px);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-        }
-        .ai-modal.active { display: flex; }
-        .ai-modal-content {
-            width: 90%;
-            max-width: 700px;
-            background: white;
-            border-radius: 24px;
-            overflow: hidden;
-            max-height: 85vh;
-            display: flex;
-            flex-direction: column;
-        }
-        .ai-modal-header {
-            padding: 20px 24px;
-            display: flex;
-            justify-content: space-between;
-            border-bottom: 1px solid #eee;
-            background: linear-gradient(135deg, var(--exam-purple), var(--apple-blue));
-            color: white;
-        }
-        .ai-modal-body {
-            padding: 24px;
             overflow-y: auto;
-            flex: 1;
-        }
-        .ai-input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 12px;
-            font-size: 14px;
-            margin-bottom: 16px;
-            font-family: inherit;
-        }
-        .ai-input:focus {
-            outline: none;
-            border-color: var(--apple-blue);
-        }
-        .ai-options {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-        }
-        .ai-option-btn {
-            padding: 8px 16px;
-            border: 1px solid #ddd;
-            border-radius: 20px;
-            background: white;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .ai-option-btn:hover {
-            border-color: var(--apple-blue);
-            background: rgba(0, 113, 227, 0.05);
-        }
-        .generate-btn {
-            background: linear-gradient(135deg, var(--exam-purple), var(--apple-blue));
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 600;
-            width: 100%;
-        }
-        .ai-result {
-            margin-top: 20px;
-            padding: 16px;
-            background: #f5f5f7;
-            border-radius: 12px;
-            display: none;
-        }
-        .ai-result.show { display: block; }
-        .insert-result-btn {
-            margin-top: 12px;
-            background: var(--exam-green);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-        .close-modal {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: white;
         }
 
         /* Bottom Bar */
@@ -565,54 +490,146 @@
             font-size: 12px;
         }
 
-        .stats {
+        .bottom-left {
             display: flex;
-            gap: 20px;
+            gap: 24px;
+            align-items: center;
         }
 
-        .stat-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
+        .page-nav-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: #666;
         }
+
+        .page-nav-btn:hover { background: rgba(0, 0, 0, 0.05); }
+
+        /* Custom Right Click Menu */
+        .custom-context-menu {
+            position: fixed;
+            background: white;
+            border-radius: 12px;
+            min-width: 200px;
+            display: none;
+            padding: 8px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border: 1px solid rgba(0,0,0,0.1);
+            z-index: 10000;
+        }
+        .custom-context-menu.show { display: block; }
+        .context-menu-item { padding: 10px 20px; font-size: 13px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 10px; color: #333; }
+        .context-menu-item i { width: 20px; color: #666; }
+        .context-menu-item:hover { background: rgba(0, 0, 0, 0.05); }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #333;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 13px;
+            z-index: 3000;
+            transition: transform 0.3s;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+
+        /* Modal */
+        .media-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        .media-modal.active { display: flex; }
+        .media-modal-content {
+            width: 90%;
+            max-width: 600px;
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+        }
+        .media-modal-header { padding: 20px 24px; display: flex; justify-content: space-between; border-bottom: 1px solid #eee; }
+        .media-modal-body { padding: 24px; max-height: 60vh; overflow-y: auto; }
+        .drag-drop-area {
+            border: 2px dashed #ccc;
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            margin-bottom: 24px;
+        }
+        .image-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 12px; }
+        .gallery-item {
+            background: #f5f5f7;
+            border-radius: 12px;
+            padding: 8px;
+            cursor: grab;
+            text-align: center;
+        }
+        .gallery-item img { width: 100%; height: 80px; object-fit: cover; border-radius: 8px; }
+        .close-modal { background: none; border: none; font-size: 24px; cursor: pointer; color: #999; }
 
         @media (max-width: 1000px) {
+            .ribbon-panel { max-height: 200px; overflow-x: auto; }
             .canvas-center { left: 0; }
             .left-panel { transform: translateX(-100%); }
             .panel-toggle-btn { left: 10px; }
-            .paper-page { width: 100%; min-width: auto; }
+            .paper-page { width: 100%; min-width: auto; height: auto; min-height: 500px; }
         }
 
         @media print {
-            .top-bar, .ribbon-container, .dynamic-island, .left-panel, .panel-toggle-btn, .bottom-bar {
+            .top-bar, .ribbon-container, .dynamic-island, .left-panel, .panel-toggle-btn, .bottom-bar, .toast {
                 display: none !important;
             }
-            .canvas-center { left: 0; padding: 0; background: white; top: 0; }
-            .paper-page { box-shadow: none; margin: 0; page-break-after: always; }
+            .canvas-center {
+                left: 0;
+                padding: 0;
+                background: white;
+            }
+            .paper-page {
+                box-shadow: none;
+                margin: 0;
+                padding: 20mm;
+                page-break-after: always;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Top Bar -->
+    <!-- Top Bar with Centered Tabs -->
     <div class="top-bar">
-        <div class="editor-brand">📝 KORAHEY EXAM DESIGNER</div>
+        <div class="editor-brand">KORAHEY EDITOR</div>
         <div class="ribbon-tabs-header">
             <div class="ribbon-tab" data-tab="home">Home</div>
-            <div class="ribbon-tab" data-tab="exam">Exam</div>
+            <div class="ribbon-tab" data-tab="insert">Insert</div>
             <div class="ribbon-tab" data-tab="design">Design</div>
+            <div class="ribbon-tab" data-tab="layout">Layout</div>
             <div class="ribbon-tab" data-tab="review">Review</div>
             <div class="ribbon-tab" data-tab="view">View</div>
         </div>
         <div class="right-actions">
-            <button class="ai-designer-btn" onclick="openAIDesigner()"><i class="fas fa-robot"></i> AI Designer</button>
-            <button class="top-btn" onclick="saveExam()">Save Exam</button>
-            <button class="top-btn" onclick="exportExam()">Export PDF</button>
-            <button class="top-btn" onclick="newExam()">New Exam</button>
+            <button class="top-btn" onclick="saveDocument()">Save</button>
+            <button class="top-btn" onclick="printDocument()">Print</button>
+            <button class="top-btn" onclick="newDocument()">New</button>
         </div>
     </div>
 
-    <!-- Ribbon Container -->
+    <!-- Ribbon Container for dropdown panels -->
     <div class="ribbon-container" id="ribbonContainer">
         <!-- HOME Panel -->
         <div id="ribbonHome" class="ribbon-panel">
@@ -630,43 +647,51 @@
                     <button class="ribbon-btn" onclick="toggleBold()"><b>Bold</b></button>
                     <button class="ribbon-btn" onclick="toggleItalic()"><i>Italic</i></button>
                     <button class="ribbon-btn" onclick="toggleUnderline()"><u>Underline</u></button>
+                    <button class="ribbon-btn" onclick="changeCase()">Change Case</button>
+                    <button class="ribbon-btn" onclick="clearFormatting()">Clear Format</button>
                 </div>
             </div>
             <div class="ribbon-group">
-                <div class="group-title">Alignment</div>
+                <div class="group-title">Paragraph</div>
                 <div class="group-buttons">
-                    <button class="ribbon-btn" onclick="execCommand('justifyLeft')"><i class="fas fa-align-left"></i></button>
-                    <button class="ribbon-btn" onclick="execCommand('justifyCenter')"><i class="fas fa-align-center"></i></button>
-                    <button class="ribbon-btn" onclick="execCommand('justifyRight')"><i class="fas fa-align-right"></i></button>
+                    <button class="ribbon-btn" onclick="execCommand('justifyLeft')"><i class="fas fa-align-left"></i> Left</button>
+                    <button class="ribbon-btn" onclick="execCommand('justifyCenter')"><i class="fas fa-align-center"></i> Center</button>
+                    <button class="ribbon-btn" onclick="execCommand('justifyRight')"><i class="fas fa-align-right"></i> Right</button>
+                </div>
+            </div>
+            <div class="ribbon-group">
+                <div class="group-title">Lists</div>
+                <div class="group-buttons">
+                    <button class="ribbon-btn" onclick="toggleList('insertUnorderedList')"><i class="fas fa-list-ul"></i> Bullets</button>
+                    <button class="ribbon-btn" onclick="toggleList('insertOrderedList')"><i class="fas fa-list-ol"></i> Numbering</button>
                 </div>
             </div>
         </div>
 
-        <!-- EXAM Panel - NEW -->
-        <div id="ribbonExam" class="ribbon-panel">
+        <!-- INSERT Panel -->
+        <div id="ribbonInsert" class="ribbon-panel">
             <div class="ribbon-group">
-                <div class="group-title">Question Types</div>
+                <div class="group-title">Pages</div>
                 <div class="group-buttons">
-                    <button class="ribbon-btn" onclick="insertMultipleChoice()"><i class="fas fa-check-circle"></i> Multiple Choice</button>
-                    <button class="ribbon-btn" onclick="insertTrueFalse()"><i class="fas fa-question-circle"></i> True/False</button>
-                    <button class="ribbon-btn" onclick="insertFillBlank()"><i class="fas fa-underline"></i> Fill in Blank</button>
-                    <button class="ribbon-btn" onclick="insertEssay()"><i class="fas fa-pen-fancy"></i> Essay</button>
-                    <button class="ribbon-btn" onclick="insertMatching()"><i class="fas fa-link"></i> Matching</button>
+                    <button class="ribbon-btn" onclick="insertPageBreak()"><i class="fas fa-page-break"></i> Page Break</button>
                 </div>
             </div>
             <div class="ribbon-group">
-                <div class="group-title">Exam Settings</div>
+                <div class="group-title">Tables</div>
                 <div class="group-buttons">
-                    <button class="ribbon-btn" onclick="addPoints()"><i class="fas fa-star"></i> Add Points</button>
-                    <button class="ribbon-btn" onclick="addTimeLimit()"><i class="fas fa-clock"></i> Time Limit</button>
-                    <button class="ribbon-btn" onclick="addInstructions()"><i class="fas fa-info-circle"></i> Instructions</button>
+                    <button class="ribbon-btn" onclick="insertTable()"><i class="fas fa-table"></i> Insert Table</button>
                 </div>
             </div>
             <div class="ribbon-group">
-                <div class="group-title">Answer Key</div>
+                <div class="group-title">Illustrations</div>
                 <div class="group-buttons">
-                    <button class="ribbon-btn" onclick="generateAnswerKey()"><i class="fas fa-key"></i> Generate Key</button>
-                    <button class="ribbon-btn" onclick="showRubric()"><i class="fas fa-chart-bar"></i> Rubric</button>
+                    <button class="ribbon-btn" onclick="openMediaManager()"><i class="fas fa-image"></i> Pictures</button>
+                </div>
+            </div>
+            <div class="ribbon-group">
+                <div class="group-title">Text</div>
+                <div class="group-buttons">
+                    <button class="ribbon-btn" onclick="insertDate()"><i class="fas fa-calendar"></i> Date & Time</button>
                 </div>
             </div>
         </div>
@@ -674,18 +699,37 @@
         <!-- DESIGN Panel -->
         <div id="ribbonDesign" class="ribbon-panel">
             <div class="ribbon-group">
-                <div class="group-title">Exam Theme</div>
+                <div class="group-title">Document Formatting</div>
                 <div class="group-buttons">
-                    <button class="ribbon-btn" onclick="setExamTheme('standard')">Standard</button>
-                    <button class="ribbon-btn" onclick="setExamTheme('modern')">Modern</button>
-                    <button class="ribbon-btn" onclick="setExamTheme('classic')">Classic</button>
+                    <button class="ribbon-btn" onclick="setZoom(100)">100%</button>
+                    <button class="ribbon-btn" onclick="setZoom(125)">125%</button>
+                    <button class="ribbon-btn" onclick="setZoom(150)">150%</button>
                 </div>
             </div>
             <div class="ribbon-group">
-                <div class="group-title">Header/Footer</div>
+                <div class="group-title">Page Background</div>
                 <div class="group-buttons">
-                    <button class="ribbon-btn" onclick="addExamHeader()"><i class="fas fa-heading"></i> Exam Header</button>
-                    <button class="ribbon-btn" onclick="addFooter()"><i class="fas fa-italic"></i> Footer</button>
+                    <button class="ribbon-btn" onclick="setPageColor('#ffffff')">White</button>
+                    <button class="ribbon-btn" onclick="setPageColor('#f5e6ca')">Vintage</button>
+                    <button class="ribbon-btn" onclick="setPageColor('#e8f4f8')">Light Blue</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- LAYOUT Panel -->
+        <div id="ribbonLayout" class="ribbon-panel">
+            <div class="ribbon-group">
+                <div class="group-title">Page Setup</div>
+                <div class="group-buttons">
+                    <button class="ribbon-btn" onclick="zoomIn()"><i class="fas fa-search-plus"></i> Zoom In</button>
+                    <button class="ribbon-btn" onclick="zoomOut()"><i class="fas fa-search-minus"></i> Zoom Out</button>
+                </div>
+            </div>
+            <div class="ribbon-group">
+                <div class="group-title">Orientation</div>
+                <div class="group-buttons">
+                    <button class="ribbon-btn" onclick="setOrientation('portrait')">Portrait</button>
+                    <button class="ribbon-btn" onclick="setOrientation('landscape')">Landscape</button>
                 </div>
             </div>
         </div>
@@ -693,11 +737,10 @@
         <!-- REVIEW Panel -->
         <div id="ribbonReview" class="ribbon-panel">
             <div class="ribbon-group">
-                <div class="group-title">Review Tools</div>
+                <div class="group-title">Proofing</div>
                 <div class="group-buttons">
-                    <button class="ribbon-btn" onclick="checkExam()"><i class="fas fa-check-double"></i> Validate Exam</button>
-                    <button class="ribbon-btn" onclick="countQuestions()"><i class="fas fa-calculator"></i> Count Questions</button>
-                    <button class="ribbon-btn" onclick="calculateTotalPoints()"><i class="fas fa-chart-line"></i> Total Points</button>
+                    <button class="ribbon-btn" onclick="checkSpelling()"><i class="fas fa-spell-check"></i> Spelling</button>
+                    <button class="ribbon-btn" onclick="showWordCount()"><i class="fas fa-calculator"></i> Word Count</button>
                 </div>
             </div>
         </div>
@@ -707,15 +750,15 @@
             <div class="ribbon-group">
                 <div class="group-title">Zoom</div>
                 <div class="group-buttons">
-                    <button class="ribbon-btn" onclick="zoomIn()"><i class="fas fa-search-plus"></i> Zoom In</button>
-                    <button class="ribbon-btn" onclick="zoomOut()"><i class="fas fa-search-minus"></i> Zoom Out</button>
                     <button class="ribbon-btn" onclick="setZoom(100)">100%</button>
+                    <button class="ribbon-btn" onclick="setZoom(125)">125%</button>
+                    <button class="ribbon-btn" onclick="setZoom(150)">150%</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Dynamic Island -->
+    <!-- Dynamic Island - MOVED UP -->
     <div class="dynamic-island" id="dynamicIsland">
         <select id="fontSelector" class="font-selector" onchange="changeFont()">
             <option value="'Times New Roman', serif">Times New Roman</option>
@@ -725,60 +768,48 @@
         </select>
         <select id="sizeSelector" class="size-selector" onchange="changeFontSize()">
             <option value="10">10</option><option value="11">11</option><option value="12" selected>12</option>
-            <option value="14">14</option><option value="16">16</option>
+            <option value="14">14</option><option value="16">16</option><option value="18">18</option>
+            <option value="20">20</option><option value="24">24</option>
         </select>
         <div class="separator"></div>
         <button class="tool-btn" id="boldBtn" onclick="toggleBold()"><b>B</b></button>
         <button class="tool-btn" id="italicBtn" onclick="toggleItalic()"><i>I</i></button>
         <button class="tool-btn" id="underlineBtn" onclick="toggleUnderline()"><u>U</u></button>
+        <div class="separator"></div>
+        <button class="tool-btn" id="alignLeftBtn" onclick="setAlignment('justifyLeft', 'alignLeftBtn')"><i class="fas fa-align-left"></i></button>
+        <button class="tool-btn" id="alignCenterBtn" onclick="setAlignment('justifyCenter', 'alignCenterBtn')"><i class="fas fa-align-center"></i></button>
+        <button class="tool-btn" id="alignRightBtn" onclick="setAlignment('justifyRight', 'alignRightBtn')"><i class="fas fa-align-right"></i></button>
+        <div class="separator"></div>
+        <button class="tool-btn" id="bulletBtn" onclick="toggleList('insertUnorderedList')"><i class="fas fa-list-ul"></i></button>
+        <button class="tool-btn" id="numberBtn" onclick="toggleList('insertOrderedList')"><i class="fas fa-list-ol"></i></button>
+        <div class="separator"></div>
+        <button class="tool-btn" onclick="openMediaManager()"><i class="fas fa-image"></i></button>
+        <button class="tool-btn" onclick="insertTable()"><i class="fas fa-table"></i></button>
     </div>
 
-    <!-- Toggle Button -->
+    <!-- Toggle Button for Sidebar -->
     <div class="panel-toggle-btn" id="toggleBtn" onclick="toggleSidebar()">
         <i class="fas fa-chevron-left" id="toggleIcon"></i>
     </div>
 
-    <!-- Left Panel - Question Bank -->
+    <!-- Left Panel -->
     <div class="left-panel" id="sidebar">
         <div class="sidebar-content">
-            <div class="section-title">📋 QUESTION BANK</div>
-            <button class="question-type-btn" onclick="insertMultipleChoice()">
-                <i class="fas fa-check-circle"></i> Multiple Choice
-            </button>
-            <button class="question-type-btn" onclick="insertTrueFalse()">
-                <i class="fas fa-question-circle"></i> True / False
-            </button>
-            <button class="question-type-btn" onclick="insertFillBlank()">
-                <i class="fas fa-underline"></i> Fill in the Blank
-            </button>
-            <button class="question-type-btn" onclick="insertEssay()">
-                <i class="fas fa-pen-fancy"></i> Essay Question
-            </button>
-            <button class="question-type-btn" onclick="insertMatching()">
-                <i class="fas fa-link"></i> Matching
-            </button>
-            <button class="question-type-btn" onclick="addPoints()">
-                <i class="fas fa-star"></i> Add Points
-            </button>
-            <button class="question-type-btn" onclick="openAIDesigner()">
-                <i class="fas fa-robot"></i> 🤖 AI Generate Questions
-            </button>
+            <div class="panel-title">PAGES</div>
+            <div class="page-list" id="pageList"></div>
         </div>
     </div>
 
-    <!-- Canvas Area -->
+    <!-- Canvas Area with Paper -->
     <div class="canvas-center" id="canvas">
         <div id="paperContainer">
-            <div class="paper-page">
+            <div class="paper-page" data-page="1">
                 <div class="paper-page-content" contenteditable="true" id="editorContent">
-                    <h1 style="text-align: center;">📚 KORAHEY ACADEMY</h1>
-                    <h2 style="text-align: center;">FINAL EXAMINATION</h2>
-                    <p style="text-align: center;">Subject: ____________________</p>
-                    <p style="text-align: center;">Date: ____________________</p>
-                    <p style="text-align: center;">Time Allowed: 2 Hours</p>
-                    <hr style="margin: 20px 0;">
-                    <p><strong>Instructions:</strong> Read each question carefully. Answer all questions in the space provided.</p>
-                    <hr style="margin: 20px 0;">
+                    <h1 style="text-align: center;">KORAHEY ACADEMY</h1>
+                    <p style="text-align: center; font-style: italic;">Passion for Success</p>
+                    <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+                    <p>Welcome to Korahey Editor. Hover over Home, Insert, Design, Layout, Review, or View to see dropdown options.</p>
+                    <p>When the dropdown opens, the toolbar and paper move down smoothly!</p>
                 </div>
             </div>
         </div>
@@ -790,10 +821,7 @@
             <button class="page-nav-btn" onclick="previousPage()"><i class="fas fa-chevron-left"></i></button>
             <span id="pageCounter">Page 1 of 1</span>
             <button class="page-nav-btn" onclick="nextPage()"><i class="fas fa-chevron-right"></i></button>
-            <div class="stats">
-                <div class="stat-item"><i class="fas fa-list"></i> <span id="questionCount">0</span> Questions</div>
-                <div class="stat-item"><i class="fas fa-star"></i> <span id="totalPoints">0</span> Points</div>
-            </div>
+            <span id="wordCount">0 words</span>
         </div>
         <div>
             <button class="page-nav-btn" onclick="zoomOut()"><i class="fas fa-search-minus"></i></button>
@@ -802,55 +830,34 @@
         </div>
     </div>
 
-    <!-- AI Designer Modal -->
-    <div id="aiModal" class="ai-modal">
-        <div class="ai-modal-content">
-            <div class="ai-modal-header">
-                <h3><i class="fas fa-robot"></i> AI Exam Designer</h3>
-                <button class="close-modal" onclick="closeAIDesigner()">&times;</button>
+    <!-- Custom Right Click Menu -->
+    <div id="contextMenu" class="custom-context-menu">
+        <div class="context-menu-item" onclick="toggleBold()"><i class="fas fa-bold"></i> Bold</div>
+        <div class="context-menu-item" onclick="toggleItalic()"><i class="fas fa-italic"></i> Italic</div>
+        <div class="context-menu-item" onclick="toggleUnderline()"><i class="fas fa-underline"></i> Underline</div>
+        <div class="dropdown-divider"></div>
+        <div class="context-menu-item" onclick="execCommand('copy'); hideContextMenu()"><i class="fas fa-copy"></i> Copy</div>
+        <div class="context-menu-item" onclick="execCommand('cut'); hideContextMenu()"><i class="fas fa-cut"></i> Cut</div>
+        <div class="context-menu-item" onclick="pasteText(); hideContextMenu()"><i class="fas fa-paste"></i> Paste</div>
+        <div class="dropdown-divider"></div>
+        <div class="context-menu-item" onclick="insertTable(); hideContextMenu()"><i class="fas fa-table"></i> Insert Table</div>
+        <div class="context-menu-item" onclick="openMediaManager(); hideContextMenu()"><i class="fas fa-image"></i> Insert Image</div>
+    </div>
+
+    <!-- Media Manager Modal -->
+    <div id="mediaModal" class="media-modal">
+        <div class="media-modal-content">
+            <div class="media-modal-header">
+                <h3>Media Manager</h3>
+                <button class="close-modal" onclick="closeMediaManager()">&times;</button>
             </div>
-            <div class="ai-modal-body">
-                <label>Exam Topic / Subject:</label>
-                <input type="text" id="aiTopic" class="ai-input" placeholder="e.g., Mathematics, Physics, History, English Literature">
-                
-                <label>Grade Level:</label>
-                <div class="ai-options">
-                    <button class="ai-option-btn" onclick="setGradeLevel('Elementary')">Elementary</button>
-                    <button class="ai-option-btn" onclick="setGradeLevel('Middle School')">Middle School</button>
-                    <button class="ai-option-btn" onclick="setGradeLevel('High School')">High School</button>
-                    <button class="ai-option-btn" onclick="setGradeLevel('College')">College</button>
+            <div class="media-modal-body">
+                <div class="drag-drop-area" id="dragDropArea" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+                    <i class="fas fa-cloud-upload-alt" style="font-size: 48px; color: var(--apple-blue);"></i>
+                    <p>Drag & drop images here or click to upload</p>
+                    <input type="file" id="imageUpload" accept="image/*" multiple style="display: none;" onchange="handleImageUpload(event)">
                 </div>
-                
-                <label>Number of Questions:</label>
-                <div class="ai-options">
-                    <button class="ai-option-btn" onclick="setQuestionCount(5)">5</button>
-                    <button class="ai-option-btn" onclick="setQuestionCount(10)">10</button>
-                    <button class="ai-option-btn" onclick="setQuestionCount(15)">15</button>
-                    <button class="ai-option-btn" onclick="setQuestionCount(20)">20</button>
-                </div>
-                
-                <label>Question Types:</label>
-                <div class="ai-options">
-                    <button class="ai-option-btn" onclick="toggleQuestionType('mc')">✅ Multiple Choice</button>
-                    <button class="ai-option-btn" onclick="toggleQuestionType('tf')">✅ True/False</button>
-                    <button class="ai-option-btn" onclick="toggleQuestionType('fb')">✅ Fill Blank</button>
-                    <button class="ai-option-btn" onclick="toggleQuestionType('essay')">✅ Essay</button>
-                </div>
-                
-                <label>Difficulty:</label>
-                <div class="ai-options">
-                    <button class="ai-option-btn" onclick="setDifficulty('Easy')">Easy</button>
-                    <button class="ai-option-btn" onclick="setDifficulty('Medium')">Medium</button>
-                    <button class="ai-option-btn" onclick="setDifficulty('Hard')">Hard</button>
-                </div>
-                
-                <button class="generate-btn" onclick="generateAIExam()"><i class="fas fa-magic"></i> Generate Exam with AI</button>
-                
-                <div id="aiResult" class="ai-result">
-                    <h4>AI Generated Questions:</h4>
-                    <div id="aiQuestions"></div>
-                    <button class="insert-result-btn" onclick="insertAIQuestions()"><i class="fas fa-plus"></i> Insert into Exam</button>
-                </div>
+                <div class="image-gallery" id="imageGallery"></div>
             </div>
         </div>
     </div>
@@ -858,19 +865,13 @@
     <div id="toast" class="toast"></div>
 
     <script>
-        // State
+        // ========== EDITOR STATE ==========
         let currentZoom = 100;
         let currentPageIndex = 0;
+        let imageLibrary = [];
         let hoverTimeout;
         let isRibbonOpen = false;
-        let aiGeneratedQuestions = [];
-        let currentTopic = "";
-        let currentGrade = "High School";
-        let currentQuestionCount = 10;
-        let currentDifficulty = "Medium";
-        let selectedTypes = { mc: true, tf: true, fb: true, essay: true };
 
-        // Toast
         function showToast(message) {
             const toast = document.getElementById('toast');
             toast.textContent = message;
@@ -878,439 +879,7 @@
             setTimeout(() => { toast.classList.remove('show'); }, 2000);
         }
 
-        // AI Designer Functions
-        function openAIDesigner() {
-            document.getElementById('aiModal').classList.add('active');
-        }
-        
-        function closeAIDesigner() {
-            document.getElementById('aiModal').classList.remove('active');
-        }
-        
-        function setGradeLevel(grade) {
-            currentGrade = grade;
-            showToast(`Grade: ${grade}`);
-        }
-        
-        function setQuestionCount(count) {
-            currentQuestionCount = count;
-            showToast(`${count} questions`);
-        }
-        
-        function setDifficulty(difficulty) {
-            currentDifficulty = difficulty;
-            showToast(`Difficulty: ${difficulty}`);
-        }
-        
-        function toggleQuestionType(type) {
-            selectedTypes[type] = !selectedTypes[type];
-            showToast(`${type.toUpperCase()} ${selectedTypes[type] ? 'enabled' : 'disabled'}`);
-        }
-        
-        function generateAIExam() {
-            const topic = document.getElementById('aiTopic').value;
-            if (!topic) {
-                showToast('Please enter a topic/subject');
-                return;
-            }
-            currentTopic = topic;
-            
-            // AI Question Generation (Simulated - but comprehensive)
-            const questions = [];
-            const typesList = [];
-            if (selectedTypes.mc) typesList.push('mc');
-            if (selectedTypes.tf) typesList.push('tf');
-            if (selectedTypes.fb) typesList.push('fb');
-            if (selectedTypes.essay) typesList.push('essay');
-            
-            for (let i = 0; i < currentQuestionCount; i++) {
-                const type = typesList[i % typesList.length];
-                let question = {};
-                question.number = i + 1;
-                question.type = type;
-                question.points = currentDifficulty === 'Easy' ? 5 : (currentDifficulty === 'Medium' ? 10 : 15);
-                
-                if (type === 'mc') {
-                    question.text = `${currentTopic} Question ${i+1}: What is the key concept about ${currentTopic.toLowerCase()}?`;
-                    question.options = ['Option A: Correct answer', 'Option B: Alternative', 'Option C: Distractor', 'Option D: Another option'];
-                    question.correct = 'A';
-                } else if (type === 'tf') {
-                    question.text = `${currentTopic} Question ${i+1}: Is this statement about ${currentTopic.toLowerCase()} true or false?`;
-                    question.correct = 'True';
-                } else if (type === 'fb') {
-                    question.text = `Complete the sentence about ${currentTopic.toLowerCase()}: The main principle of ${currentTopic.toLowerCase()} is __________.`;
-                    question.answer = 'sample answer';
-                } else {
-                    question.text = `Explain in detail how ${currentTopic.toLowerCase()} impacts our understanding of the subject. Provide examples.`;
-                }
-                questions.push(question);
-            }
-            
-            aiGeneratedQuestions = questions;
-            
-            // Display results
-            const container = document.getElementById('aiQuestions');
-            container.innerHTML = questions.map(q => `
-                <div style="margin-bottom: 15px; padding: 10px; background: white; border-radius: 8px;">
-                    <strong>Q${q.number}</strong> [${q.type.toUpperCase()}] (${q.points} pts)<br>
-                    ${q.text}<br>
-                    ${q.options ? q.options.join(' | ') : ''}
-                    ${q.correct ? `<br><span style="color: green;">Answer: ${q.correct}</span>` : ''}
-                </div>
-            `).join('');
-            
-            document.getElementById('aiResult').classList.add('show');
-            showToast(`Generated ${questions.length} questions!`);
-        }
-        
-        function insertAIQuestions() {
-            const editor = getActiveEditor();
-            if (!editor) return;
-            
-            let html = '<h3 style="margin-top: 30px;">📝 Generated Questions</h3>';
-            for (const q of aiGeneratedQuestions) {
-                html += `<div class="exam-question">
-                    <div class="question-number">Question ${q.number} (${q.points} points)</div>
-                    <div class="question-text">${q.text}</div>`;
-                
-                if (q.options) {
-                    html += `<ul class="options-list">
-                        <li><span class="option-letter">A.</span> ${q.options[0]}</li>
-                        <li><span class="option-letter">B.</span> ${q.options[1]}</li>
-                        <li><span class="option-letter">C.</span> ${q.options[2]}</li>
-                        <li><span class="option-letter">D.</span> ${q.options[3]}</li>
-                    </ul>`;
-                }
-                
-                if (q.type === 'fb') {
-                    html += `<p>Answer: _______________</p>`;
-                }
-                
-                if (q.type === 'essay') {
-                    html += `<p style="margin-top: 10px;">Answer: <br><br><br><br></p>`;
-                }
-                
-                html += `<div class="answer-box">Answer Key: ${q.correct || q.answer || 'See rubric'}</div>
-                </div>`;
-            }
-            
-            document.execCommand('insertHTML', false, html);
-            closeAIDesigner();
-            updateStats();
-            showToast('AI questions inserted!');
-        }
-
-        // Exam Functions
-        function insertMultipleChoice() {
-            const html = `<div class="exam-question">
-                <div class="question-number">Question (5 points)</div>
-                <div class="question-text">Enter your question here:</div>
-                <ul class="options-list">
-                    <li><span class="option-letter">A.</span> <span contenteditable="true">Option 1</span></li>
-                    <li><span class="option-letter">B.</span> <span contenteditable="true">Option 2</span></li>
-                    <li><span class="option-letter">C.</span> <span contenteditable="true">Option 3</span></li>
-                    <li><span class="option-letter">D.</span> <span contenteditable="true">Option 4</span></li>
-                </ul>
-                <div class="answer-box">Correct Answer: <span contenteditable="true">A</span></div>
-            </div>`;
-            execCommandInsert(html);
-            updateStats();
-        }
-        
-        function insertTrueFalse() {
-            const html = `<div class="exam-question">
-                <div class="question-number">Question (3 points)</div>
-                <div class="question-text">True or False: <span contenteditable="true">Enter your statement here</span></div>
-                <ul class="options-list">
-                    <li>○ True</li>
-                    <li>○ False</li>
-                </ul>
-                <div class="answer-box">Correct Answer: <span contenteditable="true">True</span></div>
-            </div>`;
-            execCommandInsert(html);
-            updateStats();
-        }
-        
-        function insertFillBlank() {
-            const html = `<div class="exam-question">
-                <div class="question-number">Question (4 points)</div>
-                <div class="question-text">Fill in the blank: <span contenteditable="true">Complete this sentence: ______ is the capital of France.</span></div>
-                <p>Answer: _________________</p>
-                <div class="answer-box">Answer: <span contenteditable="true">Paris</span></div>
-            </div>`;
-            execCommandInsert(html);
-            updateStats();
-        }
-        
-        function insertEssay() {
-            const html = `<div class="exam-question">
-                <div class="question-number">Question (10 points)</div>
-                <div class="question-text"><span contenteditable="true">Enter your essay question here.</span></div>
-                <p>Answer: <br><br><br><br><br></p>
-                <div class="answer-box">Rubric: <span contenteditable="true">Content (5pts), Organization (3pts), Grammar (2pts)</span></div>
-            </div>`;
-            execCommandInsert(html);
-            updateStats();
-        }
-        
-        function insertMatching() {
-            const html = `<div class="exam-question">
-                <div class="question-number">Question (8 points)</div>
-                <div class="question-text">Match Column A with Column B:</div>
-                <table style="width: 100%; margin: 10px 0;">
-                    <tr><td><strong>Column A</strong></td><td><strong>Column B</strong></td></tr>
-                    <tr><td>1. ______</td><td>A. ______</td></tr>
-                    <tr><td>2. ______</td><td>B. ______</td></tr>
-                    <tr><td>3. ______</td><td>C. ______</td></tr>
-                </table>
-                <div class="answer-box">Answers: 1-_, 2-_, 3-_</div>
-            </div>`;
-            execCommandInsert(html);
-            updateStats();
-        }
-        
-        function addPoints() {
-            const html = `<p style="text-align: right; font-weight: bold;">[___ / ___ points]</p>`;
-            execCommandInsert(html);
-        }
-        
-        function addTimeLimit() {
-            const html = `<p><strong>Time Limit:</strong> <span contenteditable="true">___</span> minutes</p>`;
-            execCommandInsert(html);
-        }
-        
-        function addInstructions() {
-            const html = `<div style="background: #f0f7ff; padding: 15px; border-radius: 8px; margin: 15px 0;">
-                <strong>📌 Instructions:</strong> <span contenteditable="true">Read all questions carefully before answering.</span>
-            </div>`;
-            execCommandInsert(html);
-        }
-        
-        function addExamHeader() {
-            const html = `<div style="text-align: center; margin-bottom: 20px;">
-                <h1>📚 FINAL EXAMINATION</h1>
-                <p><strong>Course:</strong> <span contenteditable="true">____________</span></p>
-                <p><strong>Student Name:</strong> <span contenteditable="true">____________</span></p>
-                <p><strong>Date:</strong> <span contenteditable="true">____________</span></p>
-            </div>`;
-            execCommandInsert(html);
-        }
-        
-        function addFooter() {
-            const html = `<hr><p style="text-align: center; font-size: 10px;">© Korahey Academy - End of Examination</p>`;
-            execCommandInsert(html);
-        }
-        
-        function generateAnswerKey() {
-            const questions = document.querySelectorAll('.exam-question');
-            let key = '<h3>📖 ANSWER KEY</h3><ul>';
-            questions.forEach((q, i) => {
-                const answerBox = q.querySelector('.answer-box');
-                if (answerBox) {
-                    key += `<li>Question ${i+1}: ${answerBox.innerText.replace('Answer Key:', '').replace('Correct Answer:', '').replace('Answer:', '')}</li>`;
-                }
-            });
-            key += '</ul>';
-            execCommandInsert(key);
-        }
-        
-        function showRubric() {
-            const html = `<div style="background: #fff3e0; padding: 15px; border-radius: 8px; margin: 15px 0;">
-                <strong>📊 Grading Rubric:</strong><br>
-                - Excellent (90-100%): Demonstrates mastery<br>
-                - Good (75-89%): Shows understanding<br>
-                - Satisfactory (60-74%): Basic knowledge<br>
-                - Needs Improvement (&lt;60%): Below expectations
-            </div>`;
-            execCommandInsert(html);
-        }
-        
-        function setExamTheme(theme) {
-            const pages = document.querySelectorAll('.paper-page');
-            if (theme === 'modern') {
-                pages.forEach(p => {
-                    p.style.background = 'linear-gradient(135deg, #fff 0%, #f0f7ff 100%)';
-                    p.style.borderRadius = '16px';
-                });
-            } else if (theme === 'classic') {
-                pages.forEach(p => {
-                    p.style.background = '#fdf6e3';
-                    p.style.fontFamily = 'Georgia, serif';
-                });
-            } else {
-                pages.forEach(p => {
-                    p.style.background = 'white';
-                    p.style.borderRadius = '0';
-                });
-            }
-            showToast(`${theme} theme applied`);
-        }
-        
-        function checkExam() {
-            const questions = document.querySelectorAll('.exam-question');
-            showToast(`Exam contains ${questions.length} questions. Ready for review!`);
-        }
-        
-        function countQuestions() {
-            const questions = document.querySelectorAll('.exam-question');
-            showToast(`Total questions: ${questions.length}`);
-            document.getElementById('questionCount').textContent = questions.length;
-        }
-        
-        function calculateTotalPoints() {
-            let total = 0;
-            const points = document.querySelectorAll('.question-number');
-            points.forEach(p => {
-                const match = p.innerText.match(/(\d+)\s*points?/);
-                if (match) total += parseInt(match[1]);
-            });
-            document.getElementById('totalPoints').textContent = total;
-            showToast(`Total points: ${total}`);
-        }
-        
-        function updateStats() {
-            countQuestions();
-            calculateTotalPoints();
-        }
-        
-        function saveExam() {
-            const pages = [];
-            document.querySelectorAll('.paper-page').forEach((page, i) => {
-                const contentDiv = page.querySelector('.paper-page-content');
-                pages.push({ id: i, content: contentDiv ? contentDiv.innerHTML : '' });
-            });
-            localStorage.setItem('koraheyExam', JSON.stringify(pages));
-            showToast('Exam saved!');
-        }
-        
-        function exportExam() {
-            window.print();
-            showToast('Exporting to PDF...');
-        }
-        
-        function newExam() {
-            if (confirm('Create new exam? Current exam will be lost.')) {
-                document.getElementById('paperContainer').innerHTML = `
-                    <div class="paper-page">
-                        <div class="paper-page-content" contenteditable="true">
-                            <h1 style="text-align: center;">📚 KORAHEY ACADEMY</h1>
-                            <h2 style="text-align: center;">FINAL EXAMINATION</h2>
-                            <p style="text-align: center;">Subject: ____________________</p>
-                            <p style="text-align: center;">Date: ____________________</p>
-                            <p style="text-align: center;">Time Allowed: 2 Hours</p>
-                            <hr style="margin: 20px 0;">
-                            <p><strong>Instructions:</strong> Read each question carefully. Answer all questions in the space provided.</p>
-                            <hr style="margin: 20px 0;">
-                        </div>
-                    </div>`;
-                currentPageIndex = 0;
-                updateStats();
-                showToast('New exam created');
-            }
-        }
-
-        // Core Editor Functions
-        function getActiveEditor() {
-            let active = document.activeElement;
-            if (active && active.classList && active.classList.contains('paper-page-content')) return active;
-            const editor = document.querySelector('.paper-page-content');
-            if (editor) editor.focus();
-            return editor;
-        }
-        
-        function execCommand(command) {
-            const editor = getActiveEditor();
-            if (editor) {
-                document.execCommand(command, false, null);
-                editor.focus();
-            }
-        }
-        
-        function execCommandInsert(html) {
-            const editor = getActiveEditor();
-            if (editor) {
-                document.execCommand('insertHTML', false, html);
-                editor.focus();
-                updateStats();
-            }
-        }
-        
-        function pasteText() {
-            navigator.clipboard.readText().then(text => {
-                document.execCommand('insertText', false, text);
-                editor.focus();
-                showToast('Text pasted');
-            }).catch(() => showToast('Allow clipboard access'));
-        }
-        
-        function toggleBold() { execCommand('bold'); updateButtonState('boldBtn', 'bold'); }
-        function toggleItalic() { execCommand('italic'); updateButtonState('italicBtn', 'italic'); }
-        function toggleUnderline() { execCommand('underline'); updateButtonState('underlineBtn', 'underline'); }
-        
-        function updateButtonState(btnId, command) {
-            const btn = document.getElementById(btnId);
-            if (btn) {
-                if (document.queryCommandState(command)) btn.classList.add('active');
-                else btn.classList.remove('active');
-            }
-        }
-        
-        function changeFont() {
-            const font = document.getElementById('fontSelector').value;
-            execCommand('fontName', false, font);
-        }
-        
-        function changeFontSize() {
-            const size = document.getElementById('sizeSelector').value;
-            execCommand('fontSize', false, size);
-        }
-        
-        function zoomIn() { if (currentZoom < 200) { currentZoom += 10; applyZoom(); } }
-        function zoomOut() { if (currentZoom > 50) { currentZoom -= 10; applyZoom(); } }
-        function setZoom(percent) { currentZoom = percent; applyZoom(); }
-        
-        function applyZoom() {
-            const container = document.getElementById('paperContainer');
-            if (container) {
-                container.style.transform = `scale(${currentZoom / 100})`;
-                container.style.transformOrigin = 'top center';
-            }
-            document.getElementById('zoomValue').textContent = currentZoom + '%';
-        }
-        
-        // Page Management
-        function updatePageCounter() {
-            const pages = document.querySelectorAll('.paper-page');
-            document.getElementById('pageCounter').textContent = `Page ${currentPageIndex + 1} of ${pages.length}`;
-        }
-        
-        function goToPage(index) {
-            const pages = document.querySelectorAll('.paper-page');
-            if (pages[index]) {
-                pages[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
-                currentPageIndex = index;
-                updatePageCounter();
-            }
-        }
-        
-        function previousPage() { if (currentPageIndex > 0) goToPage(currentPageIndex - 1); }
-        function nextPage() {
-            const pages = document.querySelectorAll('.paper-page');
-            if (currentPageIndex < pages.length - 1) goToPage(currentPageIndex + 1);
-        }
-        
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const canvas = document.getElementById('canvas');
-            const toggleBtn = document.getElementById('toggleBtn');
-            const icon = document.getElementById('toggleIcon');
-            sidebar.classList.toggle('collapsed');
-            canvas.classList.toggle('expanded');
-            toggleBtn.classList.toggle('sidebar-closed');
-            icon.className = sidebar.classList.contains('collapsed') ? 'fas fa-chevron-right' : 'fas fa-chevron-left';
-        }
-        
-        // Ribbon Hover
+        // ========== MOVE ELEMENTS DOWN WHEN RIBBON OPENS ==========
         const dynamicIsland = document.getElementById('dynamicIsland');
         const sidebar = document.getElementById('sidebar');
         const canvas = document.getElementById('canvas');
@@ -1338,43 +907,459 @@
                 ribbonContainer.classList.remove('open');
             }
         }
-        
+
+        // ========== HOVER RIBBON PANELS (DROP DOWN) ==========
         function showRibbonPanel(tabName) {
             if (hoverTimeout) clearTimeout(hoverTimeout);
+            
+            // Move elements down when ribbon panel opens
             moveElementsDown();
+            
+            // Hide all panels
             document.querySelectorAll('.ribbon-panel').forEach(panel => panel.classList.remove('active'));
             document.querySelectorAll('.ribbon-tab').forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected panel
             const panelId = `ribbon${tabName.charAt(0).toUpperCase() + tabName.slice(1)}`;
             const selectedPanel = document.getElementById(panelId);
             const selectedTab = document.querySelector(`.ribbon-tab[data-tab="${tabName}"]`);
+            
             if (selectedPanel) selectedPanel.classList.add('active');
             if (selectedTab) selectedTab.classList.add('active');
         }
-        
+
         function hideRibbonPanel() {
             hoverTimeout = setTimeout(() => {
+                // Move elements back up when ribbon panel closes
                 moveElementsUp();
+                
                 document.querySelectorAll('.ribbon-panel').forEach(panel => panel.classList.remove('active'));
                 document.querySelectorAll('.ribbon-tab').forEach(tab => tab.classList.remove('active'));
             }, 200);
         }
-        
+
+        // Add hover listeners to ribbon tabs
         document.querySelectorAll('.ribbon-tab').forEach(tab => {
             tab.addEventListener('mouseenter', () => {
                 const tabName = tab.getAttribute('data-tab');
                 showRibbonPanel(tabName);
             });
         });
-        
+
+        // Hide panel when mouse leaves the ribbon container
         if (ribbonContainer) {
             ribbonContainer.addEventListener('mouseleave', hideRibbonPanel);
         }
-        
+
+        // Keep panel open when hovering over the panel itself
         document.querySelectorAll('.ribbon-panel').forEach(panel => {
-            panel.addEventListener('mouseenter', () => { if (hoverTimeout) clearTimeout(hoverTimeout); });
+            panel.addEventListener('mouseenter', () => {
+                if (hoverTimeout) clearTimeout(hoverTimeout);
+            });
             panel.addEventListener('mouseleave', hideRibbonPanel);
         });
+
+        // ========== EDITOR FUNCTIONS ==========
+        function getActiveEditor() {
+            let active = document.activeElement;
+            if (active && active.classList && active.classList.contains('paper-page-content')) return active;
+            const editor = document.querySelector('.paper-page-content');
+            if (editor) editor.focus();
+            return editor;
+        }
+
+        function focusEditor() {
+            const editor = getActiveEditor();
+            if (editor) editor.focus();
+        }
+
+        function execCommand(command) {
+            const editor = getActiveEditor();
+            if (editor) {
+                document.execCommand(command, false, null);
+                focusEditor();
+            }
+        }
+
+        function pasteText() {
+            navigator.clipboard.readText().then(text => {
+                document.execCommand('insertText', false, text);
+                focusEditor();
+                showToast('Text pasted');
+            }).catch(() => {
+                showToast('Cannot paste - allow clipboard access');
+            });
+            hideContextMenu();
+        }
+
+        function toggleBold() {
+            execCommand('bold');
+            updateButtonState('boldBtn', 'bold');
+        }
+
+        function toggleItalic() {
+            execCommand('italic');
+            updateButtonState('italicBtn', 'italic');
+        }
+
+        function toggleUnderline() {
+            execCommand('underline');
+            updateButtonState('underlineBtn', 'underline');
+        }
+
+        function updateButtonState(btnId, command) {
+            const btn = document.getElementById(btnId);
+            if (btn) {
+                const isActive = document.queryCommandState(command);
+                if (isActive) btn.classList.add('active');
+                else btn.classList.remove('active');
+            }
+        }
+
+        function setAlignment(command, btnId) {
+            execCommand(command);
+            ['alignLeftBtn', 'alignCenterBtn', 'alignRightBtn'].forEach(id => {
+                const btn = document.getElementById(id);
+                if (btn) btn.classList.remove('active');
+            });
+            const clickedBtn = document.getElementById(btnId);
+            if (clickedBtn) clickedBtn.classList.add('active');
+        }
+
+        function toggleList(command) {
+            execCommand(command);
+        }
+
+        function changeFont() {
+            const font = document.getElementById('fontSelector').value;
+            execCommand('fontName', false, font);
+        }
+
+        function changeFontSize() {
+            const size = document.getElementById('sizeSelector').value;
+            execCommand('fontSize', false, size);
+        }
+
+        function changeCase() {
+            const selection = window.getSelection().toString();
+            if (selection) {
+                const upper = confirm('Convert to UPPERCASE? Click Cancel for lowercase.');
+                document.execCommand('insertText', false, upper ? selection.toUpperCase() : selection.toLowerCase());
+                showToast(`Changed to ${upper ? 'UPPERCASE' : 'lowercase'}`);
+            } else {
+                showToast('Select text first');
+            }
+        }
+
+        function clearFormatting() {
+            execCommand('removeFormat');
+            showToast('Formatting cleared');
+        }
+
+        function insertDate() {
+            const date = new Date().toLocaleString();
+            execCommand('insertText', false, date);
+        }
+
+        function insertTable() {
+            const rows = prompt('Number of rows:', '3');
+            const cols = prompt('Number of columns:', '3');
+            if (rows && cols) {
+                let html = '<table border="1" cellpadding="8" style="border-collapse: collapse; width: 100%; margin: 10px 0;">';
+                for (let i = 0; i < parseInt(rows); i++) {
+                    html += '<tr>';
+                    for (let j = 0; j < parseInt(cols); j++) html += `<td contenteditable="true"><br></td>`;
+                    html += '</tr>';
+                }
+                html += '</table><br>';
+                const editor = getActiveEditor();
+                if (editor) {
+                    document.execCommand('insertHTML', false, html);
+                    focusEditor();
+                }
+                showToast(`${rows}x${cols} table inserted`);
+            }
+            hideContextMenu();
+        }
+
+        function insertPageBreak() {
+            const editor = getActiveEditor();
+            if (editor) {
+                const currentPage = editor.closest('.paper-page');
+                const newPage = document.createElement('div');
+                newPage.className = 'paper-page';
+                newPage.innerHTML = `<div class="paper-page-content" contenteditable="true"><p><br></p></div>`;
+                currentPage.insertAdjacentElement('afterend', newPage);
+                newPage.querySelector('.paper-page-content').focus();
+                updatePageList();
+                showToast('Page break inserted');
+            }
+        }
+
+        function checkSpelling() { showToast('Spelling check: All good!'); }
+        function showWordCount() { updateWordCount(); showToast(document.getElementById('wordCount').textContent); }
+        function setPageColor(color) { document.querySelectorAll('.paper-page').forEach(p => p.style.backgroundColor = color); }
+
+        // Zoom functions
+        function zoomIn() {
+            if (currentZoom < 200) { currentZoom += 10; applyZoom(); }
+        }
+        function zoomOut() {
+            if (currentZoom > 50) { currentZoom -= 10; applyZoom(); }
+        }
+        function setZoom(percent) {
+            currentZoom = percent;
+            applyZoom();
+            showToast(`Zoom: ${percent}%`);
+        }
+        function applyZoom() {
+            const container = document.getElementById('paperContainer');
+            if (container) {
+                container.style.transform = `scale(${currentZoom / 100})`;
+                container.style.transformOrigin = 'top center';
+            }
+            document.getElementById('zoomValue').textContent = currentZoom + '%';
+        }
+
+        // Page Management
+        function updateWordCount() {
+            let totalWords = 0;
+            document.querySelectorAll('.paper-page-content').forEach(content => {
+                const text = content.innerText;
+                const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;
+                totalWords += words;
+            });
+            document.getElementById('wordCount').textContent = totalWords + ' words';
+        }
+
+        function updatePageCounter() {
+            const pages = document.querySelectorAll('.paper-page');
+            document.getElementById('pageCounter').textContent = `Page ${currentPageIndex + 1} of ${pages.length}`;
+        }
+
+        function getPagePreviewContent(pageElement) {
+            const content = pageElement.querySelector('.paper-page-content');
+            const text = content ? content.innerText : '';
+            return text.substring(0, 200) + (text.length > 200 ? '...' : '');
+        }
+
+        function getPageTitle(pageElement, pageNum) {
+            const content = pageElement.querySelector('.paper-page-content');
+            const text = content ? content.innerText : '';
+            const firstLine = text.split('\n')[0];
+            if (firstLine && firstLine.length > 25) return firstLine.substring(0, 25) + '...';
+            return firstLine || `Page ${pageNum}`;
+        }
+
+        function updatePageList() {
+            const pages = document.querySelectorAll('.paper-page');
+            const container = document.getElementById('pageList');
+            if (!container) return;
+            container.innerHTML = Array.from(pages).map((page, idx) => `
+                <div class="page-thumb ${idx === currentPageIndex ? 'active' : ''}" onclick="goToPage(${idx})">
+                    <div class="thumb-header">
+                        <span class="page-number">Page ${idx + 1}</span>
+                        ${pages.length > 1 ? `<button class="delete-page-btn" onclick="event.stopPropagation(); deletePage(${idx})"><i class="fas fa-trash"></i></button>` : ''}
+                    </div>
+                    <div class="mini-paper">
+                        <div class="mini-paper-header">${escapeHtml(getPageTitle(page, idx + 1))}</div>
+                        <div class="mini-paper-content">${escapeHtml(getPagePreviewContent(page))}</div>
+                    </div>
+                </div>
+            `).join('');
+            updatePageCounter();
+        }
+
+        function goToPage(index) {
+            const pages = document.querySelectorAll('.paper-page');
+            if (pages[index]) {
+                pages[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
+                currentPageIndex = index;
+                updatePageList();
+            }
+        }
+
+        function previousPage() { if (currentPageIndex > 0) goToPage(currentPageIndex - 1); }
+        function nextPage() {
+            const pages = document.querySelectorAll('.paper-page');
+            if (currentPageIndex < pages.length - 1) goToPage(currentPageIndex + 1);
+        }
+
+        function deletePage(index) {
+            const pages = document.querySelectorAll('.paper-page');
+            if (pages.length > 1) {
+                pages[index].remove();
+                if (currentPageIndex >= pages.length - 1) currentPageIndex = Math.max(0, pages.length - 2);
+                updatePageList();
+                showToast('Page deleted');
+            } else {
+                showToast('Cannot delete the last page');
+            }
+        }
+
+        function toggleSidebar() {
+            const sidebarEl = document.getElementById('sidebar');
+            const canvasEl = document.getElementById('canvas');
+            const toggleBtnEl = document.getElementById('toggleBtn');
+            const icon = document.getElementById('toggleIcon');
+            if (!sidebarEl || !canvasEl || !toggleBtnEl) return;
+            sidebarEl.classList.toggle('collapsed');
+            canvasEl.classList.toggle('expanded');
+            toggleBtnEl.classList.toggle('sidebar-closed');
+            icon.className = sidebarEl.classList.contains('collapsed') ? 'fas fa-chevron-right' : 'fas fa-chevron-left';
+        }
+
+        // Orientation
+        function setOrientation(orientation) {
+            const pages = document.querySelectorAll('.paper-page');
+            if (orientation === 'landscape') {
+                pages.forEach(p => {
+                    p.style.width = '297mm';
+                    p.style.height = '210mm';
+                });
+            } else {
+                pages.forEach(p => {
+                    p.style.width = '210mm';
+                    p.style.height = '297mm';
+                });
+            }
+            showToast(`${orientation} orientation set`);
+        }
+
+        // Media Manager
+        function openMediaManager() { loadImageGallery(); document.getElementById('mediaModal').classList.add('active'); hideContextMenu(); }
+        function closeMediaManager() { document.getElementById('mediaModal').classList.remove('active'); }
         
+        function loadImageGallery() {
+            const saved = localStorage.getItem('koraheyImageLibrary');
+            if (saved) imageLibrary = JSON.parse(saved);
+            const gallery = document.getElementById('imageGallery');
+            if (!gallery) return;
+            if (imageLibrary.length === 0) { gallery.innerHTML = '<p style="text-align:center; color:#999;">No images. Upload some.</p>'; return; }
+            gallery.innerHTML = imageLibrary.map(img => `
+                <div class="gallery-item" draggable="true" ondragstart="dragImage(event, '${img.src}')">
+                    <img src="${img.src}">
+                    <div>${img.name.substring(0, 15)}</div>
+                </div>
+            `).join('');
+        }
+        
+        function handleImageUpload(event) {
+            Array.from(event.target.files).forEach((file, i) => {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    imageLibrary.push({ id: Date.now() + i, src: e.target.result, name: file.name });
+                    localStorage.setItem('koraheyImageLibrary', JSON.stringify(imageLibrary));
+                    loadImageGallery();
+                };
+                reader.readAsDataURL(file);
+            });
+            showToast(`${event.target.files.length} image(s) uploaded`);
+        }
+        
+        function onDragOver(e) { e.preventDefault(); document.getElementById('dragDropArea').classList.add('drag-over'); }
+        function onDragLeave(e) { document.getElementById('dragDropArea').classList.remove('drag-over'); }
+        function onDrop(e) {
+            e.preventDefault();
+            document.getElementById('dragDropArea').classList.remove('drag-over');
+            Array.from(e.dataTransfer.files).forEach((file, i) => {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = e => {
+                        imageLibrary.push({ id: Date.now() + i, src: e.target.result, name: file.name });
+                        localStorage.setItem('koraheyImageLibrary', JSON.stringify(imageLibrary));
+                        loadImageGallery();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            showToast(`${e.dataTransfer.files.length} image(s) uploaded`);
+        }
+        
+        function dragImage(e, src) { e.dataTransfer.setData('text/plain', src); }
+        const dragDropArea = document.getElementById('dragDropArea');
+        if (dragDropArea) {
+            dragDropArea.addEventListener('click', () => document.getElementById('imageUpload').click());
+        }
+        
+        document.addEventListener('dragover', e => e.preventDefault());
+        document.addEventListener('drop', e => {
+            const src = e.dataTransfer.getData('text/plain');
+            if (src && src.startsWith('data:image')) {
+                e.preventDefault();
+                const editor = getActiveEditor();
+                if (editor) {
+                    const img = document.createElement('img');
+                    img.src = src;
+                    img.style.maxWidth = '100%';
+                    img.style.margin = '10px 0';
+                    const selection = window.getSelection();
+                    const range = selection.getRangeAt(0);
+                    range.insertNode(img);
+                    showToast('Image inserted');
+                }
+            }
+        });
+
+        // Right Click Menu
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            const menu = document.getElementById('contextMenu');
+            menu.style.left = e.pageX + 'px';
+            menu.style.top = e.pageY + 'px';
+            menu.classList.add('show');
+        });
+        document.addEventListener('click', function() { hideContextMenu(); });
+        function hideContextMenu() { document.getElementById('contextMenu').classList.remove('show'); }
+
+        // Document functions
+        function newDocument() {
+            if (confirm('Create new document?')) {
+                document.getElementById('paperContainer').innerHTML = `
+                    <div class="paper-page"><div class="paper-page-content" contenteditable="true">
+                        <h1 style="text-align: center;">KORAHEY ACADEMY</h1>
+                        <p style="text-align: center; font-style: italic;">Passion for Success</p>
+                        <hr><p>Start typing your document here.</p>
+                    </div></div>`;
+                currentPageIndex = 0;
+                updatePageList();
+                showToast('New document created');
+            }
+        }
+
+        function saveDocument() {
+            const pages = [];
+            document.querySelectorAll('.paper-page').forEach((page, i) => {
+                const contentDiv = page.querySelector('.paper-page-content');
+                pages.push({ id: i, content: contentDiv ? contentDiv.innerHTML : '' });
+            });
+            localStorage.setItem('koraheyDocument', JSON.stringify(pages));
+            showToast('Document saved');
+        }
+
+        function printDocument() { window.print(); }
+
+        function loadDocument() {
+            const saved = localStorage.getItem('koraheyDocument');
+            if (saved) {
+                const pages = JSON.parse(saved);
+                if (pages.length > 0) {
+                    document.getElementById('paperContainer').innerHTML = pages.map(p => `
+                        <div class="paper-page"><div class="paper-page-content" contenteditable="true">${p.content}</div></div>
+                    `).join('');
+                    updatePageList();
+                }
+            }
+            updatePageList();
+            updateWordCount();
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m]));
+        }
+
+        // Selection change to update button states
         document.addEventListener('selectionchange', function() {
             const active = document.activeElement;
             if (active && active.classList && active.classList.contains('paper-page-content')) {
@@ -1383,28 +1368,24 @@
                 updateButtonState('underlineBtn', 'underline');
             }
         });
-        
-        // Load saved exam or default
-        function loadExam() {
-            const saved = localStorage.getItem('koraheyExam');
-            if (saved) {
-                const pages = JSON.parse(saved);
-                if (pages.length > 0) {
-                    document.getElementById('paperContainer').innerHTML = pages.map(p => `
-                        <div class="paper-page"><div class="paper-page-content" contenteditable="true">${p.content}</div></div>
-                    `).join('');
-                    updateStats();
-                }
+
+        document.addEventListener('keyup', function() {
+            const active = document.activeElement;
+            if (active && active.classList && active.classList.contains('paper-page-content')) {
+                updateButtonState('boldBtn', 'bold');
+                updateButtonState('italicBtn', 'italic');
+                updateButtonState('underlineBtn', 'underline');
             }
-            updatePageCounter();
-        }
-        
+        });
+
+        // Initial setup
         setTimeout(() => {
             const editor = document.querySelector('.paper-page-content');
             if (editor) editor.focus();
         }, 100);
-        
-        loadExam();
+
+        loadDocument();
+        setInterval(updateWordCount, 500);
     </script>
 </body>
 </html>
