@@ -13,6 +13,8 @@
             --apple-blue: #0071e3;
             --text-main: #1d1d1f;
             --bg-canvas: #f5f5f7;
+            --island-top: 100px;
+            --canvas-top: 148px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -193,10 +195,10 @@
             cursor: pointer;
         }
 
-        /* Dynamic Island - HIGHER Z-INDEX */
+        /* Dynamic Island - WITH SMOOTH HOVER ANIMATION */
         .dynamic-island {
             position: fixed;
-            top: 100px;
+            top: var(--island-top);
             left: 50%;
             transform: translateX(-50%);
             background: #ffffff;
@@ -208,6 +210,12 @@
             display: flex;
             gap: 8px;
             align-items: center;
+            transition: top 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1), transform 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+        
+        /* Hover state - moves down */
+        .dynamic-island.hover-down {
+            top: 140px;
         }
 
         .tool-btn {
@@ -232,6 +240,7 @@
         .tool-btn:hover {
             background: rgba(0, 0, 0, 0.06);
             color: #333;
+            transform: scale(1.02);
         }
 
         .tool-btn.active {
@@ -257,6 +266,11 @@
             background: white;
             font-size: 12px;
             cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .font-selector:hover, .size-selector:hover {
+            background: #f5f5f5;
         }
 
         /* Sidebar Layout */
@@ -272,7 +286,12 @@
             display: flex;
             flex-direction: column;
             z-index: 998;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), top 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+        
+        /* Move sidebar down when island is hovered */
+        .left-panel.move-down {
+            top: 188px;
         }
 
         .left-panel.collapsed { transform: translateX(-100%); }
@@ -292,7 +311,11 @@
             justify-content: center;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             z-index: 1002;
-            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), top 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+        
+        .panel-toggle-btn.move-down {
+            top: 200px;
         }
 
         .panel-toggle-btn.sidebar-closed { left: 10px; }
@@ -406,7 +429,7 @@
             font-family: 'Times New Roman', serif;
         }
 
-        /* Canvas Area */
+        /* Canvas Area - WITH SMOOTH HOVER ANIMATION */
         .canvas-center {
             position: absolute;
             top: 148px;
@@ -416,12 +439,17 @@
             overflow-y: auto;
             padding: 40px 40px 150px 40px;
             scroll-behavior: smooth;
-            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), top 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             display: flex;
             flex-direction: column;
             align-items: center;
             background: #f5f5f7;
             z-index: 1;
+        }
+        
+        /* Move canvas down when island is hovered */
+        .canvas-center.move-down {
+            top: 188px;
         }
 
         .canvas-center.expanded { left: 0; }
@@ -443,6 +471,7 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            transition: transform 0.3s ease;
         }
 
         .paper-page:last-child { margin-bottom: 0; }
@@ -616,7 +645,7 @@
             <div class="ribbon-tab" data-tab="view">View</div>
         </div>
 
-        <!-- HOME Panel - Fully populated -->
+        <!-- HOME Panel -->
         <div id="ribbonHome" class="ribbon-panel">
             <div class="ribbon-group">
                 <div class="group-title">Clipboard</div>
@@ -657,7 +686,7 @@
             </div>
         </div>
 
-        <!-- INSERT Panel - Fully populated -->
+        <!-- INSERT Panel -->
         <div id="ribbonInsert" class="ribbon-panel">
             <div class="ribbon-group">
                 <div class="group-title">Pages</div>
@@ -697,7 +726,7 @@
             </div>
         </div>
 
-        <!-- DESIGN Panel - Fully populated -->
+        <!-- DESIGN Panel -->
         <div id="ribbonDesign" class="ribbon-panel">
             <div class="ribbon-group">
                 <div class="group-title">Document Formatting</div>
@@ -734,7 +763,7 @@
             </div>
         </div>
 
-        <!-- LAYOUT Panel - Fully populated -->
+        <!-- LAYOUT Panel -->
         <div id="ribbonLayout" class="ribbon-panel">
             <div class="ribbon-group">
                 <div class="group-title">Page Setup</div>
@@ -764,7 +793,7 @@
             </div>
         </div>
 
-        <!-- REVIEW Panel - Fully populated -->
+        <!-- REVIEW Panel -->
         <div id="ribbonReview" class="ribbon-panel">
             <div class="ribbon-group">
                 <div class="group-title">Proofing</div>
@@ -791,7 +820,7 @@
             </div>
         </div>
 
-        <!-- VIEW Panel - Fully populated -->
+        <!-- VIEW Panel -->
         <div id="ribbonView" class="ribbon-panel">
             <div class="ribbon-group">
                 <div class="group-title">Views</div>
@@ -821,8 +850,8 @@
         </div>
     </div>
 
-    <!-- Dynamic Island -->
-    <div class="dynamic-island">
+    <!-- Dynamic Island with Hover Animation -->
+    <div class="dynamic-island" id="dynamicIsland">
         <select id="fontSelector" class="font-selector" onchange="changeFont()">
             <option value="'Times New Roman', serif">Times New Roman</option>
             <option value="Arial">Arial</option>
@@ -879,7 +908,7 @@
                     <h1 style="text-align: center;">KORAHEY ACADEMY</h1>
                     <p style="text-align: center; font-style: italic;">Passion for Success</p>
                     <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
-                    <p>Welcome to Korahey Editor. Hover over Home, Insert, Design, Layout, Review, or View to see options.</p>
+                    <p>Welcome to Korahey Editor. Hover over the toolbar above to see it move down smoothly!</p>
                 </div>
             </div>
         </div>
@@ -943,6 +972,7 @@
         let hoverTimeout;
         let currentOrientation = 'portrait';
         let currentTheme = 'default';
+        let islandHoverTimer;
 
         function showToast(message) {
             const toast = document.getElementById('toast');
@@ -951,7 +981,47 @@
             setTimeout(() => { toast.classList.remove('show'); }, 2000);
         }
 
-        // ========== HOVER RIBBON PANELS - FIXED ==========
+        // ========== DYNAMIC ISLAND HOVER ANIMATION ==========
+        function moveElementsDown() {
+            const island = document.getElementById('dynamicIsland');
+            const sidebar = document.getElementById('sidebar');
+            const canvas = document.getElementById('canvas');
+            const toggleBtn = document.getElementById('toggleBtn');
+            
+            island.classList.add('hover-down');
+            sidebar.classList.add('move-down');
+            canvas.classList.add('move-down');
+            toggleBtn.classList.add('move-down');
+        }
+        
+        function moveElementsUp() {
+            const island = document.getElementById('dynamicIsland');
+            const sidebar = document.getElementById('sidebar');
+            const canvas = document.getElementById('canvas');
+            const toggleBtn = document.getElementById('toggleBtn');
+            
+            island.classList.remove('hover-down');
+            sidebar.classList.remove('move-down');
+            canvas.classList.remove('move-down');
+            toggleBtn.classList.remove('move-down');
+        }
+        
+        // Add hover listeners to Dynamic Island
+        const dynamicIsland = document.getElementById('dynamicIsland');
+        dynamicIsland.addEventListener('mouseenter', () => {
+            // Clear any pending timeout
+            if (islandHoverTimer) clearTimeout(islandHoverTimer);
+            moveElementsDown();
+        });
+        
+        dynamicIsland.addEventListener('mouseleave', () => {
+            // Small delay before moving back up for smoother transition
+            islandHoverTimer = setTimeout(() => {
+                moveElementsUp();
+            }, 50);
+        });
+
+        // ========== HOVER RIBBON PANELS ==========
         function showRibbonPanel(tabName) {
             if (hoverTimeout) clearTimeout(hoverTimeout);
             
@@ -1101,7 +1171,7 @@
                 let html = '<table border="1" cellpadding="8" style="border-collapse: collapse; width: 100%; margin: 10px 0;">';
                 for (let i = 0; i < parseInt(rows); i++) {
                     html += '<tr>';
-                    for (let j = 0; j < parseInt(cols); j++) html += `<td contenteditable="true"><br><tr>`;
+                    for (let j = 0; j < parseInt(cols); j++) html += `<td contenteditable="true"><br></td>`;
                     html += '</tr>';
                 }
                 html += '</table><br>';
@@ -1145,7 +1215,6 @@
             insertBlankPage();
         }
 
-        // New INSERT functions
         function insertShape() { showToast('Shape tool - Select a shape to insert'); }
         function insertIcon() { showToast('Icon tool - Browse icons'); }
         function insertSymbol() { showToast('Symbol tool - Insert special characters'); }
@@ -1156,7 +1225,6 @@
         }
         function insertBookmark() { showToast('Bookmark added at cursor position'); }
 
-        // DESIGN functions
         function addPageBorder() { 
             document.querySelectorAll('.paper-page').forEach(p => {
                 p.style.border = '2px solid var(--apple-blue)';
@@ -1183,7 +1251,6 @@
             showToast(`${theme} theme applied`);
         }
 
-        // LAYOUT functions
         function setOrientation(orientation) {
             currentOrientation = orientation;
             const pages = document.querySelectorAll('.paper-page');
@@ -1226,7 +1293,6 @@
             showToast(`Line spacing set to ${spacing}`);
         }
 
-        // REVIEW functions
         function checkGrammar() { showToast('Grammar check: No issues found'); }
         function addComment() { showToast('Click to add a comment'); }
         function showComments() { showToast('Comments panel would appear here'); }
@@ -1234,7 +1300,6 @@
         function acceptChanges() { showToast('All changes accepted'); }
         function rejectChanges() { showToast('All changes rejected'); }
 
-        // VIEW functions
         function setView(view) {
             if (view === 'focus') {
                 document.querySelector('.dynamic-island').style.opacity = '0.3';
@@ -1256,7 +1321,7 @@
             showToast(`${view} view activated`);
         }
 
-        function toggleRuler() { showToast('Ruler toggled (would show/hide ruler)'); }
+        function toggleRuler() { showToast('Ruler toggled'); }
         function toggleGridlines() { showToast('Gridlines toggled'); }
 
         function checkSpelling() { 
@@ -1270,7 +1335,6 @@
             showToast('Page color changed');
         }
 
-        // Zoom functions
         function zoomIn() { if (currentZoom < 200) { currentZoom += 10; applyZoom(); } }
         function zoomOut() { if (currentZoom > 50) { currentZoom -= 10; applyZoom(); } }
         function setZoom(percent) { currentZoom = percent; applyZoom(); showToast(`Zoom: ${percent}%`); }
@@ -1283,7 +1347,6 @@
             document.getElementById('zoomValue').textContent = currentZoom + '%';
         }
 
-        // Page Management
         function updateWordCount() {
             let totalWords = 0;
             document.querySelectorAll('.paper-page-content').forEach(content => {
@@ -1369,7 +1432,6 @@
             icon.className = sidebar.classList.contains('collapsed') ? 'fas fa-chevron-right' : 'fas fa-chevron-left';
         }
 
-        // Media Manager
         function openMediaManager() { loadImageGallery(); document.getElementById('mediaModal').classList.add('active'); hideContextMenu(); }
         function closeMediaManager() { document.getElementById('mediaModal').classList.remove('active'); }
         
@@ -1440,7 +1502,6 @@
             }
         });
 
-        // Right Click Menu
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
             const menu = document.getElementById('contextMenu');
@@ -1451,7 +1512,6 @@
         document.addEventListener('click', function() { hideContextMenu(); });
         function hideContextMenu() { document.getElementById('contextMenu').classList.remove('show'); }
 
-        // Document functions
         function newDocument() {
             if (confirm('Create new document?')) {
                 document.getElementById('paperContainer').innerHTML = `
@@ -1498,7 +1558,6 @@
             return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m]));
         }
 
-        // Selection change to update button states
         document.addEventListener('selectionchange', function() {
             const active = document.activeElement;
             if (active && active.classList && active.classList.contains('paper-page-content')) {
@@ -1519,7 +1578,6 @@
             }
         });
 
-        // Initial setup
         setTimeout(() => {
             const editor = document.querySelector('.paper-page-content');
             if (editor) editor.focus();
