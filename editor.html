@@ -70,7 +70,7 @@
 
         .top-btn:hover { background: rgba(0, 0, 0, 0.1); }
 
-        /* Ribbon Tabs - Hover activated - CENTERED */
+        /* Ribbon Tabs - Hover activated - ALIGNED LEFT WITH BRAND */
         .ribbon-container {
             position: fixed;
             top: 48px;
@@ -83,10 +83,10 @@
 
         .ribbon-tabs-header {
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
             gap: 4px;
-            padding: 8px 0;
+            padding: 8px 24px;
             position: relative;
         }
 
@@ -620,7 +620,7 @@
         </div>
     </div>
 
-    <!-- Ribbon Container with Hover Dropdowns - CENTERED -->
+    <!-- Ribbon Container with Hover Dropdowns - TABS AT TOP LEFT -->
     <div class="ribbon-container">
         <div class="ribbon-tabs-header">
             <div class="ribbon-tab" data-tab="home">Home</div>
@@ -726,7 +726,7 @@
                 </div>
             </div>
             <div class="ribbon-group">
-                <div class="group-title">Margins</div>
+                <div class="group-title">Orientation</div>
                 <div class="group-buttons">
                     <button class="ribbon-btn" onclick="setOrientation('portrait')">Portrait</button>
                     <button class="ribbon-btn" onclick="setOrientation('landscape')">Landscape</button>
