@@ -188,6 +188,17 @@
             font-size: 12pt; line-height: 1.5; height: 100%;
             overflow-y: auto;
         }
+        .resizable-image {
+            display: inline-block; margin: 5px; cursor: move; position: relative;
+        }
+        .resizable-image img { max-width: 100%; height: auto; border-radius: 4px; }
+        .resize-handle {
+            position: absolute; bottom: -6px; right: -6px;
+            width: 12px; height: 12px; background: #0071e3;
+            border-radius: 2px; cursor: nw-resize; opacity: 0; transition: 0.1s;
+        }
+        .resizable-image:hover .resize-handle { opacity: 1; }
+        .image-selected { outline: 2px solid #0071e3; outline-offset: 2px; border-radius: 4px; }
 
         /* ===== AI FLOATING ACTION BUTTON ===== */
         .ai-fab {
@@ -216,10 +227,44 @@
         .ai-panel-logo { width: 30px; height: 30px; background: var(--ai-purple); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; color: white; }
         .ai-panel-close { margin-left: auto; background: none; border: none; cursor: pointer; color: #999; font-size: 18px; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
         .ai-panel-close:hover { background: #f0f0f0; color: #333; }
-
         .ai-instruction-input { width: 100%; border: 1px solid var(--border-light); border-radius: 8px; padding: 10px; font-size: 12px; resize: none; background: #fafafa; min-height: 80px; margin: 12px; width: calc(100% - 24px); }
         .ai-run-btn { background: var(--ai-purple); color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; margin: 0 12px 12px; font-weight: 600; }
         .ai-output-box { flex: 1; overflow-y: auto; padding: 12px; margin: 0 12px 12px; border: 1px solid var(--border-light); border-radius: 10px; font-size: 13px; background: #fafafa; font-family: 'Times New Roman', serif; }
+
+        /* ===== MEDIA MANAGER (Wix-Style) ===== */
+        .media-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); z-index: 2000;
+            align-items: center; justify-content: center;
+        }
+        .media-modal.active { display: flex; }
+        .media-modal-content {
+            width: 85%; max-width: 1000px; height: 80vh; background: white;
+            border-radius: 20px; overflow: hidden; display: flex; flex-direction: column;
+        }
+        .media-modal-header { padding: 16px 20px; border-bottom: 1px solid var(--border-light); display: flex; justify-content: space-between; align-items: center; }
+        .media-modal-header h2 { font-size: 18px; font-weight: 600; }
+        .close-modal { background: none; border: none; font-size: 22px; cursor: pointer; color: #999; }
+        .media-modal-body { display: flex; flex: 1; overflow: hidden; }
+        .media-sidebar { width: 220px; background: var(--sidebar-bg); border-right: 1px solid var(--border-light); padding: 16px 0; }
+        .media-nav-title { padding: 8px 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; color: #86868b; }
+        .media-nav-item { padding: 8px 20px; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: all 0.2s; font-size: 13px; color: #555; }
+        .media-nav-item i { width: 18px; }
+        .media-nav-item:hover { background: rgba(0,0,0,0.05); }
+        .media-nav-item.active { background: rgba(0,113,227,0.1); color: var(--apple-blue); border-right: 3px solid var(--apple-blue); }
+        .media-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+        .media-toolbar { padding: 12px 20px; border-bottom: 1px solid var(--border-light); display: flex; justify-content: space-between; align-items: center; }
+        .search-box { display: flex; align-items: center; background: #f5f5f7; border-radius: 8px; padding: 6px 12px; width: 220px; }
+        .search-box input { border: none; background: none; outline: none; margin-left: 8px; width: 100%; font-size: 13px; }
+        .upload-btn { background: var(--apple-blue); color: white; border: none; padding: 6px 16px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 12px; }
+        .image-grid { flex: 1; overflow-y: auto; padding: 16px; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+        .image-card { background: #f5f5f7; border-radius: 10px; overflow: hidden; cursor: grab; transition: all 0.2s; position: relative; }
+        .image-card:active { cursor: grabbing; }
+        .image-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .image-card img { width: 100%; height: 120px; object-fit: cover; pointer-events: none; }
+        .image-card-actions { position: absolute; top: 6px; right: 6px; display: none; gap: 6px; }
+        .image-card:hover .image-card-actions { display: flex; }
+        .image-action { background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-size: 10px; }
 
         /* Bottom bar */
         .bottom-bar {
@@ -235,7 +280,7 @@
         .toast.show { transform: translateX(-50%) translateY(0); }
     </style>
 </head>
-<body oncontextmenu="return false;">
+<body>
 
 <!-- Top Bar -->
 <div class="top-bar" id="mainTopBar">
@@ -405,7 +450,7 @@
     <button class="tool-btn" onclick="toggleList('insertOrderedList')"><i class="fas fa-list-ol"></i></button>
 </div>
 
-<!-- Floating AI Button (Above Zoom) -->
+<!-- Floating AI Button -->
 <button class="ai-fab" id="aiFabTrigger" onclick="toggleAIPanel()" title="AI Writer">
     <i class="fas fa-magic"></i>
 </button>
@@ -432,7 +477,7 @@
                 <h1 style="text-align: center;">KORAHEY ACADEMY</h1>
                 <p style="text-align: center; font-style: italic;">Passion for Success</p>
                 <hr>
-                <p>Welcome to Korahey Editor. Preview your pages in the sidebar!</p>
+                <p>Welcome to Korahey Editor. Use the Insert tab to open the Media Manager and add images.</p>
             </div>
         </div>
     </div>
@@ -447,7 +492,31 @@
     </div>
     <textarea class="ai-instruction-input" id="aiInstruction" placeholder="Describe what you want to write..."></textarea>
     <button class="ai-run-btn" onclick="runAITool()">Generate</button>
-    <div id="aiOutputBox" class="ai-output-box">Result will appear here...</div>
+    <div id="aiOutputBox" class="ai-output-box">✨ Ask me to write content — I'll generate high-quality text that you can insert into your document.</div>
+</div>
+
+<!-- Media Manager Modal (Wix-Style) -->
+<div id="mediaModal" class="media-modal">
+    <div class="media-modal-content">
+        <div class="media-modal-header">
+            <h2><i class="fas fa-images"></i> Media from Korahey</h2>
+            <button class="close-modal" onclick="closeMediaManager()">&times;</button>
+        </div>
+        <div class="media-modal-body">
+            <div class="media-sidebar">
+                <div class="media-nav-title">MANAGE</div>
+                <div class="media-nav-item active" onclick="switchMediaTab('all')"><i class="fas fa-database"></i> All Media</div>
+                <div class="media-nav-item" onclick="switchMediaTab('uploads')"><i class="fas fa-upload"></i> Uploads</div>
+            </div>
+            <div class="media-main">
+                <div class="media-toolbar">
+                    <div class="search-box"><i class="fas fa-search"></i><input type="text" id="mediaSearch" placeholder="Search images..." onkeyup="searchImages()"></div>
+                    <button class="upload-btn" onclick="triggerFileUpload()"><i class="fas fa-upload"></i> Upload Media</button>
+                </div>
+                <div class="image-grid" id="imageGrid"></div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Bottom Bar -->
@@ -471,6 +540,8 @@ let currentZoom = 100;
 let currentPageIndex = 0;
 let isRibbonOpen = false;
 let isAIPanelOpen = false;
+let imageLibrary = [];
+let selectedImageContainer = null;
 
 function showToast(m) {
     const t = document.getElementById('toast');
@@ -478,7 +549,7 @@ function showToast(m) {
     setTimeout(() => t.classList.remove('show'), 2500);
 }
 
-// ========== RIBBON HOVER LOGIC ==========
+// ========== RIBBON HOVER ==========
 const mainTopBar = document.getElementById('mainTopBar');
 const ribbonContainer = document.getElementById('ribbonContainer');
 const dynamicIsland = document.getElementById('dynamicIsland');
@@ -494,7 +565,6 @@ function openRibbon() {
     toggleBtn.classList.add('ribbon-open');
     isRibbonOpen = true;
 }
-
 function closeRibbon() {
     ribbonContainer.classList.remove('open');
     dynamicIsland.classList.remove('ribbon-open');
@@ -503,16 +573,13 @@ function closeRibbon() {
     toggleBtn.classList.remove('ribbon-open');
     isRibbonOpen = false;
 }
-
 mainTopBar.addEventListener('mouseenter', openRibbon);
 ribbonContainer.addEventListener('mouseenter', openRibbon);
 mainTopBar.addEventListener('mouseleave', (e) => { if(!ribbonContainer.contains(e.relatedTarget)) closeRibbon(); });
 ribbonContainer.addEventListener('mouseleave', (e) => { if(!mainTopBar.contains(e.relatedTarget)) closeRibbon(); });
 
-// ========== AI PANEL LOGIC ==========
-function toggleAIPanel() {
-    if (isAIPanelOpen) closeAIPanel(); else openAIPanel();
-}
+// ========== AI PANEL ==========
+function toggleAIPanel() { if (isAIPanelOpen) closeAIPanel(); else openAIPanel(); }
 function openAIPanel() {
     isAIPanelOpen = true;
     document.getElementById('aiPanel').classList.add('open');
@@ -525,6 +592,23 @@ function closeAIPanel() {
     canvas.classList.remove('ai-open');
     document.getElementById('aiFabTrigger').style.display = 'flex';
 }
+function runAITool() {
+    const prompt = document.getElementById('aiInstruction').value.trim();
+    if (!prompt) { showToast("Please describe what you want to write."); return; }
+    const resultBox = document.getElementById('aiOutputBox');
+    resultBox.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Thinking...';
+    setTimeout(() => {
+        const generated = `✨ AI Generated: ${prompt}\n\nHere is a professional, well-written response based on your request: "${prompt}".\n\nKorahey AI helps you create amazing content quickly. Edit this text, copy it, or insert it directly into your document using the button below.`;
+        resultBox.innerHTML = generated + '<br><br><button class="ribbon-btn" onclick="insertAIText()" style="margin-top:8px;"><i class="fas fa-arrow-down"></i> Insert into Document</button>';
+    }, 800);
+}
+function insertAIText() {
+    const content = document.getElementById('aiOutputBox').innerText;
+    if (content && content !== 'Thinking...') {
+        document.execCommand('insertText', false, content);
+        showToast("AI content inserted.");
+    } else { showToast("Generate content first."); }
+}
 
 // ========== EDITOR ACTIONS ==========
 function execCommand(cmd, val = null) { document.execCommand(cmd, false, val); updateWordCount(); updatePageList(); }
@@ -535,31 +619,37 @@ function setAlignment(align) { execCommand(align); }
 function toggleList(cmd) { execCommand(cmd); }
 function toggleStrikethrough() { execCommand('strikeThrough'); }
 function changeFont() { execCommand('fontName', document.getElementById('fontSelector').value); }
-function changeFontSize() { 
-    const size = document.getElementById('sizeSelector').value;
-    const sel = window.getSelection();
-    if (!sel.rangeCount) return;
-    const span = document.createElement('span');
-    span.style.fontSize = size + 'pt';
-    sel.getRangeAt(0).surroundContents(span);
-}
-function setPageColor(color) { document.querySelectorAll('.paper-page').forEach(p => p.style.backgroundColor = color); updatePageList(); }
-function addPageBorder() { document.querySelectorAll('.paper-page-content').forEach(p => p.style.border = '1px solid #000'); updatePageList(); }
-function removePageBorder() { document.querySelectorAll('.paper-page-content').forEach(p => p.style.border = 'none'); updatePageList(); }
-function setMargins(m) { 
-    const paddings = { normal: '20mm 25mm', narrow: '10mm 15mm', wide: '30mm 35mm' };
-    document.querySelectorAll('.paper-page-content').forEach(p => p.style.padding = paddings[m]);
-    updatePageList();
-}
-function setOrientation(o) {
-    document.querySelectorAll('.paper-page').forEach(p => {
-        if (o === 'landscape') { p.style.width = '297mm'; p.style.height = '210mm'; p.style.minWidth = '297mm'; }
-        else { p.style.width = '210mm'; p.style.height = '297mm'; p.style.minWidth = '210mm'; }
-    });
-    updatePageList();
-}
+function changeFontSize() { const s = document.getElementById('sizeSelector').value; document.execCommand('fontSize', false, s); }
+function changeTextColor() { const c = prompt('Enter color (#RRGGBB or name)','#000000'); if(c) document.execCommand('foreColor', false, c); }
+function changeHighlight() { const c = prompt('Highlight color','yellow'); if(c) document.execCommand('backColor', false, c); }
+function clearFormatting() { document.execCommand('removeFormat'); }
+function setPageColor(c) { document.querySelectorAll('.paper-page').forEach(p => p.style.backgroundColor = c); }
+function addPageBorder() { document.querySelectorAll('.paper-page').forEach(p => p.style.border = '2px solid #0071e3'); }
+function removePageBorder() { document.querySelectorAll('.paper-page').forEach(p => p.style.border = 'none'); }
+function setMargins(m) { const pads = { normal:'20mm 25mm', narrow:'10mm 15mm', wide:'30mm 35mm' }; document.querySelectorAll('.paper-page-content').forEach(p => p.style.padding = pads[m]); }
+function setOrientation(o) { document.querySelectorAll('.paper-page').forEach(p => { if(o==='landscape') { p.style.width='297mm'; p.style.height='210mm'; } else { p.style.width='210mm'; p.style.height='297mm'; } }); }
+function setZoom(v) { currentZoom = Math.min(200, Math.max(50, v)); document.getElementById('paperContainer').style.transform = `scale(${currentZoom/100})`; document.getElementById('zoomValue').innerText = `${currentZoom}%`; }
+function zoomIn() { setZoom(currentZoom+10); }
+function zoomOut() { setZoom(currentZoom-10); }
 
-// ========== PAGE MANAGEMENT ==========
+function applyStyle(style) {
+    if(style==='normal') document.execCommand('formatBlock', false, '<p>');
+    else if(style==='heading1') document.execCommand('formatBlock', false, '<h1>');
+    else if(style==='heading2') document.execCommand('formatBlock', false, '<h2>');
+    else if(style==='title') { document.execCommand('formatBlock', false, '<h1>'); document.execCommand('justifyCenter'); }
+    else if(style==='subtitle') { document.execCommand('formatBlock', false, '<h3>'); document.execCommand('italic'); }
+    updatePageList();
+}
+function changeLineSpacing() { document.execCommand('lineHeight', false, document.getElementById('lineSpacingSelect').value); }
+
+function updateWordCount() {
+    let txt = ""; document.querySelectorAll('.paper-page-content').forEach(p => txt += p.innerText);
+    const words = txt.trim() ? txt.trim().split(/\s+/).length : 0;
+    document.getElementById('wordCount').innerText = `${words} words`;
+}
+function showWordCount() { updateWordCount(); showToast(document.getElementById('wordCount').innerText); }
+
+// ===== PAGE MANAGEMENT =====
 function updatePageList() {
     const list = document.getElementById('pageList');
     const pages = document.querySelectorAll('.paper-page');
@@ -568,24 +658,28 @@ function updatePageList() {
         const content = page.querySelector('.paper-page-content').innerHTML;
         const thumb = document.createElement('div');
         thumb.className = `page-thumb ${i === currentPageIndex ? 'active' : ''}`;
-        thumb.innerHTML = `
-            <div class="thumb-header"><span class="page-number">${i+1}</span></div>
-            <div class="mini-paper"><div class="mini-paper-content">${content}</div></div>`;
-        thumb.onclick = () => { currentPageIndex = i; updatePageList(); page.scrollIntoView({behavior:'smooth'}); };
+        thumb.innerHTML = `<div class="thumb-header"><span class="page-number">${i+1}</span><button class="delete-page-btn" onclick="deletePage(${i})"><i class="fas fa-trash"></i></button></div>
+                           <div class="mini-paper"><div class="mini-paper-content">${content.substring(0,150)}</div></div>`;
+        thumb.onclick = (e) => { if(!e.target.closest('.delete-page-btn')) { currentPageIndex = i; updatePageList(); page.scrollIntoView({behavior:'smooth'}); } };
         list.appendChild(thumb);
     });
-    document.getElementById('pageCounter').textContent = `Page ${currentPageIndex + 1} of ${pages.length}`;
+    document.getElementById('pageCounter').innerText = `Page ${currentPageIndex + 1} of ${pages.length}`;
 }
-
 function addBlankPage() {
     const container = document.getElementById('paperContainer');
     const newPage = document.createElement('div');
     newPage.className = 'paper-page';
-    newPage.innerHTML = '<div class="paper-page-content" contenteditable="true"></div>';
+    newPage.innerHTML = '<div class="paper-page-content" contenteditable="true"><p><br></p></div>';
     container.appendChild(newPage);
     updatePageList();
 }
-
+function deletePage(idx) {
+    const pages = document.querySelectorAll('.paper-page');
+    if(pages.length<=1) { showToast("Cannot delete last page"); return; }
+    pages[idx].remove();
+    if(currentPageIndex >= idx) currentPageIndex = Math.max(0, currentPageIndex-1);
+    updatePageList();
+}
 function toggleSidebar() {
     sidebar.classList.toggle('collapsed');
     canvas.classList.toggle('expanded');
@@ -593,41 +687,86 @@ function toggleSidebar() {
     toggleBtn.classList.toggle('sidebar-closed');
     document.getElementById('toggleIcon').className = sidebar.classList.contains('collapsed') ? 'fas fa-chevron-right' : 'fas fa-chevron-left';
 }
+function newDocument() { if(confirm('Create new document?')) { document.getElementById('paperContainer').innerHTML = '<div class="paper-page"><div class="paper-page-content" contenteditable="true"><h1 style="text-align:center;">KORAHEY ACADEMY</h1><p style="text-align:center">New document</p></div></div>'; currentPageIndex=0; updatePageList(); updateWordCount(); showToast('New document'); } }
+function saveDocument() { const pages=[]; document.querySelectorAll('.paper-page').forEach((p,i)=>{ pages.push({id:i, content:p.querySelector('.paper-page-content').innerHTML}); }); localStorage.setItem('koraheyDoc',JSON.stringify(pages)); showToast('Saved'); }
+function printDocument() { window.print(); }
+function loadDocument() { const saved=localStorage.getItem('koraheyDoc'); if(saved){ const pages=JSON.parse(saved); if(pages.length){ document.getElementById('paperContainer').innerHTML=pages.map(p=>`<div class="paper-page"><div class="paper-page-content" contenteditable="true">${p.content}</div></div>`).join(''); updatePageList(); updateWordCount(); showToast('Loaded'); } } }
 
-function updateWordCount() {
-    let text = "";
-    document.querySelectorAll('.paper-page-content').forEach(p => text += p.innerText + " ");
-    const words = text.trim() ? text.trim().split(/\s+/).length : 0;
-    document.getElementById('wordCount').textContent = `${words} words`;
+// ========== MEDIA MANAGER ==========
+function openMediaManager() { loadImageGallery(); document.getElementById('mediaModal').classList.add('active'); }
+function closeMediaManager() { document.getElementById('mediaModal').classList.remove('active'); }
+function switchMediaTab(tab) { document.querySelectorAll('.media-nav-item').forEach(i=>i.classList.remove('active')); if(event.target.closest('.media-nav-item')) event.target.closest('.media-nav-item').classList.add('active'); loadImageGallery(); }
+function searchImages() { const term=document.getElementById('mediaSearch').value.toLowerCase(); document.querySelectorAll('.image-card').forEach(c=>{ c.style.display=c.innerText.toLowerCase().includes(term)?'flex':'none'; }); }
+function triggerFileUpload() { const inp=document.createElement('input'); inp.type='file'; inp.accept='image/*'; inp.multiple=true; inp.onchange=e=>handleImageUpload(e); inp.click(); }
+function handleImageUpload(e) { Array.from(e.target.files).forEach((file,i)=>{ const reader=new FileReader(); reader.onload=ev=>{ imageLibrary.unshift({id:Date.now()+i, src:ev.target.result, name:file.name}); localStorage.setItem('koraheyImages',JSON.stringify(imageLibrary)); loadImageGallery(); showToast(`${file.name} uploaded`); }; reader.readAsDataURL(file); }); }
+function loadImageGallery() { const saved=localStorage.getItem('koraheyImages'); if(saved) imageLibrary=JSON.parse(saved); const grid=document.getElementById('imageGrid'); if(!imageLibrary.length){ grid.innerHTML='<div style="text-align:center; padding:40px"><i class="fas fa-cloud-upload-alt"></i><br>No images. Upload some!</div>'; return; } grid.innerHTML=imageLibrary.map((img,idx)=>`<div class="image-card" draggable="true" data-src="${img.src}" ondragstart="dragStart(event)" ondragend="dragEnd(event)"><img src="${img.src}"><div class="image-card-actions"><button class="image-action" onclick="deleteImageFromLib(${idx})"><i class="fas fa-trash"></i></button><button class="image-action" onclick="insertImageFromLib('${img.src}')"><i class="fas fa-plus"></i></button></div></div>`).join(''); }
+function deleteImageFromLib(idx) { if(confirm('Delete?')){ imageLibrary.splice(idx,1); localStorage.setItem('koraheyImages',JSON.stringify(imageLibrary)); loadImageGallery(); showToast('Deleted'); } }
+function insertImageFromLib(src) { insertImageIntoEditor(src); closeMediaManager(); }
+
+// ========== IMAGE DRAG & DROP & RESIZE ==========
+let draggedImageSrc=null;
+function dragStart(e) { const card=e.target.closest('.image-card'); if(card){ draggedImageSrc=card.getAttribute('data-src'); e.dataTransfer.setData('text/plain',draggedImageSrc); e.dataTransfer.effectAllowed='copy'; e.target.style.opacity='0.4'; } }
+function dragEnd(e) { if(e.target) e.target.style.opacity='1'; draggedImageSrc=null; }
+document.getElementById('canvas').addEventListener('dragover',e=>e.preventDefault());
+document.getElementById('canvas').addEventListener('drop',e=>{ e.preventDefault(); let src=e.dataTransfer.getData('text/plain'); if(!src&&draggedImageSrc) src=draggedImageSrc; if(src&&src.startsWith('data:image')){ insertImageIntoEditor(src); showToast('Image dropped'); } });
+
+function insertImageIntoEditor(src) {
+    const editor=document.querySelector('.paper-page-content');
+    if(!editor) return;
+    const container=document.createElement('div'); container.className='resizable-image'; container.style.display='inline-block';
+    const img=document.createElement('img'); img.src=src; img.style.maxWidth='200px'; img.style.height='auto';
+    img.onclick=(e)=>{ e.stopPropagation(); selectImageForResize(container); };
+    const handle=document.createElement('div'); handle.className='resize-handle';
+    let isResizing=false, startX, startW;
+    handle.onmousedown=(e)=>{ e.stopPropagation(); isResizing=true; startX=e.clientX; startW=img.offsetWidth; document.addEventListener('mousemove',onResize); document.addEventListener('mouseup',stopResize); };
+    const onResize=(e)=>{ if(isResizing){ const newW=Math.max(50,startW+(e.clientX-startX)); img.style.width=newW+'px'; } };
+    const stopResize=()=>{ isResizing=false; document.removeEventListener('mousemove',onResize); document.removeEventListener('mouseup',stopResize); };
+    container.appendChild(img); container.appendChild(handle);
+    const sel=window.getSelection(); const range=sel.getRangeAt(0); range.insertNode(container);
+    showToast('Image added. Drag corner to resize, drag image to move.');
+}
+function selectImageForResize(container) {
+    if(selectedImageContainer) selectedImageContainer.classList.remove('image-selected');
+    selectedImageContainer=container; selectedImageContainer.classList.add('image-selected');
+    let toolbar=document.getElementById('imgToolbar');
+    if(!toolbar){ toolbar=document.createElement('div'); toolbar.id='imgToolbar'; toolbar.style.position='fixed'; toolbar.style.background='white'; toolbar.style.borderRadius='30px'; toolbar.style.padding='4px 12px'; toolbar.style.boxShadow='0 2px 8px rgba(0,0,0,0.2)'; toolbar.style.zIndex='1005'; toolbar.style.display='flex'; toolbar.style.gap='8px'; document.body.appendChild(toolbar); }
+    const rect=container.getBoundingClientRect();
+    toolbar.style.left=rect.left+'px'; toolbar.style.top=(rect.top-45)+'px';
+    toolbar.innerHTML=`<button onclick="alignImage('left')"><i class="fas fa-align-left"></i></button><button onclick="alignImage('center')"><i class="fas fa-align-center"></i></button><button onclick="alignImage('right')"><i class="fas fa-align-right"></i></button><button onclick="deleteSelectedImage()"><i class="fas fa-trash"></i></button>`;
+    toolbar.style.display='flex';
+}
+function alignImage(align) {
+    if(!selectedImageContainer) return;
+    if(align==='left'){ selectedImageContainer.style.float='left'; selectedImageContainer.style.margin='0 12px 8px 0'; }
+    else if(align==='center'){ selectedImageContainer.style.float='none'; selectedImageContainer.style.display='block'; selectedImageContainer.style.margin='8px auto'; }
+    else if(align==='right'){ selectedImageContainer.style.float='right'; selectedImageContainer.style.margin='0 0 8px 12px'; }
+    const tb=document.getElementById('imgToolbar'); if(tb) tb.style.display='none';
+    selectedImageContainer.classList.remove('image-selected'); selectedImageContainer=null;
+}
+function deleteSelectedImage() { if(selectedImageContainer){ selectedImageContainer.remove(); const tb=document.getElementById('imgToolbar'); if(tb) tb.style.display='none'; selectedImageContainer=null; showToast('Image deleted'); } }
+document.addEventListener('click',(e)=>{ if(!e.target.closest('.resizable-image')&&!e.target.closest('#imgToolbar')){ const tb=document.getElementById('imgToolbar'); if(tb) tb.style.display='none'; if(selectedImageContainer){ selectedImageContainer.classList.remove('image-selected'); selectedImageContainer=null; } } });
+
+// ========== PASTE FALLBACK ==========
+function pasteText() {
+    navigator.clipboard.readText().then(text=>{ document.execCommand('insertText',false,text); showToast('Pasted'); updateWordCount(); updatePageList(); }).catch(()=>showToast('Allow clipboard access'));
 }
 
-function setZoom(val) {
-    currentZoom = Math.min(200, Math.max(50, val));
-    document.getElementById('paperContainer').style.transformOrigin = 'top center';
-    document.getElementById('paperContainer').style.transform = `scale(${currentZoom/100})`;
-    document.getElementById('zoomValue').textContent = `${currentZoom}%`;
+// ========== INIT ==========
+window.onload = () => { loadDocument(); updatePageList(); updateWordCount(); setupContentObserver(); };
+function setupContentObserver() {
+    const obs = new MutationObserver(()=>{ updateWordCount(); updatePageList(); });
+    obs.observe(document.getElementById('paperContainer'), { childList:true, subtree:true, characterData:true });
 }
-function zoomIn() { setZoom(currentZoom + 10); }
-function zoomOut() { setZoom(currentZoom - 10); }
-
-// ========== TAB SWITCHING ==========
-document.querySelectorAll('.ribbon-tab').forEach(tab => {
-    tab.addEventListener('mouseenter', () => {
-        document.querySelectorAll('.ribbon-tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.ribbon-panel').forEach(p => p.classList.remove('active'));
+document.querySelectorAll('.ribbon-tab').forEach(tab=>{
+    tab.addEventListener('mouseenter',()=>{
+        document.querySelectorAll('.ribbon-tab').forEach(t=>t.classList.remove('active'));
+        document.querySelectorAll('.ribbon-panel').forEach(p=>p.classList.remove('active'));
         tab.classList.add('active');
-        const panelId = 'ribbon' + tab.dataset.tab.charAt(0).toUpperCase() + tab.dataset.tab.slice(1);
-        const panel = document.getElementById(panelId);
-        if (panel) panel.classList.add('active');
+        const panelId='ribbon'+tab.dataset.tab.charAt(0).toUpperCase()+tab.dataset.tab.slice(1);
+        const panel=document.getElementById(panelId);
+        if(panel) panel.classList.add('active');
     });
 });
-
-function setupContentObserver() {
-    const observer = new MutationObserver(() => { updateWordCount(); updatePageList(); });
-    observer.observe(document.getElementById('paperContainer'), { childList: true, subtree: true, characterData: true });
-}
-
-window.onload = () => { updatePageList(); updateWordCount(); setupContentObserver(); };
 </script>
 </body>
 </html>
