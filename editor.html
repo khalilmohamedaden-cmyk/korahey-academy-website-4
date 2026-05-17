@@ -12,7 +12,7 @@
         :root {
             --apple-blue: #0071e3;
             --text-main: #1d1d1f;
-            --bg-canvas: #f5f5f7;
+            --bg-canvas: #e8e8ed;
             --border-light: #e0e0e0;
             --sidebar-bg: #f8f9fa;
         }
@@ -49,9 +49,9 @@
             align-items: center;
             gap: 12px;
             cursor: pointer;
-            transition: all 0.2s;
             padding: 6px 12px;
             border-radius: 12px;
+            transition: all 0.2s;
         }
 
         .logo-area:hover { background: rgba(0, 0, 0, 0.05); }
@@ -105,7 +105,7 @@
 
         .top-btn:hover { background: rgba(0, 0, 0, 0.1); }
 
-        /* Ribbon Container - collapses completely */
+        /* Ribbon Container */
         .ribbon-container {
             position: fixed;
             top: 48px;
@@ -174,10 +174,10 @@
 
         .ribbon-btn:hover { background: #f0f0f0; }
 
-        /* Dynamic Island - closer to top when ribbon closed */
+        /* Dynamic Island - MOVED DOWN */
         .dynamic-island {
             position: fixed;
-            top: 56px;
+            top: 100px;
             left: 50%;
             transform: translateX(-50%);
             background: #ffffff;
@@ -192,8 +192,8 @@
             transition: top 0.25s ease;
         }
         
-        .dynamic-island.ribbon-open { top: 160px; }
-        .dynamic-island.menu-open { top: 190px; }
+        .dynamic-island.ribbon-open { top: 200px; }
+        .dynamic-island.menu-open { top: 230px; }
 
         .tool-btn {
             background: transparent;
@@ -226,11 +226,11 @@
             cursor: pointer;
         }
 
-        /* Sidebar with Page Previews */
+        /* Sidebar */
         .left-panel {
             position: fixed;
             left: 0;
-            top: 56px;
+            top: 100px;
             bottom: 44px;
             width: 280px;
             background: rgba(255, 255, 255, 0.98);
@@ -242,14 +242,14 @@
             transition: transform 0.3s, top 0.25s ease;
         }
         
-        .left-panel.ribbon-open { top: 160px; }
-        .left-panel.menu-open { top: 190px; }
+        .left-panel.ribbon-open { top: 200px; }
+        .left-panel.menu-open { top: 230px; }
         .left-panel.collapsed { transform: translateX(-100%); }
 
         .panel-toggle-btn {
             position: fixed;
             left: 245px;
-            top: 68px;
+            top: 112px;
             width: 28px;
             height: 28px;
             background: #fff;
@@ -264,8 +264,8 @@
             transition: left 0.3s, top 0.25s ease;
         }
         
-        .panel-toggle-btn.ribbon-open { top: 172px; }
-        .panel-toggle-btn.menu-open { top: 202px; }
+        .panel-toggle-btn.ribbon-open { top: 212px; }
+        .panel-toggle-btn.menu-open { top: 242px; }
         .panel-toggle-btn.sidebar-closed { left: 10px; }
 
         .sidebar-content {
@@ -277,7 +277,6 @@
             flex: 1;
         }
 
-        /* Custom Scrollbar */
         .sidebar-content::-webkit-scrollbar {
             width: 6px;
         }
@@ -374,7 +373,7 @@
             -webkit-box-orient: vertical;
         }
 
-        /* Document Templates Section */
+        /* Templates */
         .templates-section {
             margin-top: 8px;
             border-top: 1px solid var(--border-light);
@@ -402,10 +401,10 @@
             color: white;
         }
 
-        /* Canvas Area - NO WHITE SPACE WHEN RIBBON CLOSED */
+        /* Canvas Area - MOVED DOWN */
         .canvas-center {
             position: absolute;
-            top: 56px;
+            top: 100px;
             left: 280px;
             right: 0;
             bottom: 44px;
@@ -415,23 +414,27 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            background: #e8e8ed;
+            background: var(--bg-canvas);
             z-index: 1;
         }
         
-        .canvas-center.ribbon-open { top: 160px; }
-        .canvas-center.menu-open { top: 190px; }
+        .canvas-center.ribbon-open { top: 200px; }
+        .canvas-center.menu-open { top: 230px; }
         .canvas-center.expanded { left: 0; }
 
+        /* FIXED PAPER SIZE - NO SCROLL */
         .paper-page {
             background: white;
             width: 210mm;
             min-width: 210mm;
             max-width: 210mm;
+            height: 297mm;
             min-height: 297mm;
+            max-height: 297mm;
             margin: 0 auto 20px auto;
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
             position: relative;
+            overflow: hidden;
         }
 
         .paper-page-content {
@@ -440,10 +443,17 @@
             font-family: 'Times New Roman', serif;
             font-size: 12pt;
             line-height: 1.5;
-            min-height: 297mm;
+            height: 100%;
+            overflow-y: auto;
         }
 
-        /* Draggable & Resizable Images */
+        /* Hide scrollbar on paper content but keep functionality */
+        .paper-page-content::-webkit-scrollbar {
+            width: 0;
+            background: transparent;
+        }
+
+        /* Draggable Images */
         .resizable-image {
             position: relative;
             display: inline-block;
@@ -481,11 +491,9 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.2);
         }
         
-        .resizable-image:hover .resize-handle {
-            opacity: 1;
-        }
+        .resizable-image:hover .resize-handle { opacity: 1; }
 
-        /* Right Click Context Menu */
+        /* Context Menu */
         .context-menu {
             position: fixed;
             background: white;
@@ -498,9 +506,7 @@
             overflow: hidden;
         }
         
-        .context-menu.show {
-            display: block;
-        }
+        .context-menu.show { display: block; }
         
         .context-menu-item {
             padding: 10px 16px;
@@ -512,9 +518,7 @@
             transition: all 0.15s;
         }
         
-        .context-menu-item:hover {
-            background: #f0f0f0;
-        }
+        .context-menu-item:hover { background: #f0f0f0; }
         
         .context-menu-divider {
             height: 1px;
@@ -787,7 +791,6 @@
 
     <!-- Ribbon Container -->
     <div class="ribbon-container" id="ribbonContainer">
-        <!-- HOME TAB -->
         <div id="ribbonHome" class="ribbon-panel active">
             <div class="ribbon-group">
                 <div class="group-title">CLIPBOARD</div>
@@ -807,15 +810,11 @@
                         <option value="Arial">Arial</option>
                         <option value="Calibri">Calibri</option>
                         <option value="Georgia">Georgia</option>
-                        <option value="'Courier New', monospace">Courier New</option>
-                        <option value="Verdana">Verdana</option>
                     </select>
                     <select id="sizeSelector" class="size-selector" onchange="changeFontSize()" style="width:65px">
                         <option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option>
                         <option value="12" selected>12</option><option value="14">14</option><option value="16">16</option>
                         <option value="18">18</option><option value="20">20</option><option value="22">22</option><option value="24">24</option>
-                        <option value="26">26</option><option value="28">28</option><option value="32">32</option><option value="36">36</option>
-                        <option value="48">48</option><option value="72">72</option>
                     </select>
                     <button class="ribbon-btn" id="boldBtn" onclick="toggleBold()"><b>Bold</b></button>
                     <button class="ribbon-btn" id="italicBtn" onclick="toggleItalic()"><i>Italic</i></button>
@@ -855,55 +854,25 @@
             </div>
         </div>
 
-        <!-- INSERT TAB -->
         <div id="ribbonInsert" class="ribbon-panel">
-            <div class="ribbon-group">
-                <div class="group-title">Pages</div>
-                <div class="group-buttons">
-                    <button class="ribbon-btn" onclick="insertPageBreak()"><i class="fas fa-page-break"></i> Page Break</button>
-                </div>
-            </div>
-            <div class="ribbon-group">
-                <div class="group-title">Tables</div>
-                <div class="group-buttons">
-                    <button class="ribbon-btn" onclick="insertTable()"><i class="fas fa-table"></i> Insert Table</button>
-                </div>
-            </div>
             <div class="ribbon-group">
                 <div class="group-title">Images</div>
                 <div class="group-buttons">
                     <button class="ribbon-btn" onclick="openMediaManager()"><i class="fas fa-image"></i> Media from Korahey</button>
                 </div>
             </div>
-            <div class="ribbon-group">
-                <div class="group-title">Text</div>
-                <div class="group-buttons">
-                    <button class="ribbon-btn" onclick="insertDate()"><i class="fas fa-calendar"></i> Date & Time</button>
-                </div>
-            </div>
         </div>
 
-        <!-- DESIGN TAB -->
         <div id="ribbonDesign" class="ribbon-panel">
             <div class="ribbon-group">
                 <div class="group-title">Page Color</div>
                 <div class="group-buttons">
                     <button class="ribbon-btn" onclick="setPageColor('#ffffff')">White</button>
                     <button class="ribbon-btn" onclick="setPageColor('#f5e6ca')">Vintage</button>
-                    <button class="ribbon-btn" onclick="setPageColor('#e8f4f8')">Light Blue</button>
-                    <button class="ribbon-btn" onclick="setPageColor('#f0f8e8')">Mint</button>
-                </div>
-            </div>
-            <div class="ribbon-group">
-                <div class="group-title">Page Borders</div>
-                <div class="group-buttons">
-                    <button class="ribbon-btn" onclick="addPageBorder()"><i class="fas fa-border-all"></i> Add Border</button>
-                    <button class="ribbon-btn" onclick="removeBorder()"><i class="fas fa-border-none"></i> Remove Border</button>
                 </div>
             </div>
         </div>
 
-        <!-- LAYOUT TAB -->
         <div id="ribbonLayout" class="ribbon-panel">
             <div class="ribbon-group">
                 <div class="group-title">Margins</div>
@@ -913,33 +882,23 @@
                     <button class="ribbon-btn" onclick="setMargins('wide')">Wide</button>
                 </div>
             </div>
-            <div class="ribbon-group">
-                <div class="group-title">Orientation</div>
-                <div class="group-buttons">
-                    <button class="ribbon-btn" onclick="setOrientation('portrait')">Portrait</button>
-                    <button class="ribbon-btn" onclick="setOrientation('landscape')">Landscape</button>
-                </div>
-            </div>
         </div>
 
-        <!-- REVIEW TAB -->
         <div id="ribbonReview" class="ribbon-panel">
             <div class="ribbon-group">
                 <div class="group-title">Proofing</div>
                 <div class="group-buttons">
-                    <button class="ribbon-btn" onclick="checkSpelling()"><i class="fas fa-spell-check"></i> Spelling</button>
                     <button class="ribbon-btn" onclick="showWordCount()"><i class="fas fa-calculator"></i> Word Count</button>
                 </div>
             </div>
         </div>
 
-        <!-- VIEW TAB -->
         <div id="ribbonView" class="ribbon-panel">
             <div class="ribbon-group">
                 <div class="group-title">Zoom</div>
                 <div class="group-buttons">
-                    <button class="ribbon-btn" onclick="zoomIn()"><i class="fas fa-search-plus"></i> Zoom In</button>
-                    <button class="ribbon-btn" onclick="zoomOut()"><i class="fas fa-search-minus"></i> Zoom Out</button>
+                    <button class="ribbon-btn" onclick="zoomIn()"><i class="fas fa-search-plus"></i></button>
+                    <button class="ribbon-btn" onclick="zoomOut()"><i class="fas fa-search-minus"></i></button>
                     <button class="ribbon-btn" onclick="setZoom(100)">100%</button>
                 </div>
             </div>
@@ -948,21 +907,6 @@
 
     <!-- Dynamic Island -->
     <div class="dynamic-island" id="dynamicIsland">
-        <select id="dynamicFont" class="font-selector" onchange="document.getElementById('fontSelector').value=this.value; changeFont();">
-            <option value="'Times New Roman', serif">Times New Roman</option>
-            <option value="Arial">Arial</option>
-            <option value="Calibri">Calibri</option>
-            <option value="Georgia">Georgia</option>
-        </select>
-        <select id="dynamicSize" class="size-selector" onchange="document.getElementById('sizeSelector').value=this.value; changeFontSize();">
-            <option value="12" selected>12</option>
-            <option value="14">14</option>
-            <option value="16">16</option>
-            <option value="18">18</option>
-            <option value="20">20</option>
-            <option value="24">24</option>
-        </select>
-        <div class="separator"></div>
         <button class="tool-btn" onclick="toggleBold()"><b>B</b></button>
         <button class="tool-btn" onclick="toggleItalic()"><i>I</i></button>
         <button class="tool-btn" onclick="toggleUnderline()"><u>U</u></button>
@@ -985,7 +929,7 @@
         <div class="sidebar-content">
             <div class="panel-title">📄 PAGES</div>
             <div class="page-list" id="pageList"></div>
-            <button class="ribbon-btn" onclick="addBlankPage()" style="width:100%; margin-top:8px;"><i class="fas fa-plus"></i> Add Page</button>
+            <button class="ribbon-btn" onclick="addBlankPage()" style="width:100%"><i class="fas fa-plus"></i> Add Page</button>
             
             <div class="templates-section">
                 <div class="panel-title">📁 ADD DOCUMENT</div>
@@ -993,9 +937,6 @@
                     <button class="template-btn" onclick="insertTemplate('letter')">Letter</button>
                     <button class="template-btn" onclick="insertTemplate('report')">Report</button>
                     <button class="template-btn" onclick="insertTemplate('resume')">Resume</button>
-                    <button class="template-btn" onclick="insertTemplate('invoice')">Invoice</button>
-                    <button class="template-btn" onclick="insertTemplate('exam')">Exam</button>
-                    <button class="template-btn" onclick="insertTemplate('certificate')">Cert</button>
                 </div>
             </div>
         </div>
@@ -1004,14 +945,14 @@
     <!-- Canvas Area -->
     <div class="canvas-center" id="canvas">
         <div id="paperContainer">
-            <div class="paper-page" data-page="1">
+            <div class="paper-page">
                 <div class="paper-page-content" contenteditable="true" id="editorContent">
                     <h1 style="text-align: center;">KORAHEY ACADEMY</h1>
                     <p style="text-align: center; font-style: italic;">Passion for Success</p>
                     <hr>
-                    <p>Welcome to Korahey Editor! Right-click anywhere for context menu.</p>
-                    <p>Use the "Add Document" section to insert pre-made templates.</p>
-                    <p>Drag images from Media Manager onto the canvas.</p>
+                    <p>Welcome to Korahey Editor!</p>
+                    <p>Copy & Paste works now (Ctrl+C / Ctrl+V / Right-click)</p>
+                    <p>When text fills this page, it automatically creates a new page.</p>
                 </div>
             </div>
         </div>
@@ -1047,7 +988,7 @@
         </div>
     </div>
 
-    <!-- Right Click Context Menu -->
+    <!-- Context Menu -->
     <div id="contextMenu" class="context-menu">
         <div class="context-menu-item" onclick="execCommand('cut'); hideContextMenu();"><i class="fas fa-cut"></i> Cut</div>
         <div class="context-menu-item" onclick="execCommand('copy'); hideContextMenu();"><i class="fas fa-copy"></i> Copy</div>
@@ -1100,6 +1041,65 @@
             setTimeout(() => { toast.classList.remove('show'); }, 2000);
         }
 
+        // ========== AUTO PAGE BREAK ==========
+        function checkAndSplitPages() {
+            const pages = document.querySelectorAll('.paper-page');
+            let modified = false;
+            
+            pages.forEach((page, idx) => {
+                const content = page.querySelector('.paper-page-content');
+                if (content && content.scrollHeight > content.clientHeight + 50) {
+                    // Content overflows - need to split
+                    const excess = document.createElement('div');
+                    excess.innerHTML = content.innerHTML;
+                    
+                    // Find where to split (rough approximation)
+                    const contentHeight = content.clientHeight;
+                    const totalHeight = content.scrollHeight;
+                    const ratio = contentHeight / totalHeight;
+                    const splitIndex = Math.floor(content.innerText.length * ratio);
+                    
+                    const text = content.innerText;
+                    const splitPoint = text.lastIndexOf('. ', splitIndex) + 2;
+                    
+                    const remainingText = text.substring(splitPoint);
+                    const currentText = text.substring(0, splitPoint);
+                    
+                    // Update current page
+                    content.innerHTML = currentText.replace(/\n/g, '<br>');
+                    
+                    // Create new page with remaining text
+                    const newPage = document.createElement('div');
+                    newPage.className = 'paper-page';
+                    newPage.innerHTML = `<div class="paper-page-content" contenteditable="true">${remainingText.replace(/\n/g, '<br>')}</div>`;
+                    
+                    if (idx + 1 < pages.length) {
+                        pages[idx + 1].insertAdjacentElement('beforebegin', newPage);
+                    } else {
+                        page.insertAdjacentElement('afterend', newPage);
+                    }
+                    modified = true;
+                }
+            });
+            
+            if (modified) {
+                updatePageList();
+                showToast('Content split across pages');
+            }
+        }
+
+        // Monitor content changes for auto page break
+        function setupContentObserver() {
+            const observer = new MutationObserver(() => {
+                checkAndSplitPages();
+                updateWordCount();
+            });
+            
+            const container = document.getElementById('paperContainer');
+            observer.observe(container, { childList: true, subtree: true, characterData: true });
+        }
+
+        // ========== CONTEXT MENU ==========
         function hideContextMenu() {
             document.getElementById('contextMenu').classList.remove('show');
             if (isMenuOpen) {
@@ -1123,38 +1123,56 @@
         }
         
         document.addEventListener('contextmenu', (e) => {
-            e.preventDefault();
-            const menu = document.getElementById('contextMenu');
-            menu.style.left = e.pageX + 'px';
-            menu.style.top = e.pageY + 'px';
-            menu.classList.add('show');
-            if (!isMenuOpen) {
-                isMenuOpen = true;
-                document.getElementById('dynamicIsland').classList.add('menu-open');
-                document.getElementById('sidebar').classList.add('menu-open');
-                document.getElementById('canvas').classList.add('menu-open');
-                document.getElementById('toggleBtn').classList.add('menu-open');
+            if (e.target.closest('.paper-page-content')) {
+                e.preventDefault();
+                const menu = document.getElementById('contextMenu');
+                menu.style.left = e.pageX + 'px';
+                menu.style.top = e.pageY + 'px';
+                menu.classList.add('show');
+                if (!isMenuOpen) {
+                    isMenuOpen = true;
+                    document.getElementById('dynamicIsland').classList.add('menu-open');
+                    document.getElementById('sidebar').classList.add('menu-open');
+                    document.getElementById('canvas').classList.add('menu-open');
+                    document.getElementById('toggleBtn').classList.add('menu-open');
+                }
             }
         });
         
         document.addEventListener('click', () => { hideContextMenu(); });
 
-        // Templates
+        // ========== COPY/PASTE FIX ==========
+        document.addEventListener('copy', (e) => {
+            const selection = window.getSelection();
+            if (selection.toString()) {
+                e.clipboardData.setData('text/plain', selection.toString());
+                e.preventDefault();
+                showToast('Copied!');
+            }
+        });
+        
+        document.addEventListener('paste', async (e) => {
+            e.preventDefault();
+            const text = await navigator.clipboard.readText();
+            document.execCommand('insertText', false, text);
+            showToast('Pasted!');
+            checkAndSplitPages();
+        });
+
+        // ========== TEMPLATES ==========
         function insertTemplate(type) {
             const editor = getActiveEditor();
             if (!editor) return;
             let html = '';
-            if (type === 'letter') html = `<div style="margin:40px 0;"><h1 style="text-align:center;">BUSINESS LETTER</h1><p><strong>Date:</strong> ____________________</p><p><strong>To:</strong> ____________________</p><p><strong>From:</strong> ____________________</p><p>Dear ____________________,</p><p>__________________________________________________</p><p>Sincerely,</p><p>____________________</p></div>`;
-            else if (type === 'report') html = `<div><h1 style="text-align:center;">REPORT TITLE</h1><h2>Executive Summary</h2><p>__________________________________________________</p><h2>Introduction</h2><p>__________________________________________________</p></div>`;
-            else if (type === 'resume') html = `<div><h1 style="text-align:center;">YOUR NAME</h1><h2>Professional Summary</h2><p>__________________________________________________</p><h2>Work Experience</h2><p>• _______________________________________________</p></div>`;
-            else if (type === 'invoice') html = `<div><h1 style="text-align:center;">INVOICE</h1><p><strong>Invoice #:</strong> INV-001</p><table border="1" cellpadding="8" style="width:100%"><tr><th>Item</th><th>Qty</th><th>Price</th><th>Total</th></tr><tr><td>________________</td><td>___</td><td>$___</td><td>$___</td></tr></table></div>`;
-            else if (type === 'exam') html = `<div><h1 style="text-align:center;">FINAL EXAMINATION</h1><hr><h3>Section A: Multiple Choice</h3><p>1. __________________________________________________</p><p>   A) ________  B) ________  C) ________  D) ________</p></div>`;
-            else if (type === 'certificate') html = `<div style="text-align:center; border:5px double #0071e3; padding:40px;"><h1>CERTIFICATE</h1><p>This certificate is presented to</p><h2>____________________</h2><p>Date: ____________________</p></div>`;
+            if (type === 'letter') html = `<div><h1>BUSINESS LETTER</h1><p><strong>Date:</strong> ____________________</p><p>Dear ____________________,</p><p>__________________________________________________</p><p>Sincerely,</p><p>____________________</p></div>`;
+            else if (type === 'report') html = `<div><h1>REPORT TITLE</h1><h2>Executive Summary</h2><p>__________________________________________________</p></div>`;
+            else if (type === 'resume') html = `<div><h1>YOUR NAME</h1><h2>Professional Summary</h2><p>__________________________________________________</p><h2>Work Experience</h2><p>• _______________________________________________</p></div>`;
             document.execCommand('insertHTML', false, html);
-            showToast(`${type.toUpperCase()} template inserted`);
+            showToast(`${type} template inserted`);
+            checkAndSplitPages();
         }
 
-        // Media Manager
+        // ========== MEDIA MANAGER ==========
         function openMediaManager() { loadImageGallery(); document.getElementById('mediaModal').classList.add('active'); }
         function closeMediaManager() { document.getElementById('mediaModal').classList.remove('active'); }
         
@@ -1165,9 +1183,9 @@
         }
         
         function searchImages() {
-            const searchTerm = document.getElementById('mediaSearch').value.toLowerCase();
-            document.querySelectorAll('.image-card').forEach(item => {
-                item.style.display = item.innerText.toLowerCase().includes(searchTerm) ? 'flex' : 'none';
+            const term = document.getElementById('mediaSearch').value.toLowerCase();
+            document.querySelectorAll('.image-card').forEach(card => {
+                card.style.display = card.innerText.toLowerCase().includes(term) ? 'flex' : 'none';
             });
         }
         
@@ -1198,7 +1216,7 @@
             const saved = localStorage.getItem('koraheyImageLibrary');
             if (saved) imageLibrary = JSON.parse(saved);
             const grid = document.getElementById('imageGrid');
-            if (imageLibrary.length === 0) {
+            if (!imageLibrary.length) {
                 grid.innerHTML = '<div style="text-align:center; padding:40px; color:#999;"><i class="fas fa-cloud-upload-alt" style="font-size:40px;"></i><br>No images yet. Upload some!</div>';
                 return;
             }
@@ -1227,7 +1245,7 @@
             closeMediaManager();
         }
         
-        // Drag & Drop
+        // ========== DRAG & DROP ==========
         let draggedImageSrc = null;
         
         function dragStartHandler(e) {
@@ -1359,9 +1377,9 @@
         function alignImage(alignment) {
             if (!selectedImageContainer) return;
             if (alignment === 'left') { selectedImageContainer.style.float = 'left'; selectedImageContainer.style.margin = '8px 16px 8px 0'; selectedImageContainer.style.position = 'relative'; }
-            else if (alignment === 'center') { selectedImageContainer.style.float = 'none'; selectedImageContainer.style.display = 'block'; selectedImageContainer.style.margin = '8px auto'; selectedImageContainer.style.position = 'relative'; }
-            else if (alignment === 'right') { selectedImageContainer.style.float = 'right'; selectedImageContainer.style.margin = '8px 0 8px 16px'; selectedImageContainer.style.position = 'relative'; }
-            else if (alignment === 'reset') { selectedImageContainer.style.float = 'none'; selectedImageContainer.style.display = 'inline-block'; selectedImageContainer.style.margin = '8px'; selectedImageContainer.style.left = 'auto'; selectedImageContainer.style.top = 'auto'; selectedImageContainer.style.position = 'relative'; }
+            else if (alignment === 'center') { selectedImageContainer.style.float = 'none'; selectedImageContainer.style.display = 'block'; selectedImageContainer.style.margin = '8px auto'; }
+            else if (alignment === 'right') { selectedImageContainer.style.float = 'right'; selectedImageContainer.style.margin = '8px 0 8px 16px'; }
+            else if (alignment === 'reset') { selectedImageContainer.style.float = 'none'; selectedImageContainer.style.display = 'inline-block'; selectedImageContainer.style.margin = '8px'; selectedImageContainer.style.left = 'auto'; selectedImageContainer.style.top = 'auto'; }
             showToast(`Image aligned ${alignment}`);
             const toolbar = document.getElementById('imageFloatingToolbar');
             if (toolbar) toolbar.style.display = 'none';
@@ -1387,7 +1405,7 @@
             }
         });
 
-        // Editor Core
+        // ========== EDITOR CORE ==========
         function getActiveEditor() {
             let active = document.activeElement;
             if (active && active.classList && active.classList.contains('paper-page-content')) return active;
@@ -1398,11 +1416,20 @@
         
         function execCommand(command, value = null) {
             const editor = getActiveEditor();
-            if (editor) { document.execCommand(command, false, value); editor.focus(); updateButtonStates(); }
+            if (editor) {
+                document.execCommand(command, false, value);
+                editor.focus();
+                updateButtonStates();
+                checkAndSplitPages();
+            }
         }
         
         function pasteText() {
-            navigator.clipboard.readText().then(text => { document.execCommand('insertText', false, text); showToast('Text pasted'); }).catch(() => showToast('Allow clipboard access'));
+            navigator.clipboard.readText().then(text => {
+                document.execCommand('insertText', false, text);
+                showToast('Text pasted');
+                checkAndSplitPages();
+            }).catch(() => showToast('Allow clipboard access'));
         }
         
         function toggleBold() { execCommand('bold'); updateButtonStates(); }
@@ -1411,12 +1438,10 @@
         function toggleStrikethrough() { execCommand('strikeThrough'); updateButtonStates(); }
         
         function updateButtonStates() {
-            const boldBtn = document.getElementById('boldBtn');
-            const italicBtn = document.getElementById('italicBtn');
-            const underlineBtn = document.getElementById('underlineBtn');
-            if (boldBtn) boldBtn.classList.toggle('active', document.queryCommandState('bold'));
-            if (italicBtn) italicBtn.classList.toggle('active', document.queryCommandState('italic'));
-            if (underlineBtn) underlineBtn.classList.toggle('active', document.queryCommandState('underline'));
+            ['boldBtn', 'italicBtn', 'underlineBtn'].forEach(id => {
+                const btn = document.getElementById(id);
+                if (btn) btn.classList.toggle('active', document.queryCommandState(id === 'boldBtn' ? 'bold' : id === 'italicBtn' ? 'italic' : 'underline'));
+            });
         }
         
         function setAlignment(command) {
@@ -1433,7 +1458,7 @@
         function toggleList(command) { execCommand(command); }
         function changeFont() { execCommand('fontName', document.getElementById('fontSelector').value); }
         function changeFontSize() { execCommand('fontSize', document.getElementById('sizeSelector').value); }
-        function changeLineSpacing() { execCommand('lineHeight', document.getElementById('lineSpacingSelect').value); showToast(`Line spacing changed`); }
+        function changeLineSpacing() { execCommand('lineHeight', document.getElementById('lineSpacingSelect').value); showToast('Line spacing changed'); }
         function changeTextColor() { const color = prompt('Enter color:', '#000000'); if(color) execCommand('foreColor', color); }
         function changeHighlight() { const color = prompt('Enter highlight color:', '#ffff00'); if(color) execCommand('backColor', color); }
         function clearFormatting() { execCommand('removeFormat'); showToast('Formatting cleared'); }
@@ -1447,33 +1472,6 @@
             showToast(`Applied ${style} style`);
         }
         
-        function insertDate() { execCommand('insertText', new Date().toLocaleString()); }
-        
-        function insertTable() {
-            const rows = prompt('Rows:', '3');
-            const cols = prompt('Columns:', '3');
-            if (rows && cols) {
-                let html = '<table border="1" cellpadding="8" style="border-collapse:collapse; width:100%; margin:10px 0;">';
-                for (let i = 0; i < parseInt(rows); i++) { html += '<tr>'; for (let j = 0; j < parseInt(cols); j++) html += `<td><br></td>`; html += '</tr>'; }
-                html += '</table>';
-                execCommand('insertHTML', html);
-                showToast(`${rows}x${cols} table inserted`);
-            }
-        }
-        
-        function insertPageBreak() {
-            const editor = getActiveEditor();
-            if (editor) {
-                const currentPage = editor.closest('.paper-page');
-                const newPage = document.createElement('div');
-                newPage.className = 'paper-page';
-                newPage.innerHTML = `<div class="paper-page-content" contenteditable="true"><p><br></p></div>`;
-                currentPage.insertAdjacentElement('afterend', newPage);
-                updatePageList();
-                showToast('Page break inserted');
-            }
-        }
-        
         function addBlankPage() {
             const container = document.getElementById('paperContainer');
             const newPage = document.createElement('div');
@@ -1485,8 +1483,6 @@
             showToast('New page added');
         }
         
-        function checkSpelling() { showToast('Spelling check: No errors found!'); }
-        
         function showWordCount() {
             let total = 0;
             document.querySelectorAll('.paper-page-content').forEach(content => {
@@ -1497,21 +1493,11 @@
         }
         
         function setPageColor(color) { document.querySelectorAll('.paper-page').forEach(p => p.style.backgroundColor = color); showToast('Page color changed'); }
-        function addPageBorder() { document.querySelectorAll('.paper-page').forEach(p => p.style.border = '2px solid #0071e3'); showToast('Border added'); }
-        function removeBorder() { document.querySelectorAll('.paper-page').forEach(p => p.style.border = 'none'); showToast('Border removed'); }
         
         function setMargins(type) {
             const padding = type === 'narrow' ? '10mm 15mm' : (type === 'wide' ? '30mm 35mm' : '20mm 25mm');
             document.querySelectorAll('.paper-page-content').forEach(p => p.style.padding = padding);
             showToast(`${type} margins applied`);
-        }
-        
-        function setOrientation(orientation) {
-            document.querySelectorAll('.paper-page').forEach(p => {
-                p.style.width = orientation === 'landscape' ? '297mm' : '210mm';
-                p.style.minWidth = orientation === 'landscape' ? '297mm' : '210mm';
-            });
-            showToast(`${orientation} orientation`);
         }
         
         function zoomIn() { if (currentZoom < 200) { currentZoom += 10; applyZoom(); } }
@@ -1525,6 +1511,14 @@
         }
         
         // Page Management
+        function updateWordCount() {
+            let total = 0;
+            document.querySelectorAll('.paper-page-content').forEach(content => {
+                total += content.innerText.trim().split(/\s+/).filter(w => w.length > 0).length;
+            });
+            document.getElementById('wordCount').textContent = total + ' words';
+        }
+        
         function updatePageCounter() {
             const pages = document.querySelectorAll('.paper-page');
             document.getElementById('pageCounter').textContent = `Page ${currentPageIndex + 1} of ${pages.length}`;
@@ -1555,7 +1549,7 @@
             updatePageCounter();
         }
         
-        function escapeHtml(str) { return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])); }
+        function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])); }
         
         function goToPage(index) {
             const pages = document.querySelectorAll('.paper-page');
@@ -1615,7 +1609,7 @@
                     updatePageList();
                 }
             }
-            showWordCount();
+            updateWordCount();
         }
         
         // Ribbon Hover
@@ -1675,12 +1669,9 @@
             panel.addEventListener('mouseleave', hideRibbonPanel);
         });
         
-        document.addEventListener('selectionchange', () => {
-            if (document.activeElement?.classList?.contains('paper-page-content')) updateButtonStates();
-        });
-        
         setTimeout(() => { document.querySelector('.paper-page-content')?.focus(); }, 100);
         loadDocument();
+        setupContentObserver();
     </script>
 </body>
 </html>
