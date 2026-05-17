@@ -78,7 +78,7 @@
             overflow: hidden; height: 0;
             transition: height 0.25s ease;
         }
-        .ribbon-container.open { height: auto; border-bottom: 1px solid var(--border-light); }
+        .ribbon-container.open { height: auto; min-height: 110px; border-bottom: 1px solid var(--border-light); }
         .ribbon-panel { display: none; background: #fff; padding: 12px 20px; flex-wrap: wrap; gap: 20px; justify-content: center; }
         .ribbon-panel.active { display: flex; }
         .ribbon-group { display: flex; flex-direction: column; gap: 8px; padding: 0 12px; border-right: 1px solid var(--border-light); }
@@ -94,66 +94,19 @@
         }
         .ribbon-btn:hover { background: #f0f0f0; }
 
-        /* ===== AI RIBBON PANEL ===== */
-        #ribbonAi {
-            background: linear-gradient(to right, #faf8ff, #fff);
-            border-top: 2px solid var(--ai-purple-mid);
-        }
-        .ai-ribbon-tool {
-            display: flex; flex-direction: column; align-items: center;
-            gap: 4px; padding: 8px 14px; border-radius: 10px;
-            cursor: pointer; transition: all 0.2s;
-            border: 1px solid transparent;
-            min-width: 80px;
-        }
-        .ai-ribbon-tool:hover {
-            background: var(--ai-purple-light);
-            border-color: var(--ai-purple-mid);
-        }
-        .ai-ribbon-tool.active {
-            background: var(--ai-purple);
-            border-color: var(--ai-purple);
-        }
-        .ai-ribbon-tool.active .ai-tool-icon,
-        .ai-ribbon-tool.active .ai-tool-label { color: white; }
-        .ai-tool-icon { font-size: 20px; color: var(--ai-purple); }
-        .ai-tool-label { font-size: 11px; color: #555; font-weight: 500; text-align: center; }
-
-        /* ===== AI TRIGGER FAB ===== */
-        .ai-fab-trigger {
-            position: fixed;
-            bottom: 90px;
-            right: 24px;
-            width: 46px;
-            height: 46px;
-            background: var(--ai-purple);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 1002;
-            box-shadow: 0 4px 12px rgba(108, 71, 255, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            transition: transform 0.2s;
-        }
-        .ai-fab-trigger:hover { transform: scale(1.1); background: #5a38e0; }
-
         /* ===== DYNAMIC ISLAND ===== */
         .dynamic-island {
-            position: fixed; top: 60px; left: 50%;
+            position: fixed; top: 65px; left: calc(50% + 110px);
             transform: translateX(-50%);
             background: #ffffff; border-radius: 40px;
             padding: 6px 16px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             border: 1px solid var(--border-light);
             z-index: 1002; display: flex; gap: 6px; align-items: center;
-            transition: top 0.25s ease;
+            transition: all 0.3s ease;
         }
-        .dynamic-island.ribbon-open { top: 185px; }
-        .dynamic-island.menu-open { top: 230px; }
+        .dynamic-island.collapsed { left: 50%; }
+        .dynamic-island.ribbon-open { top: 175px; }
         .tool-btn {
             background: transparent; border: none;
             padding: 5px 12px; border-radius: 30px;
@@ -179,11 +132,10 @@
             display: flex; flex-direction: column;
             z-index: 998; transition: transform 0.3s, top 0.25s ease;
         }
-        .left-panel.ribbon-open { top: 165px; }
-        .left-panel.menu-open { top: 230px; }
+        .left-panel.ribbon-open { top: 158px; }
         .left-panel.collapsed { transform: translateX(-100%); }
         .panel-toggle-btn {
-            position: fixed; left: 185px; top: 60px;
+            position: fixed; left: 185px; top: 65px;
             width: 28px; height: 28px;
             background: #fff; border: 1px solid var(--border-light);
             border-radius: 50%; cursor: pointer;
@@ -191,8 +143,7 @@
             box-shadow: 0 2px 6px rgba(0,0,0,0.1);
             z-index: 1002; transition: left 0.3s, top 0.25s ease;
         }
-        .panel-toggle-btn.ribbon-open { top: 185px; }
-        .panel-toggle-btn.menu-open { top: 242px; }
+        .panel-toggle-btn.ribbon-open { top: 175px; }
         .panel-toggle-btn.sidebar-closed { left: 10px; }
         .sidebar-content { padding: 16px; display: flex; flex-direction: column; gap: 16px; overflow-y: auto; flex: 1; }
         .sidebar-content::-webkit-scrollbar { width: 4px; }
@@ -209,19 +160,18 @@
         .page-number { background: rgba(0,0,0,0.05); border-radius: 4px; padding: 2px 8px; font-size: 10px; font-weight: 600; }
         .delete-page-btn { background: none; border: none; cursor: pointer; color: #999; padding: 2px 6px; border-radius: 4px; }
         .delete-page-btn:hover { background: rgba(255,59,48,0.1); color: #ff3b30; }
-        .mini-paper { background: #fafafc; border-radius: 4px; padding: 8px; aspect-ratio: 210/297; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); }
-        .mini-paper-content { font-size: 6px; line-height: 1.3; color: #666; overflow: hidden; display:-webkit-box; -webkit-line-clamp:8; -webkit-box-orient:vertical; }
+        .mini-paper { background: white; border-radius: 4px; padding: 8px; aspect-ratio: 210/297; overflow: hidden; border: 1px solid rgba(0,0,0,0.1); position: relative; }
+        .mini-paper-content { font-size: 3px; line-height: 1.2; color: #333; transform-origin: top left; transform: scale(1); pointer-events: none; }
 
         /* ===== CANVAS ===== */
         .canvas-center {
             position: absolute; top: 48px; left: 220px; right: 0; bottom: 44px;
-            overflow-y: auto; padding: 80px 30px 20px 30px;
+            overflow-y: auto; padding: 85px 30px 20px 30px;
             transition: left 0.3s, right 0.3s, top 0.25s ease;
             display: flex; flex-direction: column; align-items: center;
             background: var(--bg-canvas); z-index: 1;
         }
-        .canvas-center.ribbon-open { top: 165px; padding-top: 100px; }
-        .canvas-center.menu-open { top: 230px; }
+        .canvas-center.ribbon-open { top: 158px; padding-top: 95px; }
         .canvas-center.expanded { left: 0; }
         .canvas-center.ai-open { right: 360px; }
         .paper-page {
@@ -238,272 +188,38 @@
             font-size: 12pt; line-height: 1.5; height: 100%;
             overflow-y: auto;
         }
-        .paper-page-content::-webkit-scrollbar { width: 0; background: transparent; }
+
+        /* ===== AI FLOATING ACTION BUTTON ===== */
+        .ai-fab {
+            position: fixed; bottom: 90px; right: 24px;
+            width: 48px; height: 48px;
+            background: var(--ai-purple); color: white;
+            border: none; border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(108, 71, 255, 0.4);
+            z-index: 1002; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; transition: all 0.3s;
+        }
+        .ai-fab:hover { transform: scale(1.1); background: #5a38e0; }
 
         /* ===== AI ASSISTANT PANEL ===== */
         .ai-panel {
             position: fixed; top: 48px; right: -380px; bottom: 44px;
-            width: 360px;
-            background: white;
+            width: 360px; background: white;
             border-left: 1px solid var(--border-light);
-            z-index: 997;
-            display: flex; flex-direction: column;
+            z-index: 997; display: flex; flex-direction: column;
             transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: -4px 0 24px rgba(0,0,0,0.08);
         }
         .ai-panel.open { right: 0; }
-
-        /* AI Panel Header */
-        .ai-panel-header {
-            padding: 14px 16px;
-            border-bottom: 1px solid var(--border-light);
-            display: flex; align-items: center; gap: 10px;
-            background: linear-gradient(135deg, #6c47ff08, #fff);
-        }
-        .ai-panel-logo {
-            width: 30px; height: 30px;
-            background: var(--ai-purple);
-            border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 14px; color: white; flex-shrink: 0;
-        }
-        .ai-panel-title { font-size: 14px; font-weight: 600; color: var(--text-main); }
-        .ai-panel-subtitle { font-size: 11px; color: #888; }
-        .ai-panel-close {
-            margin-left: auto; background: none; border: none;
-            cursor: pointer; color: #999; font-size: 18px;
-            width: 28px; height: 28px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            transition: all 0.15s;
-        }
+        .ai-panel-header { padding: 14px 16px; border-bottom: 1px solid var(--border-light); display: flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #6c47ff08, #fff); }
+        .ai-panel-logo { width: 30px; height: 30px; background: var(--ai-purple); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; color: white; }
+        .ai-panel-close { margin-left: auto; background: none; border: none; cursor: pointer; color: #999; font-size: 18px; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
         .ai-panel-close:hover { background: #f0f0f0; color: #333; }
 
-        /* AI Tools Grid */
-        .ai-tools-grid {
-            display: grid; grid-template-columns: 1fr 1fr;
-            gap: 6px; padding: 12px;
-            border-bottom: 1px solid var(--border-light);
-        }
-        .ai-tool-card {
-            padding: 10px; border-radius: 10px;
-            border: 1px solid var(--border-light);
-            cursor: pointer; transition: all 0.15s;
-            display: flex; flex-direction: column; gap: 4px;
-            background: white;
-        }
-        .ai-tool-card:hover { border-color: var(--ai-purple-mid); background: var(--ai-purple-light); }
-        .ai-tool-card.selected { border-color: var(--ai-purple); background: var(--ai-purple-light); }
-        .ai-tool-card-icon { font-size: 16px; color: var(--ai-purple); }
-        .ai-tool-card-name { font-size: 12px; font-weight: 600; color: var(--text-main); }
-        .ai-tool-card-desc { font-size: 10px; color: #888; line-height: 1.4; }
-
-        /* AI Options Bar */
-        .ai-options-bar {
-            padding: 8px 12px;
-            border-bottom: 1px solid var(--border-light);
-            display: flex; gap: 8px; align-items: center;
-        }
-        .ai-select {
-            flex: 1; padding: 5px 8px;
-            border: 1px solid var(--border-light);
-            border-radius: 6px; font-size: 12px;
-            background: #fafafa; cursor: pointer;
-            color: var(--text-main);
-        }
-        .ai-select:focus { outline: none; border-color: var(--ai-purple); }
-
-        /* AI Instruction area */
-        .ai-instruction-area { padding: 12px; border-bottom: 1px solid var(--border-light); }
-        .ai-instruction-label {
-            font-size: 10px; font-weight: 600; color: #888;
-            text-transform: uppercase; letter-spacing: 0.5px;
-            margin-bottom: 6px;
-        }
-        .ai-instruction-input {
-            width: 100%; border: 1px solid var(--border-light);
-            border-radius: 8px; padding: 8px 10px;
-            font-size: 12px; font-family: inherit;
-            resize: none; color: var(--text-main);
-            background: #fafafa; min-height: 60px;
-            transition: border-color 0.15s;
-        }
-        .ai-instruction-input:focus { outline: none; border-color: var(--ai-purple); background: white; }
-        .ai-instruction-input::placeholder { color: #bbb; }
-
-        /* Quick prompts */
-        .ai-quick-prompts {
-            padding: 6px 12px 10px;
-            border-bottom: 1px solid var(--border-light);
-            display: flex; gap: 5px; flex-wrap: wrap;
-        }
-        .ai-chip {
-            font-size: 10px; padding: 3px 9px;
-            border: 1px solid var(--border-light);
-            border-radius: 20px; cursor: pointer;
-            color: #555; background: white;
-            transition: all 0.12s; white-space: nowrap;
-        }
-        .ai-chip:hover { background: var(--ai-purple-light); border-color: var(--ai-purple-mid); color: var(--ai-purple); }
-
-        /* AI Run button */
-        .ai-run-area { padding: 10px 12px; border-bottom: 1px solid var(--border-light); display: flex; gap: 8px; }
-        .ai-run-btn {
-            flex: 1; padding: 9px;
-            background: var(--ai-purple); color: white;
-            border: none; border-radius: 8px;
-            font-size: 13px; font-weight: 600;
-            cursor: pointer; display: flex;
-            align-items: center; justify-content: center; gap: 7px;
-            transition: all 0.15s;
-        }
-        .ai-run-btn:hover { background: #5a38e0; }
-        .ai-run-btn:disabled { background: #c0b0ff; cursor: not-allowed; }
-        .ai-context-btn {
-            padding: 9px 14px;
-            background: white; color: #555;
-            border: 1px solid var(--border-light);
-            border-radius: 8px; font-size: 12px;
-            cursor: pointer; transition: all 0.15s;
-            white-space: nowrap;
-        }
-        .ai-context-btn:hover { background: #f5f5f7; border-color: #ccc; }
-        .ai-context-btn.active { background: var(--ai-purple-light); border-color: var(--ai-purple-mid); color: var(--ai-purple); }
-
-        /* AI Output */
-        .ai-output-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-        .ai-output-header {
-            padding: 10px 12px 6px;
-            display: flex; align-items: center; justify-content: space-between;
-        }
-        .ai-output-label { font-size: 10px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
-        .ai-output-actions { display: flex; gap: 5px; }
-        .ai-out-btn {
-            font-size: 11px; padding: 4px 10px;
-            border: 1px solid var(--border-light);
-            border-radius: 6px; cursor: pointer;
-            background: white; color: #555;
-            display: flex; align-items: center; gap: 4px;
-            transition: all 0.12s;
-        }
-        .ai-out-btn:hover { background: #f5f5f7; }
-        .ai-out-btn.insert { background: var(--ai-purple); color: white; border-color: var(--ai-purple); }
-        .ai-out-btn.insert:hover { background: #5a38e0; }
-        .ai-output-box {
-            flex: 1; overflow-y: auto;
-            padding: 12px; margin: 0 12px 12px;
-            border: 1px solid var(--border-light);
-            border-radius: 10px;
-            font-size: 13px; line-height: 1.7;
-            color: var(--text-main);
-            background: #fafafa;
-            font-family: 'Times New Roman', serif;
-            white-space: pre-wrap; word-break: break-word;
-        }
-        .ai-output-box.placeholder { color: #bbb; font-family: inherit; font-size: 12px; }
-        .ai-output-box.streaming { border-color: var(--ai-purple-mid); background: white; }
-        .ai-output-box::-webkit-scrollbar { width: 4px; }
-        .ai-output-box::-webkit-scrollbar-thumb { background: #ddd; border-radius: 4px; }
-
-        /* AI Chat area */
-        .ai-chat-area {
-            flex: 1; overflow-y: auto;
-            padding: 12px; display: flex; flex-direction: column; gap: 10px;
-        }
-        .ai-chat-area::-webkit-scrollbar { width: 4px; }
-        .ai-chat-area::-webkit-scrollbar-thumb { background: #ddd; border-radius: 4px; }
-        .chat-msg { max-width: 90%; padding: 9px 12px; border-radius: 12px; font-size: 12px; line-height: 1.6; }
-        .chat-msg.user { align-self: flex-end; background: var(--ai-purple); color: white; border-radius: 12px 12px 3px 12px; }
-        .chat-msg.ai { align-self: flex-start; background: white; border: 1px solid var(--border-light); color: var(--text-main); border-radius: 12px 12px 12px 3px; }
-        .chat-msg.ai.streaming { border-color: var(--ai-purple-mid); }
-        .chat-input-row { padding: 10px 12px; border-top: 1px solid var(--border-light); display: flex; gap: 8px; }
-        .chat-input {
-            flex: 1; padding: 8px 12px;
-            border: 1px solid var(--border-light);
-            border-radius: 20px; font-size: 12px;
-            font-family: inherit; background: #fafafa;
-            color: var(--text-main); outline: none;
-        }
-        .chat-input:focus { border-color: var(--ai-purple); background: white; }
-        .chat-input::placeholder { color: #bbb; }
-        .chat-send-btn {
-            width: 34px; height: 34px;
-            background: var(--ai-purple); color: white;
-            border: none; border-radius: 50%;
-            cursor: pointer; display: flex;
-            align-items: center; justify-content: center;
-            font-size: 13px; transition: all 0.15s; flex-shrink: 0;
-        }
-        .chat-send-btn:hover { background: #5a38e0; transform: scale(1.05); }
-        .chat-send-btn:disabled { background: #c0b0ff; cursor: not-allowed; transform: none; }
-        .chat-typing { display: flex; gap: 4px; align-items: center; padding: 2px 0; }
-        .chat-typing span { width: 6px; height: 6px; background: var(--ai-purple); border-radius: 50%; animation: typingBounce 1.2s infinite; }
-        .chat-typing span:nth-child(2) { animation-delay: 0.2s; }
-        .chat-typing span:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes typingBounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
-
-        /* Mode tabs in AI panel */
-        .ai-mode-tabs {
-            display: flex; border-bottom: 1px solid var(--border-light);
-        }
-        .ai-mode-tab {
-            flex: 1; padding: 9px;
-            font-size: 12px; font-weight: 500;
-            text-align: center; cursor: pointer;
-            color: #888; border-bottom: 2px solid transparent;
-            transition: all 0.15s;
-        }
-        .ai-mode-tab:hover { color: var(--ai-purple); background: var(--ai-purple-light); }
-        .ai-mode-tab.active { color: var(--ai-purple); border-bottom-color: var(--ai-purple); }
-
-        /* Mode content panels */
-        .ai-mode-content { display: none; flex: 1; flex-direction: column; overflow: hidden; }
-        .ai-mode-content.active { display: flex; }
-
-        /* Loading spinner */
-        @keyframes spin { to{transform: rotate(360deg)} }
-        .ai-spinner { animation: spin 0.8s linear infinite; display: inline-block; }
-
-        /* Status bar */
-        .ai-status-bar {
-            padding: 5px 12px;
-            border-top: 1px solid var(--border-light);
-            font-size: 10px; color: #aaa;
-            display: flex; align-items: center; gap: 6px;
-        }
-        .ai-status-dot { width: 6px; height: 6px; background: #22c55e; border-radius: 50%; }
-
-        /* Context menu */
-        .context-menu {
-            position: fixed; background: white; border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-            border: 1px solid var(--border-light);
-            z-index: 10000; min-width: 200px; display: none; overflow: hidden;
-        }
-        .context-menu.show { display: block; }
-        .context-menu-item { padding: 10px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 13px; transition: all 0.15s; }
-        .context-menu-item:hover { background: #f0f0f0; }
-        .context-menu-divider { height: 1px; background: var(--border-light); margin: 4px 0; }
-
-        /* Media manager */
-        .media-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); z-index: 2000; align-items: center; justify-content: center; }
-        .media-modal.active { display: flex; }
-        .media-modal-content { width: 85%; max-width: 1000px; height: 80vh; background: white; border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; }
-        .media-modal-header { padding: 16px 20px; border-bottom: 1px solid var(--border-light); display: flex; justify-content: space-between; align-items: center; }
-        .media-modal-header h2 { font-size: 18px; font-weight: 600; }
-        .close-modal { background: none; border: none; font-size: 22px; cursor: pointer; color: #999; }
-        .media-modal-body { display: flex; flex: 1; overflow: hidden; }
-        .media-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-        .media-toolbar { padding: 12px 20px; border-bottom: 1px solid var(--border-light); display: flex; justify-content: space-between; align-items: center; }
-        .search-box { display: flex; align-items: center; background: #f5f5f7; border-radius: 8px; padding: 6px 12px; width: 220px; }
-        .search-box input { border: none; background: none; outline: none; margin-left: 8px; width: 100%; font-size: 13px; }
-        .upload-btn { background: var(--apple-blue); color: white; border: none; padding: 6px 16px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 12px; }
-        .image-grid { flex: 1; overflow-y: auto; padding: 16px; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
-        .image-card { background: #f5f5f7; border-radius: 10px; overflow: hidden; cursor: grab; transition: all 0.2s; position: relative; }
-        .image-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        .image-card img { width: 100%; height: 120px; object-fit: cover; pointer-events: none; }
-        .image-card-actions { position: absolute; top: 6px; right: 6px; display: none; gap: 6px; }
-        .image-card:hover .image-card-actions { display: flex; }
-        .image-action { background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-size: 10px; }
+        .ai-instruction-input { width: 100%; border: 1px solid var(--border-light); border-radius: 8px; padding: 10px; font-size: 12px; resize: none; background: #fafafa; min-height: 80px; margin: 12px; width: calc(100% - 24px); }
+        .ai-run-btn { background: var(--ai-purple); color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; margin: 0 12px 12px; font-weight: 600; }
+        .ai-output-box { flex: 1; overflow-y: auto; padding: 12px; margin: 0 12px 12px; border: 1px solid var(--border-light); border-radius: 10px; font-size: 13px; background: #fafafa; font-family: 'Times New Roman', serif; }
 
         /* Bottom bar */
         .bottom-bar {
@@ -515,19 +231,8 @@
             z-index: 1000; font-size: 12px;
         }
         .bottom-left { display: flex; gap: 24px; align-items: center; }
-        .page-nav-btn { background: none; border: none; cursor: pointer; padding: 4px 8px; border-radius: 4px; color: #666; }
-        .page-nav-btn:hover { background: rgba(0,0,0,0.05); }
-
-        /* Toast */
         .toast { position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%) translateY(100px); background: #333; color: white; padding: 8px 16px; border-radius: 40px; font-size: 12px; z-index: 3000; transition: transform 0.3s; }
         .toast.show { transform: translateX(-50%) translateY(0); }
-
-        @media (max-width: 1000px) {
-            .canvas-center { left: 0; }
-            .left-panel { transform: translateX(-100%); }
-            .panel-toggle-btn { left: 10px; }
-            .paper-page { width: 100%; min-width: auto; }
-        }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -562,8 +267,6 @@
                 <button class="ribbon-btn" onclick="execCommand('cut')"><i class="fas fa-cut"></i> Cut</button>
                 <button class="ribbon-btn" onclick="execCommand('copy')"><i class="fas fa-copy"></i> Copy</button>
                 <button class="ribbon-btn" onclick="pasteText()"><i class="fas fa-paste"></i> Paste</button>
-                <button class="ribbon-btn" onclick="execCommand('undo')"><i class="fas fa-undo"></i> Undo</button>
-                <button class="ribbon-btn" onclick="execCommand('redo')"><i class="fas fa-redo"></i> Redo</button>
             </div>
         </div>
         <div class="ribbon-group">
@@ -619,7 +322,7 @@
     </div>
     <div id="ribbonInsert" class="ribbon-panel">
         <div class="ribbon-group">
-            <div class="group-title">Images</div>
+            <div class="group-title">IMAGES</div>
             <div class="group-buttons">
                 <button class="ribbon-btn" onclick="openMediaManager()"><i class="fas fa-image"></i> Media from Korahey</button>
             </div>
@@ -635,7 +338,7 @@
     </div>
     <div id="ribbonDesign" class="ribbon-panel">
         <div class="ribbon-group">
-            <div class="group-title">Page Color</div>
+            <div class="group-title">PAGE COLOR</div>
             <div class="group-buttons">
                 <button class="ribbon-btn" onclick="setPageColor('#ffffff')">White</button>
                 <button class="ribbon-btn" onclick="setPageColor('#f5e6ca')">Vintage</button>
@@ -644,7 +347,7 @@
             </div>
         </div>
         <div class="ribbon-group">
-            <div class="group-title">Border</div>
+            <div class="group-title">BORDER</div>
             <div class="group-buttons">
                 <button class="ribbon-btn" onclick="addPageBorder()">Add Border</button>
                 <button class="ribbon-btn" onclick="removePageBorder()">Remove Border</button>
@@ -653,7 +356,7 @@
     </div>
     <div id="ribbonLayout" class="ribbon-panel">
         <div class="ribbon-group">
-            <div class="group-title">Margins</div>
+            <div class="group-title">MARGINS</div>
             <div class="group-buttons">
                 <button class="ribbon-btn" onclick="setMargins('normal')">Normal</button>
                 <button class="ribbon-btn" onclick="setMargins('narrow')">Narrow</button>
@@ -661,7 +364,7 @@
             </div>
         </div>
         <div class="ribbon-group">
-            <div class="group-title">Orientation</div>
+            <div class="group-title">ORIENTATION</div>
             <div class="group-buttons">
                 <button class="ribbon-btn" onclick="setOrientation('portrait')">Portrait</button>
                 <button class="ribbon-btn" onclick="setOrientation('landscape')">Landscape</button>
@@ -670,40 +373,19 @@
     </div>
     <div id="ribbonReview" class="ribbon-panel">
         <div class="ribbon-group">
-            <div class="group-title">Proofing</div>
+            <div class="group-title">PROOFING</div>
             <div class="group-buttons">
                 <button class="ribbon-btn" onclick="showWordCount()"><i class="fas fa-calculator"></i> Word Count</button>
-            </div>
-        </div>
-        <div class="ribbon-group">
-            <div class="group-title">AI Proofread</div>
-            <div class="group-buttons">
-                <button class="ribbon-btn" onclick="openAITool('proofread')" style="color:var(--ai-purple)"><i class="fas fa-spell-check"></i> AI Proofread</button>
             </div>
         </div>
     </div>
     <div id="ribbonView" class="ribbon-panel">
         <div class="ribbon-group">
-            <div class="group-title">Zoom</div>
+            <div class="group-title">ZOOM</div>
             <div class="group-buttons">
                 <button class="ribbon-btn" onclick="zoomIn()"><i class="fas fa-search-plus"></i></button>
                 <button class="ribbon-btn" onclick="zoomOut()"><i class="fas fa-search-minus"></i></button>
                 <button class="ribbon-btn" onclick="setZoom(100)">100%</button>
-            </div>
-        </div>
-    </div>
-    <div id="ribbonAi" class="ribbon-panel">
-        <div class="ribbon-group" style="border:none">
-            <div class="group-title" style="color:var(--ai-purple)">AI WRITING TOOLS</div>
-            <div class="group-buttons">
-                <div class="ai-ribbon-tool" onclick="openAITool('write')"><i class="fas fa-pen ai-tool-icon"></i><span class="ai-tool-label">Write</span></div>
-                <div class="ai-ribbon-tool" onclick="openAITool('rewrite')"><i class="fas fa-sync-alt ai-tool-icon"></i><span class="ai-tool-label">Rewrite</span></div>
-                <div class="ai-ribbon-tool" onclick="openAITool('summarize')"><i class="fas fa-compress-alt ai-tool-icon"></i><span class="ai-tool-label">Summarize</span></div>
-                <div class="ai-ribbon-tool" onclick="openAITool('expand')"><i class="fas fa-expand-alt ai-tool-icon"></i><span class="ai-tool-label">Expand</span></div>
-                <div class="ai-ribbon-tool" onclick="openAITool('translate')"><i class="fas fa-language ai-tool-icon"></i><span class="ai-tool-label">Translate</span></div>
-                <div class="ai-ribbon-tool" onclick="openAITool('proofread')"><i class="fas fa-spell-check ai-tool-icon"></i><span class="ai-tool-label">Proofread</span></div>
-                <div class="ai-ribbon-tool" onclick="openAITool('tone')"><i class="fas fa-sliders-h ai-tool-icon"></i><span class="ai-tool-label">Tone</span></div>
-                <div class="ai-ribbon-tool" onclick="openAITool('chat')"><i class="fas fa-comments ai-tool-icon"></i><span class="ai-tool-label">Chat</span></div>
             </div>
         </div>
     </div>
@@ -724,7 +406,7 @@
 </div>
 
 <!-- Floating AI Button (Above Zoom) -->
-<button class="ai-fab-trigger" onclick="toggleAIPanel()" title="AI Writer" style="position: fixed; bottom: 90px; right: 24px; width: 48px; height: 48px; background: var(--ai-purple); color: white; border: none; border-radius: 50%; box-shadow: 0 4px 15px rgba(108, 71, 255, 0.4); z-index: 1002; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 20px; transition: all 0.3s;">
+<button class="ai-fab" id="aiFabTrigger" onclick="toggleAIPanel()" title="AI Writer">
     <i class="fas fa-magic"></i>
 </button>
 
@@ -737,7 +419,7 @@
 <div class="left-panel" id="sidebar">
     <div class="sidebar-content">
         <div class="panel-title">📄 PAGES</div>
-        <div class="page-list" id="pageList"></div>
+        <div id="pageList" class="page-list"></div>
         <button class="ribbon-btn" onclick="addBlankPage()" style="width:100%"><i class="fas fa-plus"></i> Add Page</button>
     </div>
 </div>
@@ -750,8 +432,7 @@
                 <h1 style="text-align: center;">KORAHEY ACADEMY</h1>
                 <p style="text-align: center; font-style: italic;">Passion for Success</p>
                 <hr>
-                <p>Welcome to Korahey Editor with AI Writing Assistant!</p>
-                <p>Select any text and use AI to rewrite, expand, translate, or improve it.</p>
+                <p>Welcome to Korahey Editor. Preview your pages in the sidebar!</p>
             </div>
         </div>
     </div>
@@ -761,118 +442,21 @@
 <div class="ai-panel" id="aiPanel">
     <div class="ai-panel-header">
         <div class="ai-panel-logo"><i class="fas fa-magic"></i></div>
-        <div>
-            <div class="ai-panel-title">AI Writing Assistant</div>
-            <div class="ai-panel-subtitle">Powered by Claude</div>
-        </div>
-        <button class="ai-panel-close" onclick="closeAIPanel()" title="Close">
-            <i class="fas fa-times"></i>
-        </button>
+        <span style="font-weight: 600;">AI Writer</span>
+        <button class="ai-panel-close" onclick="closeAIPanel()"><i class="fas fa-times"></i></button>
     </div>
-
-    <!-- Mode Tabs -->
-    <div class="ai-mode-tabs">
-        <div class="ai-mode-tab active" data-mode="tools" onclick="switchAIMode('tools')"><i class="fas fa-tools"></i> Tools</div>
-        <div class="ai-mode-tab" data-mode="chat" onclick="switchAIMode('chat')"><i class="fas fa-comments"></i> Chat</div>
-    </div>
-
-    <!-- TOOLS MODE -->
-    <div class="ai-mode-content active" id="modeTools">
-        <!-- Tool Cards -->
-        <div class="ai-tools-grid">
-            <div class="ai-tool-card selected" id="card-write" onclick="selectTool('write')">
-                <div class="ai-tool-card-icon"><i class="fas fa-pen"></i></div>
-                <div class="ai-tool-card-name">Write</div>
-                <div class="ai-tool-card-desc">Generate text from a prompt</div>
-            </div>
-            <div class="ai-tool-card" id="card-rewrite" onclick="selectTool('rewrite')">
-                <div class="ai-tool-card-icon"><i class="fas fa-sync-alt"></i></div>
-                <div class="ai-tool-card-name">Rewrite</div>
-                <div class="ai-tool-card-desc">Rephrase selected text</div>
-            </div>
-            <div class="ai-tool-card" id="card-summarize" onclick="selectTool('summarize')">
-                <div class="ai-tool-card-icon"><i class="fas fa-compress-alt"></i></div>
-                <div class="ai-tool-card-name">Summarize</div>
-                <div class="ai-tool-card-desc">Condense long text</div>
-            </div>
-            <div class="ai-tool-card" id="card-expand" onclick="selectTool('expand')">
-                <div class="ai-tool-card-icon"><i class="fas fa-expand-alt"></i></div>
-                <div class="ai-tool-card-name">Expand</div>
-                <div class="ai-tool-card-desc">Make text longer & richer</div>
-            </div>
-            <div class="ai-tool-card" id="card-translate" onclick="selectTool('translate')">
-                <div class="ai-tool-card-icon"><i class="fas fa-language"></i></div>
-                <div class="ai-tool-card-name">Translate</div>
-                <div class="ai-tool-card-desc">Translate to any language</div>
-            </div>
-            <div class="ai-tool-card" id="card-proofread" onclick="selectTool('proofread')">
-                <div class="ai-tool-card-icon"><i class="fas fa-spell-check"></i></div>
-                <div class="ai-tool-card-name">Proofread</div>
-                <div class="ai-tool-card-desc">Fix grammar & style</div>
-            </div>
-            <div class="ai-tool-card" id="card-tone" onclick="selectTool('tone')">
-                <div class="ai-tool-card-icon"><i class="fas fa-sliders-h"></i></div>
-                <div class="ai-tool-card-name">Change Tone</div>
-                <div class="ai-tool-card-desc">Formal, casual, persuasive…</div>
-            </div>
-            <div class="ai-tool-card" id="card-outline" onclick="selectTool('outline')">
-                <div class="ai-tool-card-icon"><i class="fas fa-list-alt"></i></div>
-                <div class="ai-tool-card-name">Outline</div>
-                <div class="ai-tool-card-desc">Create document structure</div>
-            </div>
-        </div>
-
-        <!-- Options bar -->
-        <div class="ai-options-bar" id="aiOptionsBar">
-            <select class="ai-select" id="aiToneSelect" style="display:none">
-                <option value="formal">Formal</option>
-                <option value="professional">Professional</option>
-            </select>
-            <select class="ai-select" id="aiLangSelect" style="display:none">
-                <option value="English">English</option>
-            </select>
-            <select class="ai-select" id="aiLenSelect">
-                <option value="medium" selected>Medium</option>
-            </select>
-        </div>
-
-        <!-- Instruction Input -->
-        <div class="ai-instruction-area">
-            <div class="ai-instruction-label" id="instructionLabel">Describe what to write</div>
-            <textarea class="ai-instruction-input" id="aiInstruction" placeholder="Type your instruction..." rows="3"></textarea>
-        </div>
-
-        <!-- Run Button -->
-        <div class="ai-run-area">
-            <button class="ai-context-btn" id="aiContextBtn" onclick="toggleUseSelection()">Use selection</button>
-            <button class="ai-run-btn" id="aiRunBtn" onclick="runAITool()">Generate</button>
-        </div>
-
-        <!-- Output -->
-        <div class="ai-output-area">
-            <div id="aiOutputBox" class="ai-output-box placeholder">Result will appear here.</div>
-        </div>
-    </div>
-
-    <!-- CHAT MODE -->
-    <div class="ai-mode-content" id="modeChat">
-        <div class="ai-chat-area" id="chatArea"></div>
-        <div class="chat-input-row">
-            <input class="chat-input" id="chatInput" placeholder="Ask anything...">
-            <button class="chat-send-btn" id="chatSendBtn" onclick="sendChatMessage()"><i class="fas fa-paper-plane"></i></button>
-        </div>
-    </div>
+    <textarea class="ai-instruction-input" id="aiInstruction" placeholder="Describe what you want to write..."></textarea>
+    <button class="ai-run-btn" onclick="runAITool()">Generate</button>
+    <div id="aiOutputBox" class="ai-output-box">Result will appear here...</div>
 </div>
 
 <!-- Bottom Bar -->
 <div class="bottom-bar">
     <div class="bottom-left">
-        <button class="page-nav-btn" onclick="previousPage()"><i class="fas fa-chevron-left"></i></button>
         <span id="pageCounter">Page 1 of 1</span>
-        <button class="page-nav-btn" onclick="nextPage()"><i class="fas fa-chevron-right"></i></button>
         <span id="wordCount">0 words</span>
     </div>
-    <div>
+    <div style="display:flex; align-items:center; gap:10px;">
         <button class="page-nav-btn" onclick="zoomOut()"><i class="fas fa-search-minus"></i></button>
         <span id="zoomValue">100%</span>
         <button class="page-nav-btn" onclick="zoomIn()"><i class="fas fa-search-plus"></i></button>
@@ -886,68 +470,129 @@
 let currentZoom = 100;
 let currentPageIndex = 0;
 let isRibbonOpen = false;
-let isMenuOpen = false;
 let isAIPanelOpen = false;
-let currentAITool = 'write';
-let useSelection = false;
-let lastAIOutput = '';
-let chatHistory = [];
 
-// ========== UI LOGIC ==========
-function showToast(message) {
-    const toast = document.getElementById('toast');
-    toast.textContent = message;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 2500);
+function showToast(m) {
+    const t = document.getElementById('toast');
+    t.textContent = m; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
 }
 
 // ========== RIBBON HOVER LOGIC ==========
-const topBar = document.getElementById('mainTopBar');
+const mainTopBar = document.getElementById('mainTopBar');
 const ribbonContainer = document.getElementById('ribbonContainer');
+const dynamicIsland = document.getElementById('dynamicIsland');
+const sidebar = document.getElementById('sidebar');
+const canvas = document.getElementById('canvas');
+const toggleBtn = document.getElementById('toggleBtn');
 
 function openRibbon() {
     ribbonContainer.classList.add('open');
-    document.getElementById('dynamicIsland').classList.add('ribbon-open');
-    document.getElementById('sidebar').classList.add('ribbon-open');
-    document.getElementById('canvas').classList.add('ribbon-open');
-    document.getElementById('toggleBtn').classList.add('ribbon-open');
+    dynamicIsland.classList.add('ribbon-open');
+    sidebar.classList.add('ribbon-open');
+    canvas.classList.add('ribbon-open');
+    toggleBtn.classList.add('ribbon-open');
     isRibbonOpen = true;
 }
 
 function closeRibbon() {
     ribbonContainer.classList.remove('open');
-    document.getElementById('dynamicIsland').classList.remove('ribbon-open');
-    document.getElementById('sidebar').classList.remove('ribbon-open');
-    document.getElementById('canvas').classList.remove('ribbon-open');
-    document.getElementById('toggleBtn').classList.remove('ribbon-open');
+    dynamicIsland.classList.remove('ribbon-open');
+    sidebar.classList.remove('ribbon-open');
+    canvas.classList.remove('ribbon-open');
+    toggleBtn.classList.remove('ribbon-open');
     isRibbonOpen = false;
 }
 
-topBar.addEventListener('mouseenter', openRibbon);
+mainTopBar.addEventListener('mouseenter', openRibbon);
 ribbonContainer.addEventListener('mouseenter', openRibbon);
-topBar.addEventListener('mouseleave', (e) => { if (!ribbonContainer.contains(e.relatedTarget)) closeRibbon(); });
-ribbonContainer.addEventListener('mouseleave', (e) => { if (!topBar.contains(e.relatedTarget)) closeRibbon(); });
+mainTopBar.addEventListener('mouseleave', (e) => { if(!ribbonContainer.contains(e.relatedTarget)) closeRibbon(); });
+ribbonContainer.addEventListener('mouseleave', (e) => { if(!mainTopBar.contains(e.relatedTarget)) closeRibbon(); });
 
-// ========== AI PANEL ==========
-function toggleAIPanel() { if (isAIPanelOpen) closeAIPanel(); else openAIPanel(); }
-function openAIPanel() { isAIPanelOpen = true; document.getElementById('aiPanel').classList.add('open'); document.getElementById('canvas').classList.add('ai-open'); }
-function closeAIPanel() { isAIPanelOpen = false; document.getElementById('aiPanel').classList.remove('open'); document.getElementById('canvas').classList.remove('ai-open'); }
-
-function switchAIMode(mode) {
-    document.querySelectorAll('.ai-mode-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.ai-mode-content').forEach(c => c.classList.remove('active'));
-    document.querySelector(`[data-mode="${mode}"]`).classList.add('active');
-    document.getElementById(`mode${mode.charAt(0).toUpperCase() + mode.slice(1)}`).classList.add('active');
+// ========== AI PANEL LOGIC ==========
+function toggleAIPanel() {
+    if (isAIPanelOpen) closeAIPanel(); else openAIPanel();
+}
+function openAIPanel() {
+    isAIPanelOpen = true;
+    document.getElementById('aiPanel').classList.add('open');
+    canvas.classList.add('ai-open');
+    document.getElementById('aiFabTrigger').style.display = 'none';
+}
+function closeAIPanel() {
+    isAIPanelOpen = false;
+    document.getElementById('aiPanel').classList.remove('open');
+    canvas.classList.remove('ai-open');
+    document.getElementById('aiFabTrigger').style.display = 'flex';
 }
 
-// ========== EDITOR CORE ==========
-function getActiveEditor() { return document.querySelector('.paper-page-content'); }
-function execCommand(command, value = null) { document.execCommand(command, false, value); updateWordCount(); }
+// ========== EDITOR ACTIONS ==========
+function execCommand(cmd, val = null) { document.execCommand(cmd, false, val); updateWordCount(); updatePageList(); }
 function toggleBold() { execCommand('bold'); }
 function toggleItalic() { execCommand('italic'); }
 function toggleUnderline() { execCommand('underline'); }
 function setAlignment(align) { execCommand(align); }
 function toggleList(cmd) { execCommand(cmd); }
+function toggleStrikethrough() { execCommand('strikeThrough'); }
+function changeFont() { execCommand('fontName', document.getElementById('fontSelector').value); }
+function changeFontSize() { 
+    const size = document.getElementById('sizeSelector').value;
+    const sel = window.getSelection();
+    if (!sel.rangeCount) return;
+    const span = document.createElement('span');
+    span.style.fontSize = size + 'pt';
+    sel.getRangeAt(0).surroundContents(span);
+}
+function setPageColor(color) { document.querySelectorAll('.paper-page').forEach(p => p.style.backgroundColor = color); updatePageList(); }
+function addPageBorder() { document.querySelectorAll('.paper-page-content').forEach(p => p.style.border = '1px solid #000'); updatePageList(); }
+function removePageBorder() { document.querySelectorAll('.paper-page-content').forEach(p => p.style.border = 'none'); updatePageList(); }
+function setMargins(m) { 
+    const paddings = { normal: '20mm 25mm', narrow: '10mm 15mm', wide: '30mm 35mm' };
+    document.querySelectorAll('.paper-page-content').forEach(p => p.style.padding = paddings[m]);
+    updatePageList();
+}
+function setOrientation(o) {
+    document.querySelectorAll('.paper-page').forEach(p => {
+        if (o === 'landscape') { p.style.width = '297mm'; p.style.height = '210mm'; p.style.minWidth = '297mm'; }
+        else { p.style.width = '210mm'; p.style.height = '297mm'; p.style.minWidth = '210mm'; }
+    });
+    updatePageList();
+}
+
+// ========== PAGE MANAGEMENT ==========
+function updatePageList() {
+    const list = document.getElementById('pageList');
+    const pages = document.querySelectorAll('.paper-page');
+    list.innerHTML = '';
+    pages.forEach((page, i) => {
+        const content = page.querySelector('.paper-page-content').innerHTML;
+        const thumb = document.createElement('div');
+        thumb.className = `page-thumb ${i === currentPageIndex ? 'active' : ''}`;
+        thumb.innerHTML = `
+            <div class="thumb-header"><span class="page-number">${i+1}</span></div>
+            <div class="mini-paper"><div class="mini-paper-content">${content}</div></div>`;
+        thumb.onclick = () => { currentPageIndex = i; updatePageList(); page.scrollIntoView({behavior:'smooth'}); };
+        list.appendChild(thumb);
+    });
+    document.getElementById('pageCounter').textContent = `Page ${currentPageIndex + 1} of ${pages.length}`;
+}
+
+function addBlankPage() {
+    const container = document.getElementById('paperContainer');
+    const newPage = document.createElement('div');
+    newPage.className = 'paper-page';
+    newPage.innerHTML = '<div class="paper-page-content" contenteditable="true"></div>';
+    container.appendChild(newPage);
+    updatePageList();
+}
+
+function toggleSidebar() {
+    sidebar.classList.toggle('collapsed');
+    canvas.classList.toggle('expanded');
+    dynamicIsland.classList.toggle('collapsed');
+    toggleBtn.classList.toggle('sidebar-closed');
+    document.getElementById('toggleIcon').className = sidebar.classList.contains('collapsed') ? 'fas fa-chevron-right' : 'fas fa-chevron-left';
+}
 
 function updateWordCount() {
     let text = "";
@@ -965,29 +610,24 @@ function setZoom(val) {
 function zoomIn() { setZoom(currentZoom + 10); }
 function zoomOut() { setZoom(currentZoom - 10); }
 
-function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const canvas = document.getElementById('canvas');
-    const btn = document.getElementById('toggleBtn');
-    sidebar.classList.toggle('collapsed');
-    canvas.classList.toggle('expanded');
-    btn.classList.toggle('sidebar-closed');
-}
-
-function updatePageList() {
-    const list = document.getElementById('pageList');
-    const pages = document.querySelectorAll('.paper-page');
-    list.innerHTML = '';
-    pages.forEach((page, i) => {
-        const thumb = document.createElement('div');
-        thumb.className = `page-thumb ${i === currentPageIndex ? 'active' : ''}`;
-        thumb.innerHTML = `<div class="thumb-header"><span class="page-number">${i+1}</span></div><div class="mini-paper"></div>`;
-        thumb.onclick = () => { page.scrollIntoView({behavior:'smooth'}); };
-        list.appendChild(thumb);
+// ========== TAB SWITCHING ==========
+document.querySelectorAll('.ribbon-tab').forEach(tab => {
+    tab.addEventListener('mouseenter', () => {
+        document.querySelectorAll('.ribbon-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.ribbon-panel').forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        const panelId = 'ribbon' + tab.dataset.tab.charAt(0).toUpperCase() + tab.dataset.tab.slice(1);
+        const panel = document.getElementById(panelId);
+        if (panel) panel.classList.add('active');
     });
+});
+
+function setupContentObserver() {
+    const observer = new MutationObserver(() => { updateWordCount(); updatePageList(); });
+    observer.observe(document.getElementById('paperContainer'), { childList: true, subtree: true, characterData: true });
 }
 
-window.onload = () => { updatePageList(); updateWordCount(); };
+window.onload = () => { updatePageList(); updateWordCount(); setupContentObserver(); };
 </script>
 </body>
 </html>
