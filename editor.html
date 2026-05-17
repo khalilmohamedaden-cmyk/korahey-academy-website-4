@@ -14,8 +14,6 @@
             --border-light: #e0e0e0;
             --sidebar-bg: #f8f9fa;
             --ai-purple: #6c47ff;
-            --success-green: #34c759;
-            --warning-orange: #ff9500;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -94,22 +92,26 @@
         }
         .ribbon-btn:hover { background: #f0f0f0; }
 
-        /* ===== DYNAMIC ISLAND ===== */
+        /* ===== DYNAMIC ISLAND - MORE SPACE FROM RIBBON ===== */
         .dynamic-island {
-            position: fixed; top: 65px; left: calc(50% + 110px);
-            transform: translateX(-50%);
+            position: fixed; top: 90px;
+            left: 50%; transform: translateX(-50%);
             background: #ffffff; border-radius: 40px;
-            padding: 6px 16px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 8px 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
             border: 1px solid var(--border-light);
-            z-index: 1002; display: flex; gap: 6px; align-items: center;
-            transition: all 0.3s ease;
+            z-index: 1002;
+            display: flex; gap: 8px; align-items: center;
+            transition: top 0.25s ease;
         }
+        .dynamic-island.ribbon-open { top: 200px; }
+        .dynamic-island.ai-open { top: 200px; }
+        .dynamic-island.table-open { top: 200px; }
         .dynamic-island.collapsed { left: 50%; }
-        .dynamic-island.ribbon-open { top: 175px; }
+
         .tool-btn {
             background: transparent; border: none;
-            padding: 5px 12px; border-radius: 30px;
+            padding: 6px 14px; border-radius: 30px;
             cursor: pointer; font-size: 13px;
             transition: all 0.2s; color: #555; font-weight: 500;
         }
@@ -117,34 +119,42 @@
         .tool-btn.active { background: var(--apple-blue); color: white; }
         .separator { width: 1px; height: 24px; background: rgba(0,0,0,0.1); margin: 0 4px; }
         .font-selector, .size-selector {
-            padding: 4px 10px; border-radius: 30px;
+            padding: 5px 12px; border-radius: 30px;
             border: 1px solid var(--border-light);
             background: white; font-size: 12px; cursor: pointer;
         }
 
-        /* ===== SIDEBAR WITH LIVE PAGE PREVIEWS ===== */
+        /* ===== SIDEBAR ===== */
         .left-panel {
-            position: fixed; left: 0; top: 48px; bottom: 44px;
+            position: fixed; left: 0; top: 90px; bottom: 44px;
             width: 260px;
             background: rgba(255,255,255,0.98);
             backdrop-filter: blur(10px);
             border-right: 1px solid var(--border-light);
             display: flex; flex-direction: column;
-            z-index: 998; transition: transform 0.3s, top 0.25s ease;
+            z-index: 998;
+            transition: transform 0.3s, top 0.25s ease;
         }
-        .left-panel.ribbon-open { top: 158px; }
+        .left-panel.ribbon-open { top: 200px; }
+        .left-panel.ai-open { top: 200px; }
+        .left-panel.table-open { top: 200px; }
         .left-panel.collapsed { transform: translateX(-100%); }
+
         .panel-toggle-btn {
-            position: fixed; left: 225px; top: 65px;
+            position: fixed; left: 225px; top: 102px;
             width: 28px; height: 28px;
             background: #fff; border: 1px solid var(--border-light);
             border-radius: 50%; cursor: pointer;
             display: flex; align-items: center; justify-content: center;
             box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-            z-index: 1002; transition: left 0.3s, top 0.25s ease;
+            z-index: 1002;
+            transition: left 0.3s, top 0.25s ease;
         }
-        .panel-toggle-btn.ribbon-open { top: 175px; }
+        .panel-toggle-btn.ribbon-open { top: 212px; }
+        .panel-toggle-btn.ai-open { top: 212px; }
+        .panel-toggle-btn.table-open { top: 212px; }
         .panel-toggle-btn.sidebar-closed { left: 10px; }
+
         .sidebar-content { padding: 16px; display: flex; flex-direction: column; gap: 16px; overflow-y: auto; flex: 1; }
         .sidebar-content::-webkit-scrollbar { width: 4px; }
         .sidebar-content::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
@@ -160,44 +170,35 @@
         .page-number { background: rgba(0,0,0,0.05); border-radius: 4px; padding: 2px 8px; font-size: 10px; font-weight: 600; }
         .delete-page-btn { background: none; border: none; cursor: pointer; color: #999; padding: 2px 6px; border-radius: 4px; }
         .delete-page-btn:hover { background: rgba(255,59,48,0.1); color: #ff3b30; }
-        /* LIVE PAGE PREVIEW - shows actual content */
         .mini-paper {
             background: #fafafc; border-radius: 4px; padding: 8px;
             aspect-ratio: 210/297; overflow: hidden;
             border: 1px solid rgba(0,0,0,0.05);
-            font-size: 6px;
-            line-height: 1.3;
+            font-size: 6px; line-height: 1.3;
         }
         .mini-paper-content {
-            font-size: 6px;
-            line-height: 1.3;
-            color: #666;
-            overflow: hidden;
-            display: -webkit-box;
-            -webkit-line-clamp: 12;
-            -webkit-box-orient: vertical;
+            font-size: 6px; line-height: 1.3; color: #666;
+            overflow: hidden; display: -webkit-box;
+            -webkit-line-clamp: 12; -webkit-box-orient: vertical;
         }
         .mini-paper-header {
-            font-size: 7px;
-            font-weight: bold;
-            text-align: center;
-            border-bottom: 1px solid #eee;
-            margin-bottom: 4px;
-            padding-bottom: 2px;
+            font-size: 7px; font-weight: bold; text-align: center;
+            border-bottom: 1px solid #eee; margin-bottom: 4px; padding-bottom: 2px;
         }
 
-        /* ===== CANVAS ===== */
+        /* ===== CANVAS - PAPER MOVED DOWN ===== */
         .canvas-center {
-            position: absolute; top: 48px; left: 260px; right: 0; bottom: 44px;
+            position: absolute; top: 90px; left: 260px; right: 0; bottom: 44px;
             overflow-y: auto; padding: 30px;
-            transition: left 0.3s, right 0.3s, top 0.25s ease;
+            transition: left 0.3s, top 0.25s ease;
             display: flex; flex-direction: column; align-items: center;
             background: var(--bg-canvas); z-index: 1;
         }
-        .canvas-center.ribbon-open { top: 158px; }
+        .canvas-center.ribbon-open { top: 200px; }
+        .canvas-center.ai-open { top: 200px; }
+        .canvas-center.table-open { top: 200px; }
         .canvas-center.expanded { left: 0; }
-        .canvas-center.ai-open { right: 360px; }
-        .canvas-center.table-open { right: 380px; }
+
         .paper-page {
             background: white; width: 210mm;
             min-width: 210mm; max-width: 210mm;
@@ -212,17 +213,8 @@
             font-size: 12pt; line-height: 1.5; height: 100%;
             overflow-y: auto;
         }
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin: 10px 0;
-        }
-        td, th {
-            border: 1px solid #999;
-            padding: 8px;
-            text-align: left;
-            vertical-align: top;
-        }
+        table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+        td, th { border: 1px solid #999; padding: 8px; text-align: left; vertical-align: top; }
 
         /* ===== FLOATING BUTTONS ===== */
         .ai-fab {
@@ -351,7 +343,7 @@
     </div>
 </div>
 
-<!-- Ribbon Container - COMPLETE HOME TAB WITH ALL FEATURES -->
+<!-- Ribbon Container -->
 <div class="ribbon-container" id="ribbonContainer">
     <!-- HOME TAB - FULL FEATURES -->
     <div id="ribbonHome" class="ribbon-panel active">
@@ -553,7 +545,7 @@
     <i class="fas fa-chevron-left" id="toggleIcon"></i>
 </div>
 
-<!-- Left Panel - WITH LIVE PAGE PREVIEWS -->
+<!-- Left Panel -->
 <div class="left-panel" id="sidebar">
     <div class="sidebar-content">
         <div class="panel-title">📄 PAGES</div>
@@ -698,14 +690,57 @@ function showToast(m) {
     setTimeout(() => t.classList.remove('show'), 2500);
 }
 
-// ========== PANEL TOGGLES ==========
-function toggleAIPanel() { if (isAIPanelOpen) closeAIPanel(); else openAIPanel(); }
-function openAIPanel() { isAIPanelOpen = true; document.getElementById('aiPanel').classList.add('open'); canvas.classList.add('ai-open'); document.getElementById('aiFabTrigger').style.display = 'none'; }
-function closeAIPanel() { isAIPanelOpen = false; document.getElementById('aiPanel').classList.remove('open'); canvas.classList.remove('ai-open'); document.getElementById('aiFabTrigger').style.display = 'flex'; }
+// ========== PANEL TOGGLES WITH POSITION UPDATES ==========
+function updatePanelPositions() {
+    const dynamicIsland = document.getElementById('dynamicIsland');
+    const sidebar = document.getElementById('sidebar');
+    const canvas = document.getElementById('canvas');
+    const toggleBtn = document.getElementById('toggleBtn');
+    
+    if (isAIPanelOpen || isTablePanelOpen || isRibbonOpen) {
+        dynamicIsland.classList.add('ai-open');
+        sidebar.classList.add('ai-open');
+        canvas.classList.add('ai-open');
+        toggleBtn.classList.add('ai-open');
+    } else {
+        dynamicIsland.classList.remove('ai-open');
+        sidebar.classList.remove('ai-open');
+        canvas.classList.remove('ai-open');
+        toggleBtn.classList.remove('ai-open');
+    }
+}
 
-function toggleTablePanel() { if (isTablePanelOpen) closeTablePanel(); else openTablePanel(); }
-function openTablePanel() { isTablePanelOpen = true; document.getElementById('tablePanel').classList.add('open'); canvas.classList.add('table-open'); }
-function closeTablePanel() { isTablePanelOpen = false; document.getElementById('tablePanel').classList.remove('open'); canvas.classList.remove('table-open'); }
+function toggleAIPanel() { 
+    if (isAIPanelOpen) closeAIPanel(); 
+    else openAIPanel(); 
+}
+function openAIPanel() { 
+    isAIPanelOpen = true; 
+    document.getElementById('aiPanel').classList.add('open'); 
+    updatePanelPositions();
+    document.getElementById('aiFabTrigger').style.display = 'none'; 
+}
+function closeAIPanel() { 
+    isAIPanelOpen = false; 
+    document.getElementById('aiPanel').classList.remove('open'); 
+    updatePanelPositions();
+    document.getElementById('aiFabTrigger').style.display = 'flex'; 
+}
+
+function toggleTablePanel() { 
+    if (isTablePanelOpen) closeTablePanel(); 
+    else openTablePanel(); 
+}
+function openTablePanel() { 
+    isTablePanelOpen = true; 
+    document.getElementById('tablePanel').classList.add('open'); 
+    updatePanelPositions();
+}
+function closeTablePanel() { 
+    isTablePanelOpen = false; 
+    document.getElementById('tablePanel').classList.remove('open'); 
+    updatePanelPositions();
+}
 
 // ========== AI FUNCTIONS ==========
 function runAITool() {
@@ -742,7 +777,6 @@ function customTableSize() {
     const cols = prompt('Number of columns:', '3');
     if (rows && cols) insertBasicTable(parseInt(rows), parseInt(cols));
 }
-
 function getSelectedTable() {
     const selection = window.getSelection();
     if (selection.rangeCount > 0) {
@@ -761,7 +795,6 @@ function getSelectedCell() {
     }
     return null;
 }
-
 function mergeSelectedCells() {
     const cell = getSelectedCell();
     if (!cell) { showToast("Select a cell first"); return; }
@@ -796,7 +829,6 @@ function mergeSelectedCells() {
     }
     showToast('Cells merged');
 }
-
 function splitSelectedCell() {
     const cell = getSelectedCell();
     if (!cell) { showToast("Select a cell first"); return; }
@@ -806,7 +838,6 @@ function splitSelectedCell() {
         showToast(`Split cell into ${rows}x${cols}`);
     }
 }
-
 function addTableRowAbove() {
     const cell = getSelectedCell();
     if (!cell) { showToast("Select a cell first"); return; }
@@ -898,8 +929,24 @@ const sidebar = document.getElementById('sidebar');
 const canvas = document.getElementById('canvas');
 const toggleBtn = document.getElementById('toggleBtn');
 
-function openRibbon() { ribbonContainer.classList.add('open'); dynamicIsland.classList.add('ribbon-open'); sidebar.classList.add('ribbon-open'); canvas.classList.add('ribbon-open'); toggleBtn.classList.add('ribbon-open'); isRibbonOpen = true; }
-function closeRibbon() { ribbonContainer.classList.remove('open'); dynamicIsland.classList.remove('ribbon-open'); sidebar.classList.remove('ribbon-open'); canvas.classList.remove('ribbon-open'); toggleBtn.classList.remove('ribbon-open'); isRibbonOpen = false; }
+function openRibbon() { 
+    ribbonContainer.classList.add('open'); 
+    dynamicIsland.classList.add('ribbon-open'); 
+    sidebar.classList.add('ribbon-open'); 
+    canvas.classList.add('ribbon-open'); 
+    toggleBtn.classList.add('ribbon-open'); 
+    isRibbonOpen = true; 
+    updatePanelPositions();
+}
+function closeRibbon() { 
+    ribbonContainer.classList.remove('open'); 
+    dynamicIsland.classList.remove('ribbon-open'); 
+    sidebar.classList.remove('ribbon-open'); 
+    canvas.classList.remove('ribbon-open'); 
+    toggleBtn.classList.remove('ribbon-open'); 
+    isRibbonOpen = false; 
+    updatePanelPositions();
+}
 mainTopBar.addEventListener('mouseenter', openRibbon);
 ribbonContainer.addEventListener('mouseenter', openRibbon);
 mainTopBar.addEventListener('mouseleave', (e) => { if(!ribbonContainer.contains(e.relatedTarget)) closeRibbon(); });
@@ -958,7 +1005,6 @@ function getPagePreviewText(pageElement) {
     const text = content.innerText;
     return text.substring(0, 150) + (text.length > 150 ? '...' : '');
 }
-
 function updatePageList() {
     const list = document.getElementById('pageList');
     const pages = document.querySelectorAll('.paper-page');
@@ -982,12 +1028,10 @@ function updatePageList() {
     });
     document.getElementById('pageCounter').innerText = `Page ${currentPageIndex + 1} of ${pages.length}`;
 }
-
 function escapeHtml(str) {
     if (!str) return '';
     return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
 }
-
 function addBlankPage() {
     const container = document.getElementById('paperContainer');
     const newPage = document.createElement('div');
@@ -997,7 +1041,6 @@ function addBlankPage() {
     updatePageList();
     showToast('New page added');
 }
-
 function deletePage(idx) {
     const pages = document.querySelectorAll('.paper-page');
     if(pages.length<=1) { showToast("Cannot delete last page"); return; }
@@ -1006,7 +1049,6 @@ function deletePage(idx) {
     updatePageList();
     showToast('Page deleted');
 }
-
 function toggleSidebar() {
     sidebar.classList.toggle('collapsed');
     canvas.classList.toggle('expanded');
@@ -1014,21 +1056,17 @@ function toggleSidebar() {
     toggleBtn.classList.toggle('sidebar-closed');
     document.getElementById('toggleIcon').className = sidebar.classList.contains('collapsed') ? 'fas fa-chevron-right' : 'fas fa-chevron-left';
 }
-
 function newDocument() {
     if(confirm('Create new document?')) {
         document.getElementById('paperContainer').innerHTML = '<div class="paper-page"><div class="paper-page-content" contenteditable="true"><h1 style="text-align:center;">KORAHEY ACADEMY</h1><p style="text-align:center; font-style:italic;">Professional Document Editor</p><hr><p>Start typing your document here.</p></div></div>';
         currentPageIndex=0; updatePageList(); updateWordCount(); showToast('New document created');
     }
 }
-
 function saveDocument() {
     const pages=[]; document.querySelectorAll('.paper-page').forEach((p,i)=>{ pages.push({id:i, content:p.querySelector('.paper-page-content').innerHTML}); });
     localStorage.setItem('koraheyDoc',JSON.stringify(pages)); showToast('Document saved');
 }
-
 function printDocument() { window.print(); }
-
 function loadDocument() {
     const saved=localStorage.getItem('koraheyDoc');
     if(saved){ const pages=JSON.parse(saved); if(pages.length){ document.getElementById('paperContainer').innerHTML=pages.map(p=>`<div class="paper-page"><div class="paper-page-content" contenteditable="true">${p.content}</div></div>`).join(''); updatePageList(); updateWordCount(); showToast('Document loaded'); } }
