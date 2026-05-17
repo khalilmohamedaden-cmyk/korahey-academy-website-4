@@ -27,22 +27,6 @@
             min-height: 100vh;
         }
 
-        /* Custom Scrollbar for Pages Panel */
-        .sidebar-content::-webkit-scrollbar {
-            width: 6px;
-        }
-        .sidebar-content::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
-        .sidebar-content::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
-            border-radius: 10px;
-        }
-        .sidebar-content::-webkit-scrollbar-thumb:hover {
-            background: #a1a1a1;
-        }
-
         /* Top Bar */
         .top-bar {
             position: fixed;
@@ -190,31 +174,31 @@
 
         .ribbon-btn:hover { background: #f0f0f0; }
 
-        /* Dynamic Island */
+        /* Dynamic Island - MOVED DOWN, BELOW RIBBON */
         .dynamic-island {
             position: fixed;
-            top: 56px;
+            top: 100px;
             left: 50%;
             transform: translateX(-50%);
             background: #ffffff;
             border-radius: 40px;
-            padding: 6px 16px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 8px 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
             border: 1px solid var(--border-light);
             z-index: 1002;
             display: flex;
-            gap: 6px;
+            gap: 8px;
             align-items: center;
             transition: top 0.25s ease;
         }
         
-        .dynamic-island.ribbon-open { top: 170px; }
-        .dynamic-island.menu-open { top: 200px; }
+        .dynamic-island.ribbon-open { top: 180px; }
+        .dynamic-island.menu-open { top: 210px; }
 
         .tool-btn {
             background: transparent;
             border: none;
-            padding: 6px 12px;
+            padding: 6px 14px;
             border-radius: 30px;
             cursor: pointer;
             font-size: 13px;
@@ -246,7 +230,7 @@
         .left-panel {
             position: fixed;
             left: 0;
-            top: 56px;
+            top: 100px;
             bottom: 44px;
             width: 280px;
             background: rgba(255, 255, 255, 0.98);
@@ -258,14 +242,14 @@
             transition: transform 0.3s, top 0.25s ease;
         }
         
-        .left-panel.ribbon-open { top: 170px; }
-        .left-panel.menu-open { top: 200px; }
+        .left-panel.ribbon-open { top: 180px; }
+        .left-panel.menu-open { top: 210px; }
         .left-panel.collapsed { transform: translateX(-100%); }
 
         .panel-toggle-btn {
             position: fixed;
             left: 245px;
-            top: 68px;
+            top: 112px;
             width: 28px;
             height: 28px;
             background: #fff;
@@ -280,8 +264,8 @@
             transition: left 0.3s, top 0.25s ease;
         }
         
-        .panel-toggle-btn.ribbon-open { top: 182px; }
-        .panel-toggle-btn.menu-open { top: 212px; }
+        .panel-toggle-btn.ribbon-open { top: 192px; }
+        .panel-toggle-btn.menu-open { top: 222px; }
         .panel-toggle-btn.sidebar-closed { left: 10px; }
 
         .sidebar-content {
@@ -291,6 +275,22 @@
             gap: 16px;
             overflow-y: auto;
             flex: 1;
+        }
+
+        /* Custom Scrollbar */
+        .sidebar-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        .sidebar-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .sidebar-content::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 10px;
+        }
+        .sidebar-content::-webkit-scrollbar-thumb:hover {
+            background: #a1a1a1;
         }
 
         .panel-title {
@@ -405,10 +405,10 @@
             color: white;
         }
 
-        /* Canvas Area */
+        /* Canvas Area - MOVED DOWN */
         .canvas-center {
             position: absolute;
-            top: 56px;
+            top: 100px;
             left: 280px;
             right: 0;
             bottom: 44px;
@@ -422,8 +422,8 @@
             z-index: 1;
         }
         
-        .canvas-center.ribbon-open { top: 170px; }
-        .canvas-center.menu-open { top: 200px; }
+        .canvas-center.ribbon-open { top: 180px; }
+        .canvas-center.menu-open { top: 210px; }
         .canvas-center.expanded { left: 0; }
 
         .paper-page {
@@ -446,7 +446,7 @@
             min-height: 297mm;
         }
 
-        /* Better Draggable & Resizable Images */
+        /* Draggable & Resizable Images */
         .resizable-image {
             position: relative;
             display: inline-block;
@@ -706,17 +706,17 @@
             font-size: 10px;
         }
 
-        /* Bottom Bar */
+        /* Bottom Bar - RESTORED */
         .bottom-bar {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            height: 40px;
+            height: 44px;
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(10px);
             border-top: 1px solid var(--border-light);
-            padding: 0 20px;
+            padding: 0 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -726,7 +726,7 @@
 
         .bottom-left {
             display: flex;
-            gap: 20px;
+            gap: 24px;
             align-items: center;
         }
 
@@ -949,7 +949,7 @@
         </div>
     </div>
 
-    <!-- Dynamic Island -->
+    <!-- Dynamic Island - Now below ribbon -->
     <div class="dynamic-island" id="dynamicIsland">
         <select id="dynamicFont" class="font-selector" onchange="document.getElementById('fontSelector').value=this.value; changeFont();">
             <option value="'Times New Roman', serif">Times New Roman</option>
@@ -983,14 +983,14 @@
         <i class="fas fa-chevron-left" id="toggleIcon"></i>
     </div>
 
-    <!-- Left Panel with Page Previews and Templates -->
+    <!-- Left Panel -->
     <div class="left-panel" id="sidebar">
         <div class="sidebar-content">
             <div class="panel-title">📄 PAGES</div>
             <div class="page-list" id="pageList"></div>
             <button class="ribbon-btn" onclick="addBlankPage()" style="width:100%; margin-top:8px;"><i class="fas fa-plus"></i> Add Page</button>
             
-            <!-- Document Templates Section -->
+            <!-- Document Templates -->
             <div class="templates-section">
                 <div class="panel-title">📁 ADD DOCUMENT</div>
                 <div class="template-buttons">
@@ -998,8 +998,8 @@
                     <button class="template-btn" onclick="insertTemplate('report')">Report</button>
                     <button class="template-btn" onclick="insertTemplate('resume')">Resume</button>
                     <button class="template-btn" onclick="insertTemplate('invoice')">Invoice</button>
-                    <button class="template-btn" onclick="insertTemplate('exam')">Exam Paper</button>
-                    <button class="template-btn" onclick="insertTemplate('certificate')">Certificate</button>
+                    <button class="template-btn" onclick="insertTemplate('exam')">Exam</button>
+                    <button class="template-btn" onclick="insertTemplate('certificate')">Cert</button>
                 </div>
             </div>
         </div>
@@ -1011,7 +1011,7 @@
             <div class="paper-page" data-page="1">
                 <div class="paper-page-content" contenteditable="true" id="editorContent">
                     <h1 style="text-align: center;">KORAHEY ACADEMY</h1>
-                    <p style="text-align: center; font-style: italic;">Professional Document Editor</p>
+                    <p style="text-align: center; font-style: italic;">Passion for Success</p>
                     <hr>
                     <p>Welcome to Korahey Editor! Right-click anywhere for context menu.</p>
                     <p>Use the "Add Document" section to insert pre-made templates.</p>
@@ -1067,6 +1067,21 @@
         <div class="context-menu-item" onclick="selectAllText(); hideContextMenu();"><i class="fas fa-select-all"></i> Select All</div>
     </div>
 
+    <!-- Bottom Bar - FULLY RESTORED -->
+    <div class="bottom-bar">
+        <div class="bottom-left">
+            <button class="page-nav-btn" onclick="previousPage()"><i class="fas fa-chevron-left"></i></button>
+            <span id="pageCounter">Page 1 of 1</span>
+            <button class="page-nav-btn" onclick="nextPage()"><i class="fas fa-chevron-right"></i></button>
+            <span id="wordCount">0 words</span>
+        </div>
+        <div>
+            <button class="page-nav-btn" onclick="zoomOut()"><i class="fas fa-search-minus"></i></button>
+            <span id="zoomValue">100%</span>
+            <button class="page-nav-btn" onclick="zoomIn()"><i class="fas fa-search-plus"></i></button>
+        </div>
+    </div>
+
     <div id="toast" class="toast"></div>
 
     <script>
@@ -1078,8 +1093,6 @@
         let isMenuOpen = false;
         let imageLibrary = [];
         let selectedImageContainer = null;
-        let isDraggingImage = false;
-        let dragStartX, dragStartY, dragImageStartLeft, dragImageStartTop;
         let isResizing = false;
         let currentResizeImage = null;
         let resizeStartX, resizeStartY, resizeStartWidth;
@@ -1094,7 +1107,13 @@
         // ========== RIGHT CLICK MENU ==========
         function hideContextMenu() {
             document.getElementById('contextMenu').classList.remove('show');
-            moveElementsUpFromMenu();
+            if (isMenuOpen) {
+                isMenuOpen = false;
+                document.getElementById('dynamicIsland').classList.remove('menu-open');
+                document.getElementById('sidebar').classList.remove('menu-open');
+                document.getElementById('canvas').classList.remove('menu-open');
+                document.getElementById('toggleBtn').classList.remove('menu-open');
+            }
         }
         
         function selectAllText() {
@@ -1108,7 +1127,12 @@
             }
         }
         
-        function moveElementsDownForMenu() {
+        document.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            const menu = document.getElementById('contextMenu');
+            menu.style.left = e.pageX + 'px';
+            menu.style.top = e.pageY + 'px';
+            menu.classList.add('show');
             if (!isMenuOpen) {
                 isMenuOpen = true;
                 document.getElementById('dynamicIsland').classList.add('menu-open');
@@ -1116,25 +1140,6 @@
                 document.getElementById('canvas').classList.add('menu-open');
                 document.getElementById('toggleBtn').classList.add('menu-open');
             }
-        }
-        
-        function moveElementsUpFromMenu() {
-            if (isMenuOpen) {
-                isMenuOpen = false;
-                document.getElementById('dynamicIsland').classList.remove('menu-open');
-                document.getElementById('sidebar').classList.remove('menu-open');
-                document.getElementById('canvas').classList.remove('menu-open');
-                document.getElementById('toggleBtn').classList.remove('menu-open');
-            }
-        }
-        
-        document.addEventListener('contextmenu', (e) => {
-            e.preventDefault();
-            const menu = document.getElementById('contextMenu');
-            menu.style.left = e.pageX + 'px';
-            menu.style.top = e.pageY + 'px';
-            menu.classList.add('show');
-            moveElementsDownForMenu();
         });
         
         document.addEventListener('click', () => {
@@ -1148,94 +1153,17 @@
             
             let html = '';
             if (type === 'letter') {
-                html = `<div style="margin: 40px 0;">
-                    <h1 style="text-align: center;">BUSINESS LETTER</h1>
-                    <p><br></p>
-                    <p><strong>Date:</strong> ____________________</p>
-                    <p><strong>To:</strong> ____________________</p>
-                    <p><strong>From:</strong> ____________________</p>
-                    <p><strong>Subject:</strong> ____________________</p>
-                    <p><br></p>
-                    <p>Dear ____________________,</p>
-                    <p><br></p>
-                    <p>__________________________________________________</p>
-                    <p>__________________________________________________</p>
-                    <p>__________________________________________________</p>
-                    <p><br></p>
-                    <p>Sincerely,</p>
-                    <p><br><br></p>
-                    <p>____________________</p>
-                </div>`;
+                html = `<div style="margin: 40px 0;"><h1 style="text-align: center;">BUSINESS LETTER</h1><p><strong>Date:</strong> ____________________</p><p><strong>To:</strong> ____________________</p><p><strong>From:</strong> ____________________</p><p><strong>Subject:</strong> ____________________</p><p>Dear ____________________,</p><p>__________________________________________________</p><p>Sincerely,</p><p>____________________</p></div>`;
             } else if (type === 'report') {
-                html = `<div>
-                    <h1 style="text-align: center;">REPORT TITLE</h1>
-                    <p style="text-align: center;">Prepared by: ____________________</p>
-                    <p style="text-align: center;">Date: ____________________</p>
-                    <hr>
-                    <h2>Executive Summary</h2>
-                    <p>__________________________________________________</p>
-                    <h2>Introduction</h2>
-                    <p>__________________________________________________</p>
-                    <h2>Findings</h2>
-                    <p>__________________________________________________</p>
-                    <h2>Conclusion</h2>
-                    <p>__________________________________________________</p>
-                </div>`;
+                html = `<div><h1 style="text-align: center;">REPORT TITLE</h1><h2>Executive Summary</h2><p>__________________________________________________</p><h2>Introduction</h2><p>__________________________________________________</p><h2>Findings</h2><p>__________________________________________________</p><h2>Conclusion</h2><p>__________________________________________________</p></div>`;
             } else if (type === 'resume') {
-                html = `<div>
-                    <h1 style="text-align: center;">YOUR NAME</h1>
-                    <p style="text-align: center;">Email: ________________ | Phone: ________________</p>
-                    <hr>
-                    <h2>Professional Summary</h2>
-                    <p>__________________________________________________</p>
-                    <h2>Work Experience</h2>
-                    <p><strong>Job Title</strong> - Company Name (20XX-20XX)</p>
-                    <p>• _______________________________________________</p>
-                    <h2>Education</h2>
-                    <p><strong>Degree</strong> - University Name (20XX-20XX)</p>
-                    <h2>Skills</h2>
-                    <p>• _______________________________________________</p>
-                </div>`;
+                html = `<div><h1 style="text-align: center;">YOUR NAME</h1><h2>Professional Summary</h2><p>__________________________________________________</p><h2>Work Experience</h2><p>• _______________________________________________</p><h2>Education</h2><p>• _______________________________________________</p><h2>Skills</h2><p>• _______________________________________________</p></div>`;
             } else if (type === 'invoice') {
-                html = `<div>
-                    <h1 style="text-align: center;">INVOICE</h1>
-                    <p><strong>Invoice #:</strong> INV-001</p>
-                    <p><strong>Date:</strong> ____________________</p>
-                    <p><strong>Bill To:</strong> ____________________</p>
-                    <hr>
-                    <table border="1" cellpadding="8" style="width:100%; border-collapse:collapse;">
-                        <tr><th>Item</th><th>Quantity</th><th>Price</th><th>Total</th></tr>
-                        <tr><td>________________</td><td>___</td><td>$___</td><td>$___</td></tr>
-                        <tr><td>________________</td><td>___</td><td>$___</td><td>$___</td></tr>
-                        <tr><td colspan="3" style="text-align:right;"><strong>Total:</strong></td><td>$_______</td></tr>
-                    </table>
-                </div>`;
+                html = `<div><h1 style="text-align: center;">INVOICE</h1><p><strong>Invoice #:</strong> INV-001</p><table border="1" cellpadding="8" style="width:100%; border-collapse:collapse;"><tr><th>Item</th><th>Qty</th><th>Price</th><th>Total</th></tr><tr><td>________________</td><td>___</td><td>$___</td><td>$___</td></tr><tr><td colspan="3" style="text-align:right;"><strong>Total:</strong></td><td>$_______</td></tr></table></div>`;
             } else if (type === 'exam') {
-                html = `<div>
-                    <h1 style="text-align: center;">FINAL EXAMINATION</h1>
-                    <p style="text-align: center;">Subject: ____________________</p>
-                    <p style="text-align: center;">Time Allowed: 2 Hours</p>
-                    <hr>
-                    <h3>Section A: Multiple Choice (20 points)</h3>
-                    <p>1. __________________________________________________</p>
-                    <p>   A) ________  B) ________  C) ________  D) ________</p>
-                    <p>2. __________________________________________________</p>
-                    <p>   A) ________  B) ________  C) ________  D) ________</p>
-                    <h3>Section B: Essay (30 points)</h3>
-                    <p>1. __________________________________________________</p>
-                    <p>____________________________________________________</p>
-                    <p>____________________________________________________</p>
-                </div>`;
+                html = `<div><h1 style="text-align: center;">FINAL EXAMINATION</h1><hr><h3>Section A: Multiple Choice</h3><p>1. __________________________________________________</p><p>   A) ________  B) ________  C) ________  D) ________</p><h3>Section B: Essay</h3><p>1. __________________________________________________</p></div>`;
             } else if (type === 'certificate') {
-                html = `<div style="text-align: center; border: 5px double #0071e3; padding: 40px;">
-                    <h1>CERTIFICATE OF ACHIEVEMENT</h1>
-                    <p>This certificate is proudly presented to</p>
-                    <h2>____________________</h2>
-                    <p>for successfully completing</p>
-                    <h3>____________________</h3>
-                    <p>Date: ____________________</p>
-                    <p>Signature: ____________________</p>
-                </div>`;
+                html = `<div style="text-align: center; border: 5px double #0071e3; padding: 40px;"><h1>CERTIFICATE</h1><p>This certificate is presented to</p><h2>____________________</h2><p>Date: ____________________</p><p>Signature: ____________________</p></div>`;
             }
             
             document.execCommand('insertHTML', false, html);
@@ -1327,7 +1255,7 @@
             closeMediaManager();
         }
         
-        // ========== DRAG & DROP IMAGES FROM MEDIA MANAGER ==========
+        // ========== DRAG & DROP ==========
         let draggedImageSrc = null;
         
         function dragStartHandler(e) {
@@ -1356,88 +1284,10 @@
             let src = e.dataTransfer.getData('text/plain');
             if (!src && draggedImageSrc) src = draggedImageSrc;
             if (src && src.startsWith('data:image')) {
-                insertImageIntoEditorAtPosition(src, e.clientX, e.clientY);
+                insertImageIntoEditor(src);
                 showToast('Image dropped!');
             }
         });
-        
-        function insertImageIntoEditorAtPosition(src, mouseX, mouseY) {
-            const editor = getActiveEditor();
-            if (!editor) return;
-            
-            // Get mouse position relative to editor
-            const rect = editor.getBoundingClientRect();
-            const relativeX = mouseX - rect.left;
-            const relativeY = mouseY - rect.top;
-            
-            const container = document.createElement('div');
-            container.className = 'resizable-image';
-            container.style.position = 'relative';
-            container.style.display = 'inline-block';
-            container.style.left = relativeX + 'px';
-            container.style.top = relativeY + 'px';
-            
-            const img = document.createElement('img');
-            img.src = src;
-            img.style.maxWidth = '200px';
-            img.style.height = 'auto';
-            img.style.cursor = 'grab';
-            img.draggable = false;
-            
-            // Make image draggable within document
-            let isDragging = false;
-            let dragMouseX, dragMouseY, dragImgX, dragImgY;
-            
-            img.onmousedown = (e) => {
-                if (e.target === img) {
-                    isDragging = true;
-                    dragMouseX = e.clientX;
-                    dragMouseY = e.clientY;
-                    const containerRect = container.getBoundingClientRect();
-                    dragImgX = containerRect.left;
-                    dragImgY = containerRect.top;
-                    container.style.position = 'absolute';
-                    container.style.cursor = 'grabbing';
-                    e.preventDefault();
-                }
-            };
-            
-            document.addEventListener('mousemove', (e) => {
-                if (isDragging && container) {
-                    const newX = dragImgX + (e.clientX - dragMouseX);
-                    const newY = dragImgY + (e.clientY - dragMouseY);
-                    container.style.left = newX + 'px';
-                    container.style.top = newY + 'px';
-                    container.style.position = 'absolute';
-                }
-            });
-            
-            document.addEventListener('mouseup', () => {
-                if (isDragging) {
-                    isDragging = false;
-                    container.style.cursor = 'default';
-                }
-            });
-            
-            img.onclick = (e) => {
-                e.stopPropagation();
-                selectImage(container);
-            };
-            
-            const handle = document.createElement('div');
-            handle.className = 'resize-handle';
-            handle.onmousedown = (e) => startResize(e, img);
-            
-            container.appendChild(img);
-            container.appendChild(handle);
-            
-            // Insert at cursor position or mouse position
-            const selection = window.getSelection();
-            const range = selection.getRangeAt(0);
-            range.insertNode(container);
-            
-            showToast('Image added! Drag to move, drag corner to resize.');
-        }
         
         function insertImageIntoEditor(src) {
             const editor = getActiveEditor();
@@ -1455,7 +1305,6 @@
             img.style.cursor = 'grab';
             img.draggable = false;
             
-            // Make image draggable within document
             let isDragging = false;
             let dragMouseX, dragMouseY, dragImgX, dragImgY;
             
@@ -1546,7 +1395,6 @@
             selectedImageContainer = container;
             selectedImageContainer.classList.add('selected');
             
-            // Create floating toolbar for image
             let toolbar = document.getElementById('imageFloatingToolbar');
             if (!toolbar) {
                 toolbar = document.createElement('div');
@@ -1580,26 +1428,23 @@
             if (alignment === 'left') {
                 selectedImageContainer.style.float = 'left';
                 selectedImageContainer.style.margin = '8px 16px 8px 0';
-                selectedImageContainer.style.display = 'block';
                 selectedImageContainer.style.position = 'relative';
             } else if (alignment === 'center') {
                 selectedImageContainer.style.float = 'none';
                 selectedImageContainer.style.display = 'block';
                 selectedImageContainer.style.margin = '8px auto';
-                selectedImageContainer.style.textAlign = 'center';
                 selectedImageContainer.style.position = 'relative';
             } else if (alignment === 'right') {
                 selectedImageContainer.style.float = 'right';
                 selectedImageContainer.style.margin = '8px 0 8px 16px';
-                selectedImageContainer.style.display = 'block';
                 selectedImageContainer.style.position = 'relative';
             } else if (alignment === 'reset') {
                 selectedImageContainer.style.float = 'none';
                 selectedImageContainer.style.display = 'inline-block';
                 selectedImageContainer.style.margin = '8px';
-                selectedImageContainer.style.position = 'relative';
                 selectedImageContainer.style.left = 'auto';
                 selectedImageContainer.style.top = 'auto';
+                selectedImageContainer.style.position = 'relative';
             }
             showToast(`Image aligned ${alignment}`);
             const toolbar = document.getElementById('imageFloatingToolbar');
