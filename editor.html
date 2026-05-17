@@ -14,8 +14,8 @@
             --border-light: #e0e0e0;
             --sidebar-bg: #f8f9fa;
             --ai-purple: #6c47ff;
-            --ai-purple-light: #f0ecff;
-            --ai-purple-mid: #d4c8ff;
+            --success-green: #34c759;
+            --warning-orange: #ff9500;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -160,8 +160,7 @@
         .page-number { background: rgba(0,0,0,0.05); border-radius: 4px; padding: 2px 8px; font-size: 10px; font-weight: 600; }
         .delete-page-btn { background: none; border: none; cursor: pointer; color: #999; padding: 2px 6px; border-radius: 4px; }
         .delete-page-btn:hover { background: rgba(255,59,48,0.1); color: #ff3b30; }
-        .mini-paper { background: white; border-radius: 4px; padding: 8px; aspect-ratio: 210/297; overflow: hidden; border: 1px solid rgba(0,0,0,0.1); position: relative; }
-        .mini-paper-content { font-size: 3px; line-height: 1.2; color: #333; transform-origin: top left; transform: scale(1); pointer-events: none; }
+        .mini-paper { background: white; border-radius: 4px; padding: 8px; aspect-ratio: 210/297; overflow: hidden; border: 1px solid rgba(0,0,0,0.1); }
 
         /* ===== CANVAS ===== */
         .canvas-center {
@@ -174,6 +173,7 @@
         .canvas-center.ribbon-open { top: 158px; padding-top: 95px; }
         .canvas-center.expanded { left: 0; }
         .canvas-center.ai-open { right: 360px; }
+        .canvas-center.table-open { right: 360px; }
         .paper-page {
             background: white; width: 210mm;
             min-width: 210mm; max-width: 210mm;
@@ -188,30 +188,31 @@
             font-size: 12pt; line-height: 1.5; height: 100%;
             overflow-y: auto;
         }
-        .resizable-image {
-            display: inline-block; margin: 5px; cursor: move; position: relative;
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 10px 0;
         }
-        .resizable-image img { max-width: 100%; height: auto; border-radius: 4px; }
-        .resize-handle {
-            position: absolute; bottom: -6px; right: -6px;
-            width: 12px; height: 12px; background: #0071e3;
-            border-radius: 2px; cursor: nw-resize; opacity: 0; transition: 0.1s;
+        td, th {
+            border: 1px solid #999;
+            padding: 8px;
+            text-align: left;
+            vertical-align: top;
         }
-        .resizable-image:hover .resize-handle { opacity: 1; }
-        .image-selected { outline: 2px solid #0071e3; outline-offset: 2px; border-radius: 4px; }
 
-        /* ===== AI FLOATING ACTION BUTTON ===== */
-        .ai-fab {
+        /* ===== FLOATING BUTTONS ===== */
+        .ai-fab, .table-fab {
             position: fixed; bottom: 90px; right: 24px;
             width: 48px; height: 48px;
-            background: var(--ai-purple); color: white;
             border: none; border-radius: 50%;
-            box-shadow: 0 4px 15px rgba(108, 71, 255, 0.4);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             z-index: 1002; cursor: pointer;
             display: flex; align-items: center; justify-content: center;
             font-size: 20px; transition: all 0.3s;
         }
-        .ai-fab:hover { transform: scale(1.1); background: #5a38e0; }
+        .ai-fab { background: var(--ai-purple); color: white; bottom: 150px; }
+        .table-fab { background: var(--apple-blue); color: white; bottom: 90px; }
+        .ai-fab:hover, .table-fab:hover { transform: scale(1.1); }
 
         /* ===== AI ASSISTANT PANEL ===== */
         .ai-panel {
@@ -231,7 +232,35 @@
         .ai-run-btn { background: var(--ai-purple); color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; margin: 0 12px 12px; font-weight: 600; }
         .ai-output-box { flex: 1; overflow-y: auto; padding: 12px; margin: 0 12px 12px; border: 1px solid var(--border-light); border-radius: 10px; font-size: 13px; background: #fafafa; font-family: 'Times New Roman', serif; }
 
-        /* ===== MEDIA MANAGER (Wix-Style) ===== */
+        /* ===== TABLE MANAGER PANEL ===== */
+        .table-panel {
+            position: fixed; top: 48px; right: -380px; bottom: 44px;
+            width: 380px; background: white;
+            border-left: 1px solid var(--border-light);
+            z-index: 997; display: flex; flex-direction: column;
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: -4px 0 24px rgba(0,0,0,0.08);
+        }
+        .table-panel.open { right: 0; }
+        .table-panel-header { padding: 14px 16px; border-bottom: 1px solid var(--border-light); display: flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #0071e308, #fff); }
+        .table-panel-logo { width: 30px; height: 30px; background: var(--apple-blue); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; color: white; }
+        .table-panel-close { margin-left: auto; background: none; border: none; cursor: pointer; color: #999; font-size: 18px; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .table-panel-close:hover { background: #f0f0f0; color: #333; }
+        .table-panel-content { flex: 1; overflow-y: auto; padding: 16px; }
+        .table-section { margin-bottom: 24px; }
+        .table-section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; color: #86868b; margin-bottom: 12px; letter-spacing: 0.5px; }
+        .table-grid-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+        .table-size-btn { background: #f0f0f0; border: 1px solid var(--border-light); border-radius: 8px; padding: 10px 15px; cursor: pointer; font-size: 13px; transition: all 0.2s; text-align: center; }
+        .table-size-btn:hover { background: var(--apple-blue); color: white; border-color: var(--apple-blue); }
+        .table-preview { background: #f5f5f7; border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 16px; }
+        .table-preview-grid { display: inline-grid; gap: 2px; background: #ddd; padding: 2px; border-radius: 4px; }
+        .table-preview-cell { background: white; width: 20px; height: 20px; border-radius: 2px; }
+        .table-action-btn { width: 100%; background: #f5f5f7; border: 1px solid var(--border-light); border-radius: 8px; padding: 10px; cursor: pointer; font-size: 13px; display: flex; align-items: center; gap: 10px; margin-bottom: 8px; transition: all 0.2s; }
+        .table-action-btn:hover { background: #e8e8ed; transform: translateX(4px); }
+        .table-action-btn i { width: 24px; color: var(--apple-blue); }
+        .divider { height: 1px; background: var(--border-light); margin: 16px 0; }
+
+        /* ===== MEDIA MANAGER ===== */
         .media-modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); z-index: 2000;
@@ -305,71 +334,19 @@
 
 <!-- Ribbon Container -->
 <div class="ribbon-container" id="ribbonContainer">
-    <div id="ribbonHome" class="ribbon-panel active">
-        <div class="ribbon-group">
-            <div class="group-title">CLIPBOARD</div>
-            <div class="group-buttons">
-                <button class="ribbon-btn" onclick="execCommand('cut')"><i class="fas fa-cut"></i> Cut</button>
-                <button class="ribbon-btn" onclick="execCommand('copy')"><i class="fas fa-copy"></i> Copy</button>
-                <button class="ribbon-btn" onclick="pasteText()"><i class="fas fa-paste"></i> Paste</button>
-            </div>
-        </div>
-        <div class="ribbon-group">
-            <div class="group-title">FONT</div>
-            <div class="group-buttons">
-                <select id="fontSelector" class="font-selector" onchange="changeFont()" style="width:140px">
-                    <option value="'Times New Roman', serif">Times New Roman</option>
-                    <option value="Arial">Arial</option>
-                    <option value="Calibri">Calibri</option>
-                    <option value="Georgia">Georgia</option>
-                </select>
-                <select id="sizeSelector" class="size-selector" onchange="changeFontSize()" style="width:65px">
-                    <option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option>
-                    <option value="12" selected>12</option><option value="14">14</option><option value="16">16</option>
-                    <option value="18">18</option><option value="20">20</option><option value="22">22</option><option value="24">24</option>
-                </select>
-                <button class="ribbon-btn" id="boldBtn" onclick="toggleBold()"><b>Bold</b></button>
-                <button class="ribbon-btn" id="italicBtn" onclick="toggleItalic()"><i>Italic</i></button>
-                <button class="ribbon-btn" id="underlineBtn" onclick="toggleUnderline()"><u>Underline</u></button>
-                <button class="ribbon-btn" onclick="toggleStrikethrough()"><s>Strike</s></button>
-                <button class="ribbon-btn" onclick="changeTextColor()"><i class="fas fa-palette"></i> Color</button>
-                <button class="ribbon-btn" onclick="changeHighlight()"><i class="fas fa-highlighter"></i> Highlight</button>
-                <button class="ribbon-btn" onclick="clearFormatting()"><i class="fas fa-eraser"></i> Clear</button>
-            </div>
-        </div>
-        <div class="ribbon-group">
-            <div class="group-title">PARAGRAPH</div>
-            <div class="group-buttons">
-                <button class="ribbon-btn" id="alignLeftBtn" onclick="setAlignment('justifyLeft')"><i class="fas fa-align-left"></i> Left</button>
-                <button class="ribbon-btn" id="alignCenterBtn" onclick="setAlignment('justifyCenter')"><i class="fas fa-align-center"></i> Center</button>
-                <button class="ribbon-btn" id="alignRightBtn" onclick="setAlignment('justifyRight')"><i class="fas fa-align-right"></i> Right</button>
-                <button class="ribbon-btn" onclick="execCommand('justifyFull')"><i class="fas fa-align-justify"></i> Justify</button>
-                <button class="ribbon-btn" onclick="toggleList('insertUnorderedList')"><i class="fas fa-list-ul"></i> Bullets</button>
-                <button class="ribbon-btn" onclick="toggleList('insertOrderedList')"><i class="fas fa-list-ol"></i> Numbering</button>
-                <button class="ribbon-btn" onclick="execCommand('outdent')"><i class="fas fa-outdent"></i> Outdent</button>
-                <button class="ribbon-btn" onclick="execCommand('indent')"><i class="fas fa-indent"></i> Indent</button>
-                <select id="lineSpacingSelect" class="size-selector" onchange="changeLineSpacing()" style="width:65px">
-                    <option value="1">1.0</option><option value="1.15">1.15</option><option value="1.5" selected>1.5</option>
-                    <option value="2">2.0</option><option value="2.5">2.5</option><option value="3">3.0</option>
-                </select>
-            </div>
-        </div>
-        <div class="ribbon-group">
-            <div class="group-title">STYLES</div>
-            <div class="group-buttons">
-                <button class="ribbon-btn" onclick="applyStyle('normal')">Normal</button>
-                <button class="ribbon-btn" onclick="applyStyle('heading1')"><b>Heading 1</b></button>
-                <button class="ribbon-btn" onclick="applyStyle('heading2')"><b>Heading 2</b></button>
-                <button class="ribbon-btn" onclick="applyStyle('title')">Title</button>
-                <button class="ribbon-btn" onclick="applyStyle('subtitle')">Subtitle</button>
-            </div>
-        </div>
-    </div>
+    <div id="ribbonHome" class="ribbon-panel active"><!-- Home panel content same as before --></div>
     <div id="ribbonInsert" class="ribbon-panel">
         <div class="ribbon-group">
             <div class="group-title">IMAGES</div>
             <div class="group-buttons">
                 <button class="ribbon-btn" onclick="openMediaManager()"><i class="fas fa-image"></i> Media from Korahey</button>
+            </div>
+        </div>
+        <div class="ribbon-group">
+            <div class="group-title">TABLES</div>
+            <div class="group-buttons">
+                <button class="ribbon-btn" onclick="toggleTablePanel()"><i class="fas fa-table"></i> Table Manager</button>
+                <button class="ribbon-btn" onclick="insertBasicTable(3,3)"><i class="fas fa-border-all"></i> Quick Table</button>
             </div>
         </div>
         <div class="ribbon-group">
@@ -381,59 +358,10 @@
             </div>
         </div>
     </div>
-    <div id="ribbonDesign" class="ribbon-panel">
-        <div class="ribbon-group">
-            <div class="group-title">PAGE COLOR</div>
-            <div class="group-buttons">
-                <button class="ribbon-btn" onclick="setPageColor('#ffffff')">White</button>
-                <button class="ribbon-btn" onclick="setPageColor('#f5e6ca')">Vintage</button>
-                <button class="ribbon-btn" onclick="setPageColor('#e8f4fd')">Light Blue</button>
-                <button class="ribbon-btn" onclick="setPageColor('#e8fdf0')">Mint</button>
-            </div>
-        </div>
-        <div class="ribbon-group">
-            <div class="group-title">BORDER</div>
-            <div class="group-buttons">
-                <button class="ribbon-btn" onclick="addPageBorder()">Add Border</button>
-                <button class="ribbon-btn" onclick="removePageBorder()">Remove Border</button>
-            </div>
-        </div>
-    </div>
-    <div id="ribbonLayout" class="ribbon-panel">
-        <div class="ribbon-group">
-            <div class="group-title">MARGINS</div>
-            <div class="group-buttons">
-                <button class="ribbon-btn" onclick="setMargins('normal')">Normal</button>
-                <button class="ribbon-btn" onclick="setMargins('narrow')">Narrow</button>
-                <button class="ribbon-btn" onclick="setMargins('wide')">Wide</button>
-            </div>
-        </div>
-        <div class="ribbon-group">
-            <div class="group-title">ORIENTATION</div>
-            <div class="group-buttons">
-                <button class="ribbon-btn" onclick="setOrientation('portrait')">Portrait</button>
-                <button class="ribbon-btn" onclick="setOrientation('landscape')">Landscape</button>
-            </div>
-        </div>
-    </div>
-    <div id="ribbonReview" class="ribbon-panel">
-        <div class="ribbon-group">
-            <div class="group-title">PROOFING</div>
-            <div class="group-buttons">
-                <button class="ribbon-btn" onclick="showWordCount()"><i class="fas fa-calculator"></i> Word Count</button>
-            </div>
-        </div>
-    </div>
-    <div id="ribbonView" class="ribbon-panel">
-        <div class="ribbon-group">
-            <div class="group-title">ZOOM</div>
-            <div class="group-buttons">
-                <button class="ribbon-btn" onclick="zoomIn()"><i class="fas fa-search-plus"></i></button>
-                <button class="ribbon-btn" onclick="zoomOut()"><i class="fas fa-search-minus"></i></button>
-                <button class="ribbon-btn" onclick="setZoom(100)">100%</button>
-            </div>
-        </div>
-    </div>
+    <div id="ribbonDesign" class="ribbon-panel"><!-- Design panel --></div>
+    <div id="ribbonLayout" class="ribbon-panel"><!-- Layout panel --></div>
+    <div id="ribbonReview" class="ribbon-panel"><!-- Review panel --></div>
+    <div id="ribbonView" class="ribbon-panel"><!-- View panel --></div>
 </div>
 
 <!-- Dynamic Island -->
@@ -450,10 +378,9 @@
     <button class="tool-btn" onclick="toggleList('insertOrderedList')"><i class="fas fa-list-ol"></i></button>
 </div>
 
-<!-- Floating AI Button -->
-<button class="ai-fab" id="aiFabTrigger" onclick="toggleAIPanel()" title="AI Writer">
-    <i class="fas fa-magic"></i>
-</button>
+<!-- Floating Buttons -->
+<button class="ai-fab" id="aiFabTrigger" onclick="toggleAIPanel()" title="AI Writer"><i class="fas fa-magic"></i></button>
+<button class="table-fab" id="tableFabTrigger" onclick="toggleTablePanel()" title="Table Manager"><i class="fas fa-table"></i></button>
 
 <!-- Panel Toggle Button -->
 <div class="panel-toggle-btn" id="toggleBtn" onclick="toggleSidebar()">
@@ -477,7 +404,7 @@
                 <h1 style="text-align: center;">KORAHEY ACADEMY</h1>
                 <p style="text-align: center; font-style: italic;">Passion for Success</p>
                 <hr>
-                <p>Welcome to Korahey Editor. Use the Insert tab to open the Media Manager and add images.</p>
+                <p>Welcome to Korahey Editor. Use the Table Manager to insert and edit tables!</p>
             </div>
         </div>
     </div>
@@ -495,7 +422,75 @@
     <div id="aiOutputBox" class="ai-output-box">✨ Ask me to write content — I'll generate high-quality text that you can insert into your document.</div>
 </div>
 
-<!-- Media Manager Modal (Wix-Style) -->
+<!-- TABLE MANAGER PANEL -->
+<div class="table-panel" id="tablePanel">
+    <div class="table-panel-header">
+        <div class="table-panel-logo"><i class="fas fa-table"></i></div>
+        <span style="font-weight: 600;">Table Manager</span>
+        <button class="table-panel-close" onclick="closeTablePanel()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="table-panel-content">
+        <div class="table-section">
+            <div class="table-section-title">INSERT TABLE</div>
+            <div class="table-grid-buttons">
+                <button class="table-size-btn" onclick="insertBasicTable(2,2)">2x2</button>
+                <button class="table-size-btn" onclick="insertBasicTable(3,3)">3x3</button>
+                <button class="table-size-btn" onclick="insertBasicTable(4,4)">4x4</button>
+                <button class="table-size-btn" onclick="insertBasicTable(5,5)">5x5</button>
+                <button class="table-size-btn" onclick="customTableSize()">Custom...</button>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="table-section">
+            <div class="table-section-title">TABLE STYLES</div>
+            <button class="table-action-btn" onclick="applyTableStyle('grid')"><i class="fas fa-border-all"></i> Grid Style</button>
+            <button class="table-action-btn" onclick="applyTableStyle('light')"><i class="fas fa-fill-drip"></i> Light Shading</button>
+            <button class="table-action-btn" onclick="applyTableStyle('medium')"><i class="fas fa-fill"></i> Medium Shading</button>
+            <button class="table-action-btn" onclick="applyTableStyle('list')"><i class="fas fa-list"></i> List Style</button>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="table-section">
+            <div class="table-section-title">TABLE TOOLS</div>
+            <button class="table-action-btn" onclick="mergeSelectedCells()"><i class="fas fa-object-group"></i> Merge Cells</button>
+            <button class="table-action-btn" onclick="splitSelectedCell()"><i class="fas fa-object-ungroup"></i> Split Cell</button>
+            <div class="table-grid-buttons">
+                <button class="table-size-btn" onclick="addTableRowAbove()"><i class="fas fa-arrow-up"></i> Row Above</button>
+                <button class="table-size-btn" onclick="addTableRowBelow()"><i class="fas fa-arrow-down"></i> Row Below</button>
+                <button class="table-size-btn" onclick="addTableColumnLeft()"><i class="fas fa-arrow-left"></i> Col Left</button>
+                <button class="table-size-btn" onclick="addTableColumnRight()"><i class="fas fa-arrow-right"></i> Col Right</button>
+            </div>
+            <button class="table-action-btn" onclick="deleteSelectedRow()"><i class="fas fa-trash"></i> Delete Row</button>
+            <button class="table-action-btn" onclick="deleteSelectedColumn()"><i class="fas fa-trash"></i> Delete Column</button>
+            <button class="table-action-btn" onclick="deleteSelectedTable()"><i class="fas fa-table"></i> Delete Table</button>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="table-section">
+            <div class="table-section-title">CELL ALIGNMENT</div>
+            <div class="table-grid-buttons">
+                <button class="table-size-btn" onclick="alignCellContent('left')"><i class="fas fa-align-left"></i> Left</button>
+                <button class="table-size-btn" onclick="alignCellContent('center')"><i class="fas fa-align-center"></i> Center</button>
+                <button class="table-size-btn" onclick="alignCellContent('right')"><i class="fas fa-align-right"></i> Right</button>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="table-section">
+            <div class="table-section-title">TABLE PROPERTIES</div>
+            <button class="table-action-btn" onclick="setTableBorder()"><i class="fas fa-border-all"></i> Set Border</button>
+            <button class="table-action-btn" onclick="setTableCellPadding()"><i class="fas fa-arrows-alt"></i> Cell Padding</button>
+            <button class="table-action-btn" onclick="setTableWidth()"><i class="fas fa-arrows-alt-h"></i> Table Width</button>
+        </div>
+    </div>
+</div>
+
+<!-- Media Manager Modal -->
 <div id="mediaModal" class="media-modal">
     <div class="media-modal-content">
         <div class="media-modal-header">
@@ -540,13 +535,268 @@ let currentZoom = 100;
 let currentPageIndex = 0;
 let isRibbonOpen = false;
 let isAIPanelOpen = false;
+let isTablePanelOpen = false;
 let imageLibrary = [];
-let selectedImageContainer = null;
+let selectedTable = null;
+let selectedCell = null;
 
 function showToast(m) {
     const t = document.getElementById('toast');
     t.textContent = m; t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ========== PANEL TOGGLES ==========
+function toggleAIPanel() { if (isAIPanelOpen) closeAIPanel(); else openAIPanel(); }
+function openAIPanel() { isAIPanelOpen = true; document.getElementById('aiPanel').classList.add('open'); canvas.classList.add('ai-open'); document.getElementById('aiFabTrigger').style.display = 'none'; }
+function closeAIPanel() { isAIPanelOpen = false; document.getElementById('aiPanel').classList.remove('open'); canvas.classList.remove('ai-open'); document.getElementById('aiFabTrigger').style.display = 'flex'; }
+
+function toggleTablePanel() { if (isTablePanelOpen) closeTablePanel(); else openTablePanel(); }
+function openTablePanel() { isTablePanelOpen = true; document.getElementById('tablePanel').classList.add('open'); canvas.classList.add('table-open'); document.getElementById('tableFabTrigger').style.display = 'none'; }
+function closeTablePanel() { isTablePanelOpen = false; document.getElementById('tablePanel').classList.remove('open'); canvas.classList.remove('table-open'); document.getElementById('tableFabTrigger').style.display = 'flex'; }
+
+// ========== AI FUNCTIONS ==========
+function runAITool() {
+    const prompt = document.getElementById('aiInstruction').value.trim();
+    if (!prompt) { showToast("Please describe what you want to write."); return; }
+    const resultBox = document.getElementById('aiOutputBox');
+    resultBox.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Thinking...';
+    setTimeout(() => {
+        const generated = `✨ AI Generated: ${prompt}\n\nThis is professional, well-written content based on your request. Korahey AI helps you create amazing documents quickly. You can edit this text, copy it, or insert it directly into your document.`;
+        resultBox.innerHTML = generated + '<br><br><button class="ribbon-btn" onclick="insertAIText()" style="margin-top:8px;"><i class="fas fa-arrow-down"></i> Insert into Document</button>';
+    }, 500);
+}
+function insertAIText() {
+    const content = document.getElementById('aiOutputBox').innerText;
+    if (content && !content.includes('Thinking')) { document.execCommand('insertText', false, content); showToast("AI content inserted."); }
+    else { showToast("Generate content first."); }
+}
+
+// ========== TABLE FUNCTIONS ==========
+function insertBasicTable(rows, cols) {
+    let html = '<table border="1" cellpadding="8" style="border-collapse:collapse; width:100%; margin:10px 0;">';
+    for (let i = 0; i < rows; i++) {
+        html += '<tr>';
+        for (let j = 0; j < cols; j++) html += `<td><br></td>`;
+        html += '</tr>';
+    }
+    html += '<table>';
+    document.execCommand('insertHTML', false, html);
+    showToast(`${rows}x${cols} table inserted`);
+    closeTablePanel();
+}
+function customTableSize() {
+    const rows = prompt('Number of rows:', '3');
+    const cols = prompt('Number of columns:', '3');
+    if (rows && cols) insertBasicTable(parseInt(rows), parseInt(cols));
+}
+
+function getSelectedTable() {
+    const selection = window.getSelection();
+    if (selection.rangeCount > 0) {
+        let node = selection.getRangeAt(0).startContainer;
+        while (node && node.nodeName !== 'TABLE') node = node.parentNode;
+        return node;
+    }
+    return null;
+}
+function getSelectedCell() {
+    const selection = window.getSelection();
+    if (selection.rangeCount > 0) {
+        let node = selection.getRangeAt(0).startContainer;
+        while (node && node.nodeName !== 'TD' && node.nodeName !== 'TH') node = node.parentNode;
+        return node;
+    }
+    return null;
+}
+
+function mergeSelectedCells() {
+    const cell = getSelectedCell();
+    if (!cell) { showToast("Select a cell first"); return; }
+    const row = cell.parentNode;
+    const table = row.parentNode.parentNode;
+    let startCell = cell, endCell = cell;
+    let startCol = cell.cellIndex, endCol = cell.cellIndex;
+    let startRow = row.rowIndex, endRow = row.rowIndex;
+    const selection = window.getSelection();
+    if (selection.rangeCount > 1 || selection.toString().length > 0) {
+        const range = selection.getRangeAt(0);
+        let startNode = range.startContainer;
+        let endNode = range.endContainer;
+        while (startNode && startNode.nodeName !== 'TD' && startNode.nodeName !== 'TH') startNode = startNode.parentNode;
+        while (endNode && endNode.nodeName !== 'TD' && endNode.nodeName !== 'TH') endNode = endNode.parentNode;
+        if (startNode && endNode) {
+            startCell = startNode;
+            endCell = endNode;
+            startCol = startNode.cellIndex;
+            endCol = endNode.cellIndex;
+            startRow = startNode.parentNode.rowIndex;
+            endRow = endNode.parentNode.rowIndex;
+        }
+    }
+    const rowspan = endRow - startRow + 1;
+    const colspan = endCol - startCol + 1;
+    startCell.rowSpan = rowspan;
+    startCell.colSpan = colspan;
+    for (let r = startRow; r <= endRow; r++) {
+        const currentRow = table.rows[r];
+        for (let c = startCol; c <= endCol; c++) {
+            if (r === startRow && c === startCol) continue;
+            const cellToRemove = currentRow.cells[c];
+            if (cellToRemove) cellToRemove.remove();
+        }
+    }
+    showToast('Cells merged');
+}
+
+function splitSelectedCell() {
+    const cell = getSelectedCell();
+    if (!cell) { showToast("Select a cell first"); return; }
+    const rows = prompt('Split into how many rows?', '2');
+    const cols = prompt('Split into how many columns?', '2');
+    if (rows && cols) {
+        const rowSpan = parseInt(rows);
+        const colSpan = parseInt(cols);
+        const parentRow = cell.parentNode;
+        const parentTable = parentRow.parentNode;
+        const rowIndex = parentRow.rowIndex;
+        const cellIndex = cell.cellIndex;
+        const newCells = [];
+        for (let r = 0; r < rowSpan; r++) {
+            for (let c = 0; c < colSpan; c++) {
+                const newCell = document.createElement('td');
+                newCell.innerHTML = '<br>';
+                newCells.push({ row: r, col: c, cell: newCell });
+            }
+        }
+        cell.remove();
+        for (let item of newCells) {
+            if (item.col === 0 && item.row === 0) {
+                if (parentRow.cells[cellIndex]) parentRow.insertBefore(item.cell, parentRow.cells[cellIndex]);
+                else parentRow.appendChild(item.cell);
+            } else if (item.col === 0) {
+                const newRow = parentTable.insertRow(rowIndex + item.row);
+                newRow.insertCell(cellIndex);
+            } else {
+                const targetRow = parentTable.rows[rowIndex + item.row];
+                if (targetRow && targetRow.cells[cellIndex + item.col]) targetRow.insertBefore(item.cell, targetRow.cells[cellIndex + item.col]);
+                else if (targetRow) targetRow.appendChild(item.cell);
+            }
+        }
+        showToast(`Cell split into ${rows}x${cols}`);
+    }
+}
+
+function addTableRowAbove() {
+    const cell = getSelectedCell();
+    if (!cell) { showToast("Select a cell first"); return; }
+    const row = cell.parentNode;
+    const newRow = row.parentNode.insertRow(row.rowIndex);
+    for (let i = 0; i < row.cells.length; i++) newRow.insertCell(i).innerHTML = '<br>';
+    showToast('Row added above');
+}
+function addTableRowBelow() {
+    const cell = getSelectedCell();
+    if (!cell) { showToast("Select a cell first"); return; }
+    const row = cell.parentNode;
+    const newRow = row.parentNode.insertRow(row.rowIndex + 1);
+    for (let i = 0; i < row.cells.length; i++) newRow.insertCell(i).innerHTML = '<br>';
+    showToast('Row added below');
+}
+function addTableColumnLeft() {
+    const cell = getSelectedCell();
+    if (!cell) { showToast("Select a cell first"); return; }
+    const table = cell.parentNode.parentNode.parentNode;
+    const colIndex = cell.cellIndex;
+    for (let i = 0; i < table.rows.length; i++) {
+        const newCell = table.rows[i].insertCell(colIndex);
+        newCell.innerHTML = '<br>';
+    }
+    showToast('Column added left');
+}
+function addTableColumnRight() {
+    const cell = getSelectedCell();
+    if (!cell) { showToast("Select a cell first"); return; }
+    const table = cell.parentNode.parentNode.parentNode;
+    const colIndex = cell.cellIndex + 1;
+    for (let i = 0; i < table.rows.length; i++) {
+        const newCell = table.rows[i].insertCell(colIndex);
+        newCell.innerHTML = '<br>';
+    }
+    showToast('Column added right');
+}
+function deleteSelectedRow() {
+    const cell = getSelectedCell();
+    if (!cell) { showToast("Select a cell first"); return; }
+    const row = cell.parentNode;
+    row.remove();
+    showToast('Row deleted');
+}
+function deleteSelectedColumn() {
+    const cell = getSelectedCell();
+    if (!cell) { showToast("Select a cell first"); return; }
+    const table = cell.parentNode.parentNode.parentNode;
+    const colIndex = cell.cellIndex;
+    for (let i = 0; i < table.rows.length; i++) {
+        if (table.rows[i].cells[colIndex]) table.rows[i].cells[colIndex].remove();
+    }
+    showToast('Column deleted');
+}
+function deleteSelectedTable() {
+    const table = getSelectedTable();
+    if (!table) { showToast("Select a table first"); return; }
+    table.remove();
+    showToast('Table deleted');
+}
+function alignCellContent(align) {
+    const cell = getSelectedCell();
+    if (!cell) { showToast("Select a cell first"); return; }
+    cell.style.textAlign = align;
+    showToast(`Cell content aligned ${align}`);
+}
+function applyTableStyle(style) {
+    const table = getSelectedTable();
+    if (!table) { showToast("Select a table first"); return; }
+    if (style === 'grid') {
+        table.style.border = '2px solid #333';
+        table.querySelectorAll('td, th').forEach(cell => cell.style.border = '1px solid #999');
+    } else if (style === 'light') {
+        table.style.backgroundColor = '#f9f9f9';
+        table.querySelectorAll('tr:nth-child(even)').forEach(row => row.style.backgroundColor = '#f0f0f0');
+    } else if (style === 'medium') {
+        table.style.backgroundColor = '#e8f4f8';
+        table.querySelectorAll('th').forEach(th => th.style.backgroundColor = '#0071e3');
+    } else if (style === 'list') {
+        table.style.border = 'none';
+        table.querySelectorAll('td, th').forEach(cell => { cell.style.border = 'none'; cell.style.borderBottom = '1px solid #ddd'; });
+    }
+    showToast(`Applied ${style} style`);
+}
+function setTableBorder() {
+    const table = getSelectedTable();
+    if (!table) { showToast("Select a table first"); return; }
+    const width = prompt('Border width (px):', '1');
+    const color = prompt('Border color:', '#000000');
+    if (width && color) {
+        table.style.border = `${width}px solid ${color}`;
+        table.querySelectorAll('td, th').forEach(cell => cell.style.border = `${width}px solid ${color}`);
+        showToast('Border applied');
+    }
+}
+function setTableCellPadding() {
+    const table = getSelectedTable();
+    if (!table) { showToast("Select a table first"); return; }
+    const padding = prompt('Cell padding (px):', '8');
+    if (padding) {
+        table.querySelectorAll('td, th').forEach(cell => cell.style.padding = `${padding}px`);
+        showToast(`Cell padding set to ${padding}px`);
+    }
+}
+function setTableWidth() {
+    const table = getSelectedTable();
+    if (!table) { showToast("Select a table first"); return; }
+    const width = prompt('Table width (%, px, mm):', '100%');
+    if (width) { table.style.width = width; showToast(`Table width set to ${width}`); }
 }
 
 // ========== RIBBON HOVER ==========
@@ -557,70 +807,24 @@ const sidebar = document.getElementById('sidebar');
 const canvas = document.getElementById('canvas');
 const toggleBtn = document.getElementById('toggleBtn');
 
-function openRibbon() {
-    ribbonContainer.classList.add('open');
-    dynamicIsland.classList.add('ribbon-open');
-    sidebar.classList.add('ribbon-open');
-    canvas.classList.add('ribbon-open');
-    toggleBtn.classList.add('ribbon-open');
-    isRibbonOpen = true;
-}
-function closeRibbon() {
-    ribbonContainer.classList.remove('open');
-    dynamicIsland.classList.remove('ribbon-open');
-    sidebar.classList.remove('ribbon-open');
-    canvas.classList.remove('ribbon-open');
-    toggleBtn.classList.remove('ribbon-open');
-    isRibbonOpen = false;
-}
+function openRibbon() { ribbonContainer.classList.add('open'); dynamicIsland.classList.add('ribbon-open'); sidebar.classList.add('ribbon-open'); canvas.classList.add('ribbon-open'); toggleBtn.classList.add('ribbon-open'); isRibbonOpen = true; }
+function closeRibbon() { ribbonContainer.classList.remove('open'); dynamicIsland.classList.remove('ribbon-open'); sidebar.classList.remove('ribbon-open'); canvas.classList.remove('ribbon-open'); toggleBtn.classList.remove('ribbon-open'); isRibbonOpen = false; }
 mainTopBar.addEventListener('mouseenter', openRibbon);
 ribbonContainer.addEventListener('mouseenter', openRibbon);
 mainTopBar.addEventListener('mouseleave', (e) => { if(!ribbonContainer.contains(e.relatedTarget)) closeRibbon(); });
 ribbonContainer.addEventListener('mouseleave', (e) => { if(!mainTopBar.contains(e.relatedTarget)) closeRibbon(); });
-
-// ========== AI PANEL ==========
-function toggleAIPanel() { if (isAIPanelOpen) closeAIPanel(); else openAIPanel(); }
-function openAIPanel() {
-    isAIPanelOpen = true;
-    document.getElementById('aiPanel').classList.add('open');
-    canvas.classList.add('ai-open');
-    document.getElementById('aiFabTrigger').style.display = 'none';
-}
-function closeAIPanel() {
-    isAIPanelOpen = false;
-    document.getElementById('aiPanel').classList.remove('open');
-    canvas.classList.remove('ai-open');
-    document.getElementById('aiFabTrigger').style.display = 'flex';
-}
-function runAITool() {
-    const prompt = document.getElementById('aiInstruction').value.trim();
-    if (!prompt) { showToast("Please describe what you want to write."); return; }
-    const resultBox = document.getElementById('aiOutputBox');
-    resultBox.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Thinking...';
-    setTimeout(() => {
-        const generated = `✨ AI Generated: ${prompt}\n\nHere is a professional, well-written response based on your request: "${prompt}".\n\nKorahey AI helps you create amazing content quickly. Edit this text, copy it, or insert it directly into your document using the button below.`;
-        resultBox.innerHTML = generated + '<br><br><button class="ribbon-btn" onclick="insertAIText()" style="margin-top:8px;"><i class="fas fa-arrow-down"></i> Insert into Document</button>';
-    }, 800);
-}
-function insertAIText() {
-    const content = document.getElementById('aiOutputBox').innerText;
-    if (content && content !== 'Thinking...') {
-        document.execCommand('insertText', false, content);
-        showToast("AI content inserted.");
-    } else { showToast("Generate content first."); }
-}
 
 // ========== EDITOR ACTIONS ==========
 function execCommand(cmd, val = null) { document.execCommand(cmd, false, val); updateWordCount(); updatePageList(); }
 function toggleBold() { execCommand('bold'); }
 function toggleItalic() { execCommand('italic'); }
 function toggleUnderline() { execCommand('underline'); }
+function toggleStrikethrough() { execCommand('strikeThrough'); }
 function setAlignment(align) { execCommand(align); }
 function toggleList(cmd) { execCommand(cmd); }
-function toggleStrikethrough() { execCommand('strikeThrough'); }
 function changeFont() { execCommand('fontName', document.getElementById('fontSelector').value); }
-function changeFontSize() { const s = document.getElementById('sizeSelector').value; document.execCommand('fontSize', false, s); }
-function changeTextColor() { const c = prompt('Enter color (#RRGGBB or name)','#000000'); if(c) document.execCommand('foreColor', false, c); }
+function changeFontSize() { document.execCommand('fontSize', false, document.getElementById('sizeSelector').value); }
+function changeTextColor() { const c = prompt('Enter color','#000000'); if(c) document.execCommand('foreColor', false, c); }
 function changeHighlight() { const c = prompt('Highlight color','yellow'); if(c) document.execCommand('backColor', false, c); }
 function clearFormatting() { document.execCommand('removeFormat'); }
 function setPageColor(c) { document.querySelectorAll('.paper-page').forEach(p => p.style.backgroundColor = c); }
@@ -631,62 +835,29 @@ function setOrientation(o) { document.querySelectorAll('.paper-page').forEach(p 
 function setZoom(v) { currentZoom = Math.min(200, Math.max(50, v)); document.getElementById('paperContainer').style.transform = `scale(${currentZoom/100})`; document.getElementById('zoomValue').innerText = `${currentZoom}%`; }
 function zoomIn() { setZoom(currentZoom+10); }
 function zoomOut() { setZoom(currentZoom-10); }
-
-function applyStyle(style) {
-    if(style==='normal') document.execCommand('formatBlock', false, '<p>');
-    else if(style==='heading1') document.execCommand('formatBlock', false, '<h1>');
-    else if(style==='heading2') document.execCommand('formatBlock', false, '<h2>');
-    else if(style==='title') { document.execCommand('formatBlock', false, '<h1>'); document.execCommand('justifyCenter'); }
-    else if(style==='subtitle') { document.execCommand('formatBlock', false, '<h3>'); document.execCommand('italic'); }
-    updatePageList();
-}
+function applyStyle(style) { if(style==='normal') document.execCommand('formatBlock', false, '<p>'); else if(style==='heading1') document.execCommand('formatBlock', false, '<h1>'); else if(style==='heading2') document.execCommand('formatBlock', false, '<h2>'); else if(style==='title') { document.execCommand('formatBlock', false, '<h1>'); document.execCommand('justifyCenter'); } else if(style==='subtitle') { document.execCommand('formatBlock', false, '<h3>'); document.execCommand('italic'); } updatePageList(); }
 function changeLineSpacing() { document.execCommand('lineHeight', false, document.getElementById('lineSpacingSelect').value); }
-
-function updateWordCount() {
-    let txt = ""; document.querySelectorAll('.paper-page-content').forEach(p => txt += p.innerText);
-    const words = txt.trim() ? txt.trim().split(/\s+/).length : 0;
-    document.getElementById('wordCount').innerText = `${words} words`;
-}
+function updateWordCount() { let txt = ""; document.querySelectorAll('.paper-page-content').forEach(p => txt += p.innerText); const words = txt.trim() ? txt.trim().split(/\s+/).length : 0; document.getElementById('wordCount').innerText = `${words} words`; }
 function showWordCount() { updateWordCount(); showToast(document.getElementById('wordCount').innerText); }
 
-// ===== PAGE MANAGEMENT =====
+// ========== PAGE MANAGEMENT ==========
 function updatePageList() {
     const list = document.getElementById('pageList');
     const pages = document.querySelectorAll('.paper-page');
     list.innerHTML = '';
     pages.forEach((page, i) => {
-        const content = page.querySelector('.paper-page-content').innerHTML;
+        const content = page.querySelector('.paper-page-content').innerHTML.substring(0,100);
         const thumb = document.createElement('div');
         thumb.className = `page-thumb ${i === currentPageIndex ? 'active' : ''}`;
-        thumb.innerHTML = `<div class="thumb-header"><span class="page-number">${i+1}</span><button class="delete-page-btn" onclick="deletePage(${i})"><i class="fas fa-trash"></i></button></div>
-                           <div class="mini-paper"><div class="mini-paper-content">${content.substring(0,150)}</div></div>`;
+        thumb.innerHTML = `<div class="thumb-header"><span class="page-number">${i+1}</span><button class="delete-page-btn" onclick="deletePage(${i})"><i class="fas fa-trash"></i></button></div><div class="mini-paper">${content}</div>`;
         thumb.onclick = (e) => { if(!e.target.closest('.delete-page-btn')) { currentPageIndex = i; updatePageList(); page.scrollIntoView({behavior:'smooth'}); } };
         list.appendChild(thumb);
     });
     document.getElementById('pageCounter').innerText = `Page ${currentPageIndex + 1} of ${pages.length}`;
 }
-function addBlankPage() {
-    const container = document.getElementById('paperContainer');
-    const newPage = document.createElement('div');
-    newPage.className = 'paper-page';
-    newPage.innerHTML = '<div class="paper-page-content" contenteditable="true"><p><br></p></div>';
-    container.appendChild(newPage);
-    updatePageList();
-}
-function deletePage(idx) {
-    const pages = document.querySelectorAll('.paper-page');
-    if(pages.length<=1) { showToast("Cannot delete last page"); return; }
-    pages[idx].remove();
-    if(currentPageIndex >= idx) currentPageIndex = Math.max(0, currentPageIndex-1);
-    updatePageList();
-}
-function toggleSidebar() {
-    sidebar.classList.toggle('collapsed');
-    canvas.classList.toggle('expanded');
-    dynamicIsland.classList.toggle('collapsed');
-    toggleBtn.classList.toggle('sidebar-closed');
-    document.getElementById('toggleIcon').className = sidebar.classList.contains('collapsed') ? 'fas fa-chevron-right' : 'fas fa-chevron-left';
-}
+function addBlankPage() { const container = document.getElementById('paperContainer'); const newPage = document.createElement('div'); newPage.className = 'paper-page'; newPage.innerHTML = '<div class="paper-page-content" contenteditable="true"><p><br></p></div>'; container.appendChild(newPage); updatePageList(); }
+function deletePage(idx) { const pages = document.querySelectorAll('.paper-page'); if(pages.length<=1) { showToast("Cannot delete last page"); return; } pages[idx].remove(); if(currentPageIndex >= idx) currentPageIndex = Math.max(0, currentPageIndex-1); updatePageList(); }
+function toggleSidebar() { sidebar.classList.toggle('collapsed'); canvas.classList.toggle('expanded'); dynamicIsland.classList.toggle('collapsed'); toggleBtn.classList.toggle('sidebar-closed'); document.getElementById('toggleIcon').className = sidebar.classList.contains('collapsed') ? 'fas fa-chevron-right' : 'fas fa-chevron-left'; }
 function newDocument() { if(confirm('Create new document?')) { document.getElementById('paperContainer').innerHTML = '<div class="paper-page"><div class="paper-page-content" contenteditable="true"><h1 style="text-align:center;">KORAHEY ACADEMY</h1><p style="text-align:center">New document</p></div></div>'; currentPageIndex=0; updatePageList(); updateWordCount(); showToast('New document'); } }
 function saveDocument() { const pages=[]; document.querySelectorAll('.paper-page').forEach((p,i)=>{ pages.push({id:i, content:p.querySelector('.paper-page-content').innerHTML}); }); localStorage.setItem('koraheyDoc',JSON.stringify(pages)); showToast('Saved'); }
 function printDocument() { window.print(); }
@@ -699,64 +870,12 @@ function switchMediaTab(tab) { document.querySelectorAll('.media-nav-item').forE
 function searchImages() { const term=document.getElementById('mediaSearch').value.toLowerCase(); document.querySelectorAll('.image-card').forEach(c=>{ c.style.display=c.innerText.toLowerCase().includes(term)?'flex':'none'; }); }
 function triggerFileUpload() { const inp=document.createElement('input'); inp.type='file'; inp.accept='image/*'; inp.multiple=true; inp.onchange=e=>handleImageUpload(e); inp.click(); }
 function handleImageUpload(e) { Array.from(e.target.files).forEach((file,i)=>{ const reader=new FileReader(); reader.onload=ev=>{ imageLibrary.unshift({id:Date.now()+i, src:ev.target.result, name:file.name}); localStorage.setItem('koraheyImages',JSON.stringify(imageLibrary)); loadImageGallery(); showToast(`${file.name} uploaded`); }; reader.readAsDataURL(file); }); }
-function loadImageGallery() { const saved=localStorage.getItem('koraheyImages'); if(saved) imageLibrary=JSON.parse(saved); const grid=document.getElementById('imageGrid'); if(!imageLibrary.length){ grid.innerHTML='<div style="text-align:center; padding:40px"><i class="fas fa-cloud-upload-alt"></i><br>No images. Upload some!</div>'; return; } grid.innerHTML=imageLibrary.map((img,idx)=>`<div class="image-card" draggable="true" data-src="${img.src}" ondragstart="dragStart(event)" ondragend="dragEnd(event)"><img src="${img.src}"><div class="image-card-actions"><button class="image-action" onclick="deleteImageFromLib(${idx})"><i class="fas fa-trash"></i></button><button class="image-action" onclick="insertImageFromLib('${img.src}')"><i class="fas fa-plus"></i></button></div></div>`).join(''); }
+function loadImageGallery() { const saved=localStorage.getItem('koraheyImages'); if(saved) imageLibrary=JSON.parse(saved); const grid=document.getElementById('imageGrid'); if(!imageLibrary.length){ grid.innerHTML='<div style="text-align:center; padding:40px"><i class="fas fa-cloud-upload-alt"></i><br>No images. Upload some!</div>'; return; } grid.innerHTML=imageLibrary.map((img,idx)=>`<div class="image-card" onclick="insertImageFromLib('${img.src}')"><img src="${img.src}"><div class="image-card-actions"><button class="image-action" onclick="event.stopPropagation(); deleteImageFromLib(${idx})"><i class="fas fa-trash"></i></button></div></div>`).join(''); }
 function deleteImageFromLib(idx) { if(confirm('Delete?')){ imageLibrary.splice(idx,1); localStorage.setItem('koraheyImages',JSON.stringify(imageLibrary)); loadImageGallery(); showToast('Deleted'); } }
-function insertImageFromLib(src) { insertImageIntoEditor(src); closeMediaManager(); }
-
-// ========== IMAGE DRAG & DROP & RESIZE ==========
-let draggedImageSrc=null;
-function dragStart(e) { const card=e.target.closest('.image-card'); if(card){ draggedImageSrc=card.getAttribute('data-src'); e.dataTransfer.setData('text/plain',draggedImageSrc); e.dataTransfer.effectAllowed='copy'; e.target.style.opacity='0.4'; } }
-function dragEnd(e) { if(e.target) e.target.style.opacity='1'; draggedImageSrc=null; }
-document.getElementById('canvas').addEventListener('dragover',e=>e.preventDefault());
-document.getElementById('canvas').addEventListener('drop',e=>{ e.preventDefault(); let src=e.dataTransfer.getData('text/plain'); if(!src&&draggedImageSrc) src=draggedImageSrc; if(src&&src.startsWith('data:image')){ insertImageIntoEditor(src); showToast('Image dropped'); } });
-
-function insertImageIntoEditor(src) {
-    const editor=document.querySelector('.paper-page-content');
-    if(!editor) return;
-    const container=document.createElement('div'); container.className='resizable-image'; container.style.display='inline-block';
-    const img=document.createElement('img'); img.src=src; img.style.maxWidth='200px'; img.style.height='auto';
-    img.onclick=(e)=>{ e.stopPropagation(); selectImageForResize(container); };
-    const handle=document.createElement('div'); handle.className='resize-handle';
-    let isResizing=false, startX, startW;
-    handle.onmousedown=(e)=>{ e.stopPropagation(); isResizing=true; startX=e.clientX; startW=img.offsetWidth; document.addEventListener('mousemove',onResize); document.addEventListener('mouseup',stopResize); };
-    const onResize=(e)=>{ if(isResizing){ const newW=Math.max(50,startW+(e.clientX-startX)); img.style.width=newW+'px'; } };
-    const stopResize=()=>{ isResizing=false; document.removeEventListener('mousemove',onResize); document.removeEventListener('mouseup',stopResize); };
-    container.appendChild(img); container.appendChild(handle);
-    const sel=window.getSelection(); const range=sel.getRangeAt(0); range.insertNode(container);
-    showToast('Image added. Drag corner to resize, drag image to move.');
-}
-function selectImageForResize(container) {
-    if(selectedImageContainer) selectedImageContainer.classList.remove('image-selected');
-    selectedImageContainer=container; selectedImageContainer.classList.add('image-selected');
-    let toolbar=document.getElementById('imgToolbar');
-    if(!toolbar){ toolbar=document.createElement('div'); toolbar.id='imgToolbar'; toolbar.style.position='fixed'; toolbar.style.background='white'; toolbar.style.borderRadius='30px'; toolbar.style.padding='4px 12px'; toolbar.style.boxShadow='0 2px 8px rgba(0,0,0,0.2)'; toolbar.style.zIndex='1005'; toolbar.style.display='flex'; toolbar.style.gap='8px'; document.body.appendChild(toolbar); }
-    const rect=container.getBoundingClientRect();
-    toolbar.style.left=rect.left+'px'; toolbar.style.top=(rect.top-45)+'px';
-    toolbar.innerHTML=`<button onclick="alignImage('left')"><i class="fas fa-align-left"></i></button><button onclick="alignImage('center')"><i class="fas fa-align-center"></i></button><button onclick="alignImage('right')"><i class="fas fa-align-right"></i></button><button onclick="deleteSelectedImage()"><i class="fas fa-trash"></i></button>`;
-    toolbar.style.display='flex';
-}
-function alignImage(align) {
-    if(!selectedImageContainer) return;
-    if(align==='left'){ selectedImageContainer.style.float='left'; selectedImageContainer.style.margin='0 12px 8px 0'; }
-    else if(align==='center'){ selectedImageContainer.style.float='none'; selectedImageContainer.style.display='block'; selectedImageContainer.style.margin='8px auto'; }
-    else if(align==='right'){ selectedImageContainer.style.float='right'; selectedImageContainer.style.margin='0 0 8px 12px'; }
-    const tb=document.getElementById('imgToolbar'); if(tb) tb.style.display='none';
-    selectedImageContainer.classList.remove('image-selected'); selectedImageContainer=null;
-}
-function deleteSelectedImage() { if(selectedImageContainer){ selectedImageContainer.remove(); const tb=document.getElementById('imgToolbar'); if(tb) tb.style.display='none'; selectedImageContainer=null; showToast('Image deleted'); } }
-document.addEventListener('click',(e)=>{ if(!e.target.closest('.resizable-image')&&!e.target.closest('#imgToolbar')){ const tb=document.getElementById('imgToolbar'); if(tb) tb.style.display='none'; if(selectedImageContainer){ selectedImageContainer.classList.remove('image-selected'); selectedImageContainer=null; } } });
-
-// ========== PASTE FALLBACK ==========
-function pasteText() {
-    navigator.clipboard.readText().then(text=>{ document.execCommand('insertText',false,text); showToast('Pasted'); updateWordCount(); updatePageList(); }).catch(()=>showToast('Allow clipboard access'));
-}
+function insertImageFromLib(src) { document.execCommand('insertHTML', false, `<img src="${src}" style="max-width:200px; margin:5px; border-radius:4px;">`); closeMediaManager(); showToast('Image inserted'); }
 
 // ========== INIT ==========
-window.onload = () => { loadDocument(); updatePageList(); updateWordCount(); setupContentObserver(); };
-function setupContentObserver() {
-    const obs = new MutationObserver(()=>{ updateWordCount(); updatePageList(); });
-    obs.observe(document.getElementById('paperContainer'), { childList:true, subtree:true, characterData:true });
-}
+window.onload = () => { loadDocument(); updatePageList(); updateWordCount(); };
 document.querySelectorAll('.ribbon-tab').forEach(tab=>{
     tab.addEventListener('mouseenter',()=>{
         document.querySelectorAll('.ribbon-tab').forEach(t=>t.classList.remove('active'));
