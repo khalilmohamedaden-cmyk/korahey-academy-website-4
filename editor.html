@@ -337,6 +337,79 @@
 
         .toast { position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%) translateY(100px); background: #333; color: white; padding: 8px 16px; border-radius: 40px; font-size: 12px; z-index: 3000; transition: transform 0.3s; }
         .toast.show { transform: translateX(-50%) translateY(0); }
+
+        /* ===== HEADER / FOOTER ZONES ===== */
+        .paper-page { display: flex; flex-direction: column; }
+        .paper-page-content { flex: 1; overflow-y: auto; }
+        .page-header-zone, .page-footer-zone {
+            padding: 4mm 25mm; min-height: 12mm; outline: none;
+            font-family: 'Times New Roman', serif; font-size: 10pt; color: #555;
+        }
+        .page-header-zone { border-bottom: 1px dashed #bbb; }
+        .page-footer-zone { border-top: 1px dashed #bbb; }
+        .page-header-zone:empty:before, .page-footer-zone:empty:before {
+            content: attr(data-placeholder); color: #bbb; pointer-events: none;
+        }
+
+        /* ===== CONTEXT MENU ===== */
+        .context-menu {
+            display: none; position: fixed; z-index: 3000;
+            background: white; border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            border: 1px solid var(--border-light); min-width: 200px; overflow: hidden;
+        }
+        .context-menu.active { display: block; }
+        .ctx-item { padding: 8px 16px; cursor: pointer; font-size: 13px; display: flex; align-items: center; gap: 10px; color: #333; transition: background 0.15s; }
+        .ctx-item:hover { background: #f5f5f7; }
+        .ctx-item i { width: 16px; color: #666; }
+        .ctx-divider { height: 1px; background: var(--border-light); margin: 4px 0; }
+        .ctx-danger { color: #ff3b30; }
+        .ctx-danger i { color: #ff3b30; }
+        .ctx-danger:hover { background: rgba(255,59,48,0.08); }
+
+        /* ===== FIND & REPLACE ===== */
+        .find-replace-modal {
+            display: none; position: fixed; top: 80px; right: 24px;
+            width: 340px; background: white; z-index: 2500;
+            border-radius: 16px; box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            border: 1px solid var(--border-light);
+        }
+        .find-replace-modal.active { display: block; }
+        .fr-header { padding: 12px 16px; border-bottom: 1px solid var(--border-light); display: flex; align-items: center; justify-content: space-between; }
+        .fr-header h3 { font-size: 14px; font-weight: 600; }
+        .fr-body { padding: 14px 16px; }
+        .fr-row { display: flex; gap: 8px; margin-bottom: 10px; align-items: center; }
+        .fr-input { flex: 1; padding: 7px 10px; border: 1px solid var(--border-light); border-radius: 8px; font-size: 13px; outline: none; }
+        .fr-input:focus { border-color: var(--apple-blue); }
+        .fr-btn { padding: 6px 12px; border-radius: 8px; border: none; cursor: pointer; font-size: 12px; font-weight: 500; white-space: nowrap; }
+        .fr-btn-primary { background: var(--apple-blue); color: white; }
+        .fr-btn-secondary { background: #f0f0f0; color: #333; }
+        .fr-match-info { font-size: 12px; color: #888; text-align: center; padding-bottom: 4px; }
+        .find-highlight { background: #ffeb3b; border-radius: 2px; }
+        .find-current { background: #ff9800 !important; color: white; border-radius: 2px; }
+
+        /* ===== SPECIAL CHARACTERS ===== */
+        .overlay-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(6px); z-index: 2000;
+            align-items: center; justify-content: center;
+        }
+        .overlay-modal.active { display: flex; }
+        .sc-content { background: white; border-radius: 20px; padding: 24px; width: 500px; max-height: 70vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; font-weight: 600; font-size: 15px; }
+        .sc-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; }
+        .sc-char { width: 36px; height: 36px; border: 1px solid var(--border-light); border-radius: 6px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: all 0.15s; background: white; }
+        .sc-char:hover { background: var(--apple-blue); color: white; border-color: var(--apple-blue); transform: scale(1.1); }
+
+        /* ===== LINK MODAL ===== */
+        .lm-content { background: white; border-radius: 20px; padding: 24px; width: 400px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
+        .lm-input { width: 100%; padding: 8px 12px; border: 1px solid var(--border-light); border-radius: 8px; font-size: 13px; margin-bottom: 10px; outline: none; box-sizing: border-box; }
+        .lm-input:focus { border-color: var(--apple-blue); }
+        .lm-label { font-size: 11px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .lm-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 4px; }
+        .lm-btn { padding: 8px 18px; border-radius: 8px; border: none; cursor: pointer; font-size: 13px; font-weight: 500; }
+        .lm-btn-primary { background: var(--apple-blue); color: white; }
+        .lm-btn-cancel { background: #f0f0f0; color: #333; }
     </style>
 </head>
 <body>
@@ -445,6 +518,27 @@
             </div>
         </div>
         <div class="ribbon-group">
+            <div class="group-title">LINK</div>
+            <div class="group-buttons">
+                <button class="ribbon-btn" onclick="openLinkModal()"><i class="fas fa-link"></i> Hyperlink</button>
+            </div>
+        </div>
+        <div class="ribbon-group">
+            <div class="group-title">ELEMENTS</div>
+            <div class="group-buttons">
+                <button class="ribbon-btn" onclick="insertHorizontalLine()"><i class="fas fa-minus"></i> Horizontal Line</button>
+                <button class="ribbon-btn" onclick="insertPageBreak()"><i class="fas fa-file-alt"></i> Page Break</button>
+                <button class="ribbon-btn" onclick="openSpecialChars()"><i class="fas fa-omega"></i> Special Chars</button>
+            </div>
+        </div>
+        <div class="ribbon-group">
+            <div class="group-title">HEADER &amp; FOOTER</div>
+            <div class="group-buttons">
+                <button class="ribbon-btn" onclick="toggleHeadersFooters()"><i class="fas fa-heading"></i> Toggle H/F</button>
+                <button class="ribbon-btn" onclick="insertPageNumbers()"><i class="fas fa-hashtag"></i> Page Numbers</button>
+            </div>
+        </div>
+        <div class="ribbon-group">
             <div class="group-title">AI</div>
             <div class="group-buttons">
                 <button class="ribbon-btn" onclick="toggleAIPanel()" style="color:var(--ai-purple); font-weight:600;">
@@ -489,9 +583,23 @@
                 <button class="ribbon-btn" onclick="setOrientation('landscape')">Landscape</button>
             </div>
         </div>
+        <div class="ribbon-group">
+            <div class="group-title">COLUMNS</div>
+            <div class="group-buttons">
+                <button class="ribbon-btn" onclick="setColumns(1)"><i class="fas fa-align-justify"></i> One</button>
+                <button class="ribbon-btn" onclick="setColumns(2)"><i class="fas fa-columns"></i> Two</button>
+                <button class="ribbon-btn" onclick="setColumns(3)"><i class="fas fa-columns"></i> Three</button>
+            </div>
+        </div>
     </div>
 
     <div id="ribbonReview" class="ribbon-panel">
+        <div class="ribbon-group">
+            <div class="group-title">FIND</div>
+            <div class="group-buttons">
+                <button class="ribbon-btn" onclick="openFindReplace()"><i class="fas fa-search"></i> Find &amp; Replace</button>
+            </div>
+        </div>
         <div class="ribbon-group">
             <div class="group-title">PROOFING</div>
             <div class="group-buttons">
@@ -521,9 +629,30 @@
 
 <!-- Dynamic Island -->
 <div class="dynamic-island" id="dynamicIsland">
-    <button class="tool-btn" onclick="toggleBold()"><b>B</b></button>
-    <button class="tool-btn" onclick="toggleItalic()"><i>I</i></button>
-    <button class="tool-btn" onclick="toggleUnderline()"><u>U</u></button>
+    <select id="islandFontSelector" class="font-selector" onchange="changeFont(true)" style="width:120px;font-size:11px;">
+        <option value="'Times New Roman', serif">Times New Roman</option>
+        <option value="Arial">Arial</option>
+        <option value="Calibri">Calibri</option>
+        <option value="Georgia">Georgia</option>
+        <option value="'Courier New', monospace">Courier New</option>
+        <option value="Verdana">Verdana</option>
+    </select>
+    <select id="islandSizeSelector" class="size-selector" onchange="changeFontSize(true)" style="width:52px;font-size:11px;">
+        <option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option>
+        <option value="12" selected>12</option><option value="14">14</option><option value="16">16</option>
+        <option value="18">18</option><option value="20">20</option><option value="24">24</option>
+        <option value="28">28</option><option value="32">32</option><option value="36">36</option>
+    </select>
+    <div class="separator"></div>
+    <button class="tool-btn" id="islandBold" onclick="toggleBold()"><b>B</b></button>
+    <button class="tool-btn" id="islandItalic" onclick="toggleItalic()"><i>I</i></button>
+    <button class="tool-btn" id="islandUnderline" onclick="toggleUnderline()"><u>U</u></button>
+    <button class="tool-btn" onclick="toggleStrikethrough()" title="Strikethrough"><s>S</s></button>
+    <div class="separator"></div>
+    <input type="color" id="islandColorPicker" value="#000000" onchange="execCommand('foreColor',this.value)" title="Text color" style="width:24px;height:24px;border:1px solid var(--border-light);cursor:pointer;border-radius:4px;padding:1px;">
+    <div class="separator"></div>
+    <button class="tool-btn" onclick="execCommand('undo')" title="Undo (Ctrl+Z)"><i class="fas fa-undo"></i></button>
+    <button class="tool-btn" onclick="execCommand('redo')" title="Redo (Ctrl+Y)"><i class="fas fa-redo"></i></button>
     <div class="separator"></div>
     <button class="tool-btn" onclick="execCommand('justifyLeft')"><i class="fas fa-align-left"></i></button>
     <button class="tool-btn" onclick="execCommand('justifyCenter')"><i class="fas fa-align-center"></i></button>
@@ -531,6 +660,8 @@
     <div class="separator"></div>
     <button class="tool-btn" onclick="toggleList('insertUnorderedList')"><i class="fas fa-list-ul"></i></button>
     <button class="tool-btn" onclick="toggleList('insertOrderedList')"><i class="fas fa-list-ol"></i></button>
+    <div class="separator"></div>
+    <button class="tool-btn" onclick="openFindReplace()" title="Find &amp; Replace (Ctrl+F)"><i class="fas fa-search"></i></button>
 </div>
 
 <!-- Floating AI Button -->
@@ -556,13 +687,15 @@
 <div class="canvas-center" id="canvas">
     <div id="paperContainer">
         <div class="paper-page">
+            <div class="page-header-zone" contenteditable="true" style="display:none;" data-placeholder="Header — click to edit..."></div>
             <div class="paper-page-content" contenteditable="true" id="editorContent">
                 <h1 style="text-align: center;">KORAHEY ACADEMY</h1>
                 <p style="text-align: center; font-style: italic;">Passion for Success</p>
                 <hr>
                 <p>Welcome to Korahey Editor!</p>
-                <p>Use the Insert tab for Images, Tables, and AI Writer</p>
+                <p>Use the Insert tab for Images, Tables, AI Writer, Links, and more.</p>
             </div>
+            <div class="page-footer-zone" contenteditable="true" style="display:none;" data-placeholder="Footer — click to edit..."></div>
         </div>
     </div>
 </div>
@@ -674,6 +807,75 @@
 
 <div id="toast" class="toast"></div>
 
+<!-- Context Menu -->
+<div id="contextMenu" class="context-menu">
+    <div class="ctx-item" onclick="execCommand('cut');hideContextMenu()"><i class="fas fa-cut"></i> Cut</div>
+    <div class="ctx-item" onclick="execCommand('copy');hideContextMenu()"><i class="fas fa-copy"></i> Copy</div>
+    <div class="ctx-item" onclick="pasteText();hideContextMenu()"><i class="fas fa-paste"></i> Paste</div>
+    <div class="ctx-divider"></div>
+    <div class="ctx-item" onclick="toggleBold();hideContextMenu()"><i class="fas fa-bold"></i> Bold</div>
+    <div class="ctx-item" onclick="toggleItalic();hideContextMenu()"><i class="fas fa-italic"></i> Italic</div>
+    <div class="ctx-item" onclick="toggleUnderline();hideContextMenu()"><i class="fas fa-underline"></i> Underline</div>
+    <div class="ctx-divider"></div>
+    <div class="ctx-item" onclick="openLinkModal();hideContextMenu()"><i class="fas fa-link"></i> Insert Link</div>
+    <div class="ctx-item" onclick="openFindReplace();hideContextMenu()"><i class="fas fa-search"></i> Find &amp; Replace</div>
+    <div class="ctx-divider"></div>
+    <div class="ctx-item" onclick="execCommand('removeFormat');hideContextMenu()"><i class="fas fa-eraser"></i> Clear Formatting</div>
+</div>
+
+<!-- Find & Replace Modal -->
+<div id="findReplaceModal" class="find-replace-modal">
+    <div class="fr-header">
+        <h3><i class="fas fa-search" style="margin-right:8px;color:var(--apple-blue);"></i>Find &amp; Replace</h3>
+        <button onclick="closeFindReplace()" style="background:none;border:none;cursor:pointer;color:#999;font-size:18px;">&times;</button>
+    </div>
+    <div class="fr-body">
+        <div class="fr-row">
+            <input id="findInput" class="fr-input" placeholder="Find..." onkeydown="if(event.key==='Enter')findText()">
+            <button class="fr-btn fr-btn-primary" onclick="findText()">Find</button>
+        </div>
+        <div class="fr-row">
+            <button class="fr-btn fr-btn-secondary" onclick="findPrev()"><i class="fas fa-chevron-up"></i></button>
+            <button class="fr-btn fr-btn-secondary" onclick="findNext()"><i class="fas fa-chevron-down"></i></button>
+        </div>
+        <div class="fr-row">
+            <input id="replaceInput" class="fr-input" placeholder="Replace with...">
+            <button class="fr-btn fr-btn-secondary" onclick="replaceCurrent()">Replace</button>
+            <button class="fr-btn fr-btn-primary" onclick="replaceAll()">All</button>
+        </div>
+        <div id="frMatchInfo" class="fr-match-info"></div>
+    </div>
+</div>
+
+<!-- Special Characters Modal -->
+<div id="specialCharsModal" class="overlay-modal">
+    <div class="sc-content">
+        <div class="modal-header">
+            <span><i class="fas fa-omega" style="margin-right:8px;color:var(--apple-blue);"></i>Special Characters</span>
+            <button onclick="closeSpecialChars()" style="background:none;border:none;cursor:pointer;font-size:20px;color:#999;">&times;</button>
+        </div>
+        <div id="specialCharsGrid" class="sc-grid"></div>
+    </div>
+</div>
+
+<!-- Link Modal -->
+<div id="linkModal" class="overlay-modal">
+    <div class="lm-content">
+        <div class="modal-header">
+            <span><i class="fas fa-link" style="margin-right:8px;color:var(--apple-blue);"></i>Insert Hyperlink</span>
+            <button onclick="closeLinkModal()" style="background:none;border:none;cursor:pointer;font-size:20px;color:#999;">&times;</button>
+        </div>
+        <div class="lm-label">Display Text</div>
+        <input id="linkText" class="lm-input" placeholder="e.g. Click here">
+        <div class="lm-label">URL</div>
+        <input id="linkUrl" class="lm-input" placeholder="https://..." onkeydown="if(event.key==='Enter')insertLink()">
+        <div class="lm-actions">
+            <button class="lm-btn lm-btn-cancel" onclick="closeLinkModal()">Cancel</button>
+            <button class="lm-btn lm-btn-primary" onclick="insertLink()">Insert Link</button>
+        </div>
+    </div>
+</div>
+
 <script>
 // ========== STATE ==========
 let currentZoom = 100;
@@ -682,6 +884,9 @@ let isRibbonOpen = false;
 let isAIPanelOpen = false;
 let isTablePanelOpen = false;
 let imageLibrary = [];
+let headersFootersVisible = false;
+let findMatches = [];
+let findCurrentIndex = 0;
 
 function showToast(m) {
     const t = document.getElementById('toast');
@@ -980,8 +1185,20 @@ function updateButtonStates() {
 }
 function setAlignment(align) { execCommand(align); updateButtonStates(); }
 function toggleList(cmd) { execCommand(cmd); }
-function changeFont() { execCommand('fontName', document.getElementById('fontSelector').value); }
-function changeFontSize() { execCommand('fontSize', document.getElementById('sizeSelector').value); }
+function changeFont(fromIsland = false) {
+    const ribbon = document.getElementById('fontSelector');
+    const island = document.getElementById('islandFontSelector');
+    const val = fromIsland ? island.value : ribbon.value;
+    if (fromIsland) ribbon.value = val; else island.value = val;
+    execCommand('fontName', val);
+}
+function changeFontSize(fromIsland = false) {
+    const ribbon = document.getElementById('sizeSelector');
+    const island = document.getElementById('islandSizeSelector');
+    const val = fromIsland ? island.value : ribbon.value;
+    if (fromIsland) ribbon.value = val; else island.value = val;
+    execCommand('fontSize', val);
+}
 function changeLineSpacing() { execCommand('lineHeight', document.getElementById('lineSpacingSelect').value); showToast('Line spacing changed'); }
 function changeTextColor() { const c = prompt('Enter color (#RRGGBB or name)', '#000000'); if(c) execCommand('foreColor', c); }
 function changeHighlight() { const c = prompt('Highlight color', 'yellow'); if(c) execCommand('backColor', c); }
@@ -1041,7 +1258,12 @@ function addBlankPage() {
     const container = document.getElementById('paperContainer');
     const newPage = document.createElement('div');
     newPage.className = 'paper-page';
-    newPage.innerHTML = '<div class="paper-page-content" contenteditable="true"><p><br></p></div>';
+    const vis = headersFootersVisible ? 'block' : 'none';
+    newPage.innerHTML = `
+        <div class="page-header-zone" contenteditable="true" style="display:${vis};" data-placeholder="Header — click to edit..."></div>
+        <div class="paper-page-content" contenteditable="true"><p><br></p></div>
+        <div class="page-footer-zone" contenteditable="true" style="display:${vis};" data-placeholder="Footer — click to edit..."></div>
+    `;
     container.appendChild(newPage);
     updatePageList();
     showToast('New page added');
@@ -1089,6 +1311,199 @@ function handleImageUpload(e) { Array.from(e.target.files).forEach((file,i)=>{ c
 function loadImageGallery() { const saved=localStorage.getItem('koraheyImages'); if(saved) imageLibrary=JSON.parse(saved); const grid=document.getElementById('imageGrid'); if(!imageLibrary.length){ grid.innerHTML='<div style="text-align:center; padding:40px"><i class="fas fa-cloud-upload-alt"></i><br>No images. Upload some!</div>'; return; } grid.innerHTML=imageLibrary.map((img,idx)=>`<div class="image-card" ondblclick="insertImageFromLib('${img.src}')"><img src="${img.src}"><div class="image-card-actions"><button class="image-action" onclick="event.stopPropagation(); deleteImageFromLib(${idx})"><i class="fas fa-trash"></i></button></div></div>`).join(''); }
 function deleteImageFromLib(idx) { if(confirm('Delete?')){ imageLibrary.splice(idx,1); localStorage.setItem('koraheyImages',JSON.stringify(imageLibrary)); loadImageGallery(); showToast('Deleted'); } }
 function insertImageFromLib(src) { document.execCommand('insertHTML', false, `<img src="${src}" style="max-width:200px; margin:5px; border-radius:4px;">`); closeMediaManager(); showToast('Image inserted'); }
+
+// ========== FIND & REPLACE ==========
+function openFindReplace() {
+    document.getElementById('findReplaceModal').classList.add('active');
+    document.getElementById('findInput').focus();
+}
+function closeFindReplace() {
+    clearFindHighlights();
+    document.getElementById('findReplaceModal').classList.remove('active');
+    document.getElementById('frMatchInfo').textContent = '';
+}
+function findText() {
+    clearFindHighlights();
+    const term = document.getElementById('findInput').value.trim();
+    if (!term) return;
+    const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(escaped, 'gi');
+    document.querySelectorAll('.paper-page-content').forEach(page => {
+        const walker = document.createTreeWalker(page, NodeFilter.SHOW_TEXT);
+        const nodes = [];
+        let node;
+        while ((node = walker.nextNode())) nodes.push(node);
+        nodes.forEach(textNode => {
+            const text = textNode.textContent;
+            const parts = [];
+            let last = 0, m;
+            regex.lastIndex = 0;
+            while ((m = regex.exec(text)) !== null) {
+                if (m.index > last) parts.push(document.createTextNode(text.slice(last, m.index)));
+                const mark = document.createElement('mark');
+                mark.className = 'find-highlight';
+                mark.textContent = m[0];
+                parts.push(mark);
+                last = regex.lastIndex;
+            }
+            if (parts.length) {
+                if (last < text.length) parts.push(document.createTextNode(text.slice(last)));
+                const frag = document.createDocumentFragment();
+                parts.forEach(p => frag.appendChild(p));
+                textNode.parentNode.replaceChild(frag, textNode);
+            }
+        });
+    });
+    findMatches = Array.from(document.querySelectorAll('.find-highlight'));
+    findCurrentIndex = 0;
+    if (findMatches.length) {
+        findMatches[0].classList.add('find-current');
+        findMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    document.getElementById('frMatchInfo').textContent = findMatches.length ? `${findMatches.length} match${findMatches.length !== 1 ? 'es' : ''}` : 'No matches';
+}
+function clearFindHighlights() {
+    document.querySelectorAll('.find-highlight').forEach(mark => {
+        mark.parentNode.replaceChild(document.createTextNode(mark.textContent), mark);
+    });
+    document.querySelectorAll('.paper-page-content').forEach(p => p.normalize());
+    findMatches = [];
+}
+function findNext() {
+    if (!findMatches.length) { findText(); return; }
+    findMatches[findCurrentIndex]?.classList.remove('find-current');
+    findCurrentIndex = (findCurrentIndex + 1) % findMatches.length;
+    findMatches[findCurrentIndex].classList.add('find-current');
+    findMatches[findCurrentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+function findPrev() {
+    if (!findMatches.length) { findText(); return; }
+    findMatches[findCurrentIndex]?.classList.remove('find-current');
+    findCurrentIndex = (findCurrentIndex - 1 + findMatches.length) % findMatches.length;
+    findMatches[findCurrentIndex].classList.add('find-current');
+    findMatches[findCurrentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+function replaceCurrent() {
+    const replacement = document.getElementById('replaceInput').value;
+    if (!findMatches.length) { findText(); return; }
+    const cur = findMatches[findCurrentIndex];
+    if (cur) {
+        cur.textContent = replacement;
+        cur.classList.remove('find-highlight', 'find-current');
+        findMatches.splice(findCurrentIndex, 1);
+        if (findCurrentIndex >= findMatches.length) findCurrentIndex = 0;
+        findMatches[findCurrentIndex]?.classList.add('find-current');
+        findMatches[findCurrentIndex]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        document.getElementById('frMatchInfo').textContent = `${findMatches.length} remaining`;
+    }
+}
+function replaceAll() {
+    const replacement = document.getElementById('replaceInput').value;
+    if (!findMatches.length) findText();
+    let count = 0;
+    document.querySelectorAll('.find-highlight').forEach(mark => {
+        mark.textContent = replacement;
+        mark.classList.remove('find-highlight', 'find-current');
+        count++;
+    });
+    findMatches = [];
+    document.getElementById('frMatchInfo').textContent = `Replaced ${count} instance${count !== 1 ? 's' : ''}`;
+    showToast(`Replaced ${count} instance${count !== 1 ? 's' : ''}`);
+}
+
+// ========== CONTEXT MENU ==========
+function hideContextMenu() { document.getElementById('contextMenu').classList.remove('active'); }
+document.addEventListener('contextmenu', e => {
+    if (!e.target.closest('.paper-page-content, .page-header-zone, .page-footer-zone')) return;
+    e.preventDefault();
+    const menu = document.getElementById('contextMenu');
+    menu.style.top = Math.min(e.clientY, window.innerHeight - menu.offsetHeight - 10) + 'px';
+    menu.style.left = Math.min(e.clientX, window.innerWidth - 210) + 'px';
+    menu.classList.add('active');
+});
+document.addEventListener('click', () => hideContextMenu());
+
+// ========== LINK ==========
+function openLinkModal() {
+    const sel = window.getSelection();
+    document.getElementById('linkText').value = sel ? sel.toString() : '';
+    document.getElementById('linkUrl').value = '';
+    document.getElementById('linkModal').classList.add('active');
+    document.getElementById('linkUrl').focus();
+}
+function closeLinkModal() { document.getElementById('linkModal').classList.remove('active'); }
+function insertLink() {
+    const url = document.getElementById('linkUrl').value.trim();
+    if (!url) { showToast('Please enter a URL'); return; }
+    const text = document.getElementById('linkText').value.trim() || url;
+    document.execCommand('insertHTML', false, `<a href="${url}" target="_blank" style="color:var(--apple-blue);">${text}</a>`);
+    closeLinkModal();
+    showToast('Link inserted');
+}
+
+// ========== SPECIAL CHARACTERS ==========
+const SPECIAL_CHARS = ['©','®','™','°','±','²','³','¼','½','¾','×','÷','€','£','¥','¢','§','¶','†','‡','•','…','′','″','‰','∞','≈','≠','≤','≥','√','∑','∏','∫','Δ','Ω','α','β','γ','δ','ε','λ','μ','π','σ','τ','φ','ψ','ω','←','→','↑','↓','↔','⇒','⇔','★','☆','♦','♠','♣','♥','✓','✗','«','»','–','—','"','"','\'','\''];
+function openSpecialChars() {
+    document.getElementById('specialCharsGrid').innerHTML = SPECIAL_CHARS.map(c =>
+        `<button class="sc-char" onclick="insertSpecialChar('${c}')" title="${c}">${c}</button>`
+    ).join('');
+    document.getElementById('specialCharsModal').classList.add('active');
+}
+function closeSpecialChars() { document.getElementById('specialCharsModal').classList.remove('active'); }
+function insertSpecialChar(char) { document.execCommand('insertText', false, char); closeSpecialChars(); showToast(`Inserted ${char}`); }
+
+// ========== HEADERS & FOOTERS ==========
+function toggleHeadersFooters() {
+    headersFootersVisible = !headersFootersVisible;
+    document.querySelectorAll('.page-header-zone, .page-footer-zone').forEach(z => {
+        z.style.display = headersFootersVisible ? 'block' : 'none';
+    });
+    showToast(headersFootersVisible ? 'Headers & footers on' : 'Headers & footers off');
+}
+function insertPageNumbers() {
+    if (!headersFootersVisible) toggleHeadersFooters();
+    document.querySelectorAll('.paper-page').forEach((page, i) => {
+        const footer = page.querySelector('.page-footer-zone');
+        if (footer) footer.innerHTML = `<div style="text-align:center;color:#888;font-size:10pt;">${i + 1}</div>`;
+    });
+    showToast('Page numbers inserted in footers');
+}
+
+// ========== COLUMNS ==========
+function setColumns(count) {
+    document.querySelectorAll('.paper-page-content').forEach(p => {
+        p.style.columnCount = count > 1 ? count : '';
+        p.style.columnGap = count > 1 ? '20px' : '';
+        p.style.columnRule = count > 1 ? '1px solid #ddd' : '';
+    });
+    showToast(`${count} column layout applied`);
+}
+
+// ========== INSERT ELEMENTS ==========
+function insertHorizontalLine() {
+    document.execCommand('insertHTML', false, '<hr style="border:none;border-top:1px solid #ccc;margin:12px 0;">');
+    showToast('Horizontal line inserted');
+}
+function insertPageBreak() {
+    document.execCommand('insertHTML', false, '<div style="page-break-after:always;border-top:2px dashed #bbb;margin:16px 0;padding-top:4px;color:#bbb;font-size:10px;text-align:center;font-family:sans-serif;">─── Page Break ───</div>');
+    showToast('Page break inserted');
+}
+
+// ========== KEYBOARD SHORTCUTS ==========
+document.addEventListener('keydown', e => {
+    if (e.ctrlKey || e.metaKey) {
+        if (e.key === 's') { e.preventDefault(); saveDocument(); }
+        if (e.key === 'p') { e.preventDefault(); printDocument(); }
+        if (e.key === 'f') { e.preventDefault(); openFindReplace(); }
+        if (e.key === 'h') { e.preventDefault(); openFindReplace(); document.getElementById('replaceInput')?.focus(); }
+    }
+    if (e.key === 'Escape') {
+        closeFindReplace();
+        closeSpecialChars();
+        closeLinkModal();
+        hideContextMenu();
+    }
+});
 
 // ========== INIT ==========
 window.onload = () => { loadDocument(); updatePageList(); updateWordCount(); setZoom(100); };
