@@ -233,7 +233,7 @@
 
             /* Stats: single straight row on iPad, no wrapping */
             .stats-pill-container { flex-direction: row; flex-wrap: nowrap; justify-content: center; gap: 16px; }
-            .stat-pill-card { min-width: 0; flex: 1; padding: 28px 20px; }
+            .stat-pill-card { min-width: 0 !important; flex: 1; padding: 28px 20px; }
 
             .contact-container { flex-direction: row; gap: 40px; }
             .contact-map { height: 600px; }
@@ -556,6 +556,35 @@
     <footer><div class="footer-content"><div class="footer-logo">Korahey Academy</div><div class="footer-copyright">© 2026 Khalil · Official site for Korahey Academy</div><div class="footer-made">Made by Khalil</div></div></footer>
 
     <script>
+        // DESKTOP NAV — first click opens dropdown, second click navigates
+        document.querySelectorAll('.nav-dropdown-trigger').forEach(function(link) {
+            var clicked = false;
+            var timer = null;
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (clicked) {
+                    // second click — navigate
+                    var dest = link.getAttribute('data-href');
+                    if (dest) window.location.href = dest;
+                    clicked = false;
+                    clearTimeout(timer);
+                } else {
+                    // first click — dropdown already shows on hover; mark as clicked
+                    clicked = true;
+                    // reset after 3 seconds if they don't click again
+                    timer = setTimeout(function() { clicked = false; }, 3000);
+                }
+            });
+        });
+        // close dropdown-trigger state when clicking elsewhere
+        document.addEventListener('click', function(e) {
+            if (!e.target.classList.contains('nav-dropdown-trigger')) {
+                document.querySelectorAll('.nav-dropdown-trigger').forEach(function(l) {
+                    l._clicked = false;
+                });
+            }
+        });
+
         // MOBILE MENU LOGIC
         function toggleMobileAccordion(el) {
             const sub = el.nextElementSibling;
