@@ -16,7 +16,6 @@
             --apple-blue: #0071e3;
             --text-main: #1d1d1f;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
@@ -26,7 +25,6 @@
             overflow-x: hidden;
             min-height: 100vh;
         }
-
         /* ENTRANCE ANIMATION */
         .admin-entrance {
             position: fixed;
@@ -42,22 +40,18 @@
             opacity: 1;
             transition: opacity 0.6s ease, visibility 0.6s ease;
         }
-
         .admin-entrance.fade-out {
             opacity: 0;
             visibility: hidden;
         }
-
         .entrance-content {
             text-align: center;
             animation: entrancePop 0.8s cubic-bezier(0.34, 1.2, 0.64, 1) forwards;
         }
-
         @keyframes entrancePop {
             0% { opacity: 0; transform: scale(0.8) translateY(30px); }
             100% { opacity: 1; transform: scale(1) translateY(0); }
         }
-
         .entrance-logo {
             font-size: 4rem;
             font-weight: 800;
@@ -67,20 +61,17 @@
             -webkit-text-fill-color: transparent;
             margin-bottom: 20px;
         }
-
         .entrance-sub {
             font-size: 1rem;
             color: #86868b;
             letter-spacing: 2px;
         }
-
         .entrance-dots {
             display: flex;
             justify-content: center;
             gap: 10px;
             margin-top: 30px;
         }
-
         .entrance-dots span {
             width: 8px;
             height: 8px;
@@ -89,22 +80,18 @@
             display: inline-block;
             animation: dotPulse 1.4s ease infinite;
         }
-
         @keyframes dotPulse {
             0%, 100% { opacity: 0.3; transform: scale(0.8); }
             50% { opacity: 1; transform: scale(1.2); }
         }
-
         .main-content {
             flex: 1;
             overflow-x: hidden;
         }
-
         #adminContent {
             opacity: 1;
             transition: opacity 0.5s ease;
         }
-
         .glass-header {
             padding: 100px 5% 40px;
             text-align: center;
@@ -112,13 +99,11 @@
             background-size: 400% 400%;
             animation: liveGradient 12s ease infinite;
         }
-
         @keyframes liveGradient {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-
         .dynamic-island {
             position: fixed;
             background: rgba(255, 255, 255, 0.45);
@@ -131,7 +116,6 @@
             border: 0.5px solid rgba(255, 255, 255, 0.3);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
-
         @media (min-width: 1025px) {
             .dynamic-island {
                 top: 50%;
@@ -155,7 +139,6 @@
                 height: 24px;
             }
         }
-
         @media (max-width: 1024px) {
             .dynamic-island {
                 top: 16px;
@@ -177,27 +160,23 @@
                 height: 18px;
             }
         }
-
         .dynamic-island-wrapper {
             position: relative;
             display: flex;
             gap: 12px;
         }
-
         @media (min-width: 1025px) {
             .dynamic-island-wrapper {
                 flex-direction: column;
                 gap: 8px;
             }
         }
-
         @media (max-width: 1024px) {
             .dynamic-island-wrapper {
                 flex-direction: row;
                 gap: 8px;
             }
         }
-
         .nav-item, .ai-nav-item {
             position: relative;
             display: flex;
@@ -210,7 +189,6 @@
             transition: all 0.2s ease;
             background: transparent;
         }
-
         .nav-item svg, .ai-nav-item svg {
             stroke: #1d1d1f;
             fill: none;
@@ -218,18 +196,15 @@
             width: 22px;
             height: 22px;
         }
-
         .nav-item span, .ai-nav-item span {
             font-weight: 500;
             color: #1d1d1f;
             font-size: 11px;
         }
-
         .nav-item:hover, .ai-nav-item:hover {
             transform: scale(1.05);
             background: rgba(0,0,0,0.04);
         }
-
         .create-nav-item {
             position: relative;
             display: flex;
@@ -239,7 +214,6 @@
             cursor: pointer;
             transition: all 0.2s ease;
         }
-
         .create-circle {
             width: 44px;
             height: 44px;
@@ -250,28 +224,23 @@
             justify-content: center;
             transition: all 0.2s ease;
         }
-
         .create-circle svg {
             stroke: white;
             width: 22px;
             height: 22px;
         }
-
         .create-nav-item span {
             font-weight: 500;
             color: #1d1d1f;
             font-size: 11px;
         }
-
         .create-nav-item:hover {
             transform: scale(1.02);
         }
-
         .create-nav-item:hover .create-circle {
             transform: scale(1.05);
             background: #005bb5;
         }
-
         @media (max-width: 1024px) {
             .create-circle {
                 width: 36px;
@@ -282,13 +251,11 @@
                 height: 18px;
             }
         }
-
         @media (max-width: 767px) {
             .create-nav-item {
                 display: none !important;
             }
         }
-
         .badge {
             position: absolute;
             top: -4px;
@@ -301,7 +268,6 @@
             border-radius: 20px;
             z-index: 2;
         }
-
         .hello-text {
             font-size: 3.5rem;
             font-weight: 800;
@@ -311,12 +277,10 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-
         .search-container {
             max-width: 600px;
             margin: 0 auto 30px;
         }
-
         .search-wrapper {
             display: flex;
             align-items: center;
@@ -326,7 +290,6 @@
             border: 1px solid rgba(0,0,0,0.05);
             padding: 12px 20px;
         }
-
         .search-wrapper svg {
             width: 20px;
             height: 20px;
@@ -334,7 +297,6 @@
             margin-right: 12px;
             flex-shrink: 0;
         }
-
         .search-wrapper input {
             flex: 1;
             padding: 0;
@@ -343,7 +305,6 @@
             font-size: 1rem;
             outline: none;
         }
-
         .clear-search {
             background: none;
             border: none;
@@ -351,14 +312,12 @@
             padding: 5px;
             display: none;
         }
-
         .clear-search svg {
             width: 18px;
             height: 18px;
             stroke: #888;
             margin: 0;
         }
-
         .category-icons {
             display: flex;
             justify-content: center;
@@ -367,7 +326,6 @@
             margin: 30px auto 0;
             max-width: 900px;
         }
-
         .category-icon-card {
             display: flex;
             flex-direction: column;
@@ -379,7 +337,6 @@
             background: transparent;
             border-radius: 40px;
         }
-
         .category-icon-card svg {
             width: 22px;
             height: 22px;
@@ -388,27 +345,22 @@
             fill: none;
             transition: all 0.2s;
         }
-
         .category-icon-card span {
             font-size: 11px;
             font-weight: 500;
             color: #555;
             transition: all 0.2s;
         }
-
         .category-icon-card:hover {
             transform: translateY(-2px);
         }
-
         .category-icon-card.active svg {
             stroke: var(--apple-blue);
         }
-
         .category-icon-card.active span {
             color: var(--apple-blue);
             font-weight: 600;
         }
-
         .filter-bar {
             max-width: 1400px;
             margin: 20px auto 30px;
@@ -419,19 +371,16 @@
             flex-wrap: wrap;
             gap: 20px;
         }
-
         .filter-right {
             display: flex;
             align-items: center;
             gap: 15px;
             flex-wrap: wrap;
         }
-
         .dropdown {
             position: relative;
             display: inline-block;
         }
-
         .dropdown-btn {
             background: rgba(0, 0, 0, 0.03);
             border: 1px solid rgba(0,0,0,0.05);
@@ -446,18 +395,15 @@
             transition: all 0.2s;
             color: #555;
         }
-
         .dropdown-btn svg {
             width: 14px;
             height: 14px;
             stroke: #555;
             transition: transform 0.3s ease;
         }
-
         .dropdown-btn:hover {
             background: rgba(0, 0, 0, 0.06);
         }
-
         .dropdown-menu {
             position: absolute;
             top: 100%;
@@ -476,13 +422,11 @@
             box-shadow: 0 15px 35px rgba(0,0,0,0.1);
             overflow: hidden;
         }
-
         .dropdown-menu.active {
             opacity: 1;
             visibility: visible;
             transform: scale(1) translateY(0);
         }
-
         .dropdown-menu a {
             display: block;
             padding: 12px 20px;
@@ -491,11 +435,9 @@
             cursor: pointer;
             transition: background 0.2s;
         }
-
         .dropdown-menu a:hover {
             background: rgba(0, 0, 0, 0.05);
         }
-
         .sort-btn {
             background: rgba(0, 0, 0, 0.03);
             border: 1px solid rgba(0,0,0,0.05);
@@ -510,17 +452,14 @@
             transition: all 0.2s;
             color: #555;
         }
-
         .sort-btn svg {
             width: 14px;
             height: 14px;
             stroke: #555;
         }
-
         .sort-btn:hover {
             background: rgba(0,0,0,0.08);
         }
-
         /* USER MANAGEMENT PANEL */
         .user-panel-modal {
             display: none;
@@ -537,44 +476,34 @@
             opacity: 0;
             transition: opacity 0.3s ease;
         }
-
         .user-panel-modal.active {
             display: flex;
             opacity: 1;
         }
-
         .user-panel {
             width: 90%;
-            max-width: 1100px;
-            height: 80%;
+            max-width: 1200px;
+            height: 85%;
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(20px);
             border-radius: 32px;
             display: flex;
-            overflow: visible;
+            overflow: hidden;
             border: 1px solid rgba(255,255,255,0.3);
             box-shadow: 0 25px 50px rgba(0,0,0,0.2);
             transform: scale(0.95);
             transition: transform 0.3s ease;
             position: relative;
         }
-
-        .user-list-panel, .user-detail-panel {
-            overflow: hidden;
-            border-radius: 32px;
-        }
-
         .user-panel-modal.active .user-panel {
             transform: scale(1);
         }
-
         .panel-close-wrapper {
             position: absolute;
             top: -20px;
             right: -20px;
             z-index: 100;
         }
-
         .panel-close-btn {
             width: 44px;
             height: 44px;
@@ -588,41 +517,40 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             border: 1px solid rgba(0,0,0,0.1);
         }
-
         .panel-close-btn:hover {
             transform: scale(1.1);
             background: #f5f5f5;
         }
-
         .panel-close-btn span {
             font-size: 24px;
             color: #666;
             line-height: 1;
         }
-
         .user-list-panel {
-            width: 40%;
+            width: 35%;
             border-right: 1px solid rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
         }
-
+        .user-detail-panel {
+            width: 65%;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
         .user-list-header {
             padding: 24px 24px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-
         .user-list-header h2 {
             font-size: 1.5rem;
             font-weight: 600;
         }
-
         .user-search {
             padding: 8px 24px 16px;
         }
-
         .user-search input {
             width: 100%;
             padding: 12px 16px;
@@ -633,18 +561,15 @@
             background: white;
             transition: all 0.2s;
         }
-
         .user-search input:focus {
             border-color: var(--apple-blue);
             box-shadow: 0 0 0 2px rgba(0,113,227,0.1);
         }
-
         .users-scroll {
             flex: 1;
             overflow-y: auto;
             padding: 8px 12px;
         }
-
         .user-list-item {
             display: flex;
             align-items: center;
@@ -656,15 +581,12 @@
             margin-bottom: 4px;
             position: relative;
         }
-
         .user-list-item:hover {
             background: rgba(0,0,0,0.05);
         }
-
         .user-list-item.active {
             background: rgba(0, 113, 227, 0.1);
         }
-
         .user-list-avatar {
             width: 44px;
             height: 44px;
@@ -678,18 +600,15 @@
             font-size: 1rem;
             position: relative;
         }
-
         .user-list-info h4 {
             font-size: 0.95rem;
             font-weight: 600;
             margin-bottom: 2px;
         }
-
         .user-list-info p {
             font-size: 0.7rem;
             color: #666;
         }
-
         .admin-badge {
             background: var(--apple-blue);
             color: white;
@@ -698,7 +617,6 @@
             border-radius: 20px;
             margin-left: 8px;
         }
-
         .banned-badge {
             background: #ff3b30;
             color: white;
@@ -707,228 +625,133 @@
             border-radius: 20px;
             margin-left: 8px;
         }
-
-        .user-detail-panel {
-            width: 60%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .user-detail-header {
+        /* Teacher specific panel */
+        .teacher-panel-header {
             padding: 24px;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
+            background: linear-gradient(135deg, #f5f5f5, #fff);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
-
-        .user-profile-section {
-            padding: 30px;
-            text-align: center;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-        }
-
-        .user-profile-avatar {
+        .teacher-avatar-large {
             width: 100px;
             height: 100px;
+            background: linear-gradient(135deg, var(--apple-blue), #0055aa);
             border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 16px;
-            font-size: 2rem;
-            font-weight: 600;
+            margin-bottom: 16px;
+            font-size: 2.5rem;
+            font-weight: 700;
             color: white;
         }
-
-        .user-profile-name {
-            font-size: 1.3rem;
-            font-weight: 600;
+        .teacher-name-large {
+            font-size: 1.5rem;
+            font-weight: 700;
             margin-bottom: 4px;
         }
-
-        .user-profile-email {
-            font-size: 0.9rem;
+        .teacher-role-large {
             color: #666;
             margin-bottom: 8px;
         }
-
-        .user-info-grid {
-            padding: 24px;
-            display: grid;
-            gap: 16px;
-        }
-
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-        }
-
-        .info-label {
-            font-weight: 600;
-            color: #555;
-        }
-
-        .info-value {
-            color: #1d1d1f;
-        }
-
-        .single-pill {
-            position: relative;
-            display: inline-flex;
-            background: rgba(0, 0, 0, 0.03);
-            padding: 5px;
-            border-radius: 100px;
-            border: 1px solid rgba(0,0,0,0.08);
-            overflow: hidden;
-            cursor: pointer;
-        }
-
-        .single-pill-inner {
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            width: calc(100% - 10px);
-            height: calc(100% - 10px);
-            background: var(--apple-blue);
-            backdrop-filter: blur(15px);
-            border-radius: 100px;
-            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .single-pill-inner.ban-mode {
-            background: #ff3b30;
-        }
-
-        .single-pill-text {
-            position: relative;
-            z-index: 2;
-            background: transparent;
-            border: none;
-            color: white;
-            padding: 10px 28px;
-            cursor: pointer;
-            font-weight: 600;
-            border-radius: 100px;
-            min-width: 140px;
-            font-size: 0.9rem;
-            transition: all 0.2s;
-            text-align: center;
-        }
-
-        .single-pill-text:hover {
-            opacity: 0.9;
-        }
-
-        .head-admin-message {
-            text-align: center;
-            padding: 20px;
-            color: #ff9800;
-            background: rgba(255,152,0,0.1);
+        .teacher-subject-badge {
+            display: inline-block;
+            background: rgba(0,113,227,0.1);
+            color: var(--apple-blue);
+            padding: 4px 12px;
             border-radius: 20px;
-            margin: 20px;
+            font-size: 0.8rem;
             font-weight: 500;
         }
-
-        .recent-section { 
-            max-width: 1400px; 
-            margin: 0 auto; 
-            padding: 0 8% 80px; 
-        }
-        
-        .recent-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 30px;
-        }
-
-        .liquid-card {
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(30px);
-            border-radius: 28px;
-            border: 1px solid rgba(255,255,255,0.8);
-            overflow: hidden;
-            transition: 0.4s;
-            cursor: pointer;
-            opacity: 0;
-            transform: translateY(30px);
-            animation: slideIn 0.5s ease forwards;
-        }
-
-        @keyframes slideIn {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .liquid-card:hover { 
-            transform: translateY(-8px) scale(1.01); 
-            background: rgba(255,255,255,0.85);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-        
-        .card-preview { 
-            height: 160px; 
+        .teacher-info-grid {
+            padding: 24px;
             display: flex;
-            align-items: center;
-            justify-content: center;
+            flex-direction: column;
+            gap: 20px;
         }
-        
-        .card-preview.exam { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
-        .card-preview.schedule { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
-        .card-preview.classwork { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
-        .card-preview.assignment { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
-        .card-preview.documents { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .card-preview.sheets { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
-        .card-preview.homework { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
-        
-        .card-preview svg {
-            width: 48px;
-            height: 48px;
-            stroke: white;
-            fill: none;
-            stroke-width: 1.5;
+        .info-section {
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding-bottom: 16px;
         }
-        
-        .card-body { padding: 20px; }
-        .card-body h4 { font-size: 1rem; margin-bottom: 5px; font-weight: 600; }
-        .card-body p { font-size: 0.75rem; color: #86868b; }
-
+        .info-section-title {
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #555;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .info-row {
+            display: flex;
+            margin-bottom: 12px;
+        }
+        .info-label {
+            width: 100px;
+            font-weight: 500;
+            color: #666;
+        }
+        .info-value {
+            flex: 1;
+            color: #1d1d1f;
+        }
+        .grades-tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .grade-tag {
+            background: rgba(0,0,0,0.05);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .action-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 40px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .action-btn.delete {
+            background: #ff3b30;
+            color: white;
+        }
+        .action-btn.delete:hover {
+            background: #cc2f24;
+            transform: scale(1.02);
+        }
+        .action-btn.edit {
+            background: rgba(0,113,227,0.1);
+            color: var(--apple-blue);
+        }
+        .action-btn.edit:hover {
+            background: rgba(0,113,227,0.2);
+        }
         .empty-state {
             text-align: center;
-            padding: 80px 20px;
-            grid-column: 1 / -1;
+            padding: 60px 20px;
+            color: #666;
         }
-        .empty-state h3 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #1d1d1f;
-            margin-bottom: 8px;
-        }
-        .empty-state p {
-            color: #86868b;
-            font-size: 0.9rem;
-        }
-
-        .access-denied {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background: linear-gradient(135deg, #fff 0%, #eef8ff 100%);
-        }
-
-        .access-denied-content {
-            background: white;
-            padding: 40px;
+        .add-teacher-btn {
+            background: var(--apple-blue);
+            color: white;
+            border: none;
+            padding: 10px 20px;
             border-radius: 40px;
-            max-width: 400px;
-            text-align: center;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
         }
-
+        .add-teacher-btn:hover {
+            background: #0055aa;
+            transform: scale(1.02);
+        }
         .modal {
             display: none;
             position: fixed;
@@ -938,13 +761,13 @@
             height: 100%;
             background: rgba(0,0,0,0.5);
             backdrop-filter: blur(8px);
-            z-index: 3000;
+            z-index: 6000;
             align-items: center;
             justify-content: center;
         }
-
-        .modal.active { display: flex; }
-
+        .modal.active {
+            display: flex;
+        }
         .modal-content {
             background: white;
             border-radius: 32px;
@@ -954,46 +777,56 @@
             max-height: 80vh;
             overflow-y: auto;
         }
-
-        .modal-content h3 { font-size: 24px; margin-bottom: 8px; }
-
-        .create-options {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+        .modal-content h3 {
+            font-size: 24px;
+            margin-bottom: 20px;
         }
-
-        .create-option {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 16px;
-            border: 1px solid #e5e5e5;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.2s;
+        .modal-input {
+            width: 100%;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 16px;
+            font-size: 0.9rem;
+            outline: none;
         }
-
-        .create-option:hover {
-            background: #f5f9ff;
+        .modal-input:focus {
             border-color: var(--apple-blue);
         }
-
-        .create-option svg { width: 28px; height: 28px; stroke: var(--apple-blue); }
-        
-        .create-option-text h4 { font-weight: 600; margin-bottom: 4px; }
-        .create-option-text span { font-size: 13px; color: #86868b; }
-
-        .close-modal {
-            margin-top: 20px;
+        .modal-select {
             width: 100%;
-            padding: 12px;
-            background: #f5f5f5;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 16px;
+            font-size: 0.9rem;
+            outline: none;
+            background: white;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        .modal-submit {
+            flex: 1;
+            background: var(--apple-blue);
+            color: white;
             border: none;
+            padding: 12px;
             border-radius: 40px;
+            font-weight: 600;
             cursor: pointer;
         }
-
+        .modal-cancel {
+            flex: 1;
+            background: #f5f5f5;
+            border: none;
+            padding: 12px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+        }
         .toast-notification {
             position: fixed;
             bottom: 30px;
@@ -1011,26 +844,21 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
             border: 1px solid rgba(255,255,255,0.1);
         }
-
         .toast-notification.show {
             transform: translateX(-50%) translateY(0);
         }
-
         @media (max-width: 768px) {
             .glass-header { padding: 100px 5% 30px; }
             .hello-text { font-size: 2rem; letter-spacing: -1px; }
             .filter-bar { justify-content: center; }
-            .recent-grid { grid-template-columns: 1fr; }
             .user-panel { flex-direction: column; width: 95%; height: 90%; }
-            .user-list-panel { width: 100%; height: 45%; border-right: none; border-bottom: 1px solid rgba(0,0,0,0.1); }
-            .user-detail-panel { width: 100%; height: 55%; }
+            .user-list-panel { width: 100%; height: 40%; border-right: none; border-bottom: 1px solid rgba(0,0,0,0.1); }
+            .user-detail-panel { width: 100%; height: 60%; }
             .panel-close-wrapper { top: -40px; right: 0; }
-            .single-pill-text { padding: 8px 20px; min-width: 120px; font-size: 0.8rem; }
         }
     </style>
 </head>
 <body>
-
     <div class="admin-entrance" id="adminEntrance">
         <div class="entrance-content">
             <div class="entrance-logo">KORAHEY ACADEMY</div>
@@ -1040,9 +868,7 @@
             </div>
         </div>
     </div>
-
     <div id="toastNotification" class="toast-notification"></div>
-
     <div class="main-content">
         <div id="adminContent" style="display: none;">
             <nav class="dynamic-island">
@@ -1091,10 +917,8 @@
                     </div>
                 </div>
             </nav>
-
             <header class="glass-header">
                 <h1 class="hello-text" id="greetingText">Hello Admin</h1>
-
                 <div class="search-container">
                     <div class="search-wrapper">
                         <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2">
@@ -1110,7 +934,6 @@
                         </button>
                     </div>
                 </div>
-
                 <div class="category-icons">
                     <div class="category-icon-card" data-cat="documents" onclick="filterByCategory('documents', this)">
                         <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
@@ -1142,7 +965,6 @@
                     </div>
                 </div>
             </header>
-
             <div class="filter-bar">
                 <div class="filter-right">
                     <div class="dropdown">
@@ -1156,7 +978,6 @@
                             <a onclick="setOwnerFilter('shared'); closeDropdown('ownerMenu')">Shared with you</a>
                         </div>
                     </div>
-
                     <div class="dropdown">
                         <button class="dropdown-btn" onclick="toggleDropdown('categoryMenu')">
                             <span id="categorySelected">All Categories</span>
@@ -1173,21 +994,19 @@
                             <a onclick="setCategoryFilter('homework'); closeDropdown('categoryMenu')">Homework</a>
                         </div>
                     </div>
-
                     <button class="sort-btn" id="sortBtn" onclick="toggleSort()">
                         <svg viewBox="0 0 24 24"><polyline points="6 15 12 9 18 15"/></svg>
                         A-Z
                     </button>
                 </div>
             </div>
-
             <main class="recent-section">
                 <div class="recent-grid" id="projectsGrid"></div>
             </main>
         </div>
     </div>
-
-    <!-- USER MANAGEMENT PANEL -->
+    
+    <!-- USER MANAGEMENT PANEL (Users + Teachers) -->
     <div class="user-panel-modal" id="userPanelModal">
         <div class="user-panel">
             <div class="panel-close-wrapper">
@@ -1197,21 +1016,56 @@
             </div>
             <div class="user-list-panel">
                 <div class="user-list-header">
-                    <h2>User Management</h2>
+                    <h2>Teachers</h2>
+                    <button class="add-teacher-btn" onclick="openAddTeacherModal()">+ Add Teacher</button>
                 </div>
                 <div class="user-search">
-                    <input type="text" id="userSearchInput" placeholder="Search users...">
+                    <input type="text" id="teacherSearchInput" placeholder="Search teachers...">
                 </div>
-                <div class="users-scroll" id="usersListPanel"></div>
+                <div class="users-scroll" id="teachersListPanel"></div>
             </div>
-            <div class="user-detail-panel" id="userDetailPanel">
-                <div id="userDetailContent">
-                    <div style="text-align: center; padding: 60px; color: #666;">Select a user to view details</div>
+            <div class="user-detail-panel" id="teacherDetailPanel">
+                <div id="teacherDetailContent">
+                    <div class="empty-state">Select a teacher to view details</div>
                 </div>
             </div>
         </div>
     </div>
-
+    
+    <!-- Add Teacher Modal -->
+    <div class="modal" id="addTeacherModal">
+        <div class="modal-content">
+            <h3>Add New Teacher</h3>
+            <input type="text" id="teacherName" class="modal-input" placeholder="Full Name">
+            <input type="text" id="teacherRole" class="modal-input" placeholder="Role (e.g., Mathematics Teacher)">
+            <input type="text" id="teacherSubject" class="modal-input" placeholder="Subject">
+            <select id="teacherLevel" class="modal-select">
+                <option value="Primary">Primary</option>
+                <option value="Secondary">Secondary</option>
+                <option value="Senior">Senior</option>
+            </select>
+            <input type="text" id="teacherPhone" class="modal-input" placeholder="Phone Number">
+            <input type="email" id="teacherEmail" class="modal-input" placeholder="Email">
+            <input type="text" id="teacherGrades" class="modal-input" placeholder="Grades (comma separated, e.g., Grade 10,Grade 11)">
+            <div class="modal-buttons">
+                <button class="modal-cancel" onclick="closeAddTeacherModal()">Cancel</button>
+                <button class="modal-submit" onclick="addTeacher()">Add Teacher</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Delete Confirmation Modal -->
+    <div class="modal" id="deleteConfirmModal">
+        <div class="modal-content">
+            <h3>Delete Teacher</h3>
+            <p>Are you sure you want to delete this teacher? This action cannot be undone.</p>
+            <div class="modal-buttons">
+                <button class="modal-cancel" onclick="closeDeleteModal()">Cancel</button>
+                <button class="modal-submit" style="background:#ff3b30;" onclick="confirmDeleteTeacher()">Delete</button>
+            </div>
+        </div>
+    </div>
+    
     <div id="accessDenied" class="access-denied" style="display: none;">
         <div class="access-denied-content">
             <h2>Access Denied</h2>
@@ -1219,8 +1073,7 @@
             <button class="sort-btn" onclick="window.location.href='index.html'">Back to Home</button>
         </div>
     </div>
-
-    <!-- CREATE MODAL -->
+    
     <div class="modal" id="createModal">
         <div class="modal-content">
             <h3>Create new</h3>
@@ -1265,7 +1118,6 @@
             <button class="close-modal" onclick="closeModal('createModal')">Cancel</button>
         </div>
     </div>
-
     <div class="modal" id="messagesModal">
         <div class="modal-content">
             <h3>Notifications</h3>
@@ -1273,7 +1125,6 @@
             <button class="close-modal" onclick="closeModal('messagesModal')">Close</button>
         </div>
     </div>
-
     <div class="modal" id="applicationsModal">
         <div class="modal-content">
             <h3>Applications</h3>
@@ -1281,7 +1132,7 @@
             <button class="close-modal" onclick="closeModal('applicationsModal')">Close</button>
         </div>
     </div>
-
+    
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyCC5oK1cMufciR1v4wLi-jfYvXa_cQBnd0",
@@ -1291,29 +1142,206 @@
             messagingSenderId: "86298888884",
             appId: "1:86298888884:web:f1d835de1cb9d2534d65e1"
         };
-
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
         const HEAD_ADMIN_EMAIL = "khalilmohamedaden@gmail.com";
-
+        
         let projects = [];
         let currentCategory = 'all';
         let currentOwnerFilter = 'any';
         let currentSort = 'az';
         let messages = [{ id: 1, title: 'Welcome to Admin Dashboard', read: false }];
-        let selectedUserId = null;
-
+        let selectedTeacherId = null;
+        let teacherToDelete = null;
+        
+        // Sample teachers data
+        let teachers = [
+            { id: "t1", name: "Ahmed Hassan", role: "Head of Mathematics", subject: "Mathematics", level: "Senior", phone: "090 111 2201", email: "a.hassan@korahey.edu.et", grades: ["Grade 10","Grade 11","Grade 12"] },
+            { id: "t2", name: "Fadumo Abdi", role: "English Language Teacher", subject: "English", level: "Secondary", phone: "090 111 2202", email: "f.abdi@korahey.edu.et", grades: ["Grade 7","Grade 8","Grade 9"] },
+            { id: "t3", name: "Omar Yusuf", role: "Science & Biology Teacher", subject: "Science", level: "Senior", phone: "090 111 2203", email: "o.yusuf@korahey.edu.et", grades: ["Grade 10","Grade 11","Grade 12"] },
+            { id: "t4", name: "Halima Mohamed", role: "Primary Class Teacher", subject: "Primary", level: "Primary", phone: "090 111 2204", email: "h.mohamed@korahey.edu.et", grades: ["Grade 1","Grade 2","Grade 3"] },
+            { id: "t5", name: "Ismail Diriye", role: "Social Studies Teacher", subject: "Social Studies", level: "Secondary", phone: "090 111 2205", email: "i.diriye@korahey.edu.et", grades: ["Grade 7","Grade 8","Grade 9"] },
+            { id: "t6", name: "Faadumo Warsame", role: "Islamic Studies Teacher", subject: "Islamic Studies", level: "Primary", phone: "090 111 2206", email: "f.warsame@korahey.edu.et", grades: ["Grade 4","Grade 5","Grade 6"] },
+            { id: "t7", name: "Abdi Farah", role: "ICT & Computing Teacher", subject: "ICT", level: "Secondary", phone: "090 111 2207", email: "a.farah@korahey.edu.et", grades: ["Grade 8","Grade 9","Grade 10"] },
+            { id: "t8", name: "Safia Jama", role: "Physical Education", subject: "PE", level: "Primary", phone: "090 111 2208", email: "s.jama@korahey.edu.et", grades: ["Grade 1","Grade 2","Grade 3","Grade 4"] },
+            { id: "t9", name: "Mahad Ibrahim", role: "Chemistry & Physics", subject: "Science", level: "Senior", phone: "090 111 2209", email: "m.ibrahim@korahey.edu.et", grades: ["Grade 11","Grade 12"] },
+            { id: "t10", name: "Hodan Ali", role: "Grade 5 Class Teacher", subject: "Primary", level: "Primary", phone: "090 111 2210", email: "h.ali@korahey.edu.et", grades: ["Grade 5","Grade 6"] },
+            { id: "t11", name: "Mustafa Osman", role: "History & Geography", subject: "Social Studies", level: "Senior", phone: "090 111 2211", email: "m.osman@korahey.edu.et", grades: ["Grade 10","Grade 11","Grade 12"] },
+            { id: "t12", name: "Ladan Noor", role: "Art & Design Teacher", subject: "Art", level: "Secondary", phone: "090 111 2212", email: "l.noor@korahey.edu.et", grades: ["Grade 7","Grade 8","Grade 9"] }
+        ];
+        
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toastNotification');
             toast.textContent = message;
-            toast.className = `toast-notification ${type}`;
             toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
+            setTimeout(() => toast.classList.remove('show'), 3000);
         }
-
+        
+        function getInitials(name) {
+            if (!name) return 'T';
+            return name.split(' ').map(w => w[0]).slice(0,2).join('').toUpperCase();
+        }
+        
+        function renderTeacherList() {
+            const searchTerm = document.getElementById('teacherSearchInput')?.value.toLowerCase() || '';
+            const filtered = teachers.filter(t => 
+                t.name.toLowerCase().includes(searchTerm) || 
+                t.subject.toLowerCase().includes(searchTerm) ||
+                t.role.toLowerCase().includes(searchTerm)
+            );
+            const container = document.getElementById('teachersListPanel');
+            
+            if(filtered.length === 0) {
+                container.innerHTML = '<div class="empty-state">No teachers found</div>';
+                return;
+            }
+            
+            container.innerHTML = filtered.map(teacher => `
+                <div class="user-list-item" onclick="selectTeacher('${teacher.id}')" data-teacher-id="${teacher.id}">
+                    <div class="user-list-avatar">${getInitials(teacher.name)}</div>
+                    <div class="user-list-info">
+                        <h4>${escapeHtml(teacher.name)}</h4>
+                        <p>${escapeHtml(teacher.role)} • ${teacher.level}</p>
+                    </div>
+                </div>
+            `).join('');
+            
+            if(selectedTeacherId) {
+                const el = document.querySelector(`.user-list-item[data-teacher-id="${selectedTeacherId}"]`);
+                if(el) el.classList.add('active');
+                renderTeacherDetails(selectedTeacherId);
+            }
+        }
+        
+        function renderTeacherDetails(teacherId) {
+            const teacher = teachers.find(t => t.id === teacherId);
+            if(!teacher) return;
+            
+            document.getElementById('teacherDetailContent').innerHTML = `
+                <div class="teacher-panel-header">
+                    <div class="teacher-avatar-large">${getInitials(teacher.name)}</div>
+                    <div class="teacher-name-large">${escapeHtml(teacher.name)}</div>
+                    <div class="teacher-role-large">${escapeHtml(teacher.role)}</div>
+                    <span class="teacher-subject-badge">${escapeHtml(teacher.subject)} • ${teacher.level}</span>
+                </div>
+                <div class="teacher-info-grid">
+                    <div class="info-section">
+                        <div class="info-section-title">Contact Information</div>
+                        <div class="info-row"><span class="info-label">Phone</span><span class="info-value">${escapeHtml(teacher.phone)}</span></div>
+                        <div class="info-row"><span class="info-label">Email</span><span class="info-value">${escapeHtml(teacher.email)}</span></div>
+                    </div>
+                    <div class="info-section">
+                        <div class="info-section-title">Teaching Details</div>
+                        <div class="info-row"><span class="info-label">Subject</span><span class="info-value">${escapeHtml(teacher.subject)}</span></div>
+                        <div class="info-row"><span class="info-label">Level</span><span class="info-value">${teacher.level}</span></div>
+                        <div class="info-row"><span class="info-label">Grades</span>
+                            <div class="grades-tag-list">${teacher.grades.map(g => `<span class="grade-tag">${escapeHtml(g)}</span>`).join('')}</div>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="action-btn edit" onclick="editTeacher('${teacher.id}')">Edit Teacher</button>
+                        <button class="action-btn delete" onclick="openDeleteModal('${teacher.id}')">Delete Teacher</button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function selectTeacher(id) {
+            selectedTeacherId = id;
+            renderTeacherList();
+        }
+        
+        function openAddTeacherModal() {
+            document.getElementById('addTeacherModal').classList.add('active');
+        }
+        
+        function closeAddTeacherModal() {
+            document.getElementById('addTeacherModal').classList.remove('active');
+            document.getElementById('teacherName').value = '';
+            document.getElementById('teacherRole').value = '';
+            document.getElementById('teacherSubject').value = '';
+            document.getElementById('teacherLevel').value = 'Primary';
+            document.getElementById('teacherPhone').value = '';
+            document.getElementById('teacherEmail').value = '';
+            document.getElementById('teacherGrades').value = '';
+        }
+        
+        function addTeacher() {
+            const name = document.getElementById('teacherName').value.trim();
+            const role = document.getElementById('teacherRole').value.trim();
+            const subject = document.getElementById('teacherSubject').value.trim();
+            const level = document.getElementById('teacherLevel').value;
+            const phone = document.getElementById('teacherPhone').value.trim();
+            const email = document.getElementById('teacherEmail').value.trim();
+            const gradesStr = document.getElementById('teacherGrades').value.trim();
+            
+            if(!name || !role || !subject || !phone || !email) {
+                showToast('Please fill all required fields', 'error');
+                return;
+            }
+            
+            const grades = gradesStr ? gradesStr.split(',').map(g => g.trim()) : [];
+            const newTeacher = {
+                id: 't' + Date.now(),
+                name: name,
+                role: role,
+                subject: subject,
+                level: level,
+                phone: phone,
+                email: email,
+                grades: grades
+            };
+            
+            teachers.push(newTeacher);
+            renderTeacherList();
+            closeAddTeacherModal();
+            showToast(`Teacher ${name} added successfully!`, 'success');
+        }
+        
+        function openDeleteModal(teacherId) {
+            teacherToDelete = teacherId;
+            document.getElementById('deleteConfirmModal').classList.add('active');
+        }
+        
+        function closeDeleteModal() {
+            teacherToDelete = null;
+            document.getElementById('deleteConfirmModal').classList.remove('active');
+        }
+        
+        function confirmDeleteTeacher() {
+            if(teacherToDelete) {
+                const teacher = teachers.find(t => t.id === teacherToDelete);
+                const teacherName = teacher ? teacher.name : 'Teacher';
+                teachers = teachers.filter(t => t.id !== teacherToDelete);
+                if(selectedTeacherId === teacherToDelete) {
+                    selectedTeacherId = null;
+                    document.getElementById('teacherDetailContent').innerHTML = '<div class="empty-state">Select a teacher to view details</div>';
+                }
+                renderTeacherList();
+                showToast(`${teacherName} has been deleted`, 'success');
+            }
+            closeDeleteModal();
+        }
+        
+        function editTeacher(teacherId) {
+            const teacher = teachers.find(t => t.id === teacherId);
+            if(!teacher) return;
+            
+            document.getElementById('teacherName').value = teacher.name;
+            document.getElementById('teacherRole').value = teacher.role;
+            document.getElementById('teacherSubject').value = teacher.subject;
+            document.getElementById('teacherLevel').value = teacher.level;
+            document.getElementById('teacherPhone').value = teacher.phone;
+            document.getElementById('teacherEmail').value = teacher.email;
+            document.getElementById('teacherGrades').value = teacher.grades.join(', ');
+            
+            // Remove old teacher first
+            teachers = teachers.filter(t => t.id !== teacherId);
+            openAddTeacherModal();
+            showToast(`Edit ${teacher.name} and click Add to save changes`, 'info');
+        }
+        
         const sampleProjects = [
             { id: 1, title: 'Final Exam - Grade 12', type: 'exam', date: new Date().toISOString(), category: 'exam', owner: 'me' },
             { id: 2, title: 'Weekly Class Schedule', type: 'schedule', date: new Date().toISOString(), category: 'schedule', owner: 'me' },
@@ -1321,27 +1349,20 @@
             { id: 4, title: 'Physics Assignment', type: 'assignment', date: new Date().toISOString(), category: 'assignment', owner: 'me' },
             { id: 5, title: 'Algebra Homework', type: 'homework', date: new Date().toISOString(), category: 'homework', owner: 'shared' }
         ];
-
+        
         function loadProjects() { 
             const saved = localStorage.getItem('adminProjects'); 
             projects = saved ? JSON.parse(saved) : [...sampleProjects]; 
             renderProjects(); 
         }
-
+        
         function renderProjects() {
             let filtered = [...projects];
-            // Filter by owner
-            if (currentOwnerFilter === 'me') {
-                filtered = filtered.filter(p => p.owner === 'me');
-            } else if (currentOwnerFilter === 'shared') {
-                filtered = filtered.filter(p => p.owner === 'shared');
-            }
-            // Filter by search
+            if (currentOwnerFilter === 'me') filtered = filtered.filter(p => p.owner === 'me');
+            else if (currentOwnerFilter === 'shared') filtered = filtered.filter(p => p.owner === 'shared');
             const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
             if(searchTerm) filtered = filtered.filter(p => p.title.toLowerCase().includes(searchTerm));
-            // Filter by category
             if(currentCategory !== 'all') filtered = filtered.filter(p => p.category === currentCategory);
-            // Sort
             if(currentSort === 'az') filtered.sort((a,b) => a.title.localeCompare(b.title));
             else filtered.sort((a,b) => b.title.localeCompare(a.title));
             
@@ -1361,361 +1382,81 @@
                 </div>
             `).join('');
         }
-
+        
         function getIcon(type) {
             switch(type) {
                 case 'exam': return `<svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><line x1="8" y1="9" x2="16" y2="9"/></svg>`;
                 case 'schedule': return `<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>`;
-                case 'classwork': return `<svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/></svg>`;
                 default: return `<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
             }
         }
-
-        function formatDate(d) { 
-            return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); 
-        }
         
-        function escapeHtml(str) { 
-            return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); 
-        }
+        function formatDate(d) { return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); }
+        function escapeHtml(str) { return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); }
+        function openProject(id) { showToast(`Opening project ${id}`, 'success'); }
+        function createProject(type) { let title = prompt(`Enter ${type} title:`); if(title) { projects.unshift({ id:Date.now(), title, type, date:new Date().toISOString(), category:type, owner:'me' }); localStorage.setItem('adminProjects', JSON.stringify(projects)); renderProjects(); closeModal('createModal'); showToast(`Created ${type}: ${title}`, 'success'); } }
+        function toggleSort() { currentSort = currentSort === 'az' ? 'za' : 'az'; document.getElementById('sortBtn').innerHTML = currentSort === 'az' ? '<svg viewBox="0 0 24 24"><polyline points="6 15 12 9 18 15"/></svg> A-Z' : '<svg viewBox="0 0 24 24"><polyline points="18 9 12 15 6 9"/></svg> Z-A'; renderProjects(); }
+        function setOwnerFilter(filter) { currentOwnerFilter = filter; document.getElementById('ownerSelected').textContent = filter === 'any' ? 'Any owner' : (filter === 'me' ? 'khalil mohammed (You)' : 'Shared with you'); renderProjects(); }
+        function setCategoryFilter(category) { currentCategory = category; document.getElementById('categorySelected').textContent = category === 'all' ? 'All Categories' : category.charAt(0).toUpperCase() + category.slice(1); renderProjects(); }
+        function filterByCategory(category, el) { setCategoryFilter(category); }
+        function toggleDropdown(id) { document.querySelectorAll('.dropdown-menu').forEach(menu => { if(menu.id !== id) menu.classList.remove('active'); }); document.getElementById(id).classList.toggle('active'); }
+        function closeDropdown(id) { document.getElementById(id)?.classList.remove('active'); }
+        document.addEventListener('click', function(e) { if(!e.target.closest('.dropdown')) document.querySelectorAll('.dropdown-menu').forEach(menu => menu.classList.remove('active')); });
         
-        function openProject(id) { 
-            const project = projects.find(p => p.id === id);
-            if (project) {
-                showToast(`Opening: ${project.title}`, 'success');
-            }
-        }
-
-        function createProject(type) {
-            let title = prompt(`Enter ${type} title:`, `${type.charAt(0).toUpperCase() + type.slice(1)} ${new Date().toLocaleDateString()}`);
-            if (!title) return;
-            
-            const newProject = {
-                id: Date.now(),
-                title: title,
-                type: type,
-                date: new Date().toISOString(),
-                category: type,
-                owner: 'me'
-            };
-            
-            projects.unshift(newProject);
-            localStorage.setItem('adminProjects', JSON.stringify(projects));
-            renderProjects();
-            closeModal('createModal');
-            showToast(`Created new ${type}: ${title}`, 'success');
-        }
-
-        function toggleSort() {
-            const btn = document.getElementById('sortBtn');
-            if(currentSort === 'az') { 
-                currentSort = 'za'; 
-                btn.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="18 9 12 15 6 9"/></svg> Z-A'; 
-            } else { 
-                currentSort = 'az'; 
-                btn.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="6 15 12 9 18 15"/></svg> A-Z'; 
-            }
-            renderProjects();
-        }
-
-        function setOwnerFilter(filter) {
-            currentOwnerFilter = filter;
-            const ownerSelected = document.getElementById('ownerSelected');
-            if (filter === 'any') ownerSelected.textContent = 'Any owner';
-            else if (filter === 'me') ownerSelected.textContent = 'khalil mohammed (You)';
-            else if (filter === 'shared') ownerSelected.textContent = 'Shared with you';
-            renderProjects();
-        }
-
-        function setCategoryFilter(category) {
-            currentCategory = category;
-            const categorySelected = document.getElementById('categorySelected');
-            if (category === 'all') categorySelected.textContent = 'All Categories';
-            else categorySelected.textContent = category.charAt(0).toUpperCase() + category.slice(1);
-            
-            // Update category icons
-            document.querySelectorAll('.category-icon-card').forEach(c => c.classList.remove('active'));
-            if (category !== 'all') {
-                const icon = document.querySelector(`.category-icon-card[data-cat="${category}"]`);
-                if (icon) icon.classList.add('active');
-            }
-            renderProjects();
-        }
-
-        function filterByCategory(category, el) {
-            setCategoryFilter(category);
-        }
-
-        function toggleDropdown(id) {
-            document.querySelectorAll('.dropdown-menu').forEach(menu => {
-                if (menu.id !== id) menu.classList.remove('active');
-            });
-            document.getElementById(id).classList.toggle('active');
-        }
-
-        function closeDropdown(id) {
-            document.getElementById(id)?.classList.remove('active');
-        }
-
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.dropdown')) {
-                document.querySelectorAll('.dropdown-menu').forEach(menu => {
-                    menu.classList.remove('active');
-                });
-            }
-        });
-
-        function getInitials(name) {
-            if (!name) return 'U';
-            const parts = name.trim().split(' ');
-            if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
-            return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
-        }
-
-        async function fetchUsers() {
-            try {
-                const snapshot = await db.collection('users').get();
-                const users = [];
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    users.push({
-                        id: doc.id,
-                        email: data.email,
-                        name: data.name || (data.email ? data.email.split('@')[0] : 'User'),
-                        isAdmin: data.isAdmin || false,
-                        isBanned: data.isBanned || false,
-                        avatarInitial: getInitials(data.name || (data.email ? data.email.split('@')[0] : 'User'))
-                    });
-                });
-                if(document.getElementById('usersBadge')) document.getElementById('usersBadge').textContent = users.length;
-                return users;
-            } catch(e) {
-                console.log("Firestore error:", e);
-                return [];
-            }
-        }
-
-        async function renderUserList() {
-            const searchTerm = document.getElementById('userSearchInput')?.value.toLowerCase() || '';
-            const users = await fetchUsers();
-            const filtered = users.filter(u => u.email && (u.email.toLowerCase().includes(searchTerm) || u.name.toLowerCase().includes(searchTerm)));
-            const container = document.getElementById('usersListPanel');
-            
-            if(filtered.length === 0) { 
-                container.innerHTML = '<div style="padding:40px;text-align:center">No users found</div>'; 
-                return; 
-            }
-            
-            container.innerHTML = filtered.map(user => `
-                <div class="user-list-item" onclick="selectUser('${user.id}')" data-user-id="${user.id}">
-                    <div class="user-list-avatar">${user.avatarInitial}</div>
-                    <div class="user-list-info">
-                        <h4>${escapeHtml(user.name)} ${user.isAdmin ? '<span class="admin-badge">ADMIN</span>' : ''}${user.isBanned ? '<span class="banned-badge">BANNED</span>' : ''}</h4>
-                        <p>${escapeHtml(user.email)}</p>
-                    </div>
-                </div>
-            `).join('');
-            
-            if(selectedUserId) {
-                const el = document.querySelector(`.user-list-item[data-user-id="${selectedUserId}"]`);
-                if(el) el.classList.add('active');
-                await renderUserDetails(selectedUserId);
-            }
-        }
-
-        async function renderUserDetails(userId) {
-            try {
-                const doc = await db.collection('users').doc(userId).get();
-                if(!doc.exists) return;
-                const user = doc.data();
-                const isHeadAdmin = user.email === HEAD_ADMIN_EMAIL;
-                const name = user.name || (user.email ? user.email.split('@')[0] : 'User');
-                const isBanned = user.isBanned || false;
-                const isAdmin = user.isAdmin || false;
-                
-                if (isHeadAdmin) {
-                    document.getElementById('userDetailContent').innerHTML = `
-                        <div class="user-profile-section">
-                            <div class="user-profile-avatar">${getInitials(name)}</div>
-                            <div class="user-profile-name">${escapeHtml(name)}</div>
-                            <div class="user-profile-email">${escapeHtml(user.email || 'No email')}</div>
-                            <span class="admin-badge">HEAD ADMIN</span>
-                        </div>
-                        <div class="head-admin-message">
-                            Head Admin - Cannot be modified
-                        </div>
-                    `;
-                    return;
-                }
-                
-                document.getElementById('userDetailContent').innerHTML = `
-                    <div class="user-profile-section">
-                        <div class="user-profile-avatar">${getInitials(name)}</div>
-                        <div class="user-profile-name">${escapeHtml(name)}</div>
-                        <div class="user-profile-email">${escapeHtml(user.email || 'No email')}</div>
-                        ${isAdmin ? '<span class="admin-badge">ADMIN</span>' : ''}
-                    </div>
-                    <div class="user-info-grid">
-                        <div class="info-row"><span class="info-label">Email</span><span class="info-value">${escapeHtml(user.email || 'No email')}</span></div>
-                        <div class="info-row"><span class="info-label">Role</span><span class="info-value">${isAdmin ? 'Admin' : 'User'}</span></div>
-                        <div class="info-row"><span class="info-label">Status</span><span class="info-value">${isBanned ? 'Banned' : 'Active'}</span></div>
-                    </div>
-                    <div class="action-pill-group">
-                        <div class="single-pill" onclick="toggleAdmin('${userId}', ${isAdmin})">
-                            <div class="single-pill-inner" style="transform: scaleX(1);"></div>
-                            <div class="single-pill-text">${isAdmin ? 'Remove Admin' : 'Make Admin'}</div>
-                        </div>
-                        <div class="single-pill" onclick="toggleBan('${userId}', ${isBanned})">
-                            <div class="single-pill-inner ban-mode" style="transform: scaleX(1);"></div>
-                            <div class="single-pill-text">${isBanned ? 'Unban User' : 'Ban User'}</div>
-                        </div>
-                    </div>
-                `;
-            } catch(e) {
-                console.log("Error rendering user details", e);
-            }
-        }
-
-        async function selectUser(id) { selectedUserId = id; await renderUserList(); }
+        function openUserManagementPanel() { document.getElementById('userPanelModal').classList.add('active'); renderTeacherList(); }
+        function closeUserManagementPanel() { document.getElementById('userPanelModal').classList.remove('active'); selectedTeacherId = null; }
         
-        async function toggleAdmin(id, isCurrentlyAdmin) {
-            if (isCurrentlyAdmin) {
-                try {
-                    const doc = await db.collection('users').doc(id).get();
-                    if(doc.data().email === HEAD_ADMIN_EMAIL) { 
-                        showToast('Cannot remove head admin', 'error');
-                        return; 
-                    }
-                    await db.collection('users').doc(id).update({ isAdmin: false });
-                    showToast('Admin privileges removed', 'success');
-                    await renderUserList();
-                    if(selectedUserId === id) await renderUserDetails(id);
-                } catch(e) { showToast('Error: ' + e.message, 'error'); }
-            } else {
-                try {
-                    await db.collection('users').doc(id).update({ isAdmin: true });
-                    showToast('User is now an admin', 'success');
-                    await renderUserList();
-                    if(selectedUserId === id) await renderUserDetails(id);
-                } catch(e) { showToast('Error: ' + e.message, 'error'); }
-            }
-        }
+        if(document.getElementById('teacherSearchInput')) document.getElementById('teacherSearchInput').addEventListener('input', () => renderTeacherList());
         
-        async function toggleBan(id, isCurrentlyBanned) {
-            if (isCurrentlyBanned) {
-                try {
-                    await db.collection('users').doc(id).update({ isBanned: false });
-                    showToast('User has been unbanned', 'success');
-                    await renderUserList();
-                    if(selectedUserId === id) await renderUserDetails(id);
-                } catch(e) { showToast('Error: ' + e.message, 'error'); }
-            } else {
-                try {
-                    await db.collection('users').doc(id).update({ isBanned: true });
-                    showToast('User has been banned', 'success');
-                    await renderUserList();
-                    if(selectedUserId === id) await renderUserDetails(id);
-                } catch(e) { showToast('Error: ' + e.message, 'error'); }
-            }
-        }
-
-        function openUserManagementPanel() { 
-            document.getElementById('userPanelModal').classList.add('active'); 
-            renderUserList(); 
-        }
-        
-        function closeUserManagementPanel() { 
-            document.getElementById('userPanelModal').classList.remove('active'); 
-            selectedUserId = null; 
-        }
-        
-        if(document.getElementById('userSearchInput')) {
-            document.getElementById('userSearchInput').addEventListener('input', () => renderUserList());
-        }
-
         function goHome() { window.location.href = 'index.html'; }
         function scrollToProjects() { document.querySelector('.recent-section')?.scrollIntoView({ behavior: 'smooth' }); }
         function openCreateModal() { openModal('createModal'); }
-        function openMessagesModal() { loadMessages(); openModal('messagesModal'); }
+        function openMessagesModal() { openModal('messagesModal'); }
         function openApplications() { openModal('applicationsModal'); }
         function openAI() { showToast('AI Assistant coming soon!', 'success'); }
         function openEditor() { window.location.href = 'editor.html'; }
         function openModal(id) { document.getElementById(id).classList.add('active'); }
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-
-        function loadMessages() {
-            const list = document.getElementById('messagesList');
-            if(messages.length === 0) list.innerHTML = '<div style="padding:40px;text-align:center">No messages</div>';
-            else list.innerHTML = messages.map(m => `<div class="message-item"><div class="message-title">${m.title}</div></div>`).join('');
-        }
         
-        function updateMessagesBadge() { 
-            const badge = document.getElementById('messagesBadge'); 
-            if(badge) badge.textContent = messages.filter(m => !m.read).length; 
-        }
-
         const searchInput = document.getElementById('searchInput');
         const clearBtn = document.getElementById('clearSearchBtn');
         function updateClear() { if(clearBtn) clearBtn.style.display = searchInput.value.length > 0 ? 'flex' : 'none'; }
         function clearSearch() { searchInput.value = ''; updateClear(); renderProjects(); }
         if(searchInput) searchInput.addEventListener('input', () => { updateClear(); renderProjects(); });
         if(clearBtn) clearBtn.addEventListener('click', clearSearch);
-
+        
         const entrance = document.getElementById('adminEntrance');
         const adminContent = document.getElementById('adminContent');
         const accessDenied = document.getElementById('accessDenied');
-
-        setTimeout(() => {
-            if(entrance) entrance.classList.add('fade-out');
-        }, 2000);
-
+        setTimeout(() => { if(entrance) entrance.classList.add('fade-out'); }, 2000);
+        
         auth.onAuthStateChanged(async (user) => {
             if (user) {
                 try {
                     const userDoc = await db.collection('users').doc(user.uid).get();
                     const userData = userDoc.data();
-                    
                     if (userData && userData.isBanned === true) {
                         await auth.signOut();
                         if (adminContent) adminContent.style.display = 'none';
-                        if (accessDenied) {
-                            accessDenied.style.display = 'flex';
-                            accessDenied.querySelector('p').innerHTML = 'Your account has been banned.';
-                        }
+                        if (accessDenied) accessDenied.style.display = 'flex';
                         if (entrance) entrance.style.display = 'none';
                         return;
                     }
-                    
                     const isHeadAdmin = user.email === HEAD_ADMIN_EMAIL;
                     const isFirestoreAdmin = userData && userData.isAdmin === true;
                     const isAdmin = isHeadAdmin || isFirestoreAdmin;
-                    
                     if (isAdmin) {
-                        if (isHeadAdmin && !isFirestoreAdmin) {
-                            await db.collection('users').doc(user.uid).set({
-                                isAdmin: true,
-                                role: 'head_admin'
-                            }, { merge: true });
-                        }
-                        
                         if (adminContent) adminContent.style.display = 'block';
                         if (accessDenied) accessDenied.style.display = 'none';
                         document.getElementById('greetingText').innerHTML = `Hello ${user.displayName?.split(' ')[0] || 'Admin'}`;
                         loadProjects();
-                        updateMessagesBadge();
-                        await renderUserList();
                         if (entrance) setTimeout(() => { entrance.style.display = 'none'; }, 2000);
                     } else {
                         if (adminContent) adminContent.style.display = 'none';
                         if (accessDenied) accessDenied.style.display = 'flex';
                         if (entrance) entrance.style.display = 'none';
                     }
-                } catch(e) {
-                    console.log("Auth error:", e);
-                    if (adminContent) adminContent.style.display = 'none';
-                    if (accessDenied) accessDenied.style.display = 'flex';
-                    if (entrance) entrance.style.display = 'none';
-                }
+                } catch(e) { console.log("Auth error:", e); }
             } else {
                 if (adminContent) adminContent.style.display = 'none';
                 if (accessDenied) accessDenied.style.display = 'flex';
@@ -1724,5 +1465,4 @@
         });
     </script>
 </body>
-</html>
 </html>
