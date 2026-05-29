@@ -310,22 +310,20 @@
             </div>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="#" data-href="contact.html" class="nav-dropdown-trigger">Contact Us</a>
+                <li><a href="contact.html">Contact Us</a>
                     <div class="dropdown-menu">
                         <a href="about.html">About Us</a>
                         <a href="teacher-contact.html">Teacher Contact</a>
                     </div>
                 </li>
-                <li><a href="#" data-href="academics.html" class="nav-dropdown-trigger">Academics</a>
+                <li><a href="academics.html">Academics</a>
                     <div class="dropdown-menu">
                         <a href="results.html">Results & Resources</a>
-                        <a href="curriculum.html">Curriculum</a>
                     </div>
                 </li>
-                <li><a href="#" data-href="announcements.html" class="nav-dropdown-trigger">Announcements</a>
+                <li><a href="announcements.html">Announcements</a>
                     <div class="dropdown-menu">
                         <a href="exam-calendar.html">Exam Calendar</a>
-                        <a href="news.html">School News</a>
                     </div>
                 </li>
             </ul>
@@ -372,7 +370,7 @@
             <ul class="mobile-nav-links">
                 <li><a href="index.html" class="mobile-nav-item">Home</a></li>
                 <li>
-                    <div class="mobile-nav-item" onclick="toggleMobileAccordion(this)">
+                    <div class="mobile-nav-item" onclick="toggleMobileAccordion(this, 'contact.html')">
                         <span>Contact Us</span>
                         <svg viewBox="0 0 16 16"><polyline points="4 6 8 10 12 6"/></svg>
                     </div>
@@ -382,23 +380,21 @@
                     </div>
                 </li>
                 <li>
-                    <div class="mobile-nav-item" onclick="toggleMobileAccordion(this)">
+                    <div class="mobile-nav-item" onclick="toggleMobileAccordion(this, 'academics.html')">
                         <span>Academics</span>
                         <svg viewBox="0 0 16 16"><polyline points="4 6 8 10 12 6"/></svg>
                     </div>
                     <div class="mobile-sub-links">
                         <a href="results.html">Results & Resources</a>
-                        <a href="curriculum.html">Curriculum</a>
                     </div>
                 </li>
                 <li>
-                    <div class="mobile-nav-item" onclick="toggleMobileAccordion(this)">
+                    <div class="mobile-nav-item" onclick="toggleMobileAccordion(this, 'announcements.html')">
                         <span>Announcements</span>
                         <svg viewBox="0 0 16 16"><polyline points="4 6 8 10 12 6"/></svg>
                     </div>
                     <div class="mobile-sub-links">
                         <a href="exam-calendar.html">Exam Calendar</a>
-                        <a href="news.html">School News</a>
                     </div>
                 </li>
             </ul>
@@ -556,42 +552,20 @@
     <footer><div class="footer-content"><div class="footer-logo">Korahey Academy</div><div class="footer-copyright">© 2026 Khalil · Official site for Korahey Academy</div><div class="footer-made">Made by Khalil</div></div></footer>
 
     <script>
-        // DESKTOP NAV — first click opens dropdown, second click navigates
-        document.querySelectorAll('.nav-dropdown-trigger').forEach(function(link) {
-            var clicked = false;
-            var timer = null;
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                if (clicked) {
-                    // second click — navigate
-                    var dest = link.getAttribute('data-href');
-                    if (dest) window.location.href = dest;
-                    clicked = false;
-                    clearTimeout(timer);
-                } else {
-                    // first click — dropdown already shows on hover; mark as clicked
-                    clicked = true;
-                    // reset after 3 seconds if they don't click again
-                    timer = setTimeout(function() { clicked = false; }, 3000);
-                }
-            });
-        });
-        // close dropdown-trigger state when clicking elsewhere
-        document.addEventListener('click', function(e) {
-            if (!e.target.classList.contains('nav-dropdown-trigger')) {
-                document.querySelectorAll('.nav-dropdown-trigger').forEach(function(l) {
-                    l._clicked = false;
-                });
-            }
-        });
-
-        // MOBILE MENU LOGIC
-        function toggleMobileAccordion(el) {
+        // MOBILE MENU LOGIC — first tap opens dropdown, second tap navigates
+        function toggleMobileAccordion(el, href) {
             const sub = el.nextElementSibling;
             const isOpen = sub.classList.contains('open');
+            if (isOpen) {
+                // already open — second tap navigates
+                if (href) window.location.href = href;
+                return;
+            }
+            // first tap — close all others, open this one
             document.querySelectorAll('.mobile-sub-links.open').forEach(s => s.classList.remove('open'));
             document.querySelectorAll('.mobile-nav-item.expanded').forEach(i => i.classList.remove('expanded'));
-            if (!isOpen) { sub.classList.add('open'); el.classList.add('expanded'); }
+            sub.classList.add('open');
+            el.classList.add('expanded');
         }
         const hamburgerBtn = document.getElementById('hamburgerBtn');
         const mobileMenu = document.getElementById('mobileMenu');
