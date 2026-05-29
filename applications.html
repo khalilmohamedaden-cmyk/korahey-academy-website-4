@@ -85,7 +85,7 @@
             50% { opacity: 1; transform: scale(1.2); }
         }
 
-        /* Dynamic Island Sidebar */
+        /* Dynamic Island Sidebar - Desktop */
         .dynamic-island {
             position: fixed;
             top: 50%;
@@ -143,11 +143,48 @@
             font-weight: 600;
         }
 
+        /* Mobile Dynamic Island */
+        @media (max-width: 1024px) {
+            .dynamic-island {
+                top: 16px;
+                left: 50%;
+                transform: translateX(-50%);
+                flex-direction: row;
+                padding: 12px 20px;
+                width: auto;
+                border-radius: 50px;
+            }
+            .nav-item {
+                width: auto;
+                flex-direction: row;
+                gap: 8px;
+                padding: 8px 16px;
+            }
+            .nav-item svg {
+                width: 18px;
+                height: 18px;
+            }
+            .nav-item span {
+                font-size: 12px;
+            }
+            .main-content {
+                margin-left: 0;
+                margin-top: 100px;
+                padding: 20px 24px 60px;
+            }
+        }
+
         /* Main Content */
         .main-content {
             margin-left: 140px;
             padding: 40px 48px 80px;
         }
+        @media (max-width: 1024px) {
+            .main-content {
+                margin-left: 0;
+            }
+        }
+
         .glass-header {
             margin-bottom: 48px;
             text-align: left;
@@ -166,7 +203,7 @@
             color: #666;
         }
 
-        /* Card Styles */
+        /* Glass Card */
         .glass-card {
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(20px);
@@ -228,8 +265,89 @@
         .btn-secondary:hover {
             background: rgba(0, 0, 0, 0.1);
         }
+        .btn-danger {
+            background: #ff3b30;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #cc2f24;
+        }
 
-        /* Form Styles */
+        /* Teacher Directory List */
+        .teacher-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .teacher-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 24px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .teacher-item:hover {
+            background: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transform: translateX(4px);
+        }
+        .teacher-info h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .teacher-info p {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            z-index: 5000;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 32px;
+            width: 90%;
+            max-width: 500px;
+            padding: 28px;
+            transform: scale(0.95);
+            transition: transform 0.2s;
+        }
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+        .modal-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+        }
+
+        /* Form Grid */
         .form-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -262,120 +380,55 @@
             border-color: #0071e3;
             box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
         }
-        textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
 
-        /* Teacher List */
-        .teacher-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+        /* Application Cards Grid */
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
         }
-        .teacher-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px;
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 24px;
-            transition: all 0.2s;
-        }
-        .teacher-item:hover {
+        .app-card {
             background: white;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border-radius: 24px;
+            padding: 20px;
+            transition: all 0.2s;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            cursor: pointer;
         }
-        .teacher-info h4 {
+        .app-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+        }
+        .app-card h4 {
             font-size: 1rem;
             font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .app-card p {
+            font-size: 0.8rem;
+            color: #666;
             margin-bottom: 4px;
         }
-        .teacher-info p {
-            font-size: 0.8rem;
-            color: #666;
-        }
-        .delete-btn {
-            background: none;
-            border: none;
-            font-size: 1.2rem;
-            color: #ff3b30;
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 50%;
-            transition: background 0.2s;
-        }
-        .delete-btn:hover {
-            background: rgba(255, 59, 48, 0.1);
-        }
-
-        /* Attendance */
-        .attendance-date-bar {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-        .attendance-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 14px 0;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-        }
-        .status-buttons {
-            display: flex;
-            gap: 8px;
-        }
-        .status-btn {
-            padding: 6px 16px;
-            border-radius: 40px;
-            border: none;
-            font-size: 0.75rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            background: #e5e5e5;
-            color: #333;
-        }
-        .status-btn.present {
-            background: #34c759;
-            color: white;
-        }
-        .status-btn.absent {
-            background: #ff3b30;
-            color: white;
-        }
-        .status-btn.late {
-            background: #ff9500;
-            color: white;
-        }
-        .status-btn.selected {
-            transform: scale(1.05);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-        }
-
-        /* Submissions List */
-        .submission-item {
-            padding: 16px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-        .submission-info strong {
-            font-size: 0.95rem;
-        }
-        .submission-info p {
-            font-size: 0.8rem;
-            color: #666;
-            margin-top: 4px;
-        }
-        .submission-date {
+        .app-card .date {
             font-size: 0.7rem;
             color: #999;
+            margin-top: 8px;
+        }
+        .app-card .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+        .status-pending {
+            background: #ffecb3;
+            color: #ff9800;
+        }
+        .status-accepted {
+            background: #c8e6c9;
+            color: #2e7d32;
         }
 
         /* Empty State */
@@ -424,7 +477,6 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
 
-        /* Section Container */
         .section-container {
             display: none;
             animation: fadeInUp 0.4s ease;
@@ -437,55 +489,23 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @media (max-width: 1024px) {
-            .dynamic-island {
-                top: 16px;
-                left: 50%;
-                transform: translateX(-50%);
-                flex-direction: row;
-                padding: 12px 20px;
-                width: auto;
-            }
-            .nav-item {
-                width: auto;
-                padding: 8px 16px;
-                flex-direction: row;
-                gap: 8px;
-            }
-            .nav-item svg {
-                width: 18px;
-                height: 18px;
-            }
-            .main-content {
-                margin-left: 0;
-                margin-top: 100px;
-                padding: 20px 24px 60px;
-            }
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-            .toast-notification {
-                white-space: normal;
-                text-align: center;
-            }
-        }
-
         @media (max-width: 768px) {
             .page-title {
                 font-size: 2rem;
+            }
+            .form-grid {
+                grid-template-columns: 1fr;
             }
             .card-header {
                 flex-direction: column;
                 align-items: flex-start;
             }
-            .attendance-item {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 12px;
+            .apps-grid {
+                grid-template-columns: 1fr;
             }
-            .submission-item {
-                flex-direction: column;
-                align-items: flex-start;
+            .toast-notification {
+                white-space: normal;
+                text-align: center;
             }
         }
     </style>
@@ -500,37 +520,33 @@
     </div>
     <div id="toast" class="toast-notification"></div>
 
-    <!-- Dynamic Island Navigation -->
+    <!-- Dynamic Island -->
     <div class="dynamic-island">
         <div class="nav-item" data-section="teachers">
             <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"/><polyline points="12 6 12 12 16 14"/></svg>
             <span>Teachers</span>
         </div>
-        <div class="nav-item" data-section="attendance">
-            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>
-            <span>Attendance</span>
-        </div>
         <div class="nav-item" data-section="student-apps">
             <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            <span>Student Apps</span>
+            <span>Students</span>
         </div>
         <div class="nav-item" data-section="teacher-apps">
             <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-            <span>Teacher Apps</span>
+            <span>Teachers Apps</span>
         </div>
     </div>
 
     <div class="main-content">
         <header class="glass-header">
-            <h1 class="page-title" id="pageTitle">Teacher Management</h1>
-            <p class="page-sub" id="pageSub">Manage teacher profiles, attendance, and applications</p>
+            <h1 class="page-title" id="pageTitle">Teacher Directory</h1>
+            <p class="page-sub" id="pageSub">Manage teacher profiles</p>
         </header>
 
-        <!-- Teacher Management Section -->
+        <!-- Teacher Directory Section -->
         <div class="section-container active" id="teachersSection">
             <div class="glass-card">
                 <div class="card-header">
-                    <h2><i class="fas fa-chalkboard-user" style="margin-right: 8px;"></i> Teacher Directory</h2>
+                    <h2><i class="fas fa-chalkboard-user"></i> All Teachers</h2>
                     <button class="btn-primary" onclick="toggleAddTeacherForm()"><i class="fas fa-plus"></i> Add Teacher</button>
                 </div>
                 <div class="card-body">
@@ -542,7 +558,7 @@
                             <div class="form-group"><label>Level</label><select id="teacherLevel"><option>Primary</option><option>Secondary</option><option>Senior</option></select></div>
                             <div class="form-group"><label>Phone</label><input type="text" id="teacherPhone" placeholder="090 111 2201"></div>
                             <div class="form-group"><label>Email</label><input type="email" id="teacherEmail" placeholder="teacher@korahey.edu.et"></div>
-                            <div class="form-group"><label>Grades (comma separated)</label><input type="text" id="teacherGrades" placeholder="Grade 10, Grade 11"></div>
+                            <div class="form-group"><label>Grades (comma)</label><input type="text" id="teacherGrades" placeholder="Grade 10, Grade 11"></div>
                         </div>
                         <div style="display: flex; gap: 12px; justify-content: flex-end;">
                             <button class="btn-secondary" onclick="toggleAddTeacherForm()">Cancel</button>
@@ -554,81 +570,98 @@
             </div>
         </div>
 
-        <!-- Attendance Section -->
-        <div class="section-container" id="attendanceSection">
-            <div class="glass-card">
-                <div class="card-header">
-                    <h2><i class="fas fa-calendar-check"></i> Attendance Tracker</h2>
-                </div>
-                <div class="card-body">
-                    <div class="attendance-date-bar">
-                        <div class="form-group" style="flex-direction: row; align-items: center; gap: 12px;">
-                            <label>Select Date</label>
-                            <input type="date" id="attendanceDate" value="2026-05-29" style="width: auto;">
-                        </div>
-                        <button class="btn-primary" onclick="loadAttendanceData()">Load</button>
-                    </div>
-                    <div id="attendanceListContainer"></div>
-                    <div style="margin-top: 24px; text-align: right;">
-                        <button class="btn-primary" onclick="saveAttendance()">Save Attendance</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Student Applications Section -->
+        <!-- Student Applications Section (Pending + Accepted) -->
         <div class="section-container" id="studentAppsSection">
             <div class="glass-card">
                 <div class="card-header">
-                    <h2><i class="fas fa-user-graduate"></i> Student Application Form</h2>
+                    <h2><i class="fas fa-user-graduate"></i> Student Applications</h2>
+                    <button class="btn-primary" onclick="showStudentAppForm()"><i class="fas fa-plus"></i> New Application</button>
                 </div>
                 <div class="card-body">
-                    <div class="form-grid">
-                        <div class="form-group"><label>Student Full Name</label><input type="text" id="studentAppName" placeholder="Full name"></div>
-                        <div class="form-group"><label>Parent/Guardian Name</label><input type="text" id="studentAppParent" placeholder="Parent name"></div>
-                        <div class="form-group"><label>Email</label><input type="email" id="studentAppEmail" placeholder="email@example.com"></div>
-                        <div class="form-group"><label>Phone</label><input type="tel" id="studentAppPhone" placeholder="Phone number"></div>
-                        <div class="form-group"><label>Applying for Grade</label><select id="studentAppGrade"><option value="">Select Grade</option><option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option>Grade 5</option><option>Grade 6</option><option>Grade 7</option><option>Grade 8</option><option>Grade 9</option><option>Grade 10</option><option>Grade 11</option><option>Grade 12</option></select></div>
-                        <div class="form-group"><label>Additional Notes</label><textarea id="studentAppMessage" placeholder="Previous school, special needs, etc."></textarea></div>
+                    <!-- Hidden Form -->
+                    <div id="studentAppForm" style="display: none; margin-bottom: 32px; background: #f5f7fb; border-radius: 24px; padding: 20px;">
+                        <h3 style="margin-bottom: 16px;">New Student Application</h3>
+                        <div class="form-grid">
+                            <div class="form-group"><label>Student Name</label><input type="text" id="studentAppName"></div>
+                            <div class="form-group"><label>Parent Name</label><input type="text" id="studentAppParent"></div>
+                            <div class="form-group"><label>Email</label><input type="email" id="studentAppEmail"></div>
+                            <div class="form-group"><label>Phone</label><input type="tel" id="studentAppPhone"></div>
+                            <div class="form-group"><label>Grade</label><select id="studentAppGrade"><option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option>Grade 5</option><option>Grade 6</option><option>Grade 7</option><option>Grade 8</option><option>Grade 9</option><option>Grade 10</option><option>Grade 11</option><option>Grade 12</option></select></div>
+                            <div class="form-group"><label>Previous School</label><input type="text" id="studentAppPrevSchool"></div>
+                            <div class="form-group"><label>Additional Notes</label><textarea id="studentAppMessage" rows="2"></textarea></div>
+                        </div>
+                        <div style="text-align: right;">
+                            <button class="btn-secondary" onclick="document.getElementById('studentAppForm').style.display='none'">Cancel</button>
+                            <button class="btn-primary" onclick="submitStudentApp()" style="margin-left: 8px;">Submit</button>
+                        </div>
                     </div>
-                    <div style="text-align: right;">
-                        <button class="btn-primary" onclick="submitStudentApp()">Submit Application</button>
+
+                    <!-- Tabs for Pending / Accepted -->
+                    <div style="display: flex; gap: 16px; border-bottom: 1px solid rgba(0,0,0,0.1); margin-bottom: 24px;">
+                        <button class="tab-btn active" data-tab="student-pending" onclick="switchStudentTab('pending')">Pending</button>
+                        <button class="tab-btn" data-tab="student-accepted" onclick="switchStudentTab('accepted')">Accepted</button>
                     </div>
+                    <div id="studentPendingContainer" class="apps-grid"></div>
+                    <div id="studentAcceptedContainer" class="apps-grid" style="display: none;"></div>
                 </div>
-            </div>
-            <div class="glass-card">
-                <div class="card-header">
-                    <h2><i class="fas fa-list"></i> Recent Student Applications</h2>
-                </div>
-                <div class="card-body" id="studentAppsList"></div>
             </div>
         </div>
 
-        <!-- Teacher Applications Section -->
+        <!-- Teacher Applications Section (Pending + Accepted) -->
         <div class="section-container" id="teacherAppsSection">
             <div class="glass-card">
                 <div class="card-header">
-                    <h2><i class="fas fa-chalkboard-user"></i> Teacher Application Form</h2>
+                    <h2><i class="fas fa-chalkboard-user"></i> Teacher Applications</h2>
+                    <button class="btn-primary" onclick="showTeacherAppForm()"><i class="fas fa-plus"></i> New Application</button>
                 </div>
                 <div class="card-body">
-                    <div class="form-grid">
-                        <div class="form-group"><label>Full Name</label><input type="text" id="teacherAppName" placeholder="Full name"></div>
-                        <div class="form-group"><label>Subject Specialization</label><input type="text" id="teacherAppSubject" placeholder="e.g., Mathematics"></div>
-                        <div class="form-group"><label>Email</label><input type="email" id="teacherAppEmail" placeholder="email@example.com"></div>
-                        <div class="form-group"><label>Phone</label><input type="tel" id="teacherAppPhone" placeholder="Phone number"></div>
-                        <div class="form-group"><label>Years of Experience</label><select id="teacherAppExperience"><option value="">Select</option><option>0-2 years</option><option>3-5 years</option><option>6-10 years</option><option>10+ years</option></select></div>
-                        <div class="form-group"><label>Why do you want to join Korahey?</label><textarea id="teacherAppMessage" placeholder="Tell us about your passion for teaching..."></textarea></div>
+                    <div id="teacherAppForm" style="display: none; margin-bottom: 32px; background: #f5f7fb; border-radius: 24px; padding: 20px;">
+                        <h3 style="margin-bottom: 16px;">New Teacher Application</h3>
+                        <div class="form-grid">
+                            <div class="form-group"><label>Full Name</label><input type="text" id="teacherAppName"></div>
+                            <div class="form-group"><label>Subject Specialization</label><input type="text" id="teacherAppSubject"></div>
+                            <div class="form-group"><label>Email</label><input type="email" id="teacherAppEmail"></div>
+                            <div class="form-group"><label>Phone</label><input type="tel" id="teacherAppPhone"></div>
+                            <div class="form-group"><label>Experience</label><select id="teacherAppExperience"><option>0-2 years</option><option>3-5 years</option><option>6-10 years</option><option>10+ years</option></select></div>
+                            <div class="form-group"><label>Message</label><textarea id="teacherAppMessage" rows="2"></textarea></div>
+                        </div>
+                        <div style="text-align: right;">
+                            <button class="btn-secondary" onclick="document.getElementById('teacherAppForm').style.display='none'">Cancel</button>
+                            <button class="btn-primary" onclick="submitTeacherApp()" style="margin-left: 8px;">Submit</button>
+                        </div>
                     </div>
-                    <div style="text-align: right;">
-                        <button class="btn-primary" onclick="submitTeacherApp()">Submit Application</button>
+                    <div style="display: flex; gap: 16px; border-bottom: 1px solid rgba(0,0,0,0.1); margin-bottom: 24px;">
+                        <button class="tab-btn active" data-tab="teacher-pending" onclick="switchTeacherTab('pending')">Pending</button>
+                        <button class="tab-btn" data-tab="teacher-accepted" onclick="switchTeacherTab('accepted')">Accepted</button>
                     </div>
+                    <div id="teacherPendingContainer" class="apps-grid"></div>
+                    <div id="teacherAcceptedContainer" class="apps-grid" style="display: none;"></div>
                 </div>
             </div>
-            <div class="glass-card">
-                <div class="card-header">
-                    <h2><i class="fas fa-list"></i> Recent Teacher Applications</h2>
-                </div>
-                <div class="card-body" id="teacherAppsList"></div>
+        </div>
+    </div>
+
+    <!-- Teacher Profile Modal (Edit/Delete) -->
+    <div class="modal" id="teacherModal">
+        <div class="modal-content">
+            <h3 id="teacherModalTitle">Teacher Profile</h3>
+            <div id="teacherModalBody"></div>
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="closeTeacherModal()">Close</button>
+                <button class="btn-primary" id="teacherModalEditBtn">Edit</button>
+                <button class="btn-danger" id="teacherModalDeleteBtn">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Detail Modal -->
+    <div class="modal" id="appDetailModal">
+        <div class="modal-content" style="max-width: 500px;">
+            <h3 id="appDetailTitle">Application Details</h3>
+            <div id="appDetailBody"></div>
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="closeAppDetailModal()">Close</button>
+                <button class="btn-primary" id="appAcceptBtn" style="display: none;">Accept Application</button>
             </div>
         </div>
     </div>
@@ -659,13 +692,17 @@
         // Data stores
         let teachers = [
             { id: "t1", name: "Ahmed Hassan", role: "Head of Mathematics", subject: "Mathematics", level: "Senior", phone: "090 111 2201", email: "a.hassan@korahey.edu.et", grades: ["Grade 10","Grade 11","Grade 12"] },
-            { id: "t2", name: "Fadumo Abdi", role: "English Language Teacher", subject: "English", level: "Secondary", phone: "090 111 2202", email: "f.abdi@korahey.edu.et", grades: ["Grade 7","Grade 8","Grade 9"] },
-            { id: "t3", name: "Omar Yusuf", role: "Science & Biology Teacher", subject: "Science", level: "Senior", phone: "090 111 2203", email: "o.yusuf@korahey.edu.et", grades: ["Grade 10","Grade 11","Grade 12"] }
+            { id: "t2", name: "Fadumo Abdi", role: "English Language Teacher", subject: "English", level: "Secondary", phone: "090 111 2202", email: "f.abdi@korahey.edu.et", grades: ["Grade 7","Grade 8","Grade 9"] }
         ];
-        let attendanceRecords = JSON.parse(localStorage.getItem('attendanceRecords')) || {};
-        let studentApplications = JSON.parse(localStorage.getItem('studentApps')) || [];
-        let teacherApplications = JSON.parse(localStorage.getItem('teacherApps')) || [];
-        const sampleStudents = ['Ahmed Hassan', 'Fadumo Abdi', 'Omar Yusuf', 'Halima Mohamed', 'Ismail Diriye'];
+        
+        let studentApps = JSON.parse(localStorage.getItem('studentApps')) || [];
+        let teacherApps = JSON.parse(localStorage.getItem('teacherApps')) || [];
+        let acceptedStudentApps = JSON.parse(localStorage.getItem('acceptedStudentApps')) || [];
+        let acceptedTeacherApps = JSON.parse(localStorage.getItem('acceptedTeacherApps')) || [];
+
+        let currentTeacherId = null;
+        let currentAppDetail = null;
+        let currentAppType = null;
 
         function showToast(msg) {
             const toast = document.getElementById('toast');
@@ -673,16 +710,12 @@
             toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
-        function escapeHtml(str) { 
-            if(!str) return '';
-            return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); 
-        }
+        function escapeHtml(str) { return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); }
 
         // Navigation
-        const sections = ['teachers', 'attendance', 'student-apps', 'teacher-apps'];
+        const sections = ['teachers', 'student-apps', 'teacher-apps'];
         const sectionContainers = {
             teachers: document.getElementById('teachersSection'),
-            attendance: document.getElementById('attendanceSection'),
             'student-apps': document.getElementById('studentAppsSection'),
             'teacher-apps': document.getElementById('teacherAppsSection')
         };
@@ -696,34 +729,83 @@
                 if(item.getAttribute('data-section') === sectionId) item.classList.add('active');
                 else item.classList.remove('active');
             });
-            if(sectionId === 'teachers') { pageTitle.textContent = 'Teacher Management'; pageSub.textContent = 'Add, edit, or remove teacher profiles'; renderTeacherList(); }
-            if(sectionId === 'attendance') { pageTitle.textContent = 'Attendance Tracker'; pageSub.textContent = 'Mark student attendance by date'; renderAttendanceList(); }
-            if(sectionId === 'student-apps') { pageTitle.textContent = 'Student Applications'; pageSub.textContent = 'Review and manage student enrollment requests'; renderStudentApps(); }
-            if(sectionId === 'teacher-apps') { pageTitle.textContent = 'Teacher Applications'; pageSub.textContent = 'Review applications from educators'; renderTeacherApps(); }
+            if(sectionId === 'teachers') { pageTitle.textContent = 'Teacher Directory'; pageSub.textContent = 'Manage teacher profiles'; renderTeacherList(); }
+            if(sectionId === 'student-apps') { pageTitle.textContent = 'Student Applications'; pageSub.textContent = 'Review and accept applications'; renderStudentApps(); }
+            if(sectionId === 'teacher-apps') { pageTitle.textContent = 'Teacher Applications'; pageSub.textContent = 'Review and accept applications'; renderTeacherApps(); }
         }
 
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', () => switchSection(item.getAttribute('data-section')));
         });
 
-        // Teacher Management
+        // Teacher Directory
         function renderTeacherList() {
             const container = document.getElementById('teacherListContainer');
             if(teachers.length === 0) { container.innerHTML = '<div class="empty-state">No teachers found. Click "Add Teacher" to get started.</div>'; return; }
             container.innerHTML = teachers.map(t => `
-                <div class="teacher-item">
+                <div class="teacher-item" onclick="openTeacherModal('${t.id}')">
                     <div class="teacher-info">
                         <h4>${escapeHtml(t.name)}</h4>
                         <p>${escapeHtml(t.role)} • ${t.level} • ${t.phone}</p>
                     </div>
-                    <button class="delete-btn" onclick="deleteTeacher('${t.id}')"><i class="fas fa-trash-alt"></i></button>
+                    <i class="fas fa-chevron-right" style="color: #aaa;"></i>
                 </div>
             `).join('');
         }
+
+        function openTeacherModal(id) {
+            currentTeacherId = id;
+            const teacher = teachers.find(t => t.id === id);
+            if(!teacher) return;
+            document.getElementById('teacherModalTitle').innerHTML = `<i class="fas fa-user-circle"></i> ${escapeHtml(teacher.name)}`;
+            document.getElementById('teacherModalBody').innerHTML = `
+                <div style="margin-bottom: 16px;"><strong>Role:</strong> ${escapeHtml(teacher.role)}</div>
+                <div style="margin-bottom: 16px;"><strong>Subject:</strong> ${escapeHtml(teacher.subject)}</div>
+                <div style="margin-bottom: 16px;"><strong>Level:</strong> ${teacher.level}</div>
+                <div style="margin-bottom: 16px;"><strong>Phone:</strong> ${escapeHtml(teacher.phone)}</div>
+                <div style="margin-bottom: 16px;"><strong>Email:</strong> ${escapeHtml(teacher.email)}</div>
+                <div><strong>Grades:</strong> ${teacher.grades.join(', ')}</div>
+            `;
+            document.getElementById('teacherModal').classList.add('active');
+        }
+
+        function closeTeacherModal() { document.getElementById('teacherModal').classList.remove('active'); currentTeacherId = null; }
+
+        document.getElementById('teacherModalEditBtn').onclick = () => {
+            if(currentTeacherId) editTeacher(currentTeacherId);
+        };
+        document.getElementById('teacherModalDeleteBtn').onclick = () => {
+            if(currentTeacherId) deleteTeacher(currentTeacherId);
+        };
+
+        function editTeacher(id) {
+            const teacher = teachers.find(t => t.id === id);
+            if(!teacher) return;
+            document.getElementById('teacherName').value = teacher.name;
+            document.getElementById('teacherRole').value = teacher.role;
+            document.getElementById('teacherSubject').value = teacher.subject;
+            document.getElementById('teacherLevel').value = teacher.level;
+            document.getElementById('teacherPhone').value = teacher.phone;
+            document.getElementById('teacherEmail').value = teacher.email;
+            document.getElementById('teacherGrades').value = teacher.grades.join(', ');
+            teachers = teachers.filter(t => t.id !== id);
+            toggleAddTeacherForm();
+            closeTeacherModal();
+            showToast(`Edit ${teacher.name} and click Save to update`);
+        }
+
+        function deleteTeacher(id) {
+            teachers = teachers.filter(t => t.id !== id);
+            renderTeacherList();
+            closeTeacherModal();
+            showToast('Teacher deleted');
+        }
+
         function toggleAddTeacherForm() {
             const form = document.getElementById('addTeacherForm');
             form.style.display = form.style.display === 'none' ? 'block' : 'none';
         }
+
         function addTeacher() {
             const name = document.getElementById('teacherName').value.trim();
             const role = document.getElementById('teacherRole').value.trim();
@@ -732,48 +814,63 @@
             const phone = document.getElementById('teacherPhone').value.trim();
             const email = document.getElementById('teacherEmail').value.trim();
             const gradesStr = document.getElementById('teacherGrades').value.trim();
-            if(!name || !role || !subject || !phone || !email) { showToast('Please fill all required fields'); return; }
+            if(!name || !role || !subject || !phone || !email) { showToast('Please fill all fields'); return; }
             const grades = gradesStr ? gradesStr.split(',').map(g=>g.trim()) : [];
             const newTeacher = { id: 't'+Date.now(), name, role, subject, level, phone, email, grades };
             teachers.push(newTeacher);
             renderTeacherList();
             toggleAddTeacherForm();
             ['teacherName','teacherRole','teacherSubject','teacherPhone','teacherEmail','teacherGrades'].forEach(id => document.getElementById(id).value = '');
-            showToast(`Teacher ${name} added successfully`);
+            showToast(`Teacher ${name} added`);
         }
-        function deleteTeacher(id) { 
-            teachers = teachers.filter(t=>t.id !== id); 
-            renderTeacherList(); 
-            showToast('Teacher deleted'); 
-        }
-
-        // Attendance
-        function renderAttendanceList() {
-            const date = document.getElementById('attendanceDate').value;
-            const container = document.getElementById('attendanceListContainer');
-            container.innerHTML = sampleStudents.map(s => {
-                const status = (attendanceRecords[date] && attendanceRecords[date][s]) || '';
-                return `<div class="attendance-item">
-                    <span><strong>${escapeHtml(s)}</strong></span>
-                    <div class="status-buttons">
-                        <button class="status-btn present ${status==='present'?'selected':''}" onclick="setAttendanceStatus('${s}','present')">Present</button>
-                        <button class="status-btn absent ${status==='absent'?'selected':''}" onclick="setAttendanceStatus('${s}','absent')">Absent</button>
-                        <button class="status-btn late ${status==='late'?'selected':''}" onclick="setAttendanceStatus('${s}','late')">Late</button>
-                    </div>
-                </div>`;
-            }).join('');
-            if(sampleStudents.length === 0) container.innerHTML = '<div class="empty-state">No students to display</div>';
-        }
-        function setAttendanceStatus(student, status) {
-            const date = document.getElementById('attendanceDate').value;
-            if(!attendanceRecords[date]) attendanceRecords[date] = {};
-            attendanceRecords[date][student] = status;
-            renderAttendanceList();
-        }
-        function saveAttendance() { localStorage.setItem('attendanceRecords', JSON.stringify(attendanceRecords)); showToast('Attendance saved'); }
-        function loadAttendanceData() { renderAttendanceList(); }
 
         // Student Applications
+        let studentTab = 'pending';
+        function switchStudentTab(tab) {
+            studentTab = tab;
+            document.querySelectorAll('#studentAppsSection .tab-btn').forEach(btn => btn.classList.remove('active'));
+            if(tab === 'pending') {
+                document.querySelector('#studentAppsSection .tab-btn[data-tab="student-pending"]').classList.add('active');
+                document.getElementById('studentPendingContainer').style.display = 'grid';
+                document.getElementById('studentAcceptedContainer').style.display = 'none';
+                renderStudentPending();
+            } else {
+                document.querySelector('#studentAppsSection .tab-btn[data-tab="student-accepted"]').classList.add('active');
+                document.getElementById('studentPendingContainer').style.display = 'none';
+                document.getElementById('studentAcceptedContainer').style.display = 'grid';
+                renderStudentAccepted();
+            }
+        }
+
+        function renderStudentApps() { renderStudentPending(); renderStudentAccepted(); }
+        function renderStudentPending() {
+            const container = document.getElementById('studentPendingContainer');
+            if(studentApps.length === 0) { container.innerHTML = '<div class="empty-state">No pending applications</div>'; return; }
+            container.innerHTML = studentApps.map(app => `
+                <div class="app-card" onclick="showAppDetail('student', '${app.id}')">
+                    <h4>${escapeHtml(app.name)}</h4>
+                    <p><i class="fas fa-user-friends"></i> Parent: ${escapeHtml(app.parent)}</p>
+                    <p><i class="fas fa-graduation-cap"></i> Grade: ${app.grade}</p>
+                    <div class="date">${app.date}</div>
+                    <span class="status-badge status-pending">Pending</span>
+                </div>
+            `).join('');
+        }
+        function renderStudentAccepted() {
+            const container = document.getElementById('studentAcceptedContainer');
+            if(acceptedStudentApps.length === 0) { container.innerHTML = '<div class="empty-state">No accepted applications</div>'; return; }
+            container.innerHTML = acceptedStudentApps.map(app => `
+                <div class="app-card" onclick="showAppDetail('student-accepted', '${app.id}')">
+                    <h4>${escapeHtml(app.name)}</h4>
+                    <p><i class="fas fa-user-friends"></i> Parent: ${escapeHtml(app.parent)}</p>
+                    <p><i class="fas fa-graduation-cap"></i> Grade: ${app.grade}</p>
+                    <div class="date">${app.date}</div>
+                    <span class="status-badge status-accepted">Accepted</span>
+                </div>
+            `).join('');
+        }
+
+        function showStudentAppForm() { document.getElementById('studentAppForm').style.display = 'block'; }
         function submitStudentApp() {
             const app = {
                 id: Date.now(),
@@ -782,31 +879,66 @@
                 email: document.getElementById('studentAppEmail').value.trim(),
                 phone: document.getElementById('studentAppPhone').value.trim(),
                 grade: document.getElementById('studentAppGrade').value,
+                prevSchool: document.getElementById('studentAppPrevSchool').value.trim(),
                 message: document.getElementById('studentAppMessage').value.trim(),
                 date: new Date().toLocaleString()
             };
-            if(!app.name || !app.parent || !app.email || !app.grade) { showToast('Please fill required fields'); return; }
-            studentApplications.unshift(app);
-            localStorage.setItem('studentApps', JSON.stringify(studentApplications));
-            renderStudentApps();
-            ['studentAppName','studentAppParent','studentAppEmail','studentAppPhone','studentAppGrade','studentAppMessage'].forEach(id => document.getElementById(id).value = '');
+            if(!app.name || !app.parent || !app.email) { showToast('Please fill required fields'); return; }
+            studentApps.unshift(app);
+            localStorage.setItem('studentApps', JSON.stringify(studentApps));
+            renderStudentPending();
+            document.getElementById('studentAppForm').style.display = 'none';
+            ['studentAppName','studentAppParent','studentAppEmail','studentAppPhone','studentAppPrevSchool','studentAppMessage'].forEach(id => document.getElementById(id).value = '');
             showToast('Student application submitted');
         }
-        function renderStudentApps() {
-            const container = document.getElementById('studentAppsList');
-            if(studentApplications.length === 0) { container.innerHTML = '<div class="empty-state">No applications yet</div>'; return; }
-            container.innerHTML = studentApplications.slice(0,8).map(a => `
-                <div class="submission-item">
-                    <div class="submission-info">
-                        <strong>${escapeHtml(a.name)}</strong> (${a.grade})<br>
-                        <p>Parent: ${escapeHtml(a.parent)}</p>
-                    </div>
-                    <div class="submission-date">${a.date}</div>
+
+        // Teacher Applications
+        let teacherTab = 'pending';
+        function switchTeacherTab(tab) {
+            teacherTab = tab;
+            document.querySelectorAll('#teacherAppsSection .tab-btn').forEach(btn => btn.classList.remove('active'));
+            if(tab === 'pending') {
+                document.querySelector('#teacherAppsSection .tab-btn[data-tab="teacher-pending"]').classList.add('active');
+                document.getElementById('teacherPendingContainer').style.display = 'grid';
+                document.getElementById('teacherAcceptedContainer').style.display = 'none';
+                renderTeacherPending();
+            } else {
+                document.querySelector('#teacherAppsSection .tab-btn[data-tab="teacher-accepted"]').classList.add('active');
+                document.getElementById('teacherPendingContainer').style.display = 'none';
+                document.getElementById('teacherAcceptedContainer').style.display = 'grid';
+                renderTeacherAccepted();
+            }
+        }
+
+        function renderTeacherApps() { renderTeacherPending(); renderTeacherAccepted(); }
+        function renderTeacherPending() {
+            const container = document.getElementById('teacherPendingContainer');
+            if(teacherApps.length === 0) { container.innerHTML = '<div class="empty-state">No pending applications</div>'; return; }
+            container.innerHTML = teacherApps.map(app => `
+                <div class="app-card" onclick="showAppDetail('teacher', '${app.id}')">
+                    <h4>${escapeHtml(app.name)}</h4>
+                    <p><i class="fas fa-chalkboard"></i> Subject: ${escapeHtml(app.subject)}</p>
+                    <p><i class="fas fa-briefcase"></i> Experience: ${app.experience}</p>
+                    <div class="date">${app.date}</div>
+                    <span class="status-badge status-pending">Pending</span>
+                </div>
+            `).join('');
+        }
+        function renderTeacherAccepted() {
+            const container = document.getElementById('teacherAcceptedContainer');
+            if(acceptedTeacherApps.length === 0) { container.innerHTML = '<div class="empty-state">No accepted applications</div>'; return; }
+            container.innerHTML = acceptedTeacherApps.map(app => `
+                <div class="app-card" onclick="showAppDetail('teacher-accepted', '${app.id}')">
+                    <h4>${escapeHtml(app.name)}</h4>
+                    <p><i class="fas fa-chalkboard"></i> Subject: ${escapeHtml(app.subject)}</p>
+                    <p><i class="fas fa-briefcase"></i> Experience: ${app.experience}</p>
+                    <div class="date">${app.date}</div>
+                    <span class="status-badge status-accepted">Accepted</span>
                 </div>
             `).join('');
         }
 
-        // Teacher Applications
+        function showTeacherAppForm() { document.getElementById('teacherAppForm').style.display = 'block'; }
         function submitTeacherApp() {
             const app = {
                 id: Date.now(),
@@ -818,26 +950,89 @@
                 message: document.getElementById('teacherAppMessage').value.trim(),
                 date: new Date().toLocaleString()
             };
-            if(!app.name || !app.subject || !app.email || !app.experience) { showToast('Please fill required fields'); return; }
-            teacherApplications.unshift(app);
-            localStorage.setItem('teacherApps', JSON.stringify(teacherApplications));
-            renderTeacherApps();
-            ['teacherAppName','teacherAppSubject','teacherAppEmail','teacherAppPhone','teacherAppExperience','teacherAppMessage'].forEach(id => document.getElementById(id).value = '');
+            if(!app.name || !app.subject || !app.email) { showToast('Please fill required fields'); return; }
+            teacherApps.unshift(app);
+            localStorage.setItem('teacherApps', JSON.stringify(teacherApps));
+            renderTeacherPending();
+            document.getElementById('teacherAppForm').style.display = 'none';
+            ['teacherAppName','teacherAppSubject','teacherAppEmail','teacherAppPhone','teacherAppMessage'].forEach(id => document.getElementById(id).value = '');
             showToast('Teacher application submitted');
         }
-        function renderTeacherApps() {
-            const container = document.getElementById('teacherAppsList');
-            if(teacherApplications.length === 0) { container.innerHTML = '<div class="empty-state">No applications yet</div>'; return; }
-            container.innerHTML = teacherApplications.slice(0,8).map(a => `
-                <div class="submission-item">
-                    <div class="submission-info">
-                        <strong>${escapeHtml(a.name)}</strong> (${a.subject})<br>
-                        <p>Experience: ${a.experience}</p>
-                    </div>
-                    <div class="submission-date">${a.date}</div>
-                </div>
-            `).join('');
+
+        // Application Detail Modal with Accept
+        function showAppDetail(type, id) {
+            let app, isAccepted = false;
+            if(type === 'student') { app = studentApps.find(a => a.id == id); isAccepted = false; currentAppType = 'student'; }
+            else if(type === 'student-accepted') { app = acceptedStudentApps.find(a => a.id == id); isAccepted = true; currentAppType = 'student-accepted'; }
+            else if(type === 'teacher') { app = teacherApps.find(a => a.id == id); isAccepted = false; currentAppType = 'teacher'; }
+            else { app = acceptedTeacherApps.find(a => a.id == id); isAccepted = true; currentAppType = 'teacher-accepted'; }
+            if(!app) return;
+            currentAppDetail = { type, id, isAccepted };
+            let html = '';
+            if(type.startsWith('student')) {
+                html = `
+                    <div><strong>Student Name:</strong> ${escapeHtml(app.name)}</div>
+                    <div><strong>Parent/Guardian:</strong> ${escapeHtml(app.parent)}</div>
+                    <div><strong>Email:</strong> ${escapeHtml(app.email)}</div>
+                    <div><strong>Phone:</strong> ${escapeHtml(app.phone)}</div>
+                    <div><strong>Applying for Grade:</strong> ${app.grade}</div>
+                    <div><strong>Previous School:</strong> ${escapeHtml(app.prevSchool || 'N/A')}</div>
+                    <div><strong>Notes:</strong> ${escapeHtml(app.message || 'None')}</div>
+                    <div><strong>Submitted:</strong> ${app.date}</div>
+                `;
+            } else {
+                html = `
+                    <div><strong>Name:</strong> ${escapeHtml(app.name)}</div>
+                    <div><strong>Subject:</strong> ${escapeHtml(app.subject)}</div>
+                    <div><strong>Email:</strong> ${escapeHtml(app.email)}</div>
+                    <div><strong>Phone:</strong> ${escapeHtml(app.phone)}</div>
+                    <div><strong>Experience:</strong> ${app.experience}</div>
+                    <div><strong>Message:</strong> ${escapeHtml(app.message || 'None')}</div>
+                    <div><strong>Submitted:</strong> ${app.date}</div>
+                `;
+            }
+            document.getElementById('appDetailTitle').textContent = type.startsWith('student') ? 'Student Application' : 'Teacher Application';
+            document.getElementById('appDetailBody').innerHTML = html;
+            const acceptBtn = document.getElementById('appAcceptBtn');
+            if(!isAccepted) {
+                acceptBtn.style.display = 'block';
+                acceptBtn.onclick = () => acceptApplication();
+            } else {
+                acceptBtn.style.display = 'none';
+            }
+            document.getElementById('appDetailModal').classList.add('active');
         }
+
+        function acceptApplication() {
+            if(!currentAppDetail) return;
+            const { type, id } = currentAppDetail;
+            if(type === 'student') {
+                const app = studentApps.find(a => a.id == id);
+                if(app) {
+                    studentApps = studentApps.filter(a => a.id != id);
+                    acceptedStudentApps.unshift(app);
+                    localStorage.setItem('studentApps', JSON.stringify(studentApps));
+                    localStorage.setItem('acceptedStudentApps', JSON.stringify(acceptedStudentApps));
+                    renderStudentPending();
+                    renderStudentAccepted();
+                    showToast(`Application from ${app.name} accepted`);
+                }
+            } else if(type === 'teacher') {
+                const app = teacherApps.find(a => a.id == id);
+                if(app) {
+                    teacherApps = teacherApps.filter(a => a.id != id);
+                    acceptedTeacherApps.unshift(app);
+                    localStorage.setItem('teacherApps', JSON.stringify(teacherApps));
+                    localStorage.setItem('acceptedTeacherApps', JSON.stringify(acceptedTeacherApps));
+                    renderTeacherPending();
+                    renderTeacherAccepted();
+                    showToast(`Application from ${app.name} accepted`);
+                }
+            }
+            closeAppDetailModal();
+        }
+
+        function closeAppDetailModal() { document.getElementById('appDetailModal').classList.remove('active'); currentAppDetail = null; }
 
         // Entrance & Auth
         const entrance = document.getElementById('pageEntrance');
