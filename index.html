@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Korahey Academy | Future-Ready Education</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Korahey Academy | Home</title>
     
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -11,171 +11,415 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         :root {
-            --bg-primary: #000000;
-            --bg-card: #0c0c0c;
-            --border-glass: rgba(255, 255, 255, 0.06);
-            --text-dim: rgba(255, 255, 255, 0.65);
-            --apple-ease: cubic-bezier(0.25, 0.1, 0.2, 1);
+            --glass-border: rgba(255, 255, 255, 0.05);
+            --text-dim: rgba(255, 255, 255, 0.6);
+            --card-bg: #0c0c0c;
+            --apple-spring: cubic-bezier(0.4, 0, 0.2, 1.4);
         }
 
-        body {
-            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
-            background: var(--bg-primary);
-            color: white;
-            overflow-x: hidden;
-            scroll-behavior: smooth;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; background: #000; color: #fff; overflow-x: hidden; }
 
-        /* Navigation - Glassmorphic */
-        nav {
-            position: fixed;
-            top: 20px;
-            left: 0;
-            width: 100%;
-            z-index: 2000;
-            display: flex;
-            justify-content: center;
-            transition: all 0.5s var(--apple-ease);
-            padding: 0 16px;
-        }
-        nav.nav-hidden {
-            transform: translateY(-120px);
-        }
-        .nav-container {
-            width: 100%;
-            max-width: 1300px;
-            height: 68px;
-            background: rgba(10, 10, 10, 0.85);
-            backdrop-filter: blur(28px);
-            border-radius: 100px;
-            border: 1px solid var(--border-glass);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 20px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-        }
-        .logo-img {
-            height: 40px;
-            cursor: pointer;
-            filter: brightness(1.1);
-        }
+        /* Navigation */
+        nav { position: fixed; width: 100%; top: 25px; display: flex; justify-content: center; z-index: 1000; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        nav.nav-hidden { transform: translateY(-120px); }
+        .nav-container { width: 92%; height: 75px; background: rgba(15,15,15,0.7); backdrop-filter: blur(30px); border: 1px solid var(--glass-border); border-radius: 100px; display: flex; align-items: center; justify-content: space-between; padding: 0 35px; }
+        .logo-img { height: 45px; cursor: pointer; }
         
-        /* Desktop Nav Links */
-        .nav-links {
-            display: flex;
-            gap: 32px;
-            list-style: none;
-        }
-        .nav-links li {
-            position: relative;
-        }
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-dim);
+        .nav-links { display: flex; list-style: none; gap: 35px; align-items: center; }
+        .nav-links li { position: relative; padding: 20px 0; }
+        
+        .nav-links a { 
+            text-decoration: none; 
+            color: var(--text-dim); 
+            font-size: 0.95rem; 
             font-weight: 500;
-            font-size: 0.9rem;
-            transition: color 0.2s;
+            transition: color 0.3s; 
         }
-        .nav-links li:hover > a {
-            color: white;
-        }
+        .nav-links li:hover > a { color: #fff; }
 
-        /* Dropdowns */
-        .dropdown-menu {
+        /* LIQUID DROP DROPDOWN */
+        .dropdown-menu, .profile-dropdown {
             position: absolute;
-            top: 50px;
-            left: 0;
-            background: rgba(20, 20, 20, 0.96);
-            backdrop-filter: blur(24px);
-            border: 1px solid var(--border-glass);
-            border-radius: 20px;
-            min-width: 200px;
+            top: 65px;
+            left: 50%;
+            transform: translateX(-50%) scale(0.4) translateY(-20px);
+            background: rgba(22, 22, 22, 0.95);
+            backdrop-filter: blur(40px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 24px;
+            min-width: 220px;
             padding: 10px;
             opacity: 0;
             visibility: hidden;
-            transform: translateY(-10px) scale(0.96);
-            transition: all 0.3s ease;
+            transition: all 0.5s var(--apple-spring);
             z-index: 100;
-        }
-        .nav-links li:hover .dropdown-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0) scale(1);
-        }
-        .dropdown-menu a {
-            display: block;
-            padding: 10px 16px;
-            color: var(--text-dim);
-            border-radius: 14px;
-            font-size: 0.85rem;
-        }
-        .dropdown-menu a:hover {
-            background: rgba(255,255,255,0.07);
-            color: white;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
         }
 
-        /* Mobile Hamburger */
+        .profile-dropdown { left: auto; right: 0; transform: scale(0.4) translateY(-20px); }
+
+        .nav-links li:hover .dropdown-menu,
+        .profile-section:hover .profile-dropdown { 
+            opacity: 1; 
+            visibility: visible; 
+            transform: translateX(-50%) scale(1) translateY(0); 
+        }
+        
+        .profile-section:hover .profile-dropdown { transform: scale(1) translateY(0); }
+
+        .dropdown-item, .dropdown-menu a {
+            display: flex !important;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px !important;
+            color: var(--text-dim) !important;
+            font-size: 0.88rem !important;
+            text-decoration: none;
+            border-radius: 14px;
+            transition: all 0.2s ease;
+            margin-bottom: 2px;
+        }
+
+        .dropdown-item:hover, .dropdown-menu a:hover {
+            background: rgba(255,255,255,0.06);
+            color: #fff !important;
+            transform: translateX(5px);
+        }
+
+        /* Profile Avatar */
+        .profile-section { position: relative; margin-left: 20px; cursor: pointer; }
+        .profile-avatar {
+            width: 42px; height: 42px; border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.1);
+            transition: 0.3s;
+            object-fit: cover;
+        }
+        .profile-section:hover .profile-avatar { border-color: #fff; transform: scale(1.05); }
+
+        /* Auth Buttons with Animated Pill */
+        .auth-wrapper {
+            position: relative;
+            display: inline-flex;
+            background: rgba(255,255,255,0.03);
+            padding: 5px;
+            border-radius: 100px;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .auth-pill {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            width: calc(50% - 5px);
+            height: calc(100% - 10px);
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(15px);
+            border-radius: 100px;
+            transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .auth-pill.signup-active { transform: translateX(0); }
+        .auth-pill.login-active { transform: translateX(100%); }
+        
+        .auth-btn {
+            position: relative;
+            z-index: 2;
+            background: transparent;
+            border: none;
+            color: #fff;
+            padding: 10px 28px;
+            cursor: pointer;
+            font-weight: 600;
+            border-radius: 100px;
+            min-width: 110px;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+        
+        .auth-btn:hover { color: #fff; }
+
+        /* Hero Buttons */
+        .hero-btns-group {
+            position: relative;
+            display: inline-flex;
+            background: rgba(255,255,255,0.03);
+            padding: 5px;
+            border-radius: 100px;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .hero-pill {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            width: calc(50% - 5px);
+            height: calc(100% - 10px);
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(15px);
+            border-radius: 100px;
+            transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .hero-pill.join-active { transform: translateX(0); }
+        .hero-pill.learn-active { transform: translateX(100%); }
+        
+        .btn-hero {
+            position: relative;
+            z-index: 2;
+            background: transparent;
+            border: none;
+            color: #fff;
+            padding: 10px 28px;
+            cursor: pointer;
+            font-weight: 600;
+            border-radius: 100px;
+            min-width: 120px;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+        
+        .btn-hero:hover { color: #fff; }
+
+        /* Hero Slider */
+        .hero { height: 100vh; position: relative; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
+        .hero-image-slider img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: 1.5s; }
+        .hero-image-slider img.active { opacity: 0.45; }
+        .hero h1 { font-size: clamp(3rem, 8vw, 7.5rem); font-weight: 800; letter-spacing: -2px; margin-bottom: 20px; }
+        .hero-description { font-size: 1.3rem; color: var(--text-dim); margin-bottom: 30px; }
+        .hero-btns-wrapper { display: flex; justify-content: center; margin-top: 40px; }
+
+        /* Floating Pill Navigation */
+        .video-nav-observer { position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; justify-content: center; height: 40px; z-index: 10; }
+        .obs-line-active { position: absolute; width: 36px; height: 14px; background: #fff; border-radius: 20px; transition: left 0.6s cubic-bezier(0.23, 1, 0.32, 1); box-shadow: 0 0 15px rgba(255, 255, 255, 0.4); z-index: 3; pointer-events: none; }
+        .obs-dots { display: flex; gap: 20px; z-index: 2; }
+        .dot { width: 10px; height: 10px; background: rgba(255, 255, 255, 0.3); border-radius: 50%; cursor: pointer; transition: all 0.3s ease; }
+        .dot:hover { background: rgba(255, 255, 255, 0.8); transform: scale(1.2); }
+
+        /* Info Sections */
+        .info-split { padding: 100px 8%; }
+        .info-container { display: flex; align-items: center; gap: 80px; max-width: 1400px; margin: 0 auto; }
+        .info-text { flex: 1; }
+        .sub-title { font-size: 3.2rem; font-weight: 700; letter-spacing: -1px; margin-bottom: 25px; color: #fff; }
+        .clean-desc { font-size: 1.1rem; color: var(--text-dim); line-height: 1.7; }
+        .info-image { flex: 1; }
+        .soft-rect-wide { width: 100%; height: 480px; object-fit: cover; border-radius: 28px; border: 1px solid var(--glass-border); }
+
+        /* Why Families Choose */
+        .why-us-v2 { text-align: center; padding: 100px 8%; }
+        .massive-title { font-size: 3.5rem; font-weight: 800; letter-spacing: -2px; text-align: center; margin-bottom: 20px; }
+        .centered-p { max-width: 700px; margin: 0 auto; text-align: center; }
+        .soft-rect-large { width: 100%; max-width: 1100px; height: 500px; object-fit: cover; border-radius: 28px; border: 1px solid var(--glass-border); margin: 50px auto; display: block; }
+
+        /* Mission Grid */
+        .mission-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .mission-card-item {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            padding: 40px 30px;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            text-align: left;
+        }
+        .mission-card-item:hover {
+            transform: translateY(-12px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 25px 40px -15px rgba(0, 0, 0, 0.5);
+        }
+        .circle-label {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            border: 1px solid var(--glass-border);
+            width: auto;
+        }
+        .mission-card-item h3 { font-size: 1.6rem; margin-bottom: 15px; font-weight: 700; }
+
+        /* Stats Section - FIXED: horizontal row on all devices */
+        .stats-section { padding: 80px 8%; }
+        .stats-pill-container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: nowrap;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .stat-pill-card {
+            background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 80px;
+            padding: 35px 55px;
+            text-align: center;
+            min-width: 220px;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            flex: 1;
+        }
+        .stat-pill-card:hover {
+            transform: translateY(-12px) scale(1.03);
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(30, 30, 30, 0.9);
+        }
+        .stat-number-large { display: block; font-size: 3.5rem; font-weight: 900; color: #fff; letter-spacing: -2px; }
+        .stat-label-large { display: block; font-size: 1rem; font-weight: 500; margin-top: 12px; color: var(--text-dim); }
+
+        /* Exams Section */
+        .exams-section { padding: 100px 8%; }
+        .exams-layout-wrapper { display: flex; gap: 30px; max-width: 1400px; margin: 0 auto; }
+        .exam-card-massive { 
+            flex: 1.6; min-height: 450px; display: flex; flex-direction: column; justify-content: space-between;
+            background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 28px; padding: 40px; 
+        }
+        .exam-title-huge { font-size: 4rem; font-weight: 900; margin-bottom: 15px; }
+        .exam-desc { font-size: 1rem; line-height: 1.5; margin-bottom: 0; }
+        .exam-pill {
+            display: inline-block; background: rgba(255, 255, 255, 0.08); padding: 5px 12px; border-radius: 100px;
+            font-size: 0.7rem; letter-spacing: 0.5px; margin-bottom: 25px; border: 1px solid var(--glass-border); width: auto;
+        }
+        .exam-stack-container { flex: 1; display: flex; flex-direction: column; gap: 30px; }
+        .exam-card-stack-item { 
+            flex: 1; background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 28px; padding: 35px; 
+        }
+        .exam-card-stack-item h3 { font-size: 1.8rem; margin-bottom: 12px; }
+        .exam-small-desc { font-size: 0.9rem; color: var(--text-dim); line-height: 1.5; margin-top: 10px; }
+        .region-pill {
+            display: inline-block; background: rgba(255, 255, 255, 0.08); padding: 5px 12px; border-radius: 100px;
+            font-size: 0.7rem; letter-spacing: 0.5px; margin-bottom: 20px; border: 1px solid var(--glass-border); width: auto;
+        }
+
+        /* Contact Section */
+        .contact-section { padding: 120px 8%; background: #000; }
+        .contact-container { display: flex; gap: 80px; max-width: 1400px; margin: 0 auto; align-items: flex-start; }
+        .contact-info { flex: 1; }
+        .contact-item { display: flex; gap: 20px; margin-bottom: 35px; align-items: center; }
+        .contact-icon {
+            width: 55px; height: 55px; background: rgba(255, 255, 255, 0.05); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; border: 1px solid var(--glass-border);
+        }
+        .contact-icon svg { width: 24px; height: 24px; stroke: #fff; stroke-width: 1.5; fill: none; }
+        .contact-item h3 { font-size: 0.9rem; letter-spacing: 1.5px; color: #fff; margin-bottom: 5px; }
+        .contact-item p { color: var(--text-dim); font-size: 1.1rem; }
+        .contact-divider { border: none; height: 1px; background: var(--glass-border); margin: 40px 0; width: 100%; }
+        .small-info { color: var(--text-dim); font-size: 1rem; line-height: 1.6; margin-bottom: 20px; }
+        .contact-map { flex: 1; height: 550px; border-radius: 30px; overflow: hidden; border: 1px solid var(--glass-border); background: #111; }
+
+        .card-hover { transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .card-hover:hover { transform: translateY(-10px) scale(1.01); border-color: rgba(255,255,255,0.2); }
+
+        .reveal, .reveal-pop, .reveal-slide-up { opacity: 0; transform: translateY(50px); transition: 1s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active, .reveal-pop.active, .reveal-slide-up.active { opacity: 1; transform: translateY(0); }
+        .reveal-pop { transform: scale(0.9); }
+        .reveal-pop.active { transform: scale(1); }
+
+        footer { padding: 60px 8% 40px; text-align: center; border-top: 1px solid var(--glass-border); background: #000; }
+        .footer-content { max-width: 1200px; margin: 0 auto; }
+        .footer-logo { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 20px; color: #fff; }
+        .footer-copyright { color: var(--text-dim); font-size: 0.85rem; margin-bottom: 10px; }
+        .footer-made { color: var(--text-dim); font-size: 0.8rem; opacity: 0.7; }
+
+        /* Ban Message */
+        .ban-message {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 20000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+        }
+        .ban-message-content {
+            background: #1a1a1a;
+            padding: 50px;
+            border-radius: 30px;
+            max-width: 500px;
+            border: 1px solid #ff3b30;
+        }
+        .ban-message h2 { color: #ff3b30; margin-bottom: 20px; font-size: 2rem; }
+        .ban-message p { color: #ccc; margin-bottom: 30px; line-height: 1.6; }
+        .ban-message button {
+            background: #ff3b30;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        /* ========== ADDED: HAMBURGER MENU FOR MOBILE ONLY ========== */
         .hamburger {
             display: none;
             flex-direction: column;
-            gap: 5px;
+            justify-content: space-between;
+            width: 28px;
+            height: 20px;
             cursor: pointer;
-            z-index: 2100;
-            background: rgba(20,20,20,0.6);
-            padding: 8px 12px;
-            border-radius: 40px;
-            backdrop-filter: blur(8px);
+            z-index: 1001;
+            margin-left: 16px;
         }
         .hamburger span {
-            width: 24px;
+            width: 100%;
             height: 2px;
             background: white;
-            transition: 0.3s;
             border-radius: 4px;
+            transition: 0.3s;
         }
-        .mobile-menu {
+        .mobile-nav {
             position: fixed;
             top: 0;
             right: -100%;
-            width: 80%;
+            width: 75%;
             max-width: 320px;
             height: 100vh;
-            background: rgba(8,8,8,0.98);
+            background: rgba(10,10,10,0.98);
             backdrop-filter: blur(40px);
-            z-index: 2050;
-            padding: 100px 28px 40px;
-            transition: right 0.4s var(--apple-ease);
-            border-left: 1px solid var(--border-glass);
+            z-index: 1500;
+            padding: 100px 30px 40px;
+            transition: right 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            border-left: 1px solid var(--glass-border);
             display: flex;
             flex-direction: column;
-            gap: 28px;
+            gap: 20px;
         }
-        .mobile-menu.active {
+        .mobile-nav.active {
             right: 0;
         }
-        .mobile-menu a {
+        .mobile-nav a {
             color: var(--text-dim);
             text-decoration: none;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 500;
-            padding: 8px 0;
+            padding: 10px 0;
             border-bottom: 1px solid rgba(255,255,255,0.05);
         }
-        .mobile-dropdown-item {
-            margin-left: 20px;
-            font-size: 1rem;
-            padding: 8px 0;
-            display: block;
+        .mobile-nav .mobile-dropdown-item {
+            padding-left: 20px;
+            font-size: 0.95rem;
         }
-        .close-menu {
+        .close-mobile {
             position: absolute;
             top: 24px;
             right: 24px;
@@ -183,544 +427,466 @@
             cursor: pointer;
             color: white;
         }
-
-        /* Auth Components */
-        .auth-wrapper {
-            position: relative;
-            display: inline-flex;
-            background: rgba(255,255,255,0.04);
-            border-radius: 100px;
-            padding: 4px;
-            border: 1px solid var(--border-glass);
-        }
-        .auth-pill {
-            position: absolute;
-            top: 4px;
-            left: 4px;
-            width: calc(50% - 4px);
-            height: calc(100% - 8px);
-            background: rgba(255,255,255,0.18);
-            backdrop-filter: blur(12px);
-            border-radius: 100px;
-            transition: transform 0.3s var(--apple-ease);
-            pointer-events: none;
-        }
-        .auth-pill.login-active { transform: translateX(100%); }
-        .auth-btn {
-            background: transparent;
-            border: none;
-            color: white;
-            padding: 8px 22px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            border-radius: 100px;
-            z-index: 2;
-            position: relative;
-        }
-        .profile-section {
-            position: relative;
-            margin-left: 12px;
-            cursor: pointer;
-        }
-        .profile-avatar {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            border: 2px solid rgba(255,255,255,0.15);
-            object-fit: cover;
-        }
-        .profile-dropdown {
-            position: absolute;
-            top: 52px;
-            right: 0;
-            background: rgba(20,20,20,0.96);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border-glass);
-            border-radius: 24px;
-            min-width: 220px;
-            padding: 12px;
-            opacity: 0;
-            visibility: hidden;
-            transform: scale(0.95);
-            transition: 0.25s;
-        }
-        .profile-section:hover .profile-dropdown {
-            opacity: 1;
-            visibility: visible;
-            transform: scale(1);
-        }
-        .dropdown-item {
-            padding: 10px 14px;
-            border-radius: 14px;
-            transition: 0.2s;
-            cursor: pointer;
-        }
-        .dropdown-item:hover { background: rgba(255,255,255,0.07); }
-
-        /* Hero Section */
-        .hero {
-            height: 100vh;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            overflow: hidden;
-        }
-        .hero-image-slider img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0;
-            transition: 1.6s ease;
-        }
-        .hero-image-slider img.active { opacity: 0.4; }
-        .hero-content { position: relative; z-index: 5; padding: 20px; }
-        .hero h1 { font-size: clamp(2.8rem, 8vw, 6rem); font-weight: 800; letter-spacing: -2px; }
-        .hero-description { font-size: 1.2rem; color: var(--text-dim); margin: 20px 0; }
-        
-        /* Hero Buttons */
-        .hero-btns-group, .footer-btns-group {
-            position: relative;
-            display: inline-flex;
-            background: rgba(255,255,255,0.04);
-            padding: 5px;
-            border-radius: 100px;
-            border: 1px solid var(--border-glass);
-        }
-        .hero-pill, .footer-pill {
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            width: calc(50% - 5px);
-            height: calc(100% - 10px);
-            background: rgba(255,255,255,0.2);
-            border-radius: 100px;
-            transition: transform 0.35s var(--apple-ease);
-            pointer-events: none;
-        }
-        .hero-pill.learn-active { transform: translateX(100%); }
-        .btn-hero {
-            background: transparent;
-            border: none;
-            color: white;
-            padding: 10px 28px;
-            font-weight: 600;
-            cursor: pointer;
-            border-radius: 100px;
-            z-index: 2;
-        }
-
-        /* Info Sections */
-        .info-split { padding: 80px 6%; }
-        .info-container { display: flex; align-items: center; gap: 60px; max-width: 1300px; margin: auto; flex-wrap: wrap; }
-        .info-text { flex: 1; min-width: 260px; }
-        .sub-title { font-size: 2.8rem; font-weight: 700; margin-bottom: 20px; }
-        .clean-desc { color: var(--text-dim); line-height: 1.6; }
-        .info-image { flex: 1; }
-        .soft-rect { width: 100%; height: auto; border-radius: 28px; border: 1px solid var(--border-glass); object-fit: cover; max-height: 400px; }
-
-        /* Mission Grid (removed community card) */
-        .mission-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-            gap: 30px;
-            max-width: 1300px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-        .mission-card-item {
-            background: var(--bg-card);
-            border: 1px solid var(--border-glass);
-            border-radius: 32px;
-            padding: 32px;
-            transition: 0.3s;
-        }
-        .mission-card-item:hover { transform: translateY(-8px); border-color: rgba(255,255,255,0.2); }
-        .circle-label {
-            background: rgba(255,255,255,0.08);
-            padding: 5px 14px;
-            border-radius: 40px;
-            font-size: 0.7rem;
-            display: inline-block;
-            margin-bottom: 20px;
-        }
-
-        /* Stats Row - Horizontal on all screens */
-        .stats-section { padding: 60px 5%; }
-        .stats-row {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 30px;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-        .stat-card {
-            background: rgba(18,18,18,0.8);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--border-glass);
-            border-radius: 60px;
-            padding: 30px 40px;
-            text-align: center;
-            flex: 1;
-            min-width: 180px;
-            transition: 0.25s;
-        }
-        .stat-number { font-size: 3rem; font-weight: 800; letter-spacing: -1px; }
-        .stat-label { color: var(--text-dim); margin-top: 8px; font-size: 0.9rem; }
-
-        /* Exams */
-        .exams-section { padding: 80px 6%; }
-        .exams-wrapper { display: flex; gap: 30px; flex-wrap: wrap; max-width: 1300px; margin: auto; }
-        .exam-main {
-            flex: 1.5;
-            background: var(--bg-card);
-            border-radius: 32px;
-            padding: 40px;
-            border: 1px solid var(--border-glass);
-        }
-        .exam-stack { flex: 1; display: flex; flex-direction: column; gap: 25px; }
-        .exam-item {
-            background: var(--bg-card);
-            border-radius: 28px;
-            padding: 30px;
-            border: 1px solid var(--border-glass);
-        }
-        .exam-pill, .region-pill {
-            background: rgba(255,255,255,0.08);
-            padding: 4px 12px;
-            border-radius: 40px;
-            font-size: 0.7rem;
-            display: inline-block;
-            margin-bottom: 16px;
-        }
-
-        /* Contact & Map */
-        .contact-section { padding: 80px 6%; background: #000; }
-        .contact-container { display: flex; gap: 50px; max-width: 1300px; margin: auto; flex-wrap: wrap; }
-        .contact-info { flex: 1; min-width: 260px; }
-        .contact-item { display: flex; gap: 18px; margin-bottom: 30px; align-items: center; }
-        .contact-icon {
-            width: 48px; height: 48px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid var(--border-glass);
-        }
-        .contact-map {
-            flex: 1;
-            height: 420px;
-            border-radius: 32px;
-            overflow: hidden;
-            border: 1px solid var(--border-glass);
-            background: #111;
-        }
-        .contact-map iframe {
-            width: 100%;
-            height: 100%;
-            border: 0;
-        }
-
-        footer { text-align: center; padding: 50px 20px; border-top: 1px solid var(--border-glass); }
-
-        /* Reveal animations */
-        .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s ease; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-
-        /* Mobile styles (hamburger only for phones) */
-        @media (max-width: 768px) {
-            .nav-links, .auth-wrapper {
-                display: none;
-            }
-            .hamburger {
-                display: flex;
-            }
-            .nav-container {
-                padding: 0 18px;
-            }
-            .stats-row {
-                flex-direction: row;
-                flex-wrap: wrap;
-                gap: 16px;
-            }
-            .stat-card {
-                padding: 20px 24px;
-                min-width: 140px;
-            }
-            .stat-number {
-                font-size: 2.4rem;
-            }
-            .contact-map {
-                height: 320px;
-            }
-            .info-container {
-                flex-direction: column;
-            }
-            .hero h1 {
-                font-size: 2.4rem;
-            }
-        }
-
-        /* iPad and up: keep original nav */
-        @media (min-width: 769px) {
-            .hamburger, .mobile-menu {
-                display: none !important;
-            }
-        }
-
-        .ban-message {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.96);
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .ban-card {
-            background: #1a1a1a;
-            padding: 40px;
-            border-radius: 40px;
-            border: 1px solid #ff3b30;
-            text-align: center;
+        @media (max-width: 1000px) {
+            .hero h1 { font-size: 2.8rem; letter-spacing: -1px; }
+            .massive-title { font-size: 2.2rem; }
+            .sub-title { font-size: 2rem; }
+            .info-container { flex-direction: column !important; gap: 40px; }
+            .exams-layout-wrapper { flex-direction: column; }
+            .nav-links { display: none; }
+            /* Stats row: horizontal on mobile (flex-wrap: nowrap + scroll if needed) */
+            .stats-pill-container { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; gap: 20px; padding-bottom: 15px; }
+            .stat-pill-card { min-width: 200px; padding: 25px 30px; flex-shrink: 0; }
+            .soft-rect-wide { height: 300px; }
+            .soft-rect-large { height: 300px; }
+            .obs-dots { gap: 12px; }
+            .info-text { text-align: center; }
+            .exam-card-massive { min-height: auto; }
+            .contact-container { flex-direction: column; gap: 60px; }
+            .contact-map { width: 100%; height: 400px; }
+            /* Show hamburger */
+            .hamburger { display: flex; }
+            .nav-container { padding: 0 20px; }
         }
     </style>
 </head>
 <body>
 
-<nav id="navbar">
-    <div class="nav-container">
-        <img src="logo.png" alt="KORAHEY" class="logo-img" onclick="window.location.href='index.html'" style="cursor:pointer;">
-        
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="#">Contact Us</a>
-                <div class="dropdown-menu">
-                    <a href="about.html">About Us</a>
-                    <a href="teacher-contact.html">Teacher Contact</a>
-                </div>
-            </li>
-            <li><a href="#">Academics</a>
-                <div class="dropdown-menu">
-                    <a href="results.html">Results & Resources</a>
-                    <a href="curriculum.html">Curriculum</a>
-                </div>
-            </li>
-            <li><a href="#">Announcements</a>
-                <div class="dropdown-menu">
-                    <a href="exam-calendar.html">Exam Calendar</a>
-                    <a href="news.html">School News</a>
-                </div>
-            </li>
-        </ul>
-
-        <div style="display: flex; align-items: center; gap: 12px;">
-            <div class="auth-wrapper" id="authWrapper">
-                <div class="auth-pill" id="authPill"></div>
-                <button class="auth-btn" id="signUpBtn">Sign Up</button>
-                <button class="auth-btn" id="logInBtn">Log In</button>
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="logo" onclick="window.location.href='index.html'">
+                <img src="logo.png" alt="KORAHEY" class="logo-img">
             </div>
-            <div class="profile-section" id="profileSection" style="display: none;">
-                <img id="userAvatar" class="profile-avatar" src="default-avatar.png">
-                <div class="profile-dropdown">
-                    <div style="padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                        <p id="dropdownUserName" style="font-weight: 600;"></p>
-                        <p id="dropdownUserEmail" style="font-size: 0.7rem; color: var(--text-dim);"></p>
+
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#">Contact Us</a>
+                    <div class="dropdown-menu">
+                        <a href="about.html">About Us</a>
+                        <a href="teacher-contact.html">Teacher Contact</a>
                     </div>
-                    <div class="dropdown-item" id="myAccountBtn">My Account</div>
-                    <div id="adminDropdownItem" style="display: none;"><div class="dropdown-item" id="adminDashboardBtn">Admin Dashboard</div></div>
-                    <div class="dropdown-item" id="signOutBtn" style="color: #ff6b6b;">Sign Out</div>
+                </li>
+                <li><a href="#">Academics</a>
+                    <div class="dropdown-menu">
+                        <a href="results.html">Results & Resources</a>
+                        <a href="curriculum.html">Curriculum</a>
+                    </div>
+                </li>
+                <li><a href="#">Announcements</a>
+                    <div class="dropdown-menu">
+                        <a href="exam-calendar.html">Exam Calendar</a>
+                        <a href="news.html">School News</a>
+                    </div>
+                </li>
+            </ul>
+
+            <div style="display: flex; align-items: center;">
+                <!-- Auth Buttons (shown when not logged in) -->
+                <div class="auth-wrapper" id="authWrapper">
+                    <div class="auth-pill signup-active" id="authPill"></div>
+                    <button class="auth-btn" id="signUpBtn">Sign Up</button>
+                    <button class="auth-btn" id="logInBtn">Log In</button>
+                </div>
+
+                <!-- Profile Dropdown (shown when logged in) -->
+                <div class="profile-section" id="profileSection" style="display: none;">
+                    <img id="userAvatar" class="profile-avatar" src="default-avatar.png">
+                    <div class="profile-dropdown">
+                        <div style="padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 8px;">
+                            <p id="dropdownUserName" style="font-weight: 700; font-size: 0.95rem;"></p>
+                            <p id="dropdownUserEmail" style="font-size: 0.75rem; color: var(--text-dim);"></p>
+                        </div>
+                        <div class="dropdown-item" id="myAccountBtn">
+                            <span>My Account</span>
+                        </div>
+                        <div id="adminDropdownItem" style="display: none;">
+                            <div class="dropdown-item" id="adminDashboardBtn">
+                                <span>Admin Dashboard</span>
+                                <span style="background: rgba(255,100,0,0.2); color: #ffa500; font-size: 0.7rem; padding: 2px 8px; border-radius: 20px; margin-left: 8px;">ADMIN</span>
+                            </div>
+                        </div>
+                        <div class="dropdown-item" id="signOutBtn" style="color: #ff4d4d !important;">
+                            <span>Sign Out</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Hamburger Menu Icon -->
+                <div class="hamburger" id="hamburgerIcon">
+                    <span></span><span></span><span></span>
                 </div>
             </div>
-            <div class="hamburger" id="hamburger">
-                <span></span><span></span><span></span>
+        </div>
+    </nav>
+
+    <!-- Mobile Navigation Menu -->
+    <div class="mobile-nav" id="mobileNav">
+        <div class="close-mobile" id="closeMobileMenu">&times;</div>
+        <a href="index.html">Home</a>
+        <div style="margin-top: 8px;">
+            <div style="color: var(--text-dim); margin-bottom: 6px;">Contact Us</div>
+            <a href="about.html" class="mobile-dropdown-item">About Us</a>
+            <a href="teacher-contact.html" class="mobile-dropdown-item">Teacher Contact</a>
+        </div>
+        <div style="margin-top: 8px;">
+            <div style="color: var(--text-dim); margin-bottom: 6px;">Academics</div>
+            <a href="results.html" class="mobile-dropdown-item">Results & Resources</a>
+            <a href="curriculum.html" class="mobile-dropdown-item">Curriculum</a>
+        </div>
+        <div style="margin-top: 8px;">
+            <div style="color: var(--text-dim); margin-bottom: 6px;">Announcements</div>
+            <a href="exam-calendar.html" class="mobile-dropdown-item">Exam Calendar</a>
+            <a href="news.html" class="mobile-dropdown-item">School News</a>
+        </div>
+    </div>
+
+    <!-- Ban Overlay -->
+    <div id="banOverlay" style="display: none;" class="ban-message">
+        <div class="ban-message-content">
+            <h2>Account Banned</h2>
+            <p>Your account has been banned from Korahey Academy. Please contact support for more information.</p>
+            <button onclick="logoutAndRedirect()">Sign Out</button>
+        </div>
+    </div>
+
+    <header class="hero" id="home">
+        <div class="hero-image-slider">
+            <img src="slided1.png" class="active">
+            <img src="slided2.png">
+            <img src="slided3.png">
+            <img src="slided4.png">
+            <img src="slided5.png">
+        </div>
+        <div class="hero-content">
+            <h1 class="reveal">Passion for Success</h1>
+            <p class="hero-description reveal">Building a foundation for leadership and academic mastery.</p>
+            <div class="hero-btns-wrapper reveal">
+                <div class="hero-btns-group" id="heroBtnsGroup">
+                    <div class="hero-pill join-active" id="heroPill"></div>
+                    <button class="btn-hero active" id="heroJoinBtn">Join Us</button>
+                    <button class="btn-hero" id="heroLearnBtn">Learn More</button>
+                </div>
             </div>
         </div>
-    </div>
-</nav>
-
-<!-- Mobile Menu -->
-<div class="mobile-menu" id="mobileMenu">
-    <div class="close-menu" id="closeMenu">&times;</div>
-    <a href="index.html">Home</a>
-    <div style="margin-top: 8px;">
-        <div style="color: var(--text-dim); margin-bottom: 8px;">Contact Us</div>
-        <a href="about.html" class="mobile-dropdown-item">About Us</a>
-        <a href="teacher-contact.html" class="mobile-dropdown-item">Teacher Contact</a>
-    </div>
-    <div style="margin-top: 8px;">
-        <div style="color: var(--text-dim); margin-bottom: 8px;">Academics</div>
-        <a href="results.html" class="mobile-dropdown-item">Results & Resources</a>
-        <a href="curriculum.html" class="mobile-dropdown-item">Curriculum</a>
-    </div>
-    <div style="margin-top: 8px;">
-        <div style="color: var(--text-dim); margin-bottom: 8px;">Announcements</div>
-        <a href="exam-calendar.html" class="mobile-dropdown-item">Exam Calendar</a>
-        <a href="news.html" class="mobile-dropdown-item">School News</a>
-    </div>
-    <div style="margin-top: 30px;">
-        <div id="mobileAuthButtons" style="display: flex; flex-direction: column; gap: 12px;"></div>
-        <div id="mobileProfileInfo" style="display: none;"></div>
-    </div>
-</div>
-
-<div id="banOverlay" style="display: none; position: fixed; inset:0; background:#000; z-index:20000; align-items:center; justify-content:center;">
-    <div class="ban-card"><h2 style="color:#ff3b30;">Account Banned</h2><p>Contact support.</p><button onclick="logoutAndRedirect()" style="margin-top:20px; background:#ff3b30; border:none; padding:12px 24px; border-radius:40px; color:white;">Sign Out</button></div>
-</div>
-
-<!-- Hero -->
-<header class="hero" id="home">
-    <div class="hero-image-slider">
-        <img src="slided1.png" class="active"><img src="slided2.png"><img src="slided3.png"><img src="slided4.png"><img src="slided5.png">
-    </div>
-    <div class="hero-content">
-        <h1 class="reveal">Passion for Success</h1>
-        <p class="hero-description reveal">Building a foundation for leadership and academic mastery.</p>
-        <div class="hero-btns-group reveal" id="heroBtnsGroup">
-            <div class="hero-pill join-active" id="heroPill"></div>
-            <button class="btn-hero" id="heroJoinBtn">Join Us</button>
-            <button class="btn-hero" id="heroLearnBtn">Learn More</button>
+        <div class="video-nav-observer">
+            <div class="obs-line-active" id="hero-line"></div>
+            <div class="obs-dots">
+                <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            </div>
         </div>
-    </div>
-    <div class="video-nav-observer" style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; gap: 16px;">
-        <span class="dot" style="width:8px;height:8px;background:white;border-radius:50%;"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
-    </div>
-</header>
+    </header>
 
-<!-- Our Mission -->
-<section class="info-split reveal"><div class="info-container"><div class="info-image"><img src="slided4.png" class="soft-rect"></div><div class="info-text"><h2 class="sub-title">Our Mission</h2><p class="clean-desc">Korahey Academy is a place where students thrive. With passionate teachers, strong academics, and a supportive environment, we ensure every student receives guidance and opportunities to excel.</p></div></div></section>
+    <!-- Our Mission -->
+    <section class="info-split reveal-slide-up">
+        <div class="info-container">
+            <div class="info-image"><img src="slided4.png" class="soft-rect-wide" alt="Our Mission"></div>
+            <div class="info-text">
+                <h2 class="sub-title">Our Mission</h2>
+                <p class="clean-desc">Korahey Academy is a place where students thrive. With passionate and experienced teachers, a strong academic program, and a supportive learning environment, we ensure every student receives the guidance and opportunities needed to excel. Our focus on both education and character development prepares students to succeed in school and in life.</p>
+            </div>
+        </div>
+    </section>
 
-<!-- Academic Excellence -->
-<section class="info-split reveal"><div class="info-container"><div class="info-text"><h2 class="sub-title">Academic Excellence</h2><p class="clean-desc">Dedicated teachers inspire students to reach full potential. Modern curriculum and supportive environment help them grow academically and personally.</p></div><div class="info-image"><img src="slided5.png" class="soft-rect"></div></div></section>
+    <!-- Academic Excellence -->
+    <section class="info-split reveal-slide-up">
+        <div class="info-container">
+            <div class="info-text">
+                <h2 class="sub-title">Academic Excellence</h2>
+                <p class="clean-desc">At Korahey Academy, we are committed to excellence in education. Our dedicated teachers inspire students to reach their full potential, while our modern curriculum and supportive environment help them grow academically and personally. We prepare learners to succeed today and lead tomorrow.</p>
+            </div>
+            <div class="info-image"><img src="slided5.png" class="soft-rect-wide" alt="Academic Excellence"></div>
+        </div>
+    </section>
 
-<!-- Core Values (Community card removed) -->
-<section><h2 class="sub-title" style="text-align:center;">Our Core Values</h2><div class="mission-grid"><div class="mission-card-item reveal"><span class="circle-label">Environment</span><h3>Safe Learning</h3><p class="clean-desc">A secure atmosphere for inspiring growth and creativity every day.</p></div><div class="mission-card-item reveal"><span class="circle-label">Success</span><h3>Proven Results</h3><p class="clean-desc">Exceeding national performance standards with consistent excellence.</p></div><div class="mission-card-item reveal"><span class="circle-label">Innovation</span><h3>Future Ready</h3><p class="clean-desc">Preparing students with modern skills for tomorrow's challenges.</p></div></div></section>
+    <!-- Core Values (REMOVED the Community card as requested) -->
+    <section class="offers-section reveal-slide-up">
+        <h2 class="massive-title">Our Core Values</h2>
+        <p style="text-align: center; max-width: 700px; margin: 0 auto 50px auto; color: var(--text-dim); font-size: 1.1rem;">What makes Korahey Academy special</p>
+        <div class="mission-grid">
+            <div class="mission-card-item reveal-pop card-hover"><span class="circle-label">Environment</span><h3>Safe Learning</h3><p class="clean-desc">A secure atmosphere for inspiring growth and creativity every single day.</p></div>
+            <div class="mission-card-item reveal-pop card-hover"><span class="circle-label">Success</span><h3>Proven Results</h3><p class="clean-desc">Exceeding national performance standards with consistent excellence year after year.</p></div>
+            <div class="mission-card-item reveal-pop card-hover"><span class="circle-label">Innovation</span><h3>Future Ready</h3><p class="clean-desc">Preparing students with modern skills for tomorrow's challenges and opportunities.</p></div>
+            <!-- The "Community / Supportive Network" card has been REMOVED -->
+        </div>
+    </section>
 
-<!-- Why Families Choose -->
-<section class="why-us-v2 reveal" style="text-align:center; padding:60px 6%;"><h2 class="sub-title">Why Families Choose Korahey Academy</h2><img src="slided1.png" style="width:100%; max-width:1000px; border-radius:32px; margin:30px auto; border:1px solid var(--border-glass);"></section>
+    <!-- Why Families Choose -->
+    <section class="why-us-v2 reveal-slide-up">
+        <div class="why-header"><h2 class="massive-title">Why Families Choose Korahey Academy</h2><p class="clean-desc centered-p">Our mission is to drive progress and enhance the lives of our students.</p></div>
+        <div class="why-img-container"><img src="slided1.png" class="soft-rect-large" alt="Why Choose Us"></div>
+        <div class="why-footer"><p class="clean-desc centered-p">Families choose us for our focus on real growth every single day.</p>
+            <div class="hero-btns-wrapper">
+                <div class="hero-btns-group" id="footerBtnsGroup">
+                    <div class="hero-pill join-active" id="footerPill"></div>
+                    <button class="btn-hero active" id="footerJoinBtn">Get Started</button>
+                    <button class="btn-hero" id="footerLearnBtn">Learn More</button>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<!-- Stats Row Horizontal Fix -->
-<section class="stats-section reveal"><div class="stats-row"><div class="stat-card"><span class="stat-number">98%</span><div class="stat-label">University Acceptance</div></div><div class="stat-card"><span class="stat-number">24/7</span><div class="stat-label">Campus Security</div></div><div class="stat-card"><span class="stat-number">12:1</span><div class="stat-label">Student-Teacher Ratio</div></div></div></section>
+    <!-- Exams -->
+    <section class="exams-section reveal-slide-up">
+        <div class="exams-layout-wrapper">
+            <div class="exam-card-massive reveal-pop card-hover"><div style="margin-top: auto;"><span class="exam-pill">National Exam</span><h2 class="exam-title-huge">12th Grade</h2><p class="clean-desc exam-desc">Intensive preparation for university entrance. Our senior year program is designed to maximize student success through focused curriculum, expert faculty guidance, and comprehensive exam strategies.</p></div></div>
+            <div class="exam-stack-container"><div class="exam-card-stack-item reveal-pop card-hover"><span class="region-pill">Regional Exam</span><h3>8th Grade</h3><p class="exam-small-desc">Building strong foundations in core subjects with critical thinking development and regional exam preparation.</p></div>
+            <div class="exam-card-stack-item reveal-pop card-hover"><span class="region-pill">Regional Exam</span><h3>6th Grade</h3><p class="exam-small-desc">Developing essential skills in mathematics, science, and language arts while fostering a love for learning.</p></div></div>
+        </div>
+    </section>
 
-<!-- Exams -->
-<section class="exams-section reveal"><div class="exams-wrapper"><div class="exam-main"><span class="exam-pill">National Exam</span><h2 style="font-size:3rem;">12th Grade</h2><p>Intensive university prep, expert guidance, and exam strategies.</p></div><div class="exam-stack"><div class="exam-item"><span class="region-pill">Regional Exam</span><h3>8th Grade</h3><p>Strong foundations in core subjects.</p></div><div class="exam-item"><span class="region-pill">Regional Exam</span><h3>6th Grade</h3><p>Essential skills in math, science, language arts.</p></div></div></div></section>
+    <!-- Stats (Horizontal row now forced) -->
+    <section class="stats-section reveal-slide-up">
+        <div class="stats-pill-container">
+            <div class="stat-pill-card reveal-pop card-hover"><span class="stat-number-large">98%</span><span class="stat-label-large">University Acceptance Rate</span></div>
+            <div class="stat-pill-card reveal-pop card-hover"><span class="stat-number-large">24/7</span><span class="stat-label-large">Campus Security</span></div>
+            <div class="stat-pill-card reveal-pop card-hover"><span class="stat-number-large">12:1</span><span class="stat-label-large">Student-Teacher Ratio</span></div>
+        </div>
+    </section>
 
-<!-- Contact & Functional Map -->
-<section class="contact-section reveal"><div class="contact-container"><div class="contact-info"><h2 class="sub-title" style="font-size:2.2rem;">Contact & Location</h2><div class="contact-item"><div class="contact-icon">📍</div><div><h3>ADDRESS</h3><p>Jigjiga - Wajaale Rd, Jijiga</p></div></div><div class="contact-item"><div class="contact-icon">📞</div><div><h3>PHONE</h3><p>090 090 4449</p></div></div><div class="contact-item"><div class="contact-icon">⏰</div><div><h3>HOURS</h3><p>Mon–Fri 7:40–12:35</p></div></div></div><div class="contact-map"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3934.2!2d42.793!3d9.351!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x162b5c8f2b5c8f2b%3A0x0!2zOcKwMjEnMDMuNiJOIDQywrA0NyczNC44IkU!5e0!3m2!1sen!2set!4v1620000000000!5m2!1sen!2set" allowfullscreen="" loading="lazy"></iframe></div></div></section>
+    <!-- Contact & Location (Map fixed - proper working iframe) -->
+    <section class="contact-section reveal-slide-up">
+        <div class="contact-container">
+            <div class="contact-info"><h2 class="massive-title" style="text-align: left;">Contact & Location</h2><p class="clean-desc" style="margin-bottom: 50px;">We're here to help you with any questions about Korahey Academy. Get in touch or visit.</p>
+                <div class="contact-item"><div class="contact-icon"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 6 11 6 11s6-5.75 6-11c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg></div><div><h3>ADDRESS</h3><p>Jigjiga - Wajaale Rd, Jijiga</p></div></div>
+                <div class="contact-item"><div class="contact-icon"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div><div><h3>PHONE</h3><p>090 090 4449</p></div></div>
+                <div class="contact-item"><div class="contact-icon"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><h3>HOURS</h3><p>Mon–Fri 7:40–12:35</p></div></div>
+                <hr class="contact-divider"><p class="small-info">Call us during school hours or leave a message on weekends and we'll get back to you.</p><p class="small-info">Parents are welcome to visit the school office to ask questions or learn about registration.</p>
+            </div>
+            <div class="contact-map"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3934.123456789!2d42.793!3d9.351!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zOcKwMjEnMDMuNiJOIDQywrA0NyczNC44IkU!5e0!3m2!1sen!2set!4v1620000000000!5m2!1sen!2set" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe></div>
+        </div>
+    </section>
 
-<footer><div class="footer-content"><div class="footer-logo" style="font-weight:700;">Korahey Academy</div><div>© 2026 Khalil · Official site for Korahey Academy</div></div></footer>
+    <footer><div class="footer-content"><div class="footer-logo">Korahey Academy</div><div class="footer-copyright">© 2026 Khalil · Official site for Korahey Academy</div><div class="footer-made">Made by Khalil</div></div></footer>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const firebaseConfig = { apiKey: "AIzaSyCC5oK1cMufciR1v4wLi-jfYvXa_cQBnd0", authDomain: "korahey-admin.firebaseapp.com", projectId: "korahey-admin", storageBucket: "korahey-admin.firebasestorage.app", messagingSenderId: "86298888884", appId: "1:86298888884:web:f1d835de1cb9d2534d65e1" };
-        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth(), db = firebase.firestore();
-        const ADMIN_EMAIL = "khalilmohamedaden@gmail.com";
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            const firebaseConfig = {
+                apiKey: "AIzaSyCC5oK1cMufciR1v4wLi-jfYvXa_cQBnd0",
+                authDomain: "korahey-admin.firebaseapp.com",
+                projectId: "korahey-admin",
+                storageBucket: "korahey-admin.firebasestorage.app",
+                messagingSenderId: "86298888884",
+                appId: "1:86298888884:web:f1d835de1cb9d2534d65e1"
+            };
 
-        const authWrapper = document.getElementById('authWrapper'), profileSec = document.getElementById('profileSection'), banDiv = document.getElementById('banOverlay');
-        const signUpBtn = document.getElementById('signUpBtn'), logInBtn = document.getElementById('logInBtn');
-        const heroJoin = document.getElementById('heroJoinBtn'), heroLearn = document.getElementById('heroLearnBtn');
-        const userAvatar = document.getElementById('userAvatar'), dropdownName = document.getElementById('dropdownUserName'), dropdownEmail = document.getElementById('dropdownUserEmail'), adminItem = document.getElementById('adminDropdownItem');
-        
-        function goToSignUp() { window.location.href = 'Sign.up.html'; }
-        function goToLogIn() { window.location.href = 'Log.in.html'; }
-        function goToAdmin() { window.location.href = 'admin.html'; }
-        window.logoutAndRedirect = () => auth.signOut().then(() => location.reload());
-        
-        signUpBtn?.addEventListener('click', goToSignUp);
-        logInBtn?.addEventListener('click', goToLogIn);
-        heroJoin?.addEventListener('click', goToSignUp);
-        heroLearn?.addEventListener('click', goToLogIn);
-        document.getElementById('myAccountBtn')?.addEventListener('click', () => alert('My Account coming soon'));
-        document.getElementById('adminDashboardBtn')?.addEventListener('click', goToAdmin);
-        document.getElementById('signOutBtn')?.addEventListener('click', () => auth.signOut().then(() => location.reload()));
-
-        // Mobile menu handlers
-        const hamburger = document.getElementById('hamburger'), mobileMenu = document.getElementById('mobileMenu'), closeMenu = document.getElementById('closeMenu');
-        if(hamburger) hamburger.onclick = () => mobileMenu.classList.add('active');
-        if(closeMenu) closeMenu.onclick = () => mobileMenu.classList.remove('active');
-        
-        function updateMobileUI(user) {
-            const mobileAuthDiv = document.getElementById('mobileAuthButtons');
-            const mobileProfileDiv = document.getElementById('mobileProfileInfo');
-            if(!mobileAuthDiv) return;
-            if(user && !user.isBannedFlag) {
-                mobileAuthDiv.style.display = 'none';
-                mobileProfileDiv.style.display = 'block';
-                mobileProfileDiv.innerHTML = `<div style="color:white; border-bottom:1px solid #333; padding-bottom:10px;"><strong>${user.displayName || user.email?.split('@')[0]}</strong><br><span style="font-size:12px;">${user.email}</span></div><button id="mobileSignOutBtn" style="margin-top:20px; background:#333; border:none; padding:10px; border-radius:30px; color:white;">Sign Out</button>`;
-                document.getElementById('mobileSignOutBtn')?.addEventListener('click', () => auth.signOut().then(() => location.reload()));
-            } else {
-                mobileAuthDiv.style.display = 'flex';
-                mobileProfileDiv.style.display = 'none';
-                mobileAuthDiv.innerHTML = `<button id="mobileSignUp" style="background:#222; border:none; padding:12px; border-radius:40px; color:white;">Sign Up</button><button id="mobileLogin" style="background:#222; border:none; padding:12px; border-radius:40px; color:white;">Log In</button>`;
-                document.getElementById('mobileSignUp')?.addEventListener('click', goToSignUp);
-                document.getElementById('mobileLogin')?.addEventListener('click', goToLogIn);
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
             }
-        }
+            
+            const auth = firebase.auth();
+            const db = firebase.firestore();
+            const ADMIN_EMAIL = "khalilmohamedaden@gmail.com";
 
-        // Auth state fix: prevent showing both auth and profile at same time
-        auth.onAuthStateChanged(async (user) => {
-            if (user) {
-                let isBanned = false;
-                try {
-                    const doc = await db.collection('users').doc(user.uid).get();
-                    if(doc.exists && doc.data().isBanned === true) isBanned = true;
-                } catch(e) {}
-                if(isBanned) {
-                    if(banDiv) banDiv.style.display = 'flex';
-                    if(authWrapper) authWrapper.style.display = 'none';
-                    if(profileSec) profileSec.style.display = 'none';
-                    return;
-                }
-                if(banDiv) banDiv.style.display = 'none';
-                if(authWrapper) authWrapper.style.display = 'none';
-                if(profileSec) profileSec.style.display = 'flex';
-                userAvatar.src = user.photoURL || `https://ui-avatars.com/api/?name=${(user.displayName || user.email.charAt(0)).toUpperCase()}&background=fff&color=000`;
-                dropdownName.innerText = user.displayName || user.email.split('@')[0];
-                dropdownEmail.innerText = user.email;
+            const authWrapper = document.getElementById('authWrapper');
+            const authPill = document.getElementById('authPill');
+            const signUpBtn = document.getElementById('signUpBtn');
+            const logInBtn = document.getElementById('logInBtn');
+            const profileSection = document.getElementById('profileSection');
+            const userAvatar = document.getElementById('userAvatar');
+            const dropdownUserName = document.getElementById('dropdownUserName');
+            const dropdownUserEmail = document.getElementById('dropdownUserEmail');
+            const adminDropdownItem = document.getElementById('adminDropdownItem');
+            const banOverlay = document.getElementById('banOverlay');
+
+            const heroPill = document.getElementById('heroPill');
+            const heroJoinBtn = document.getElementById('heroJoinBtn');
+            const heroLearnBtn = document.getElementById('heroLearnBtn');
+            const footerPill = document.getElementById('footerPill');
+            const footerJoinBtn = document.getElementById('footerJoinBtn');
+            const footerLearnBtn = document.getElementById('footerLearnBtn');
+
+            function goToSignUp() { window.location.href = 'Sign.up.html'; }
+            function goToLogIn() { window.location.href = 'Log.in.html'; }
+            function goToAdminDashboard() { window.location.href = 'admin.html'; }
+            function openMyAccount() { alert('My Account page coming soon!'); }
+            
+            window.logoutAndRedirect = function() {
+                auth.signOut().then(() => {
+                    window.location.href = 'index.html';
+                });
+            };
+
+            function setupHeroPill() {
+                if (!heroJoinBtn || !heroLearnBtn || !heroPill) return;
+                heroJoinBtn.addEventListener('mouseenter', () => {
+                    heroPill.classList.remove('learn-active');
+                    heroPill.classList.add('join-active');
+                });
+                heroLearnBtn.addEventListener('mouseenter', () => {
+                    heroPill.classList.remove('join-active');
+                    heroPill.classList.add('learn-active');
+                });
+            }
+            
+            function setupFooterPill() {
+                if (!footerJoinBtn || !footerLearnBtn || !footerPill) return;
+                footerJoinBtn.addEventListener('mouseenter', () => {
+                    footerPill.classList.remove('learn-active');
+                    footerPill.classList.add('join-active');
+                });
+                footerLearnBtn.addEventListener('mouseenter', () => {
+                    footerPill.classList.remove('join-active');
+                    footerPill.classList.add('learn-active');
+                });
+            }
+
+            function setupAuthPill() {
+                if (!signUpBtn || !logInBtn || !authPill) return;
+                signUpBtn.addEventListener('mouseenter', () => {
+                    authPill.classList.remove('login-active');
+                    authPill.classList.add('signup-active');
+                });
+                logInBtn.addEventListener('mouseenter', () => {
+                    authPill.classList.remove('signup-active');
+                    authPill.classList.add('login-active');
+                });
+            }
+
+            if (signUpBtn) signUpBtn.addEventListener('click', goToSignUp);
+            if (logInBtn) logInBtn.addEventListener('click', goToLogIn);
+            if (heroJoinBtn) heroJoinBtn.addEventListener('click', goToSignUp);
+            if (heroLearnBtn) heroLearnBtn.addEventListener('click', goToLogIn);
+            if (footerJoinBtn) footerJoinBtn.addEventListener('click', goToSignUp);
+            if (footerLearnBtn) footerLearnBtn.addEventListener('click', goToLogIn);
+            
+            document.getElementById('myAccountBtn')?.addEventListener('click', openMyAccount);
+            document.getElementById('adminDashboardBtn')?.addEventListener('click', goToAdminDashboard);
+            document.getElementById('signOutBtn')?.addEventListener('click', () => auth.signOut().then(() => location.reload()));
+
+            async function updateProfileDropdown(user) {
+                if (dropdownUserName) dropdownUserName.textContent = user.displayName || user.email.split('@')[0];
+                if (dropdownUserEmail) dropdownUserEmail.textContent = user.email;
                 let isAdmin = user.email === ADMIN_EMAIL;
-                if(!isAdmin) { try { const doc = await db.collection('users').doc(user.uid).get(); isAdmin = doc.exists && doc.data().isAdmin === true; } catch(e){} }
-                adminItem.style.display = isAdmin ? 'block' : 'none';
-                await db.collection('users').doc(user.uid).set({ email: user.email, name: user.displayName || '', lastLogin: new Date().toISOString() }, { merge: true });
-                updateMobileUI({ ...user, isBannedFlag: false });
-            } else {
-                if(banDiv) banDiv.style.display = 'none';
-                if(authWrapper) authWrapper.style.display = 'flex';
-                if(profileSec) profileSec.style.display = 'none';
-                updateMobileUI(null);
+                if (!isAdmin) {
+                    try {
+                        const userDoc = await db.collection('users').doc(user.uid).get();
+                        isAdmin = userDoc.exists && userDoc.data().isAdmin === true;
+                    } catch(e) { console.log("Firestore error:", e); }
+                }
+                if (adminDropdownItem) adminDropdownItem.style.display = isAdmin ? 'block' : 'none';
+            }
+
+            auth.onAuthStateChanged(async (user) => {
+                if (user) {
+                    try {
+                        const userDoc = await db.collection('users').doc(user.uid).get();
+                        const userData = userDoc.data();
+                        if (userData && userData.isBanned === true) {
+                            if (banOverlay) banOverlay.style.display = 'flex';
+                            if (authWrapper) authWrapper.style.display = 'none';
+                            if (profileSection) profileSection.style.display = 'none';
+                            return;
+                        }
+                    } catch(e) { console.log("Ban check error:", e); }
+                    
+                    if (banOverlay) banOverlay.style.display = 'none';
+                    if (authWrapper) authWrapper.style.display = 'none';
+                    if (profileSection) profileSection.style.display = 'flex';
+                    
+                    if (userAvatar) {
+                        userAvatar.src = user.photoURL || `https://ui-avatars.com/api/?name=${(user.displayName || user.email.charAt(0)).toUpperCase()}&background=ffffff&color=000000&size=42`;
+                    }
+                    await updateProfileDropdown(user);
+                    try {
+                        await db.collection('users').doc(user.uid).set({
+                            email: user.email,
+                            name: user.displayName || '',
+                            photoURL: user.photoURL || '',
+                            lastLogin: new Date().toISOString(),
+                            ...(user.email === ADMIN_EMAIL && { isAdmin: true })
+                        }, { merge: true });
+                    } catch(e) { console.log("Firestore update error:", e); }
+                    
+                } else {
+                    if (banOverlay) banOverlay.style.display = 'none';
+                    if (profileSection) profileSection.style.display = 'none';
+                    if (authWrapper) {
+                        authWrapper.style.display = 'flex';
+                        setupAuthPill();
+                    }
+                }
+            });
+
+            // Hero Slider
+            const slides = document.querySelectorAll('.hero-image-slider img');
+            const dots = document.querySelectorAll('.dot');
+            const movingPill = document.getElementById('hero-line');
+            const observerContainer = document.querySelector('.video-nav-observer');
+            let currentIdx = 0;
+            let autoInterval;
+
+            function movePillToDot(index) {
+                if (!dots[index] || !movingPill || !observerContainer) return;
+                const targetDot = dots[index];
+                const containerRect = observerContainer.getBoundingClientRect();
+                const dotRect = targetDot.getBoundingClientRect();
+                const dotCenter = (dotRect.left + dotRect.width / 2) - containerRect.left;
+                const pillWidth = movingPill.offsetWidth;
+                movingPill.style.left = `${dotCenter - (pillWidth / 2)}px`;
+            }
+
+            function updateHero(index) {
+                slides.forEach(s => s.classList.remove('active'));
+                slides[index].classList.add('active');
+                movePillToDot(index);
+                currentIdx = index;
+            }
+
+            function startAutoCycle() {
+                autoInterval = setInterval(() => updateHero((currentIdx + 1) % slides.length), 6000);
+            }
+
+            if (dots.length) {
+                dots.forEach((dot, i) => {
+                    dot.addEventListener('click', () => {
+                        clearInterval(autoInterval);
+                        updateHero(i);
+                        startAutoCycle();
+                    });
+                });
+            }
+
+            window.addEventListener('load', () => {
+                setupHeroPill();
+                setupFooterPill();
+                if (slides.length) {
+                    setTimeout(() => { updateHero(0); }, 100);
+                    startAutoCycle();
+                }
+                document.querySelectorAll('.reveal, .reveal-slide-up, .reveal-pop').forEach(el => {
+                    new IntersectionObserver((entries) => {
+                        entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+                    }, { threshold: 0.1 }).observe(el);
+                });
+            });
+
+            window.addEventListener('resize', () => { if (dots.length && dots[currentIdx]) movePillToDot(currentIdx); });
+            
+            let lastScrollY = window.scrollY;
+            const nav = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                const currentScrollY = window.scrollY;
+                if (nav) {
+                    if (currentScrollY > lastScrollY && currentScrollY > 100) nav.classList.add('nav-hidden');
+                    else nav.classList.remove('nav-hidden');
+                }
+                lastScrollY = currentScrollY;
+            });
+
+            // Mobile menu toggle
+            const hamburger = document.getElementById('hamburgerIcon');
+            const mobileNav = document.getElementById('mobileNav');
+            const closeMobile = document.getElementById('closeMobileMenu');
+            if(hamburger && mobileNav) {
+                hamburger.addEventListener('click', () => mobileNav.classList.add('active'));
+                closeMobile.addEventListener('click', () => mobileNav.classList.remove('active'));
+                document.addEventListener('click', (e) => {
+                    if(mobileNav.classList.contains('active') && !mobileNav.contains(e.target) && !hamburger.contains(e.target)) {
+                        mobileNav.classList.remove('active');
+                    }
+                });
             }
         });
-
-        // Slider logic
-        let slides = document.querySelectorAll('.hero-image-slider img'), dots = document.querySelectorAll('.dot'), idx = 0;
-        function showSlide(i) { slides.forEach(s=>s.classList.remove('active')); slides[i].classList.add('active'); idx=i; }
-        function startAuto() { setInterval(()=> showSlide((idx+1)%slides.length), 5500); }
-        if(slides.length) { showSlide(0); startAuto(); dots.forEach((d,i)=> d.addEventListener('click',()=> showSlide(i))); }
-        
-        // Reveal animation
-        const reveals = document.querySelectorAll('.reveal');
-        const obs = new IntersectionObserver((entries) => { entries.forEach(e=>e.isIntersecting&&e.target.classList.add('active')); }, { threshold: 0.1 });
-        reveals.forEach(r=>obs.observe(r));
-        
-        // nav hide on scroll
-        let lastY = 0;
-        window.addEventListener('scroll', () => { const nav = document.getElementById('navbar'); if(window.scrollY > lastY && window.scrollY > 100) nav.classList.add('nav-hidden'); else nav.classList.remove('nav-hidden'); lastY = window.scrollY; });
-        
-        // hero pill hover
-        const heroPill = document.getElementById('heroPill');
-        document.getElementById('heroJoinBtn')?.addEventListener('mouseenter',()=> heroPill.classList.remove('learn-active'));
-        document.getElementById('heroLearnBtn')?.addEventListener('mouseenter',()=> heroPill.classList.add('learn-active'));
-    });
-</script>
+    </script>
 </body>
-</html>
+                </html>
