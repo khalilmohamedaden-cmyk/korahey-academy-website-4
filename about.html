@@ -281,11 +281,12 @@
         .img-strip-item:hover .img-strip-caption { opacity:1; transform:translateY(0); }
 
         /* ══════════════════════════════════════
-           TIMELINE — vertical left-line
+           TIMELINE — zigzag pattern
         ══════════════════════════════════════ */
         .timeline-section { background: #050505; }
         .timeline-header { text-align:center; margin-bottom:80px; }
-        .timeline { position:relative; max-width:900px; margin:0 auto; }
+        .timeline { position:relative; max-width:1000px; margin:0 auto; }
+        /* vertical center line */
         .timeline::before {
             content:'';
             position:absolute;
@@ -296,48 +297,49 @@
             transform: translateX(-50%);
         }
         .tl-item {
-            display: flex;
-            gap: 60px;
+            display: grid;
+            grid-template-columns: 1fr 60px 1fr;
             align-items: flex-start;
-            margin-bottom: 70px;
+            margin-bottom: 60px;
             position: relative;
         }
         .tl-item:last-child { margin-bottom:0; }
-        .tl-item.right { flex-direction: row-reverse; }
-        .tl-item.right .tl-card { text-align:right; }
-        /* dot on the line */
+        /* LEFT item: card in col 1, dot in col 2, empty in col 3 */
+        .tl-item .tl-card  { grid-column: 1; text-align:right; }
+        .tl-item .tl-dot   { grid-column: 2; justify-self:center; margin-top:28px; }
+        .tl-item .tl-spacer { grid-column: 3; }
+        /* RIGHT item: empty col 1, dot col 2, card col 3 */
+        .tl-item.right .tl-card   { grid-column: 3; text-align:left; }
+        .tl-item.right .tl-dot    { grid-column: 2; justify-self:center; margin-top:28px; }
+        .tl-item.right .tl-spacer { grid-column: 1; }
+        /* dot style */
         .tl-dot {
-            position: absolute;
-            left: 50%;
-            top: 24px;
-            transform: translateX(-50%);
             width: 14px; height: 14px;
             background: #fff;
             border-radius: 50%;
-            border: 3px solid #000;
+            border: 3px solid #050505;
             box-shadow: 0 0 0 1px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.15);
             z-index: 2;
+            display: block;
         }
-        .tl-spacer { flex:1; }
         .tl-card {
-            flex: 1;
             background: var(--card-bg);
             border: 1px solid var(--glass-border);
             border-radius: 24px;
-            padding: 30px 28px;
+            padding: 28px 26px;
             transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
         }
         .tl-card:hover { border-color:rgba(255,255,255,0.18); transform:translateY(-6px); }
         .tl-year {
-            font-size: 0.7rem;
+            font-size: 0.68rem;
             letter-spacing: 2px;
             text-transform: uppercase;
             color: rgba(255,255,255,0.3);
             margin-bottom: 10px;
             display: block;
         }
-        .tl-card h3 { font-size:1.25rem; font-weight:700; margin-bottom:10px; }
-        .tl-card p { font-size:0.9rem; color:var(--text-dim); line-height:1.7; }
+        .tl-card h3 { font-size:1.2rem; font-weight:700; margin-bottom:10px; }
+        .tl-card p { font-size:0.88rem; color:var(--text-dim); line-height:1.7; }
 
         /* ══════════════════════════════════════
            VALUES — alternating big cards
@@ -523,11 +525,15 @@
             .hero-content h1 { font-size:4.5rem; letter-spacing:-2.5px; }
             .intro-cols { grid-template-columns:1fr; }
             .img-strip { height:360px; padding:0 5%; }
+            .timeline { max-width:100%; }
             .timeline::before { left:20px; }
-            .tl-item,.tl-item.right { flex-direction:column; padding-left:52px; }
-            .tl-item.right .tl-card { text-align:left; }
-            .tl-spacer { display:none; }
-            .tl-dot { left:20px; top:24px; }
+            .tl-item, .tl-item.right {
+                grid-template-columns: 40px 1fr;
+                grid-template-rows: auto;
+            }
+            .tl-item .tl-dot, .tl-item.right .tl-dot { grid-column:1; grid-row:1; justify-self:center; margin-top:18px; }
+            .tl-item .tl-card, .tl-item.right .tl-card { grid-column:2; grid-row:1; text-align:left; }
+            .tl-item .tl-spacer, .tl-item.right .tl-spacer { display:none; }
             .director-inner { grid-template-columns:1fr; }
             .director-visual { height:400px; }
             .director-visual-overlay { background:linear-gradient(to top,#050505 10%,transparent 60%); }
@@ -553,10 +559,12 @@
             .img-strip-item:hover { flex:none !important; }
             .img-strip-caption { opacity:1; transform:translateY(0); }
             .timeline::before { left:16px; }
-            .tl-item,.tl-item.right { flex-direction:column; padding-left:44px; }
-            .tl-item.right .tl-card { text-align:left; }
-            .tl-spacer { display:none; }
-            .tl-dot { left:16px; }
+            .tl-item, .tl-item.right {
+                grid-template-columns: 36px 1fr;
+            }
+            .tl-item .tl-dot, .tl-item.right .tl-dot { grid-column:1; grid-row:1; justify-self:center; margin-top:16px; }
+            .tl-item .tl-card, .tl-item.right .tl-card { grid-column:2; grid-row:1; text-align:left; }
+            .tl-item .tl-spacer, .tl-item.right .tl-spacer { display:none; }
             /* values: hide row list, show cards on mobile */
             .values-list { display:none; }
             .value-card-mobile { display:flex; }
@@ -709,8 +717,8 @@
 
 <!-- ══ IMAGE STRIP ══ -->
 <div class="img-strip reveal-up" style="padding-bottom:16px;">
-    <div class="img-strip-item"><img src="slided1.png" alt="Campus"><div class="img-strip-caption">Our Campus</div></div>
-    <div class="img-strip-item"><img src="slided2.png" alt="Students"><div class="img-strip-caption">Students</div></div>
+    <div class="img-strip-item"><img src="slided1.png" alt="Innovation"><div class="img-strip-caption">Innovation</div></div>
+    <div class="img-strip-item"><img src="slided2.png" alt="Teachers"><div class="img-strip-caption">Teachers</div></div>
     <div class="img-strip-item"><img src="slided3.png" alt="Innovation"><div class="img-strip-caption">Innovation</div></div>
     <div class="img-strip-item"><img src="slided4.png" alt="Community"><div class="img-strip-caption">Community</div></div>
 </div>
@@ -726,33 +734,33 @@
         <div class="timeline">
             <div class="tl-item">
                 <div class="tl-card"><span class="tl-year">2008 — Foundation</span><h3>The First Bell Rings</h3><p>Korahey Academy opens with 45 students and 6 teachers, offering primary education rooted in academic excellence and Islamic values.</p></div>
-                <div class="tl-spacer"></div>
                 <div class="tl-dot"></div>
+                <div class="tl-spacer"></div>
             </div>
             <div class="tl-item right">
                 <div class="tl-spacer"></div>
-                <div class="tl-card"><span class="tl-year">2012 — Expansion</span><h3>Secondary School Opens</h3><p>Grades 9–12 are introduced alongside a dedicated science laboratory, giving students a complete pathway from primary to university.</p></div>
                 <div class="tl-dot"></div>
+                <div class="tl-card"><span class="tl-year">2012 — Expansion</span><h3>Secondary School Opens</h3><p>Grades 9–12 are introduced alongside a dedicated science laboratory, giving students a complete pathway from primary to university.</p></div>
             </div>
             <div class="tl-item">
                 <div class="tl-card"><span class="tl-year">2016 — Innovation</span><h3>Digital Classrooms</h3><p>Computer labs and technology-integrated learning transform how students engage with knowledge, preparing them for a modern world.</p></div>
-                <div class="tl-spacer"></div>
                 <div class="tl-dot"></div>
+                <div class="tl-spacer"></div>
             </div>
             <div class="tl-item right">
                 <div class="tl-spacer"></div>
-                <div class="tl-card"><span class="tl-year">2020 — Growth</span><h3>New Campus Wing</h3><p>A major expansion adds a library, sports facilities, and modern classrooms — built to serve a growing generation of learners.</p></div>
                 <div class="tl-dot"></div>
+                <div class="tl-card"><span class="tl-year">2020 — Growth</span><h3>New Campus Wing</h3><p>A major expansion adds a library, sports facilities, and modern classrooms — built to serve a growing generation of learners.</p></div>
             </div>
             <div class="tl-item">
                 <div class="tl-card"><span class="tl-year">2023 — Achievement</span><h3>98% University Rate</h3><p>Korahey graduates are accepted to top universities across Ethiopia and abroad, cementing the school's reputation for excellence.</p></div>
-                <div class="tl-spacer"></div>
                 <div class="tl-dot"></div>
+                <div class="tl-spacer"></div>
             </div>
             <div class="tl-item right">
                 <div class="tl-spacer"></div>
-                <div class="tl-card"><span class="tl-year">Today — Legacy</span><h3>Over 1,200 Strong</h3><p>Korahey Academy stands as Jijiga's leading institution — 1,200+ students, 85+ educators, and a community proud of what we've built together.</p></div>
                 <div class="tl-dot"></div>
+                <div class="tl-card"><span class="tl-year">Today — Legacy</span><h3>Over 1,200 Strong</h3><p>Korahey Academy stands as Jijiga's leading institution — 1,200+ students, 85+ educators, and a community proud of what we've built together.</p></div>
             </div>
         </div>
     </div>
