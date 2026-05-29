@@ -1,1 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Korahey Academy | About Us</title>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <style>
+        :root {
+            --glass-border: rgba(255,255,255,0.05);
+            --text-dim: rgba(255,255,255,0.6);
+            --card-bg: #0c0c0c;
+            --apple-spring: cubic-bezier(0.4,0,0.2,1.4);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif; background:#000; color:#fff; overflow-x:hidden; }
 
+        /* NAV */
+        nav { position:fixed; width:100%; top:25px; display:flex; justify-content:center; z-index:1000; transition:transform 0.4s cubic-bezier(0.16,1,0.3,1); }
+        nav.nav-hidden { transform:translateY(-120px); }
+        .nav-container { width:92%; height:75px; background:rgba(15,15,15,0.7); backdrop-filter:blur(30px); border:1px solid var(--glass-border); border-radius:100px; display:flex; align-items:center; justify-content:space-between; padding:0 35px; }
+        .logo-img { height:45px; cursor:pointer; }
+        .nav-links { display:flex; list-style:none; gap:35px; align-items:center; }
+        .nav-links li { position:relative; padding:20px 0; }
+        .nav-links a { text-decoration:none; color:var(--text-dim); font-size:0.95rem; font-weight:500; transition:color 0.3s; }
+        .nav-links a.active-page, .nav-links li:hover > a { color:#fff; }
+        .dropdown-menu { position:absolute; top:65px; left:50%; transform:translateX(-50%) scale(0.4) translateY(-20px); background:rgba(22,22,22,0.95); backdrop-filter:blur(40px); border:1px solid rgba(255,255,255,0.1); border-radius:24px; min-width:220px; padding:10px; opacity:0; visibility:hidden; transition:all 0.5s var(--apple-spring); z-index:100; box-shadow:0 30px 60px rgba(0,0,0,0.5); }
+        .nav-links li:hover .dropdown-menu { opacity:1; visibility:visible; transform:translateX(-50%) scale(1) translateY(0); }
+        .dropdown-menu a { display:flex !important; align-items:center; gap:12px; padding:12px 16px !important; color:var(--text-dim) !important; font-size:0.88rem !important; text-decoration:none; border-radius:14px; transition:all 0.2s ease; margin-bottom:2px; }
+        .dropdown-menu a:hover { background:rgba(255,255,255,0.06); color:#fff !important; transform:translateX(5px); }
+        .profile-dropdown { position:absolute; top:65px; right:0; transform:scale(0.4) translateY(-20px); background:rgba(22,22,22,0.95); backdrop-filter:blur(40px); border:1px solid rgba(255,255,255,0.1); border-radius:24px; min-width:220px; padding:10px; opacity:0; visibility:hidden; transition:all 0.5s var(--apple-spring); z-index:100; box-shadow:0 30px 60px rgba(0,0,0,0.5); }
+        .profile-section:hover .profile-dropdown { opacity:1; visibility:visible; transform:scale(1) translateY(0); }
+        .dropdown-item { display:flex !important; align-items:center; gap:12px; padding:12px 16px !important; color:var(--text-dim) !important; font-size:0.88rem !important; border-radius:14px; transition:all 0.2s ease; margin-bottom:2px; cursor:pointer; }
+        .dropdown-item:hover { background:rgba(255,255,255,0.06); color:#fff !important; transform:translateX(5px); }
+        .profile-section { position:relative; margin-left:20px; cursor:pointer; }
+        .profile-avatar { width:42px; height:42px; border-radius:50%; border:2px solid rgba(255,255,255,0.1); transition:0.3s; object-fit:cover; }
+        .profile-section:hover .profile-avatar { border-color:#fff; transform:scale(1.05); }
+        .auth-wrapper { position:relative; display:inline-flex; background:rgba(255,255,255,0.03); padding:5px; border-radius:100px; border:1px solid var(--glass-border); }
+        .auth-pill { position:absolute; top:5px; left:5px; width:calc(50% - 5px); height:calc(100% - 10px); background:rgba(255,255,255,0.2); backdrop-filter:blur(15px); border-radius:100px; transition:transform 0.35s cubic-bezier(0.2,0.9,0.4,1.1); z-index:1; pointer-events:none; }
+        .auth-pill.signup-active { transform:translateX(0); }
+        .auth-pill.login-active { transform:translateX(100%); }
+        .auth-btn { position:relative; z-index:2; background:transparent; border:none; color:#fff; padding:10px 28px; cursor:pointer; font-weight:600; border-radius:100px; min-width:110px; font-size:0.9rem; }
+
+        /* HAMBURGER */
+        .hamburger-btn { display:none; flex-direction:column; justify-content:center; align-items:center; gap:5px; width:44px; height:44px; background:rgba(255,255,255,0.05); border:1px solid var(--glass-border); border-radius:50%; cursor:pointer; z-index:1100; transition:background 0.3s; flex-shrink:0; }
+        .hamburger-btn:hover { background:rgba(255,255,255,0.1); }
+        .hamburger-btn span { display:block; width:18px; height:1.5px; background:#fff; border-radius:2px; transition:all 0.35s cubic-bezier(0.16,1,0.3,1); transform-origin:center; }
+        .hamburger-btn.open span:nth-child(1) { transform:translateY(6.5px) rotate(45deg); }
+        .hamburger-btn.open span:nth-child(2) { opacity:0; transform:scaleX(0); }
+        .hamburger-btn.open span:nth-child(3) { transform:translateY(-6.5px) rotate(-45deg); }
+
+        /* MOBILE MENU */
+        .mobile-menu { display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:1050; pointer-events:none; }
+        .mobile-menu.open { pointer-events:all; }
+        .mobile-menu-backdrop { position:absolute; inset:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(6px); opacity:0; transition:opacity 0.4s ease; }
+        .mobile-menu.open .mobile-menu-backdrop { opacity:1; }
+        .mobile-menu-panel { position:absolute; top:20px; left:50%; transform:translateX(-50%) translateY(-30px) scale(0.96); width:92%; max-height:calc(100vh - 40px); background:rgba(12,12,12,0.96); backdrop-filter:blur(40px); border:1px solid rgba(255,255,255,0.08); border-radius:28px; padding:24px 20px 28px; overflow-y:auto; opacity:0; transition:all 0.45s cubic-bezier(0.16,1,0.3,1); display:flex; flex-direction:column; }
+        .mobile-menu.open .mobile-menu-panel { opacity:1; transform:translateX(-50%) translateY(0) scale(1); }
+        .mobile-menu-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; padding:0 4px; }
+        .mobile-menu-logo { height:36px; cursor:pointer; }
+        .mobile-close-btn { width:36px; height:36px; background:rgba(255,255,255,0.05); border:1px solid var(--glass-border); border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+        .mobile-close-btn svg { width:14px; height:14px; stroke:#fff; stroke-width:2; fill:none; }
+        .mobile-nav-links { list-style:none; margin-bottom:16px; }
+        .mobile-nav-links li { border-bottom:1px solid rgba(255,255,255,0.04); }
+        .mobile-nav-links li:last-child { border-bottom:none; }
+        .mobile-nav-item { display:flex; align-items:center; justify-content:space-between; padding:16px 12px; color:#fff; font-size:1.05rem; font-weight:600; cursor:pointer; border-radius:14px; transition:background 0.2s; text-decoration:none; }
+        .mobile-nav-item:hover { background:rgba(255,255,255,0.05); }
+        .mobile-nav-item svg { width:16px; height:16px; stroke:var(--text-dim); stroke-width:2; fill:none; transition:transform 0.3s; flex-shrink:0; }
+        .mobile-nav-item.expanded svg { transform:rotate(180deg); }
+        .mobile-sub-links { max-height:0; overflow:hidden; transition:max-height 0.4s cubic-bezier(0.16,1,0.3,1); }
+        .mobile-sub-links.open { max-height:300px; }
+        .mobile-sub-links a { display:block; padding:12px 12px 12px 28px; color:var(--text-dim); font-size:0.92rem; font-weight:500; text-decoration:none; border-radius:12px; transition:all 0.2s; }
+        .mobile-sub-links a:hover { color:#fff; background:rgba(255,255,255,0.04); }
+        .mobile-divider { height:1px; background:rgba(255,255,255,0.06); margin:12px 0; }
+        .mobile-auth-wrapper { position:relative; display:flex; background:rgba(255,255,255,0.03); padding:5px; border-radius:100px; border:1px solid var(--glass-border); margin-bottom:12px; }
+        .mobile-auth-pill { position:absolute; top:5px; left:5px; width:calc(50% - 5px); height:calc(100% - 10px); background:rgba(255,255,255,0.18); backdrop-filter:blur(15px); border-radius:100px; transition:transform 0.35s cubic-bezier(0.2,0.9,0.4,1.1); z-index:1; pointer-events:none; }
+        .mobile-auth-pill.signup-active { transform:translateX(0); }
+        .mobile-auth-pill.login-active { transform:translateX(100%); }
+        .mobile-auth-btn { position:relative; z-index:2; flex:1; background:transparent; border:none; color:#fff; padding:12px 10px; cursor:pointer; font-weight:600; border-radius:100px; font-size:0.9rem; text-align:center; }
+        .mobile-profile-card { background:rgba(255,255,255,0.03); border:1px solid var(--glass-border); border-radius:20px; padding:16px; margin-bottom:12px; }
+        .mobile-profile-header { display:flex; align-items:center; gap:12px; margin-bottom:14px; }
+        .mobile-profile-avatar { width:46px; height:46px; border-radius:50%; border:2px solid rgba(255,255,255,0.12); object-fit:cover; flex-shrink:0; }
+        .mobile-profile-name { font-weight:700; font-size:0.95rem; color:#fff; }
+        .mobile-profile-email { font-size:0.75rem; color:var(--text-dim); margin-top:2px; }
+        .mobile-profile-actions { display:flex; flex-direction:column; gap:4px; }
+        .mobile-profile-action { display:flex; align-items:center; gap:10px; padding:10px 12px; color:var(--text-dim); font-size:0.88rem; border-radius:12px; cursor:pointer; transition:all 0.2s; }
+        .mobile-profile-action:hover { background:rgba(255,255,255,0.05); color:#fff; }
+        .mobile-profile-action.danger { color:#ff4d4d; }
+        .mobile-admin-badge { background:rgba(255,100,0,0.2); color:#ffa500; font-size:0.65rem; padding:2px 7px; border-radius:20px; margin-left:auto; }
+
+        /* BAN */
+        .ban-message { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:20000; display:flex; align-items:center; justify-content:center; flex-direction:column; }
+        .ban-message-content { background:#1a1a1a; padding:50px; border-radius:30px; max-width:500px; border:1px solid #ff3b30; text-align:center; }
+        .ban-message h2 { color:#ff3b30; margin-bottom:20px; font-size:2rem; }
+        .ban-message p { color:#ccc; margin-bottom:30px; line-height:1.6; }
+        .ban-message button { background:#ff3b30; color:white; border:none; padding:12px 30px; border-radius:30px; cursor:pointer; font-size:1rem; }
+
+        /* ══ HERO ══ */
+        .hero { height:85vh; min-height:560px; position:relative; display:flex; align-items:center; justify-content:center; text-align:center; overflow:hidden; }
+        .hero-slides img { position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:1.5s; }
+        .hero-slides img.active { opacity:0.4; }
+        .hero-overlay { position:absolute; inset:0; background:linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.75) 100%); }
+        .hero-content { position:relative; z-index:2; padding:0 24px; max-width:760px; }
+        .hero-label { display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); border-radius:100px; padding:7px 20px; font-size:0.75rem; letter-spacing:2px; color:rgba(255,255,255,0.65); text-transform:uppercase; margin-bottom:22px; }
+        .hero-content h1 { font-size:clamp(3rem,7vw,6rem); font-weight:800; letter-spacing:-3px; line-height:1.05; margin-bottom:18px; }
+        .hero-content p { font-size:1.15rem; color:rgba(255,255,255,0.6); margin:0 auto; line-height:1.7; max-width:600px; }
+
+        /* ══ SECTIONS ══ */
+        .section-pad { padding:100px 8%; }
+        .section-label { font-size:0.72rem; letter-spacing:2.5px; text-transform:uppercase; color:rgba(255,255,255,0.3); margin-bottom:14px; }
+        .section-title { font-size:clamp(2.2rem,4vw,3.5rem); font-weight:800; letter-spacing:-1.5px; margin-bottom:16px; }
+        .section-desc { font-size:1.05rem; color:var(--text-dim); line-height:1.75; max-width:600px; }
+
+        .split { display:flex; gap:70px; align-items:center; max-width:1400px; margin:0 auto; }
+        .split-text { flex:1; }
+        .split-visual { flex:1; }
+        .split-img { width:100%; height:480px; object-fit:cover; border-radius:28px; border:1px solid var(--glass-border); }
+
+        /* story cards */
+        .story-grid { display:grid; grid-template-columns:1fr 1fr; gap:30px; max-width:1400px; margin:60px auto 0; }
+        .story-card { background:var(--card-bg); border:1px solid var(--glass-border); border-radius:28px; padding:36px 32px; transition:all 0.45s cubic-bezier(0.16,1,0.3,1); }
+        .story-card:hover { transform:translateY(-8px); border-color:rgba(255,255,255,0.2); }
+        .story-year { font-size:3rem; font-weight:900; color:rgba(255,255,255,0.08); letter-spacing:-2px; margin-bottom:12px; }
+        .story-card h3 { font-size:1.4rem; font-weight:700; margin-bottom:10px; }
+        .story-card p { font-size:0.92rem; color:var(--text-dim); line-height:1.7; }
+
+        /* values grid */
+        .values-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:30px; max-width:1400px; margin:60px auto 0; }
+        .value-card { background:var(--card-bg); border:1px solid var(--glass-border); border-radius:28px; padding:40px 30px; text-align:center; transition:all 0.45s cubic-bezier(0.16,1,0.3,1); }
+        .value-card:hover { transform:translateY(-10px) scale(1.02); border-color:rgba(255,255,255,0.25); box-shadow:0 24px 48px rgba(0,0,0,0.4); }
+        .value-icon { width:64px; height:64px; background:rgba(255,255,255,0.05); border:1px solid var(--glass-border); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px; }
+        .value-icon svg { width:28px; height:28px; stroke:#fff; stroke-width:1.5; fill:none; }
+        .value-card h3 { font-size:1.3rem; font-weight:700; margin-bottom:12px; }
+        .value-card p { font-size:0.88rem; color:var(--text-dim); line-height:1.7; }
+
+        /* stats inline */
+        .stats-inline { display:flex; justify-content:space-between; gap:30px; flex-wrap:wrap; margin-top:40px; padding-top:40px; border-top:1px solid var(--glass-border); }
+        .stat-item { text-align:center; flex:1; min-width:140px; }
+        .stat-num { font-size:2.8rem; font-weight:900; letter-spacing:-2px; display:block; }
+        .stat-lbl { font-size:0.85rem; color:var(--text-dim); margin-top:8px; display:block; }
+
+        /* reveal animation */
+        .reveal-up { opacity:0; transform:translateY(40px); transition:0.9s cubic-bezier(0.16,1,0.3,1); }
+        .reveal-up.active { opacity:1; transform:translateY(0); }
+
+        footer { padding:60px 8% 40px; text-align:center; border-top:1px solid var(--glass-border); background:#000; }
+        .footer-logo { font-size:1.5rem; font-weight:700; letter-spacing:-0.5px; margin-bottom:20px; color:#fff; }
+        .footer-copyright { color:var(--text-dim); font-size:0.85rem; margin-bottom:10px; }
+        .footer-made { color:var(--text-dim); font-size:0.8rem; opacity:0.7; }
+
+        /* RESPONSIVE */
+        @media (min-width:768px) and (max-width:1024px) {
+            .nav-links,.auth-wrapper,.profile-section { display:none !important; }
+            .hamburger-btn { display:flex; }
+            .mobile-menu { display:block; }
+            .split { flex-direction:column; gap:40px; }
+            .split-img { height:340px; }
+            .story-grid { grid-template-columns:1fr; }
+            .values-grid { grid-template-columns:1fr 1fr; }
+        }
+        @media (max-width:767px) {
+            .nav-links,.auth-wrapper,.profile-section { display:none !important; }
+            .hamburger-btn { display:flex; }
+            .mobile-menu { display:block; }
+            .hero-content h1 { font-size:2.4rem; letter-spacing:-1.5px; }
+            .split { flex-direction:column; gap:36px; }
+            .split-img { height:240px; }
+            .story-grid { grid-template-columns:1fr; }
+            .values-grid { grid-template-columns:1fr; }
+            .stats-inline { flex-direction:column; align-items:center; gap:24px; }
+            .section-pad { padding:70px 6%; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+    <div class="nav-container">
+        <div class="logo" onclick="window.location.href='index.html'"><img src="logo.png" alt="KORAHEY" class="logo-img"></div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="Contact.html">Contact Us</a>
+                <div class="dropdown-menu"><a href="about.html" class="active-page">About Us</a><a href="teacher-contact.html">Teacher Contact</a></div>
+            </li>
+            <li><a href="academics.html">Academics</a>
+                <div class="dropdown-menu"><a href="results.html">Results & Resources</a></div>
+            </li>
+            <li><a href="announcements.html">Announcements</a>
+                <div class="dropdown-menu"><a href="exam-calendar.html">Exam Calendar</a></div>
+            </li>
+        </ul>
+        <div style="display:flex;align-items:center;">
+            <div class="auth-wrapper" id="authWrapper">
+                <div class="auth-pill signup-active" id="authPill"></div>
+                <button class="auth-btn" id="signUpBtn">Sign Up</button>
+                <button class="auth-btn" id="logInBtn">Log In</button>
+            </div>
+            <div class="profile-section" id="profileSection" style="display:none;">
+                <img id="userAvatar" class="profile-avatar" src="default-avatar.png">
+                <div class="profile-dropdown">
+                    <div style="padding:10px 16px;border-bottom:1px solid rgba(255,255,255,0.05);margin-bottom:8px;">
+                        <p id="dropdownUserName" style="font-weight:700;font-size:0.95rem;"></p>
+                        <p id="dropdownUserEmail" style="font-size:0.75rem;color:var(--text-dim);"></p>
+                    </div>
+                    <div class="dropdown-item" id="myAccountBtn"><span>My Account</span></div>
+                    <div id="adminDropdownItem" style="display:none;">
+                        <div class="dropdown-item" id="adminDashboardBtn"><span>Admin Dashboard</span><span style="background:rgba(255,100,0,0.2);color:#ffa500;font-size:0.7rem;padding:2px 8px;border-radius:20px;margin-left:8px;">ADMIN</span></div>
+                    </div>
+                    <div class="dropdown-item" id="signOutBtn" style="color:#ff4d4d !important;"><span>Sign Out</span></div>
+                </div>
+            </div>
+            <button class="hamburger-btn" id="hamburgerBtn"><span></span><span></span><span></span></button>
+        </div>
+    </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-backdrop" id="mobileBackdrop"></div>
+    <div class="mobile-menu-panel">
+        <div class="mobile-menu-top">
+            <img src="logo.png" alt="KORAHEY" class="mobile-menu-logo" onclick="window.location.href='index.html'">
+            <div class="mobile-close-btn" id="mobileCloseBtn"><svg viewBox="0 0 14 14"><line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/></svg></div>
+        </div>
+        <ul class="mobile-nav-links">
+            <li><a href="index.html" class="mobile-nav-item">Home</a></li>
+            <li>
+                <div class="mobile-nav-item" onclick="toggleMobileAccordion(this,'Contact.html')"><span>Contact Us</span><svg viewBox="0 0 16 16"><polyline points="4 6 8 10 12 6"/></svg></div>
+                <div class="mobile-sub-links"><a href="about.html">About Us</a><a href="teacher-contact.html">Teacher Contact</a></div>
+            </li>
+            <li>
+                <div class="mobile-nav-item" onclick="toggleMobileAccordion(this,'academics.html')"><span>Academics</span><svg viewBox="0 0 16 16"><polyline points="4 6 8 10 12 6"/></svg></div>
+                <div class="mobile-sub-links"><a href="results.html">Results & Resources</a></div>
+            </li>
+            <li>
+                <div class="mobile-nav-item" onclick="toggleMobileAccordion(this,'announcements.html')"><span>Announcements</span><svg viewBox="0 0 16 16"><polyline points="4 6 8 10 12 6"/></svg></div>
+                <div class="mobile-sub-links"><a href="exam-calendar.html">Exam Calendar</a></div>
+            </li>
+        </ul>
+        <div class="mobile-divider"></div>
+        <div id="mobileAuthSection">
+            <div class="mobile-auth-wrapper">
+                <div class="mobile-auth-pill signup-active" id="mobileAuthPill"></div>
+                <button class="mobile-auth-btn" id="mobileSignUpBtn">Sign Up</button>
+                <button class="mobile-auth-btn" id="mobileLogInBtn">Log In</button>
+            </div>
+        </div>
+        <div id="mobileProfileSection" style="display:none;">
+            <div class="mobile-profile-card">
+                <div class="mobile-profile-header">
+                    <img id="mobileUserAvatar" class="mobile-profile-avatar" src="default-avatar.png" alt="Profile">
+                    <div><div class="mobile-profile-name" id="mobileUserName"></div><div class="mobile-profile-email" id="mobileUserEmail"></div></div>
+                </div>
+                <div class="mobile-profile-actions">
+                    <div class="mobile-profile-action" id="mobileMyAccountBtn"><span>My Account</span></div>
+                    <div class="mobile-profile-action" id="mobileAdminBtn" style="display:none;"><span>Admin Dashboard</span><span class="mobile-admin-badge">ADMIN</span></div>
+                    <div class="mobile-profile-action danger" id="mobileSignOutBtn"><span>Sign Out</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- BAN -->
+<div id="banOverlay" style="display:none;" class="ban-message">
+    <div class="ban-message-content">
+        <h2>Account Banned</h2>
+        <p>Your account has been banned from Korahey Academy. Please contact support.</p>
+        <button onclick="logoutAndRedirect()">Sign Out</button>
+    </div>
+</div>
+
+<!-- HERO SECTION with slides 6-9 -->
+<section class="hero">
+    <div class="hero-slides">
+        <img src="slided6.png" class="active" alt="Korahey Academy">
+        <img src="slided7.png" alt="Korahey Academy">
+        <img src="slided8.png" alt="Korahey Academy">
+        <img src="slided9.png" alt="Korahey Academy">
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <div class="hero-label">Our Story</div>
+        <h1>About Korahey Academy</h1>
+        <p>Inspiring minds, building character, and shaping the future since 2008.</p>
+    </div>
+</section>
+
+<!-- OUR STORY SECTION -->
+<section class="section-pad reveal-up">
+    <div class="split">
+        <div class="split-text">
+            <div class="section-label">Our Journey</div>
+            <h2 class="section-title">A Legacy of Excellence in Jijiga</h2>
+            <p class="section-desc">Korahey Academy was founded in 2008 with a simple yet powerful vision: to provide world-class education rooted in local values. What started as a small community school has grown into one of the most respected institutions in the region, serving hundreds of students from Jijiga and beyond.</p>
+            <div class="stats-inline">
+                <div class="stat-item"><span class="stat-num">2008</span><span class="stat-lbl">Year Founded</span></div>
+                <div class="stat-item"><span class="stat-num">1200+</span><span class="stat-lbl">Students Enrolled</span></div>
+                <div class="stat-item"><span class="stat-num">85+</span><span class="stat-lbl">Dedicated Staff</span></div>
+            </div>
+        </div>
+        <div class="split-visual">
+            <img src="slided6.png" class="split-img" alt="Korahey Academy Campus">
+        </div>
+    </div>
+</section>
+
+<!-- TIMELINE / MILESTONES -->
+<section class="section-pad reveal-up" style="background:#050505;">
+    <div style="max-width:1400px;margin:0 auto;">
+        <div class="section-label" style="text-align:center;">Milestones</div>
+        <h2 class="section-title" style="text-align:center;margin-bottom:20px;">Our Journey Through the Years</h2>
+        <p class="section-desc" style="margin:0 auto;text-align:center;">From a humble beginning to a leading educational institution.</p>
+        <div class="story-grid">
+            <div class="story-card">
+                <div class="story-year">2008</div>
+                <h3>Foundation</h3>
+                <p>Korahey Academy opened its doors with just 45 students and 6 teachers, offering primary education with a focus on academic excellence and Islamic values.</p>
+            </div>
+            <div class="story-card">
+                <div class="story-year">2012</div>
+                <h3>Secondary Expansion</h3>
+                <p>Introduced secondary education (Grades 9-12) and built a dedicated science laboratory to enhance practical learning for students.</p>
+            </div>
+            <div class="story-card">
+                <div class="story-year">2016</div>
+                <h3>Digital Transformation</h3>
+                <p>Launched computer labs and integrated technology into the curriculum, preparing students for the modern world.</p>
+            </div>
+            <div class="story-card">
+                <div class="story-year">2020</div>
+                <h3>New Campus Wing</h3>
+                <p>Completed a major campus expansion, adding a library, sports facilities, and modern classrooms to accommodate growing enrollment.</p>
+            </div>
+            <div class="story-card">
+                <div class="story-year">2023</div>
+                <h3>100% University Success</h3>
+                <p>Achieved 98% university acceptance rate with graduates admitted to top universities across Ethiopia and abroad.</p>
+            </div>
+            <div class="story-card">
+                <div class="story-year">Today</div>
+                <h3>Leading Institution</h3>
+                <p>Korahey Academy stands as a beacon of quality education in Jijiga, serving over 1200 students with a dedicated team of 85+ educators.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- OUR VALUES SECTION -->
+<section class="section-pad reveal-up">
+    <div style="max-width:1400px;margin:0 auto;">
+        <div class="section-label" style="text-align:center;">What We Believe</div>
+        <h2 class="section-title" style="text-align:center;">Our Core Values</h2>
+        <p class="section-desc" style="margin:0 auto 20px;text-align:center;">The principles that guide everything we do at Korahey Academy.</p>
+        <div class="values-grid">
+            <div class="value-card">
+                <div class="value-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+                <h3>Academic Excellence</h3>
+                <p>We strive for the highest standards in teaching and learning, ensuring every student reaches their full potential.</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
+                <h3>Respect & Integrity</h3>
+                <p>We foster a culture of honesty, mutual respect, and ethical behavior among students, staff, and parents.</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+                <h3>Safe & Supportive</h3>
+                <p>Every child deserves a secure environment where they feel valued, heard, and encouraged to grow.</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+                <h3>Innovation</h3>
+                <p>We embrace modern teaching methods, technology, and creative approaches to prepare students for the future.</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+                <h3>Community Engagement</h3>
+                <p>We believe in strong partnerships between school, families, and the wider Jijiga community.</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+                <h3>Character Building</h3>
+                <p>Education goes beyond academics — we nurture responsible, compassionate, and confident young leaders.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- WHY KORAHEY SECTION -->
+<section class="section-pad reveal-up" style="background:#050505;">
+    <div class="split">
+        <div class="split-visual">
+            <img src="slided8.png" class="split-img" alt="Students at Korahey Academy">
+        </div>
+        <div class="split-text">
+            <div class="section-label">Why Choose Us</div>
+            <h2 class="section-title">More Than Just a School</h2>
+            <p class="section-desc">At Korahey Academy, we believe education is the bridge between dreams and reality. Our holistic approach combines strong academics, character development, and a nurturing environment that empowers every student to become their best self.</p>
+            <p class="section-desc" style="margin-top:20px;">With experienced teachers, modern facilities, and a curriculum that balances national standards with local values, we prepare students not just for exams, but for life.</p>
+            <div class="stats-inline" style="border-top-color:rgba(255,255,255,0.1);margin-top:30px;">
+                <div class="stat-item"><span class="stat-num">98%</span><span class="stat-lbl">University Acceptance</span></div>
+                <div class="stat-item"><span class="stat-num">24/7</span><span class="stat-lbl">Campus Security</span></div>
+                <div class="stat-item"><span class="stat-num">12:1</span><span class="stat-lbl">Student-Teacher Ratio</span></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MESSAGE SECTION -->
+<section class="section-pad reveal-up">
+    <div class="split">
+        <div class="split-text">
+            <div class="section-label">From The Founder</div>
+            <h2 class="section-title">A Message From Our Director</h2>
+            <p class="section-desc">"Korahey Academy was born from a simple belief: every child deserves access to quality education that nurtures both the mind and the heart. Over the years, I have watched our students grow into confident, capable young adults who go on to achieve remarkable things.</p>
+            <p class="section-desc" style="margin-top:16px;">We are proud of what we have built together — a community where teachers inspire, parents partner, and students thrive. Thank you for being part of our story."</p>
+            <p class="section-desc" style="margin-top:24px;font-weight:600;">— Khalil Mohamed, Founder & Director</p>
+        </div>
+        <div class="split-visual">
+            <img src="slided9.png" class="split-img" alt="Korahey Academy Director">
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div style="max-width:1200px;margin:0 auto;">
+        <div class="footer-logo">Korahey Academy</div>
+        <div class="footer-copyright">© 2026 Khalil · Official site for Korahey Academy</div>
+        <div class="footer-made">Made by Khalil</div>
+    </div>
+</footer>
+
+<script>
+/* ── HERO SLIDESHOW with 4 images ── */
+const heroSlides = document.querySelectorAll('.hero-slides img');
+let heroIdx = 0;
+setInterval(() => {
+    heroSlides[heroIdx].classList.remove('active');
+    heroIdx = (heroIdx + 1) % heroSlides.length;
+    heroSlides[heroIdx].classList.add('active');
+}, 6000);
+
+/* ── MOBILE MENU ── */
+function toggleMobileAccordion(el, href) {
+    const sub = el.nextElementSibling;
+    const isOpen = sub.classList.contains('open');
+    if (isOpen) { if (href) window.location.href = href; return; }
+    document.querySelectorAll('.mobile-sub-links.open').forEach(s => s.classList.remove('open'));
+    document.querySelectorAll('.mobile-nav-item.expanded').forEach(i => i.classList.remove('expanded'));
+    sub.classList.add('open'); el.classList.add('expanded');
+}
+const hamburgerBtn  = document.getElementById('hamburgerBtn');
+const mobileMenu    = document.getElementById('mobileMenu');
+const mobileBackdrop= document.getElementById('mobileBackdrop');
+const mobileCloseBtn= document.getElementById('mobileCloseBtn');
+hamburgerBtn.addEventListener('click', () => { mobileMenu.classList.add('open'); hamburgerBtn.classList.add('open'); document.body.style.overflow='hidden'; });
+mobileCloseBtn.addEventListener('click', () => { mobileMenu.classList.remove('open'); hamburgerBtn.classList.remove('open'); document.body.style.overflow=''; });
+mobileBackdrop.addEventListener('click', () => { mobileMenu.classList.remove('open'); hamburgerBtn.classList.remove('open'); document.body.style.overflow=''; });
+const mobileAuthPill  = document.getElementById('mobileAuthPill');
+const mobileSignUpBtn = document.getElementById('mobileSignUpBtn');
+const mobileLogInBtn  = document.getElementById('mobileLogInBtn');
+if (mobileSignUpBtn) { mobileSignUpBtn.addEventListener('mouseenter', () => { mobileAuthPill.classList.remove('login-active'); mobileAuthPill.classList.add('signup-active'); }); mobileSignUpBtn.addEventListener('click', () => { window.location.href='Sign.up.html'; }); }
+if (mobileLogInBtn)  { mobileLogInBtn.addEventListener('mouseenter', () => { mobileAuthPill.classList.remove('signup-active'); mobileAuthPill.classList.add('login-active'); }); mobileLogInBtn.addEventListener('click', () => { window.location.href='Log.in.html'; }); }
+document.getElementById('mobileMyAccountBtn')?.addEventListener('click', () => alert('My Account page coming soon!'));
+document.getElementById('mobileAdminBtn')?.addEventListener('click', () => { window.location.href='admin.html'; });
+document.getElementById('mobileSignOutBtn')?.addEventListener('click', () => firebase.auth().signOut().then(() => location.reload()));
+
+/* ── FIREBASE ── */
+document.addEventListener('DOMContentLoaded', function() {
+    const firebaseConfig = { apiKey:"AIzaSyCC5oK1cMufciR1v4wLi-jfYvXa_cQBnd0", authDomain:"korahey-admin.firebaseapp.com", projectId:"korahey-admin", storageBucket:"korahey-admin.firebasestorage.app", messagingSenderId:"86298888884", appId:"1:86298888884:web:f1d835de1cb9d2534d65e1" };
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const auth=firebase.auth(), db=firebase.firestore(), ADMIN_EMAIL="khalilmohamedaden@gmail.com";
+    const authWrapper=document.getElementById('authWrapper'), authPill=document.getElementById('authPill'), signUpBtn=document.getElementById('signUpBtn'), logInBtn=document.getElementById('logInBtn');
+    const profileSection=document.getElementById('profileSection'), userAvatar=document.getElementById('userAvatar'), dropdownUserName=document.getElementById('dropdownUserName'), dropdownUserEmail=document.getElementById('dropdownUserEmail'), adminDropdownItem=document.getElementById('adminDropdownItem'), banOverlay=document.getElementById('banOverlay');
+    window.logoutAndRedirect = () => auth.signOut().then(() => { window.location.href='index.html'; });
+    function setupAuthPill() { if(!signUpBtn||!logInBtn||!authPill) return; signUpBtn.addEventListener('mouseenter',()=>{authPill.classList.remove('login-active');authPill.classList.add('signup-active');}); logInBtn.addEventListener('mouseenter',()=>{authPill.classList.remove('signup-active');authPill.classList.add('login-active');}); }
+    if (signUpBtn) signUpBtn.addEventListener('click',()=>{window.location.href='Sign.up.html';});
+    if (logInBtn)  logInBtn.addEventListener('click', ()=>{window.location.href='Log.in.html';});
+    document.getElementById('myAccountBtn')?.addEventListener('click',()=>alert('My Account page coming soon!'));
+    document.getElementById('adminDashboardBtn')?.addEventListener('click',()=>{window.location.href='admin.html';});
+    document.getElementById('signOutBtn')?.addEventListener('click',()=>auth.signOut().then(()=>location.reload()));
+    async function updateProfileDropdown(user) {
+        if(dropdownUserName) dropdownUserName.textContent=user.displayName||user.email.split('@')[0];
+        if(dropdownUserEmail) dropdownUserEmail.textContent=user.email;
+        let isAdmin=user.email===ADMIN_EMAIL;
+        if(!isAdmin){try{const d=await db.collection('users').doc(user.uid).get();isAdmin=d.exists&&d.data().isAdmin;}catch(e){}}
+        if(adminDropdownItem) adminDropdownItem.style.display=isAdmin?'block':'none';
+        const mU=document.getElementById('mobileUserName'),mE=document.getElementById('mobileUserEmail'),mA=document.getElementById('mobileAdminBtn');
+        if(mU) mU.textContent=user.displayName||user.email.split('@')[0];
+        if(mE) mE.textContent=user.email;
+        if(mA) mA.style.display=isAdmin?'flex':'none';
+    }
+    auth.onAuthStateChanged(async(user)=>{
+        const mAS=document.getElementById('mobileAuthSection'),mPS=document.getElementById('mobileProfileSection'),mUA=document.getElementById('mobileUserAvatar');
+        if(user){
+            try{const ud=await db.collection('users').doc(user.uid).get();if(ud.data()?.isBanned){if(banOverlay)banOverlay.style.display='flex';[authWrapper,profileSection,mAS,mPS].forEach(e=>e&&(e.style.display='none'));return;}}catch(e){}
+            if(banOverlay)banOverlay.style.display='none';
+            if(authWrapper)authWrapper.style.display='none';
+            if(profileSection)profileSection.style.display='flex';
+            if(mAS)mAS.style.display='none'; if(mPS)mPS.style.display='block';
+            const src=user.photoURL||`https://ui-avatars.com/api/?name=${(user.displayName||user.email.charAt(0)).toUpperCase()}&background=ffffff&color=000000&size=42`;
+            if(userAvatar)userAvatar.src=src; if(mUA)mUA.src=src;
+            await updateProfileDropdown(user);
+            try{await db.collection('users').doc(user.uid).set({email:user.email,name:user.displayName||'',photoURL:user.photoURL||'',lastLogin:new Date().toISOString(),...(user.email===ADMIN_EMAIL&&{isAdmin:true})},{merge:true});}catch(e){}
+        } else {
+            if(banOverlay)banOverlay.style.display='none'; if(profileSection)profileSection.style.display='none'; if(mPS)mPS.style.display='none';
+            if(authWrapper){authWrapper.style.display='flex';setupAuthPill();} if(mAS)mAS.style.display='block';
+        }
+    });
+
+    // Scroll reveal
+    window.addEventListener('load',()=>{
+        document.querySelectorAll('.reveal-up').forEach((el,i)=>{
+            el.style.transitionDelay=`${i*0.06}s`;
+            new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('active');});},{threshold:0.1}).observe(el);
+        });
+    });
+
+    // Nav hide on scroll
+    let lastY=window.scrollY; const nav=document.getElementById('navbar');
+    window.addEventListener('scroll',()=>{const cur=window.scrollY;if(nav){if(cur>lastY&&cur>100)nav.classList.add('nav-hidden');else nav.classList.remove('nav-hidden');}lastY=cur;});
+});
+</script>
+</body>
+</html>
