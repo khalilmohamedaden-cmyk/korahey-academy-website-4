@@ -231,9 +231,9 @@
             .exams-layout-wrapper { flex-direction: row; }
             .exam-card-massive { min-height: auto; }
 
-            /* Stats: row on iPad */
-            .stats-pill-container { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 20px; }
-            .stat-pill-card { min-width: 180px; padding: 28px 36px; }
+            /* Stats: single straight row on iPad, no wrapping */
+            .stats-pill-container { flex-direction: row; flex-wrap: nowrap; justify-content: center; gap: 16px; }
+            .stat-pill-card { min-width: 0; flex: 1; padding: 28px 20px; }
 
             .contact-container { flex-direction: row; gap: 40px; }
             .contact-map { height: 600px; }
