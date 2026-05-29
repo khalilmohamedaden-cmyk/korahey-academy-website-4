@@ -24,156 +24,48 @@
         nav.nav-hidden { transform: translateY(-120px); }
         .nav-container { width: 92%; height: 75px; background: rgba(15,15,15,0.7); backdrop-filter: blur(30px); border: 1px solid var(--glass-border); border-radius: 100px; display: flex; align-items: center; justify-content: space-between; padding: 0 35px; }
         .logo-img { height: 45px; cursor: pointer; }
-        
         .nav-links { display: flex; list-style: none; gap: 35px; align-items: center; }
         .nav-links li { position: relative; padding: 20px 0; }
-        
-        .nav-links a { 
-            text-decoration: none; 
-            color: var(--text-dim); 
-            font-size: 0.95rem; 
-            font-weight: 500;
-            transition: color 0.3s; 
-        }
+        .nav-links a { text-decoration: none; color: var(--text-dim); font-size: 0.95rem; font-weight: 500; transition: color 0.3s; }
         .nav-links li:hover > a { color: #fff; }
         /* LIQUID DROP DROPDOWN */
         .dropdown-menu, .profile-dropdown {
-            position: absolute;
-            top: 65px;
-            left: 50%;
+            position: absolute; top: 65px; left: 50%;
             transform: translateX(-50%) scale(0.4) translateY(-20px);
-            background: rgba(22, 22, 22, 0.95);
-            backdrop-filter: blur(40px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 24px;
-            min-width: 220px;
-            padding: 10px;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.5s var(--apple-spring);
-            z-index: 100;
+            background: rgba(22, 22, 22, 0.95); backdrop-filter: blur(40px);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 24px;
+            min-width: 220px; padding: 10px; opacity: 0; visibility: hidden;
+            transition: all 0.5s var(--apple-spring); z-index: 100;
             box-shadow: 0 30px 60px rgba(0,0,0,0.5);
         }
         .profile-dropdown { left: auto; right: 0; transform: scale(0.4) translateY(-20px); }
         .nav-links li:hover .dropdown-menu,
-        .profile-section:hover .profile-dropdown { 
-            opacity: 1; 
-            visibility: visible; 
-            transform: translateX(-50%) scale(1) translateY(0); 
-        }
-        
+        .profile-section:hover .profile-dropdown { opacity: 1; visibility: visible; transform: translateX(-50%) scale(1) translateY(0); }
         .profile-section:hover .profile-dropdown { transform: scale(1) translateY(0); }
         .dropdown-item, .dropdown-menu a {
-            display: flex !important;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 16px !important;
-            color: var(--text-dim) !important;
-            font-size: 0.88rem !important;
-            text-decoration: none;
-            border-radius: 14px;
-            transition: all 0.2s ease;
-            margin-bottom: 2px;
+            display: flex !important; align-items: center; gap: 12px;
+            padding: 12px 16px !important; color: var(--text-dim) !important;
+            font-size: 0.88rem !important; text-decoration: none; border-radius: 14px;
+            transition: all 0.2s ease; margin-bottom: 2px;
         }
-        .dropdown-item:hover, .dropdown-menu a:hover {
-            background: rgba(255,255,255,0.06);
-            color: #fff !important;
-            transform: translateX(5px);
-        }
+        .dropdown-item:hover, .dropdown-menu a:hover { background: rgba(255,255,255,0.06); color: #fff !important; transform: translateX(5px); }
         /* Profile Avatar */
         .profile-section { position: relative; margin-left: 20px; cursor: pointer; }
-        .profile-avatar {
-            width: 42px; height: 42px; border-radius: 50%;
-            border: 2px solid rgba(255,255,255,0.1);
-            transition: 0.3s;
-            object-fit: cover;
-        }
+        .profile-avatar { width: 42px; height: 42px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.1); transition: 0.3s; object-fit: cover; }
         .profile-section:hover .profile-avatar { border-color: #fff; transform: scale(1.05); }
-        /* Auth Buttons with Animated Pill */
-        .auth-wrapper {
-            position: relative;
-            display: inline-flex;
-            background: rgba(255,255,255,0.03);
-            padding: 5px;
-            border-radius: 100px;
-            border: 1px solid var(--glass-border);
-        }
-        
-        .auth-pill {
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            width: calc(50% - 5px);
-            height: calc(100% - 10px);
-            background: rgba(255,255,255,0.2);
-            backdrop-filter: blur(15px);
-            border-radius: 100px;
-            transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            z-index: 1;
-            pointer-events: none;
-        }
-        
+        /* Auth Buttons */
+        .auth-wrapper { position: relative; display: inline-flex; background: rgba(255,255,255,0.03); padding: 5px; border-radius: 100px; border: 1px solid var(--glass-border); }
+        .auth-pill { position: absolute; top: 5px; left: 5px; width: calc(50% - 5px); height: calc(100% - 10px); background: rgba(255,255,255,0.2); backdrop-filter: blur(15px); border-radius: 100px; transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1); z-index: 1; pointer-events: none; }
         .auth-pill.signup-active { transform: translateX(0); }
         .auth-pill.login-active { transform: translateX(100%); }
-        
-        .auth-btn {
-            position: relative;
-            z-index: 2;
-            background: transparent;
-            border: none;
-            color: #fff;
-            padding: 10px 28px;
-            cursor: pointer;
-            font-weight: 600;
-            border-radius: 100px;
-            min-width: 110px;
-            font-size: 0.9rem;
-            transition: color 0.2s;
-        }
-        
+        .auth-btn { position: relative; z-index: 2; background: transparent; border: none; color: #fff; padding: 10px 28px; cursor: pointer; font-weight: 600; border-radius: 100px; min-width: 110px; font-size: 0.9rem; transition: color 0.2s; }
         .auth-btn:hover { color: #fff; }
         /* Hero Buttons */
-        .hero-btns-group {
-            position: relative;
-            display: inline-flex;
-            background: rgba(255,255,255,0.03);
-            padding: 5px;
-            border-radius: 100px;
-            border: 1px solid var(--glass-border);
-        }
-        
-        .hero-pill {
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            width: calc(50% - 5px);
-            height: calc(100% - 10px);
-            background: rgba(255,255,255,0.2);
-            backdrop-filter: blur(15px);
-            border-radius: 100px;
-            transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            z-index: 1;
-            pointer-events: none;
-        }
-        
+        .hero-btns-group { position: relative; display: inline-flex; background: rgba(255,255,255,0.03); padding: 5px; border-radius: 100px; border: 1px solid var(--glass-border); }
+        .hero-pill { position: absolute; top: 5px; left: 5px; width: calc(50% - 5px); height: calc(100% - 10px); background: rgba(255,255,255,0.2); backdrop-filter: blur(15px); border-radius: 100px; transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1); z-index: 1; pointer-events: none; }
         .hero-pill.join-active { transform: translateX(0); }
         .hero-pill.learn-active { transform: translateX(100%); }
-        
-        .btn-hero {
-            position: relative;
-            z-index: 2;
-            background: transparent;
-            border: none;
-            color: #fff;
-            padding: 10px 28px;
-            cursor: pointer;
-            font-weight: 600;
-            border-radius: 100px;
-            min-width: 120px;
-            font-size: 0.9rem;
-            transition: color 0.2s;
-        }
-        
+        .btn-hero { position: relative; z-index: 2; background: transparent; border: none; color: #fff; padding: 10px 28px; cursor: pointer; font-weight: 600; border-radius: 100px; min-width: 120px; font-size: 0.9rem; transition: color 0.2s; }
         .btn-hero:hover { color: #fff; }
         /* Hero Slider */
         .hero { height: 100vh; position: relative; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
@@ -182,12 +74,22 @@
         .hero h1 { font-size: clamp(3rem, 8vw, 7.5rem); font-weight: 800; letter-spacing: -2px; margin-bottom: 20px; }
         .hero-description { font-size: 1.3rem; color: var(--text-dim); margin-bottom: 30px; }
         .hero-btns-wrapper { display: flex; justify-content: center; margin-top: 40px; }
-        /* Floating Pill Navigation */
-        .video-nav-observer { position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; justify-content: center; height: 40px; z-index: 10; }
-        .obs-line-active { position: absolute; width: 36px; height: 14px; background: #fff; border-radius: 20px; transition: left 0.6s cubic-bezier(0.23, 1, 0.32, 1); box-shadow: 0 0 15px rgba(255, 255, 255, 0.4); z-index: 3; pointer-events: none; }
+
+        /* ── HERO DOT NAVIGATOR ── */
+        .video-nav-observer {
+            position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%);
+            display: flex; align-items: center; justify-content: center;
+            height: 40px; z-index: 10;
+        }
+        .obs-line-active {
+            position: absolute; width: 36px; height: 14px; background: #fff;
+            border-radius: 20px; transition: left 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 0 0 15px rgba(255,255,255,0.4); z-index: 3; pointer-events: none;
+        }
         .obs-dots { display: flex; gap: 20px; z-index: 2; }
-        .dot { width: 10px; height: 10px; background: rgba(255, 255, 255, 0.3); border-radius: 50%; cursor: pointer; transition: all 0.3s ease; }
-        .dot:hover { background: rgba(255, 255, 255, 0.8); transform: scale(1.2); }
+        .dot { width: 10px; height: 10px; background: rgba(255,255,255,0.3); border-radius: 50%; cursor: pointer; transition: all 0.3s ease; }
+        .dot:hover { background: rgba(255,255,255,0.8); transform: scale(1.2); }
+
         /* Info Sections */
         .info-split { padding: 100px 8%; }
         .info-container { display: flex; align-items: center; gap: 80px; max-width: 1400px; margin: 0 auto; }
@@ -202,99 +104,36 @@
         .centered-p { max-width: 700px; margin: 0 auto; text-align: center; }
         .soft-rect-large { width: 100%; max-width: 1100px; height: 500px; object-fit: cover; border-radius: 28px; border: 1px solid var(--glass-border); margin: 50px auto; display: block; }
         /* Mission Grid */
-        .mission-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        .mission-card-item {
-            background: var(--card-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 28px;
-            padding: 40px 30px;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            text-align: left;
-        }
-        .mission-card-item:hover {
-            transform: translateY(-12px) scale(1.02);
-            border-color: rgba(255, 255, 255, 0.3);
-            box-shadow: 0 25px 40px -15px rgba(0, 0, 0, 0.5);
-        }
-        .circle-label {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.08);
-            padding: 6px 14px;
-            border-radius: 100px;
-            font-size: 0.75rem;
-            letter-spacing: 0.5px;
-            margin-bottom: 20px;
-            border: 1px solid var(--glass-border);
-            width: auto;
-        }
+        .mission-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; max-width: 1400px; margin: 0 auto; padding: 0 20px; }
+        .mission-card-item { background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 28px; padding: 40px 30px; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); text-align: left; }
+        .mission-card-item:hover { transform: translateY(-12px) scale(1.02); border-color: rgba(255,255,255,0.3); box-shadow: 0 25px 40px -15px rgba(0,0,0,0.5); }
+        .circle-label { display: inline-block; background: rgba(255,255,255,0.08); padding: 6px 14px; border-radius: 100px; font-size: 0.75rem; letter-spacing: 0.5px; margin-bottom: 20px; border: 1px solid var(--glass-border); width: auto; }
         .mission-card-item h3 { font-size: 1.6rem; margin-bottom: 15px; font-weight: 700; }
         /* Stats Section */
         .stats-section { padding: 80px 8%; }
-        .stats-pill-container {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            flex-wrap: wrap;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-        .stat-pill-card {
-            background: rgba(20, 20, 20, 0.8);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            border-radius: 80px;
-            padding: 35px 55px;
-            text-align: center;
-            min-width: 220px;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            cursor: pointer;
-        }
-        .stat-pill-card:hover {
-            transform: translateY(-12px) scale(1.03);
-            border-color: rgba(255, 255, 255, 0.3);
-            background: rgba(30, 30, 30, 0.9);
-        }
+        .stats-pill-container { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; max-width: 1100px; margin: 0 auto; }
+        .stat-pill-card { background: rgba(20,20,20,0.8); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); border-radius: 80px; padding: 35px 55px; text-align: center; min-width: 220px; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer; }
+        .stat-pill-card:hover { transform: translateY(-12px) scale(1.03); border-color: rgba(255,255,255,0.3); background: rgba(30,30,30,0.9); }
         .stat-number-large { display: block; font-size: 3.5rem; font-weight: 900; color: #fff; letter-spacing: -2px; }
         .stat-label-large { display: block; font-size: 1rem; font-weight: 500; margin-top: 12px; color: var(--text-dim); }
         /* Exams Section */
         .exams-section { padding: 100px 8%; }
         .exams-layout-wrapper { display: flex; gap: 30px; max-width: 1400px; margin: 0 auto; }
-        .exam-card-massive { 
-            flex: 1.6; min-height: 450px; display: flex; flex-direction: column; justify-content: space-between;
-            background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 28px; padding: 40px; 
-        }
+        .exam-card-massive { flex: 1.6; min-height: 450px; display: flex; flex-direction: column; justify-content: space-between; background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 28px; padding: 40px; }
         .exam-title-huge { font-size: 4rem; font-weight: 900; margin-bottom: 15px; }
         .exam-desc { font-size: 1rem; line-height: 1.5; margin-bottom: 0; }
-        .exam-pill {
-            display: inline-block; background: rgba(255, 255, 255, 0.08); padding: 5px 12px; border-radius: 100px;
-            font-size: 0.7rem; letter-spacing: 0.5px; margin-bottom: 25px; border: 1px solid var(--glass-border); width: auto;
-        }
+        .exam-pill { display: inline-block; background: rgba(255,255,255,0.08); padding: 5px 12px; border-radius: 100px; font-size: 0.7rem; letter-spacing: 0.5px; margin-bottom: 25px; border: 1px solid var(--glass-border); width: auto; }
         .exam-stack-container { flex: 1; display: flex; flex-direction: column; gap: 30px; }
-        .exam-card-stack-item { 
-            flex: 1; background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 28px; padding: 35px; 
-        }
+        .exam-card-stack-item { flex: 1; background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 28px; padding: 35px; }
         .exam-card-stack-item h3 { font-size: 1.8rem; margin-bottom: 12px; }
         .exam-small-desc { font-size: 0.9rem; color: var(--text-dim); line-height: 1.5; margin-top: 10px; }
-        .region-pill {
-            display: inline-block; background: rgba(255, 255, 255, 0.08); padding: 5px 12px; border-radius: 100px;
-            font-size: 0.7rem; letter-spacing: 0.5px; margin-bottom: 20px; border: 1px solid var(--glass-border); width: auto;
-        }
+        .region-pill { display: inline-block; background: rgba(255,255,255,0.08); padding: 5px 12px; border-radius: 100px; font-size: 0.7rem; letter-spacing: 0.5px; margin-bottom: 20px; border: 1px solid var(--glass-border); width: auto; }
         /* Contact Section */
         .contact-section { padding: 120px 8%; background: #000; }
         .contact-container { display: flex; gap: 80px; max-width: 1400px; margin: 0 auto; align-items: flex-start; }
         .contact-info { flex: 1; }
         .contact-item { display: flex; gap: 20px; margin-bottom: 35px; align-items: center; }
-        .contact-icon {
-            width: 55px; height: 55px; background: rgba(255, 255, 255, 0.05); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; border: 1px solid var(--glass-border);
-        }
+        .contact-icon { width: 55px; height: 55px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid var(--glass-border); }
         .contact-icon svg { width: 24px; height: 24px; stroke: #fff; stroke-width: 1.5; fill: none; }
         .contact-item h3 { font-size: 0.9rem; letter-spacing: 1.5px; color: #fff; margin-bottom: 5px; }
         .contact-item p { color: var(--text-dim); font-size: 1.1rem; }
@@ -313,277 +152,150 @@
         .footer-copyright { color: var(--text-dim); font-size: 0.85rem; margin-bottom: 10px; }
         .footer-made { color: var(--text-dim); font-size: 0.8rem; opacity: 0.7; }
         /* Ban Message */
-        .ban-message {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 20000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            text-align: center;
-        }
-        .ban-message-content {
-            background: #1a1a1a;
-            padding: 50px;
-            border-radius: 30px;
-            max-width: 500px;
-            border: 1px solid #ff3b30;
-        }
+        .ban-message { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 20000; display: flex; align-items: center; justify-content: center; flex-direction: column; text-align: center; }
+        .ban-message-content { background: #1a1a1a; padding: 50px; border-radius: 30px; max-width: 500px; border: 1px solid #ff3b30; }
         .ban-message h2 { color: #ff3b30; margin-bottom: 20px; font-size: 2rem; }
         .ban-message p { color: #ccc; margin-bottom: 30px; line-height: 1.6; }
-        .ban-message button {
-            background: #ff3b30;
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 1rem;
-        }
+        .ban-message button { background: #ff3b30; color: white; border: none; padding: 12px 30px; border-radius: 30px; cursor: pointer; font-size: 1rem; }
 
         /* ── HAMBURGER BUTTON ── */
-        .hamburger-btn {
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 5px;
-            width: 44px;
-            height: 44px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--glass-border);
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 1100;
-            transition: background 0.3s;
-            flex-shrink: 0;
-        }
+        .hamburger-btn { display: none; flex-direction: column; justify-content: center; align-items: center; gap: 5px; width: 44px; height: 44px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 50%; cursor: pointer; z-index: 1100; transition: background 0.3s; flex-shrink: 0; }
         .hamburger-btn:hover { background: rgba(255,255,255,0.1); }
-        .hamburger-btn span {
-            display: block;
-            width: 18px;
-            height: 1.5px;
-            background: #fff;
-            border-radius: 2px;
-            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-            transform-origin: center;
-        }
+        .hamburger-btn span { display: block; width: 18px; height: 1.5px; background: #fff; border-radius: 2px; transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1); transform-origin: center; }
         .hamburger-btn.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
         .hamburger-btn.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
         .hamburger-btn.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
-        /* ── MOBILE MENU OVERLAY ── */
-        .mobile-menu {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 1050;
-            pointer-events: none;
-        }
+        /* ── MOBILE MENU ── */
+        .mobile-menu { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1050; pointer-events: none; }
         .mobile-menu.open { pointer-events: all; }
-
-        /* backdrop */
-        .mobile-menu-backdrop {
-            position: absolute;
-            inset: 0;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(6px);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
+        .mobile-menu-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(6px); opacity: 0; transition: opacity 0.4s ease; }
         .mobile-menu.open .mobile-menu-backdrop { opacity: 1; }
-
-        /* panel */
-        .mobile-menu-panel {
-            position: absolute;
-            top: 20px; left: 50%;
-            transform: translateX(-50%) translateY(-30px) scale(0.96);
-            width: 92%;
-            max-height: calc(100vh - 40px);
-            background: rgba(12,12,12,0.96);
-            backdrop-filter: blur(40px);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 28px;
-            padding: 24px 20px 28px;
-            overflow-y: auto;
-            opacity: 0;
-            transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-            display: flex;
-            flex-direction: column;
-        }
-        .mobile-menu.open .mobile-menu-panel {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0) scale(1);
-        }
-
-        /* top row inside panel */
-        .mobile-menu-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 24px;
-            padding: 0 4px;
-        }
+        .mobile-menu-panel { position: absolute; top: 20px; left: 50%; transform: translateX(-50%) translateY(-30px) scale(0.96); width: 92%; max-height: calc(100vh - 40px); background: rgba(12,12,12,0.96); backdrop-filter: blur(40px); border: 1px solid rgba(255,255,255,0.08); border-radius: 28px; padding: 24px 20px 28px; overflow-y: auto; opacity: 0; transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column; }
+        .mobile-menu.open .mobile-menu-panel { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+        .mobile-menu-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; padding: 0 4px; }
         .mobile-menu-logo { height: 36px; cursor: pointer; }
-        .mobile-close-btn {
-            width: 36px; height: 36px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--glass-border);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
+        .mobile-close-btn { width: 36px; height: 36px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s; }
         .mobile-close-btn:hover { background: rgba(255,255,255,0.1); }
         .mobile-close-btn svg { width: 14px; height: 14px; stroke: #fff; stroke-width: 2; fill: none; }
-
-        /* nav links inside mobile menu */
         .mobile-nav-links { list-style: none; margin-bottom: 16px; }
         .mobile-nav-links li { border-bottom: 1px solid rgba(255,255,255,0.04); }
         .mobile-nav-links li:last-child { border-bottom: none; }
-
-        .mobile-nav-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 16px 12px;
-            color: #fff;
-            font-size: 1.05rem;
-            font-weight: 600;
-            cursor: pointer;
-            border-radius: 14px;
-            transition: background 0.2s;
-            text-decoration: none;
-        }
+        .mobile-nav-item { display: flex; align-items: center; justify-content: space-between; padding: 16px 12px; color: #fff; font-size: 1.05rem; font-weight: 600; cursor: pointer; border-radius: 14px; transition: background 0.2s; text-decoration: none; }
         .mobile-nav-item:hover { background: rgba(255,255,255,0.05); }
         .mobile-nav-item svg { width: 16px; height: 16px; stroke: var(--text-dim); stroke-width: 2; fill: none; transition: transform 0.3s; flex-shrink: 0; }
         .mobile-nav-item.expanded svg { transform: rotate(180deg); }
-
-        /* sub-links inside accordion */
-        .mobile-sub-links {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+        .mobile-sub-links { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         .mobile-sub-links.open { max-height: 300px; }
-        .mobile-sub-links a {
-            display: block;
-            padding: 12px 12px 12px 28px;
-            color: var(--text-dim);
-            font-size: 0.92rem;
-            font-weight: 500;
-            text-decoration: none;
-            border-radius: 12px;
-            transition: all 0.2s;
-        }
+        .mobile-sub-links a { display: block; padding: 12px 12px 12px 28px; color: var(--text-dim); font-size: 0.92rem; font-weight: 500; text-decoration: none; border-radius: 12px; transition: all 0.2s; }
         .mobile-sub-links a:hover { color: #fff; background: rgba(255,255,255,0.04); padding-left: 34px; }
-
-        /* divider */
         .mobile-divider { height: 1px; background: rgba(255,255,255,0.06); margin: 12px 0; }
-
-        /* auth buttons inside mobile menu */
-        .mobile-auth-wrapper {
-            position: relative;
-            display: flex;
-            background: rgba(255,255,255,0.03);
-            padding: 5px;
-            border-radius: 100px;
-            border: 1px solid var(--glass-border);
-            margin-bottom: 12px;
-        }
-        .mobile-auth-pill {
-            position: absolute;
-            top: 5px; left: 5px;
-            width: calc(50% - 5px);
-            height: calc(100% - 10px);
-            background: rgba(255,255,255,0.18);
-            backdrop-filter: blur(15px);
-            border-radius: 100px;
-            transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            z-index: 1;
-            pointer-events: none;
-        }
+        .mobile-auth-wrapper { position: relative; display: flex; background: rgba(255,255,255,0.03); padding: 5px; border-radius: 100px; border: 1px solid var(--glass-border); margin-bottom: 12px; }
+        .mobile-auth-pill { position: absolute; top: 5px; left: 5px; width: calc(50% - 5px); height: calc(100% - 10px); background: rgba(255,255,255,0.18); backdrop-filter: blur(15px); border-radius: 100px; transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1); z-index: 1; pointer-events: none; }
         .mobile-auth-pill.signup-active { transform: translateX(0); }
         .mobile-auth-pill.login-active { transform: translateX(100%); }
-        .mobile-auth-btn {
-            position: relative; z-index: 2;
-            flex: 1;
-            background: transparent; border: none;
-            color: #fff;
-            padding: 12px 10px;
-            cursor: pointer;
-            font-weight: 600;
-            border-radius: 100px;
-            font-size: 0.9rem;
-            text-align: center;
-        }
-
-        /* profile section inside mobile menu */
-        .mobile-profile-card {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 16px;
-            margin-bottom: 12px;
-        }
-        .mobile-profile-header {
-            display: flex; align-items: center; gap: 12px;
-            margin-bottom: 14px;
-        }
-        .mobile-profile-avatar {
-            width: 46px; height: 46px;
-            border-radius: 50%;
-            border: 2px solid rgba(255,255,255,0.12);
-            object-fit: cover;
-            flex-shrink: 0;
-        }
+        .mobile-auth-btn { position: relative; z-index: 2; flex: 1; background: transparent; border: none; color: #fff; padding: 12px 10px; cursor: pointer; font-weight: 600; border-radius: 100px; font-size: 0.9rem; text-align: center; }
+        .mobile-profile-card { background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 20px; padding: 16px; margin-bottom: 12px; }
+        .mobile-profile-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+        .mobile-profile-avatar { width: 46px; height: 46px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.12); object-fit: cover; flex-shrink: 0; }
         .mobile-profile-name { font-weight: 700; font-size: 0.95rem; color: #fff; }
         .mobile-profile-email { font-size: 0.75rem; color: var(--text-dim); margin-top: 2px; }
-
         .mobile-profile-actions { display: flex; flex-direction: column; gap: 4px; }
-        .mobile-profile-action {
-            display: flex; align-items: center; gap: 10px;
-            padding: 10px 12px;
-            color: var(--text-dim);
-            font-size: 0.88rem;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
+        .mobile-profile-action { display: flex; align-items: center; gap: 10px; padding: 10px 12px; color: var(--text-dim); font-size: 0.88rem; border-radius: 12px; cursor: pointer; transition: all 0.2s; }
         .mobile-profile-action:hover { background: rgba(255,255,255,0.05); color: #fff; }
         .mobile-profile-action.danger { color: #ff4d4d; }
         .mobile-profile-action.danger:hover { background: rgba(255,77,77,0.08); }
-        .mobile-admin-badge {
-            background: rgba(255,100,0,0.2); color: #ffa500;
-            font-size: 0.65rem; padding: 2px 7px; border-radius: 20px; margin-left: auto;
-        }
+        .mobile-admin-badge { background: rgba(255,100,0,0.2); color: #ffa500; font-size: 0.65rem; padding: 2px 7px; border-radius: 20px; margin-left: auto; }
 
-        @media (max-width: 1000px) {
-            .hero h1 { font-size: 2.8rem; letter-spacing: -1px; }
-            .massive-title { font-size: 2.2rem; }
-            .sub-title { font-size: 2rem; }
-            .info-container { flex-direction: column !important; gap: 40px; }
-            .exams-layout-wrapper { flex-direction: column; }
+        /* ══════════════════════════════════════
+           RESPONSIVE — iPad (768–1000px)
+           Horizontal layout, side-by-side
+        ══════════════════════════════════════ */
+        @media (min-width: 768px) and (max-width: 1000px) {
             .nav-links { display: none; }
             .auth-wrapper { display: none !important; }
             .profile-section { display: none !important; }
             .hamburger-btn { display: flex; }
             .mobile-menu { display: block; }
-            .stats-pill-container { flex-direction: column; align-items: center; }
-            .stat-pill-card { width: 100%; max-width: 280px; padding: 25px 40px; }
-            .soft-rect-wide { height: 300px; }
-            .soft-rect-large { height: 300px; }
-            .obs-dots { gap: 12px; }
-            .info-text { text-align: center; }
+
+            .hero h1 { font-size: 3.2rem; letter-spacing: -1px; }
+            .massive-title { font-size: 2.6rem; }
+            .sub-title { font-size: 2.2rem; }
+
+            /* Keep info sections side-by-side on iPad */
+            .info-container { flex-direction: row; gap: 40px; }
+            .info-text { text-align: left; }
+            .soft-rect-wide { height: 340px; }
+
+            .exams-layout-wrapper { flex-direction: row; }
             .exam-card-massive { min-height: auto; }
-            .contact-container { flex-direction: column; gap: 60px; }
-            .contact-map { width: 100%; height: 400px; }
+
+            /* Stats: row on iPad */
+            .stats-pill-container { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 20px; }
+            .stat-pill-card { min-width: 180px; padding: 28px 36px; }
+
+            .contact-container { flex-direction: row; gap: 40px; }
+            .contact-map { height: 450px; }
+            .soft-rect-large { height: 380px; }
+
+            /* Dots navigator — give more breathing room */
+            .obs-dots { gap: 18px; }
+        }
+
+        /* ══════════════════════════════════════
+           RESPONSIVE — Mobile (< 768px)
+           Vertical / stacked layout
+        ══════════════════════════════════════ */
+        @media (max-width: 767px) {
+            .nav-links { display: none; }
+            .auth-wrapper { display: none !important; }
+            .profile-section { display: none !important; }
+            .hamburger-btn { display: flex; }
+            .mobile-menu { display: block; }
+
+            .hero h1 { font-size: 2.4rem; letter-spacing: -1px; }
+            .massive-title { font-size: 2rem; }
+            .sub-title { font-size: 1.8rem; }
+
+            /* Stack info sections vertically */
+            .info-container { flex-direction: column !important; gap: 30px; }
+            .info-text { text-align: center; }
+            .soft-rect-wide { height: 240px; }
+
+            /* FIX: Academic Excellence — image first, text second on mobile */
+            .academic-excellence-container { flex-direction: column-reverse !important; }
+
+            .exams-layout-wrapper { flex-direction: column; }
+            .exam-card-massive { min-height: auto; }
+
+            /* Stats: vertical stack on mobile, full-width pills */
+            .stats-pill-container { flex-direction: column; align-items: center; gap: 16px; }
+            .stat-pill-card {
+                width: 100%;
+                max-width: 100%;
+                border-radius: 28px;        /* squarish pill on mobile */
+                padding: 36px 30px;         /* more vertical space */
+            }
+            .stat-number-large { font-size: 3rem; }
+
+            .contact-container { flex-direction: column; gap: 40px; }
+            .contact-map { width: 100%; height: 320px; }
+            .soft-rect-large { height: 220px; }
+
+            /* Dots — more space, smaller dots so they don't crowd */
+            .obs-dots { gap: 14px; }
+            .dot { width: 8px; height: 8px; }
+            .obs-line-active { width: 28px; height: 11px; }
+            .video-nav-observer { bottom: 40px; }
+
+            /* Give map more vertical room */
+            .contact-map { height: 360px; }
+
+            /* Sections breathe more */
+            .info-split { padding: 70px 6%; }
+            .exams-section { padding: 70px 6%; }
+            .stats-section { padding: 60px 6%; }
+            .contact-section { padding: 80px 6%; }
         }
     </style>
 </head>
@@ -615,13 +327,11 @@
                 </li>
             </ul>
             <div style="display: flex; align-items: center;">
-                <!-- Auth Buttons (shown when not logged in) -->
                 <div class="auth-wrapper" id="authWrapper">
                     <div class="auth-pill signup-active" id="authPill"></div>
                     <button class="auth-btn" id="signUpBtn">Sign Up</button>
                     <button class="auth-btn" id="logInBtn">Log In</button>
                 </div>
-                <!-- Profile Dropdown (shown when logged in) -->
                 <div class="profile-section" id="profileSection" style="display: none;">
                     <img id="userAvatar" class="profile-avatar" src="default-avatar.png">
                     <div class="profile-dropdown">
@@ -629,21 +339,16 @@
                             <p id="dropdownUserName" style="font-weight: 700; font-size: 0.95rem;"></p>
                             <p id="dropdownUserEmail" style="font-size: 0.75rem; color: var(--text-dim);"></p>
                         </div>
-                        <div class="dropdown-item" id="myAccountBtn">
-                            <span>My Account</span>
-                        </div>
+                        <div class="dropdown-item" id="myAccountBtn"><span>My Account</span></div>
                         <div id="adminDropdownItem" style="display: none;">
                             <div class="dropdown-item" id="adminDashboardBtn">
                                 <span>Admin Dashboard</span>
                                 <span style="background: rgba(255,100,0,0.2); color: #ffa500; font-size: 0.7rem; padding: 2px 8px; border-radius: 20px; margin-left: 8px;">ADMIN</span>
                             </div>
                         </div>
-                        <div class="dropdown-item" id="signOutBtn" style="color: #ff4d4d !important;">
-                            <span>Sign Out</span>
-                        </div>
+                        <div class="dropdown-item" id="signOutBtn" style="color: #ff4d4d !important;"><span>Sign Out</span></div>
                     </div>
                 </div>
-                <!-- Hamburger Button (mobile only) -->
                 <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">
                     <span></span><span></span><span></span>
                 </button>
@@ -651,23 +356,18 @@
         </div>
     </nav>
 
-    <!-- ── MOBILE MENU ── -->
+    <!-- MOBILE MENU -->
     <div class="mobile-menu" id="mobileMenu">
         <div class="mobile-menu-backdrop" id="mobileBackdrop"></div>
         <div class="mobile-menu-panel">
-            <!-- top row -->
             <div class="mobile-menu-top">
                 <img src="logo.png" alt="KORAHEY" class="mobile-menu-logo" onclick="window.location.href='index.html'">
                 <div class="mobile-close-btn" id="mobileCloseBtn">
                     <svg viewBox="0 0 14 14"><line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/></svg>
                 </div>
             </div>
-
-            <!-- nav links with accordions -->
             <ul class="mobile-nav-links">
-                <li>
-                    <a href="index.html" class="mobile-nav-item">Home</a>
-                </li>
+                <li><a href="index.html" class="mobile-nav-item">Home</a></li>
                 <li>
                     <div class="mobile-nav-item" onclick="toggleMobileAccordion(this)">
                         <span>Contact Us</span>
@@ -699,10 +399,7 @@
                     </div>
                 </li>
             </ul>
-
             <div class="mobile-divider"></div>
-
-            <!-- Auth section (not logged in) -->
             <div id="mobileAuthSection">
                 <div class="mobile-auth-wrapper">
                     <div class="mobile-auth-pill signup-active" id="mobileAuthPill"></div>
@@ -710,8 +407,6 @@
                     <button class="mobile-auth-btn" id="mobileLogInBtn">Log In</button>
                 </div>
             </div>
-
-            <!-- Profile section (logged in) -->
             <div id="mobileProfileSection" style="display:none;">
                 <div class="mobile-profile-card">
                     <div class="mobile-profile-header">
@@ -722,16 +417,12 @@
                         </div>
                     </div>
                     <div class="mobile-profile-actions">
-                        <div class="mobile-profile-action" id="mobileMyAccountBtn">
-                            <span>My Account</span>
-                        </div>
+                        <div class="mobile-profile-action" id="mobileMyAccountBtn"><span>My Account</span></div>
                         <div class="mobile-profile-action" id="mobileAdminBtn" style="display:none;">
                             <span>Admin Dashboard</span>
                             <span class="mobile-admin-badge">ADMIN</span>
                         </div>
-                        <div class="mobile-profile-action danger" id="mobileSignOutBtn">
-                            <span>Sign Out</span>
-                        </div>
+                        <div class="mobile-profile-action danger" id="mobileSignOutBtn"><span>Sign Out</span></div>
                     </div>
                 </div>
             </div>
@@ -746,6 +437,7 @@
             <button onclick="logoutAndRedirect()">Sign Out</button>
         </div>
     </div>
+
     <header class="hero" id="home">
         <div class="hero-image-slider">
             <img src="slided1.png" class="active">
@@ -772,6 +464,7 @@
             </div>
         </div>
     </header>
+
     <!-- Our Mission -->
     <section class="info-split reveal-slide-up">
         <div class="info-container">
@@ -782,9 +475,10 @@
             </div>
         </div>
     </section>
-    <!-- Academic Excellence -->
+
+    <!-- Academic Excellence — image LAST in HTML so column-reverse puts it first on mobile -->
     <section class="info-split reveal-slide-up">
-        <div class="info-container">
+        <div class="info-container academic-excellence-container">
             <div class="info-text">
                 <h2 class="sub-title">Academic Excellence</h2>
                 <p class="clean-desc">At Korahey Academy, we are committed to excellence in education. Our dedicated teachers inspire students to reach their full potential, while our modern curriculum and supportive environment help them grow academically and personally. We prepare learners to succeed today and lead tomorrow.</p>
@@ -792,7 +486,8 @@
             <div class="info-image"><img src="slided5.png" class="soft-rect-wide" alt="Academic Excellence"></div>
         </div>
     </section>
-    <!-- Core Values -->
+
+    <!-- Core Values — "Supportive Network" card removed -->
     <section class="offers-section reveal-slide-up">
         <h2 class="massive-title">Our Core Values</h2>
         <p style="text-align: center; max-width: 700px; margin: 0 auto 50px auto; color: var(--text-dim); font-size: 1.1rem;">What makes Korahey Academy special</p>
@@ -800,9 +495,9 @@
             <div class="mission-card-item reveal-pop card-hover"><span class="circle-label">Environment</span><h3>Safe Learning</h3><p class="clean-desc">A secure atmosphere for inspiring growth and creativity every single day.</p></div>
             <div class="mission-card-item reveal-pop card-hover"><span class="circle-label">Success</span><h3>Proven Results</h3><p class="clean-desc">Exceeding national performance standards with consistent excellence year after year.</p></div>
             <div class="mission-card-item reveal-pop card-hover"><span class="circle-label">Innovation</span><h3>Future Ready</h3><p class="clean-desc">Preparing students with modern skills for tomorrow's challenges and opportunities.</p></div>
-            <div class="mission-card-item reveal-pop card-hover"><span class="circle-label">Community</span><h3>Supportive Network</h3><p class="clean-desc">Building strong relationships between students, parents, and teachers for success.</p></div>
         </div>
     </section>
+
     <!-- Why Families Choose -->
     <section class="why-us-v2 reveal-slide-up">
         <div class="why-header"><h2 class="massive-title">Why Families Choose Korahey Academy</h2><p class="clean-desc centered-p">Our mission is to drive progress and enhance the lives of our students.</p></div>
@@ -817,14 +512,18 @@
             </div>
         </div>
     </section>
+
     <!-- Exams -->
     <section class="exams-section reveal-slide-up">
         <div class="exams-layout-wrapper">
             <div class="exam-card-massive reveal-pop card-hover"><div style="margin-top: auto;"><span class="exam-pill">National Exam</span><h2 class="exam-title-huge">12th Grade</h2><p class="clean-desc exam-desc">Intensive preparation for university entrance. Our senior year program is designed to maximize student success through focused curriculum, expert faculty guidance, and comprehensive exam strategies.</p></div></div>
-            <div class="exam-stack-container"><div class="exam-card-stack-item reveal-pop card-hover"><span class="region-pill">Regional Exam</span><h3>8th Grade</h3><p class="exam-small-desc">Building strong foundations in core subjects with critical thinking development and regional exam preparation.</p></div>
-            <div class="exam-card-stack-item reveal-pop card-hover"><span class="region-pill">Regional Exam</span><h3>6th Grade</h3><p class="exam-small-desc">Developing essential skills in mathematics, science, and language arts while fostering a love for learning.</p></div></div>
+            <div class="exam-stack-container">
+                <div class="exam-card-stack-item reveal-pop card-hover"><span class="region-pill">Regional Exam</span><h3>8th Grade</h3><p class="exam-small-desc">Building strong foundations in core subjects with critical thinking development and regional exam preparation.</p></div>
+                <div class="exam-card-stack-item reveal-pop card-hover"><span class="region-pill">Regional Exam</span><h3>6th Grade</h3><p class="exam-small-desc">Developing essential skills in mathematics, science, and language arts while fostering a love for learning.</p></div>
+            </div>
         </div>
     </section>
+
     <!-- Stats -->
     <section class="stats-section reveal-slide-up">
         <div class="stats-pill-container">
@@ -833,81 +532,60 @@
             <div class="stat-pill-card reveal-pop card-hover"><span class="stat-number-large">12:1</span><span class="stat-label-large">Student-Teacher Ratio</span></div>
         </div>
     </section>
+
     <!-- Contact & Location -->
     <section class="contact-section reveal-slide-up">
         <div class="contact-container">
-            <div class="contact-info"><h2 class="massive-title" style="text-align: left;">Contact & Location</h2><p class="clean-desc" style="margin-bottom: 50px;">We're here to help you with any questions about Korahey Academy. Get in touch or visit.</p>
+            <div class="contact-info">
+                <h2 class="massive-title" style="text-align: left;">Contact & Location</h2>
+                <p class="clean-desc" style="margin-bottom: 50px;">We're here to help you with any questions about Korahey Academy. Get in touch or visit.</p>
                 <div class="contact-item"><div class="contact-icon"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 6 11 6 11s6-5.75 6-11c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg></div><div><h3>ADDRESS</h3><p>Jigjiga - Wajaale Rd, Jijiga</p></div></div>
                 <div class="contact-item"><div class="contact-icon"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div><div><h3>PHONE</h3><p>090 090 4449</p></div></div>
                 <div class="contact-item"><div class="contact-icon"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><h3>HOURS</h3><p>Mon–Fri 7:40–12:35</p></div></div>
-                <hr class="contact-divider"><p class="small-info">Call us during school hours or leave a message on weekends and we'll get back to you.</p><p class="small-info">Parents are welcome to visit the school office to ask questions or learn about registration.</p>
+                <hr class="contact-divider">
+                <p class="small-info">Call us during school hours or leave a message on weekends and we'll get back to you.</p>
+                <p class="small-info">Parents are welcome to visit the school office to ask questions or learn about registration.</p>
             </div>
             <div class="contact-map"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3934.123456789!2d42.793!3d9.351!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zOcKwMjEnMDMuNiJOIDQywrA0NyczNC44IkU!5e0!3m2!1sen!2set!4v1620000000000!5m2!1sen!2set" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe></div>
         </div>
     </section>
+
     <footer><div class="footer-content"><div class="footer-logo">Korahey Academy</div><div class="footer-copyright">© 2026 Khalil · Official site for Korahey Academy</div><div class="footer-made">Made by Khalil</div></div></footer>
+
     <script>
-        // ── MOBILE MENU LOGIC ──
+        // MOBILE MENU LOGIC
         function toggleMobileAccordion(el) {
             const sub = el.nextElementSibling;
             const isOpen = sub.classList.contains('open');
-            // close all
             document.querySelectorAll('.mobile-sub-links.open').forEach(s => s.classList.remove('open'));
             document.querySelectorAll('.mobile-nav-item.expanded').forEach(i => i.classList.remove('expanded'));
-            if (!isOpen) {
-                sub.classList.add('open');
-                el.classList.add('expanded');
-            }
+            if (!isOpen) { sub.classList.add('open'); el.classList.add('expanded'); }
         }
-
         const hamburgerBtn = document.getElementById('hamburgerBtn');
         const mobileMenu = document.getElementById('mobileMenu');
         const mobileBackdrop = document.getElementById('mobileBackdrop');
         const mobileCloseBtn = document.getElementById('mobileCloseBtn');
-
-        function openMobileMenu() {
-            mobileMenu.classList.add('open');
-            hamburgerBtn.classList.add('open');
-            document.body.style.overflow = 'hidden';
-        }
-        function closeMobileMenu() {
-            mobileMenu.classList.remove('open');
-            hamburgerBtn.classList.remove('open');
-            document.body.style.overflow = '';
-        }
-
+        function openMobileMenu() { mobileMenu.classList.add('open'); hamburgerBtn.classList.add('open'); document.body.style.overflow = 'hidden'; }
+        function closeMobileMenu() { mobileMenu.classList.remove('open'); hamburgerBtn.classList.remove('open'); document.body.style.overflow = ''; }
         hamburgerBtn.addEventListener('click', openMobileMenu);
         mobileCloseBtn.addEventListener('click', closeMobileMenu);
         mobileBackdrop.addEventListener('click', closeMobileMenu);
-
-        // mobile auth pill animation
         const mobileAuthPill = document.getElementById('mobileAuthPill');
         const mobileSignUpBtn = document.getElementById('mobileSignUpBtn');
         const mobileLogInBtn = document.getElementById('mobileLogInBtn');
-
         if (mobileSignUpBtn) {
-            mobileSignUpBtn.addEventListener('mouseenter', () => {
-                mobileAuthPill.classList.remove('login-active');
-                mobileAuthPill.classList.add('signup-active');
-            });
+            mobileSignUpBtn.addEventListener('mouseenter', () => { mobileAuthPill.classList.remove('login-active'); mobileAuthPill.classList.add('signup-active'); });
             mobileSignUpBtn.addEventListener('click', () => { window.location.href = 'Sign.up.html'; });
         }
         if (mobileLogInBtn) {
-            mobileLogInBtn.addEventListener('mouseenter', () => {
-                mobileAuthPill.classList.remove('signup-active');
-                mobileAuthPill.classList.add('login-active');
-            });
+            mobileLogInBtn.addEventListener('mouseenter', () => { mobileAuthPill.classList.remove('signup-active'); mobileAuthPill.classList.add('login-active'); });
             mobileLogInBtn.addEventListener('click', () => { window.location.href = 'Log.in.html'; });
         }
-
         document.getElementById('mobileMyAccountBtn')?.addEventListener('click', () => { alert('My Account page coming soon!'); });
         document.getElementById('mobileAdminBtn')?.addEventListener('click', () => { window.location.href = 'admin.html'; });
-        document.getElementById('mobileSignOutBtn')?.addEventListener('click', () => {
-            firebase.auth().signOut().then(() => location.reload());
-        });
+        document.getElementById('mobileSignOutBtn')?.addEventListener('click', () => { firebase.auth().signOut().then(() => location.reload()); });
 
         document.addEventListener('DOMContentLoaded', function() {
-            
             const firebaseConfig = {
                 apiKey: "AIzaSyCC5oK1cMufciR1v4wLi-jfYvXa_cQBnd0",
                 authDomain: "korahey-admin.firebaseapp.com",
@@ -916,15 +594,10 @@
                 messagingSenderId: "86298888884",
                 appId: "1:86298888884:web:f1d835de1cb9d2534d65e1"
             };
-            // Initialize Firebase
-            if (!firebase.apps.length) {
-                firebase.initializeApp(firebaseConfig);
-            }
-            
+            if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
             const auth = firebase.auth();
             const db = firebase.firestore();
             const ADMIN_EMAIL = "khalilmohamedaden@gmail.com";
-            // DOM Elements
             const authWrapper = document.getElementById('authWrapper');
             const authPill = document.getElementById('authPill');
             const signUpBtn = document.getElementById('signUpBtn');
@@ -935,86 +608,49 @@
             const dropdownUserEmail = document.getElementById('dropdownUserEmail');
             const adminDropdownItem = document.getElementById('adminDropdownItem');
             const banOverlay = document.getElementById('banOverlay');
-            // Hero Buttons
             const heroPill = document.getElementById('heroPill');
             const heroJoinBtn = document.getElementById('heroJoinBtn');
             const heroLearnBtn = document.getElementById('heroLearnBtn');
             const footerPill = document.getElementById('footerPill');
             const footerJoinBtn = document.getElementById('footerJoinBtn');
             const footerLearnBtn = document.getElementById('footerLearnBtn');
-            // Navigation functions
             function goToSignUp() { window.location.href = 'Sign.up.html'; }
             function goToLogIn() { window.location.href = 'Log.in.html'; }
             function goToAdminDashboard() { window.location.href = 'admin.html'; }
             function openMyAccount() { alert('My Account page coming soon!'); }
-            
-            window.logoutAndRedirect = function() {
-                auth.signOut().then(() => {
-                    window.location.href = 'index.html';
-                });
-            };
-            // Setup pill animations
+            window.logoutAndRedirect = function() { auth.signOut().then(() => { window.location.href = 'index.html'; }); };
             function setupHeroPill() {
                 if (!heroJoinBtn || !heroLearnBtn || !heroPill) return;
-                heroJoinBtn.addEventListener('mouseenter', () => {
-                    heroPill.classList.remove('learn-active');
-                    heroPill.classList.add('join-active');
-                });
-                heroLearnBtn.addEventListener('mouseenter', () => {
-                    heroPill.classList.remove('join-active');
-                    heroPill.classList.add('learn-active');
-                });
+                heroJoinBtn.addEventListener('mouseenter', () => { heroPill.classList.remove('learn-active'); heroPill.classList.add('join-active'); });
+                heroLearnBtn.addEventListener('mouseenter', () => { heroPill.classList.remove('join-active'); heroPill.classList.add('learn-active'); });
             }
-            
             function setupFooterPill() {
                 if (!footerJoinBtn || !footerLearnBtn || !footerPill) return;
-                footerJoinBtn.addEventListener('mouseenter', () => {
-                    footerPill.classList.remove('learn-active');
-                    footerPill.classList.add('join-active');
-                });
-                footerLearnBtn.addEventListener('mouseenter', () => {
-                    footerPill.classList.remove('join-active');
-                    footerPill.classList.add('learn-active');
-                });
+                footerJoinBtn.addEventListener('mouseenter', () => { footerPill.classList.remove('learn-active'); footerPill.classList.add('join-active'); });
+                footerLearnBtn.addEventListener('mouseenter', () => { footerPill.classList.remove('join-active'); footerPill.classList.add('learn-active'); });
             }
             function setupAuthPill() {
                 if (!signUpBtn || !logInBtn || !authPill) return;
-                signUpBtn.addEventListener('mouseenter', () => {
-                    authPill.classList.remove('login-active');
-                    authPill.classList.add('signup-active');
-                });
-                logInBtn.addEventListener('mouseenter', () => {
-                    authPill.classList.remove('signup-active');
-                    authPill.classList.add('login-active');
-                });
+                signUpBtn.addEventListener('mouseenter', () => { authPill.classList.remove('login-active'); authPill.classList.add('signup-active'); });
+                logInBtn.addEventListener('mouseenter', () => { authPill.classList.remove('signup-active'); authPill.classList.add('login-active'); });
             }
-            // Attach button events
             if (signUpBtn) signUpBtn.addEventListener('click', goToSignUp);
             if (logInBtn) logInBtn.addEventListener('click', goToLogIn);
             if (heroJoinBtn) heroJoinBtn.addEventListener('click', goToSignUp);
             if (heroLearnBtn) heroLearnBtn.addEventListener('click', goToLogIn);
             if (footerJoinBtn) footerJoinBtn.addEventListener('click', goToSignUp);
             if (footerLearnBtn) footerLearnBtn.addEventListener('click', goToLogIn);
-            
             document.getElementById('myAccountBtn')?.addEventListener('click', openMyAccount);
             document.getElementById('adminDashboardBtn')?.addEventListener('click', goToAdminDashboard);
             document.getElementById('signOutBtn')?.addEventListener('click', () => auth.signOut().then(() => location.reload()));
-
             async function updateProfileDropdown(user) {
                 if (dropdownUserName) dropdownUserName.textContent = user.displayName || user.email.split('@')[0];
                 if (dropdownUserEmail) dropdownUserEmail.textContent = user.email;
-                
                 let isAdmin = user.email === ADMIN_EMAIL;
                 if (!isAdmin) {
-                    try {
-                        const userDoc = await db.collection('users').doc(user.uid).get();
-                        isAdmin = userDoc.exists && userDoc.data().isAdmin === true;
-                    } catch(e) { console.log("Firestore error:", e); }
+                    try { const userDoc = await db.collection('users').doc(user.uid).get(); isAdmin = userDoc.exists && userDoc.data().isAdmin === true; } catch(e) { console.log("Firestore error:", e); }
                 }
-                
                 if (adminDropdownItem) adminDropdownItem.style.display = isAdmin ? 'block' : 'none';
-
-                // also update mobile profile
                 const mobileUserName = document.getElementById('mobileUserName');
                 const mobileUserEmail = document.getElementById('mobileUserEmail');
                 const mobileAdminBtn = document.getElementById('mobileAdminBtn');
@@ -1022,19 +658,14 @@
                 if (mobileUserEmail) mobileUserEmail.textContent = user.email;
                 if (mobileAdminBtn) mobileAdminBtn.style.display = isAdmin ? 'flex' : 'none';
             }
-
-            // Auth state listener with BAN CHECK
             auth.onAuthStateChanged(async (user) => {
                 const mobileAuthSection = document.getElementById('mobileAuthSection');
                 const mobileProfileSection = document.getElementById('mobileProfileSection');
                 const mobileUserAvatar = document.getElementById('mobileUserAvatar');
-
                 if (user) {
-                    // Check if user is banned
                     try {
                         const userDoc = await db.collection('users').doc(user.uid).get();
                         const userData = userDoc.data();
-                        
                         if (userData && userData.isBanned === true) {
                             if (banOverlay) banOverlay.style.display = 'flex';
                             if (authWrapper) authWrapper.style.display = 'none';
@@ -1044,43 +675,26 @@
                             return;
                         }
                     } catch(e) { console.log("Ban check error:", e); }
-                    
-                    // User is not banned - show normal UI
                     if (banOverlay) banOverlay.style.display = 'none';
                     if (authWrapper) authWrapper.style.display = 'none';
                     if (profileSection) profileSection.style.display = 'flex';
                     if (mobileAuthSection) mobileAuthSection.style.display = 'none';
                     if (mobileProfileSection) mobileProfileSection.style.display = 'block';
-                    
                     const avatarSrc = user.photoURL || `https://ui-avatars.com/api/?name=${(user.displayName || user.email.charAt(0)).toUpperCase()}&background=ffffff&color=000000&size=42`;
                     if (userAvatar) userAvatar.src = avatarSrc;
                     if (mobileUserAvatar) mobileUserAvatar.src = avatarSrc;
-
                     await updateProfileDropdown(user);
-                    
-                    // Update last login
                     try {
-                        await db.collection('users').doc(user.uid).set({
-                            email: user.email,
-                            name: user.displayName || '',
-                            photoURL: user.photoURL || '',
-                            lastLogin: new Date().toISOString(),
-                            ...(user.email === ADMIN_EMAIL && { isAdmin: true })
-                        }, { merge: true });
+                        await db.collection('users').doc(user.uid).set({ email: user.email, name: user.displayName || '', photoURL: user.photoURL || '', lastLogin: new Date().toISOString(), ...(user.email === ADMIN_EMAIL && { isAdmin: true }) }, { merge: true });
                     } catch(e) { console.log("Firestore update error:", e); }
-                    
                 } else {
                     if (banOverlay) banOverlay.style.display = 'none';
                     if (profileSection) profileSection.style.display = 'none';
                     if (mobileProfileSection) mobileProfileSection.style.display = 'none';
-                    if (authWrapper) {
-                        authWrapper.style.display = 'flex';
-                        setupAuthPill();
-                    }
+                    if (authWrapper) { authWrapper.style.display = 'flex'; setupAuthPill(); }
                     if (mobileAuthSection) mobileAuthSection.style.display = 'block';
                 }
             });
-            // Hero Slider
             const slides = document.querySelectorAll('.hero-image-slider img');
             const dots = document.querySelectorAll('.dot');
             const movingPill = document.getElementById('hero-line');
@@ -1096,54 +710,26 @@
                 const pillWidth = movingPill.offsetWidth;
                 movingPill.style.left = `${dotCenter - (pillWidth / 2)}px`;
             }
-            function updateHero(index) {
-                slides.forEach(s => s.classList.remove('active'));
-                slides[index].classList.add('active');
-                movePillToDot(index);
-                currentIdx = index;
-            }
-            function startAutoCycle() {
-                autoInterval = setInterval(() => updateHero((currentIdx + 1) % slides.length), 6000);
-            }
-            if (dots.length) {
-                dots.forEach((dot, i) => {
-                    dot.addEventListener('click', () => {
-                        clearInterval(autoInterval);
-                        updateHero(i);
-                        startAutoCycle();
-                    });
-                });
-            }
-            // Initialize
+            function updateHero(index) { slides.forEach(s => s.classList.remove('active')); slides[index].classList.add('active'); movePillToDot(index); currentIdx = index; }
+            function startAutoCycle() { autoInterval = setInterval(() => updateHero((currentIdx + 1) % slides.length), 6000); }
+            if (dots.length) { dots.forEach((dot, i) => { dot.addEventListener('click', () => { clearInterval(autoInterval); updateHero(i); startAutoCycle(); }); }); }
             window.addEventListener('load', () => {
                 setupHeroPill();
                 setupFooterPill();
-                
-                if (slides.length) {
-                    setTimeout(() => { updateHero(0); }, 100);
-                    startAutoCycle();
-                }
-                
+                if (slides.length) { setTimeout(() => { updateHero(0); }, 100); startAutoCycle(); }
                 document.querySelectorAll('.reveal, .reveal-slide-up, .reveal-pop').forEach(el => {
-                    new IntersectionObserver((entries) => {
-                        entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
-                    }, { threshold: 0.1 }).observe(el);
+                    new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); }); }, { threshold: 0.1 }).observe(el);
                 });
             });
             window.addEventListener('resize', () => { if (dots.length && dots[currentIdx]) movePillToDot(currentIdx); });
-            
             let lastScrollY = window.scrollY;
             const nav = document.getElementById('navbar');
             window.addEventListener('scroll', () => {
                 const currentScrollY = window.scrollY;
-                if (nav) {
-                    if (currentScrollY > lastScrollY && currentScrollY > 100) nav.classList.add('nav-hidden');
-                    else nav.classList.remove('nav-hidden');
-                }
+                if (nav) { if (currentScrollY > lastScrollY && currentScrollY > 100) nav.classList.add('nav-hidden'); else nav.classList.remove('nav-hidden'); }
                 lastScrollY = currentScrollY;
             });
-            
         });
     </script>
 </body>
-    </html>
+</html>
