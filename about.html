@@ -97,14 +97,19 @@
         .ban-message p { color:#ccc; margin-bottom:30px; line-height:1.6; }
         .ban-message button { background:#ff3b30; color:white; border:none; padding:12px 30px; border-radius:30px; cursor:pointer; font-size:1rem; }
 
-        /* ══ HERO - STATIC IMAGE (NO SLIDER) ══ */
-        .hero { height:85vh; min-height:560px; position:relative; display:flex; align-items:center; justify-content:center; text-align:center; overflow:hidden; }
-        .hero-bg { position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:0; }
-        .hero-overlay { position:absolute; inset:0; background:linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.75) 100%); z-index:1; }
-        .hero-content { position:relative; z-index:2; padding:0 24px; max-width:760px; }
-        .hero-label { display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); border-radius:100px; padding:7px 20px; font-size:0.75rem; letter-spacing:2px; color:rgba(255,255,255,0.65); text-transform:uppercase; margin-bottom:22px; }
-        .hero-content h1 { font-size:clamp(3rem,7vw,6rem); font-weight:800; letter-spacing:-3px; line-height:1.05; margin-bottom:18px; }
-        .hero-content p { font-size:1.15rem; color:rgba(255,255,255,0.6); margin:0 auto; line-height:1.7; max-width:600px; }
+        /* ══ NEW HERO CONCEPT - MINIMALIST WITH FLOATING GLASS CARD ══ */
+        .hero { min-height:70vh; position:relative; display:flex; align-items:center; justify-content:center; text-align:center; padding:140px 24px 100px; }
+        .hero-bg-particles { position:absolute; inset:0; overflow:hidden; z-index:0; }
+        .hero-bg-particles::before { content:''; position:absolute; width:200%; height:200%; top:-50%; left:-50%; background:radial-gradient(circle at 30% 40%, rgba(255,255,255,0.02) 0%, transparent 50%); animation:particleFloat 20s ease infinite; }
+        .hero-bg-particles::after { content:''; position:absolute; width:150%; height:150%; bottom:-30%; right:-30%; background:radial-gradient(circle at 70% 60%, rgba(255,255,255,0.015) 0%, transparent 60%); animation:particleFloatReverse 25s ease infinite; }
+        @keyframes particleFloat { 0% { transform:translate(0,0) rotate(0deg); } 50% { transform:translate(-2%,-2%) rotate(2deg); } 100% { transform:translate(0,0) rotate(0deg); } }
+        @keyframes particleFloatReverse { 0% { transform:translate(0,0) rotate(0deg); } 50% { transform:translate(2%,2%) rotate(-2deg); } 100% { transform:translate(0,0) rotate(0deg); } }
+        
+        .hero-content { position:relative; z-index:2; max-width:860px; margin:0 auto; }
+        .hero-badge { display:inline-block; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:100px; padding:6px 18px; font-size:0.7rem; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,0.45); margin-bottom:28px; backdrop-filter:blur(10px); }
+        .hero h1 { font-size:clamp(3.5rem,8vw,6.5rem); font-weight:800; letter-spacing:-3px; line-height:1.05; margin-bottom:24px; background:linear-gradient(135deg, #FFFFFF 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0.9) 100%); -webkit-background-clip:text; background-clip:text; color:transparent; }
+        .hero-underline { width:80px; height:3px; background:linear-gradient(90deg, #fff, rgba(255,255,255,0.2)); margin:24px auto 24px; border-radius:3px; }
+        .hero p { font-size:1.15rem; color:rgba(255,255,255,0.55); line-height:1.7; max-width:560px; margin:0 auto; }
 
         /* ══ SECTIONS ══ */
         .section-pad { padding:100px 8%; }
@@ -117,7 +122,6 @@
         .split-visual { flex:1; }
         .split-img { width:100%; height:480px; object-fit:cover; border-radius:28px; border:1px solid var(--glass-border); }
 
-        /* story cards */
         .story-grid { display:grid; grid-template-columns:1fr 1fr; gap:30px; max-width:1400px; margin:60px auto 0; }
         .story-card { background:var(--card-bg); border:1px solid var(--glass-border); border-radius:28px; padding:36px 32px; transition:all 0.45s cubic-bezier(0.16,1,0.3,1); }
         .story-card:hover { transform:translateY(-8px); border-color:rgba(255,255,255,0.2); }
@@ -125,7 +129,6 @@
         .story-card h3 { font-size:1.4rem; font-weight:700; margin-bottom:10px; }
         .story-card p { font-size:0.92rem; color:var(--text-dim); line-height:1.7; }
 
-        /* values grid */
         .values-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:30px; max-width:1400px; margin:60px auto 0; }
         .value-card { background:var(--card-bg); border:1px solid var(--glass-border); border-radius:28px; padding:40px 30px; text-align:center; transition:all 0.45s cubic-bezier(0.16,1,0.3,1); }
         .value-card:hover { transform:translateY(-10px) scale(1.02); border-color:rgba(255,255,255,0.25); box-shadow:0 24px 48px rgba(0,0,0,0.4); }
@@ -134,13 +137,11 @@
         .value-card h3 { font-size:1.3rem; font-weight:700; margin-bottom:12px; }
         .value-card p { font-size:0.88rem; color:var(--text-dim); line-height:1.7; }
 
-        /* stats inline */
         .stats-inline { display:flex; justify-content:space-between; gap:30px; flex-wrap:wrap; margin-top:40px; padding-top:40px; border-top:1px solid var(--glass-border); }
         .stat-item { text-align:center; flex:1; min-width:140px; }
         .stat-num { font-size:2.8rem; font-weight:900; letter-spacing:-2px; display:block; }
         .stat-lbl { font-size:0.85rem; color:var(--text-dim); margin-top:8px; display:block; }
 
-        /* reveal animation */
         .reveal-up { opacity:0; transform:translateY(40px); transition:0.9s cubic-bezier(0.16,1,0.3,1); }
         .reveal-up.active { opacity:1; transform:translateY(0); }
 
@@ -149,7 +150,6 @@
         .footer-copyright { color:var(--text-dim); font-size:0.85rem; margin-bottom:10px; }
         .footer-made { color:var(--text-dim); font-size:0.8rem; opacity:0.7; }
 
-        /* RESPONSIVE */
         @media (min-width:768px) and (max-width:1024px) {
             .nav-links,.auth-wrapper,.profile-section { display:none !important; }
             .hamburger-btn { display:flex; }
@@ -163,7 +163,7 @@
             .nav-links,.auth-wrapper,.profile-section { display:none !important; }
             .hamburger-btn { display:flex; }
             .mobile-menu { display:block; }
-            .hero-content h1 { font-size:2.4rem; letter-spacing:-1.5px; }
+            .hero h1 { font-size:2.6rem; letter-spacing:-1.5px; }
             .split { flex-direction:column; gap:36px; }
             .split-img { height:240px; }
             .story-grid { grid-template-columns:1fr; }
@@ -272,14 +272,14 @@
     </div>
 </div>
 
-<!-- HERO SECTION - STATIC IMAGE (NO SLIDER) using slided6 as background -->
+<!-- NEW HERO CONCEPT - MINIMALIST, NO BACKGROUND IMAGE OVERLAY -->
 <section class="hero">
-    <img src="slided6.png" alt="Korahey Academy" class="hero-bg">
-    <div class="hero-overlay"></div>
+    <div class="hero-bg-particles"></div>
     <div class="hero-content">
-        <div class="hero-label">Our Story</div>
-        <h1>About Korahey Academy</h1>
-        <p>Inspiring minds, building character, and shaping the future since 2008.</p>
+        <div class="hero-badge">EST. 2008</div>
+        <h1>About Korahey<br>Academy</h1>
+        <div class="hero-underline"></div>
+        <p>Inspiring minds, building character, and shaping the future of Jijiga since 2008.</p>
     </div>
 </section>
 
@@ -331,7 +331,7 @@
             </div>
             <div class="story-card">
                 <div class="story-year">2023</div>
-                <h3>100% University Success</h3>
+                <h3>University Success</h3>
                 <p>Achieved 98% university acceptance rate with graduates admitted to top universities across Ethiopia and abroad.</p>
             </div>
             <div class="story-card">
@@ -429,7 +429,6 @@
 </footer>
 
 <script>
-/* ── MOBILE MENU ── */
 function toggleMobileAccordion(el, href) {
     const sub = el.nextElementSibling;
     const isOpen = sub.classList.contains('open');
@@ -454,7 +453,6 @@ document.getElementById('mobileMyAccountBtn')?.addEventListener('click', () => a
 document.getElementById('mobileAdminBtn')?.addEventListener('click', () => { window.location.href='admin.html'; });
 document.getElementById('mobileSignOutBtn')?.addEventListener('click', () => firebase.auth().signOut().then(() => location.reload()));
 
-/* ── FIREBASE ── */
 document.addEventListener('DOMContentLoaded', function() {
     const firebaseConfig = { apiKey:"AIzaSyCC5oK1cMufciR1v4wLi-jfYvXa_cQBnd0", authDomain:"korahey-admin.firebaseapp.com", projectId:"korahey-admin", storageBucket:"korahey-admin.firebasestorage.app", messagingSenderId:"86298888884", appId:"1:86298888884:web:f1d835de1cb9d2534d65e1" };
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
@@ -496,16 +494,12 @@ document.addEventListener('DOMContentLoaded', function() {
             if(authWrapper){authWrapper.style.display='flex';setupAuthPill();} if(mAS)mAS.style.display='block';
         }
     });
-
-    // Scroll reveal
     window.addEventListener('load',()=>{
         document.querySelectorAll('.reveal-up').forEach((el,i)=>{
             el.style.transitionDelay=`${i*0.06}s`;
             new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('active');});},{threshold:0.1}).observe(el);
         });
     });
-
-    // Nav hide on scroll
     let lastY=window.scrollY; const nav=document.getElementById('navbar');
     window.addEventListener('scroll',()=>{const cur=window.scrollY;if(nav){if(cur>lastY&&cur>100)nav.classList.add('nav-hidden');else nav.classList.remove('nav-hidden');}lastY=cur;});
 });
