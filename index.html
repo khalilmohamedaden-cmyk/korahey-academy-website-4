@@ -233,14 +233,14 @@
         .exam-stack-container { flex: 1; display: flex; flex-direction: column; gap: 30px; }
         .exam-card-stack-item { background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 28px; padding: 35px; }
         
-        /* Contact - Map taller */
+        /* Contact - Map taller (FIXED) */
         .contact-section { padding: 120px 8%; background: #000; }
         .contact-container { display: flex; gap: 80px; max-width: 1400px; margin: 0 auto; align-items: flex-start; }
         .contact-info { flex: 1; }
         .contact-item { display: flex; gap: 20px; margin-bottom: 35px; align-items: center; }
         .contact-icon { width: 55px; height: 55px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid var(--glass-border); }
         .contact-icon svg { width: 24px; height: 24px; stroke: #fff; stroke-width: 1.5; fill: none; }
-        .contact-map { flex: 1; height: 560px; border-radius: 30px; overflow: hidden; border: 1px solid var(--glass-border); background: #111; }
+        .contact-map { flex: 1; height: 600px; border-radius: 30px; overflow: hidden; border: 1px solid var(--glass-border); background: #111; }
         
         .reveal, .reveal-pop, .reveal-slide-up { opacity: 0; transform: translateY(50px); transition: 1s cubic-bezier(0.16, 1, 0.3, 1); }
         .reveal.active, .reveal-pop.active, .reveal-slide-up.active { opacity: 1; transform: translateY(0); }
@@ -248,7 +248,7 @@
         .ban-message { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 20000; display: flex; align-items: center; justify-content: center; }
         .ban-message-content { background: #1a1a1a; padding: 50px; border-radius: 30px; border: 1px solid #ff3b30; text-align: center; }
 
-        /* ========== FULL SCREEN MOBILE MENU (NO HALF SCREEN) ========== */
+        /* ========== FULL SCREEN MOBILE MENU ========== */
         .hamburger { display: none; flex-direction: column; justify-content: space-between; width: 28px; height: 20px; cursor: pointer; margin-left: 16px; }
         .hamburger span { width: 100%; height: 2px; background: white; border-radius: 4px; }
         
@@ -425,7 +425,7 @@
         </div>
     </nav>
 
-    <!-- FULL SCREEN MOBILE MENU (BUBBLE STYLE, NO HALF) -->
+    <!-- FULL SCREEN MOBILE MENU -->
     <div class="mobile-nav" id="mobileNav">
         <div class="close-mobile" id="closeMobileMenu">&times;</div>
         <div class="mobile-menu-item">
@@ -503,13 +503,11 @@
             document.getElementById('adminDashboardBtn')?.addEventListener('click', () => window.location.href = 'admin.html');
             document.getElementById('signOutBtn')?.addEventListener('click', () => auth.signOut().then(() => location.reload()));
             
-            // Desktop: Click twice to navigate (first opens dropdown, second navigates)
+            // Desktop: Click twice to navigate (first opens dropdown via hover, second navigates)
             const desktopItems = ['contactUsDesktop', 'academicsDesktop', 'announcementsDesktop'];
             desktopItems.forEach(id => {
                 const el = document.getElementById(id);
                 if(el) {
-                    let clickCount = 0;
-                    let timeout;
                     el.addEventListener('click', (e) => {
                         const parentLi = el.closest('li');
                         const dropdown = parentLi?.querySelector('.dropdown-menu');
@@ -521,12 +519,11 @@
                             if(id === 'announcementsDesktop') target = 'announcements.html';
                             if(target) window.location.href = target;
                         }
-                        // if not open, hover will open it, no action needed
                     });
                 }
             });
             
-            // Mobile submenu toggle + bubble animation
+            // Mobile submenu toggle
             document.querySelectorAll('.mobile-menu-link[data-target]').forEach(link => {
                 const targetId = link.getAttribute('data-target');
                 if(targetId) {
