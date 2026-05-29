@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Korahey Academy | Contact Us</title>
+    <title>Korahey Academy | Apply</title>
 
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
@@ -44,7 +44,7 @@
         .auth-pill { position:absolute; top:5px; left:5px; width:calc(50% - 5px); height:calc(100% - 10px); background:rgba(255,255,255,0.2); backdrop-filter:blur(15px); border-radius:100px; transition:transform 0.35s cubic-bezier(0.2,0.9,0.4,1.1); z-index:1; pointer-events:none; }
         .auth-pill.signup-active { transform:translateX(0); }
         .auth-pill.login-active { transform:translateX(100%); }
-        .auth-btn { position:relative; z-index:2; background:transparent; border:none; color:#fff; padding:10px 28px; cursor:pointer; font-weight:600; border-radius:100px; min-width:110px; font-size:0.9rem; transition:color 0.2s; }
+        .auth-btn { position:relative; z-index:2; background:transparent; border:none; color:#fff; padding:10px 28px; cursor:pointer; font-weight:600; border-radius:100px; min-width:110px; font-size:0.9rem; }
 
         /* ── HAMBURGER ── */
         .hamburger-btn { display:none; flex-direction:column; justify-content:center; align-items:center; gap:5px; width:44px; height:44px; background:rgba(255,255,255,0.05); border:1px solid var(--glass-border); border-radius:50%; cursor:pointer; z-index:1100; transition:background 0.3s; flex-shrink:0; }
@@ -63,8 +63,7 @@
         .mobile-menu.open .mobile-menu-panel { opacity:1; transform:translateX(-50%) translateY(0) scale(1); }
         .mobile-menu-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; padding:0 4px; }
         .mobile-menu-logo { height:36px; cursor:pointer; }
-        .mobile-close-btn { width:36px; height:36px; background:rgba(255,255,255,0.05); border:1px solid var(--glass-border); border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:background 0.2s; }
-        .mobile-close-btn:hover { background:rgba(255,255,255,0.1); }
+        .mobile-close-btn { width:36px; height:36px; background:rgba(255,255,255,0.05); border:1px solid var(--glass-border); border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; }
         .mobile-close-btn svg { width:14px; height:14px; stroke:#fff; stroke-width:2; fill:none; }
         .mobile-nav-links { list-style:none; margin-bottom:16px; }
         .mobile-nav-links li { border-bottom:1px solid rgba(255,255,255,0.04); }
@@ -76,7 +75,7 @@
         .mobile-sub-links { max-height:0; overflow:hidden; transition:max-height 0.4s cubic-bezier(0.16,1,0.3,1); }
         .mobile-sub-links.open { max-height:300px; }
         .mobile-sub-links a { display:block; padding:12px 12px 12px 28px; color:var(--text-dim); font-size:0.92rem; font-weight:500; text-decoration:none; border-radius:12px; transition:all 0.2s; }
-        .mobile-sub-links a:hover { color:#fff; background:rgba(255,255,255,0.04); padding-left:34px; }
+        .mobile-sub-links a:hover { color:#fff; background:rgba(255,255,255,0.04); }
         .mobile-divider { height:1px; background:rgba(255,255,255,0.06); margin:12px 0; }
         .mobile-auth-wrapper { position:relative; display:flex; background:rgba(255,255,255,0.03); padding:5px; border-radius:100px; border:1px solid var(--glass-border); margin-bottom:12px; }
         .mobile-auth-pill { position:absolute; top:5px; left:5px; width:calc(50% - 5px); height:calc(100% - 10px); background:rgba(255,255,255,0.18); backdrop-filter:blur(15px); border-radius:100px; transition:transform 0.35s cubic-bezier(0.2,0.9,0.4,1.1); z-index:1; pointer-events:none; }
@@ -92,240 +91,334 @@
         .mobile-profile-action { display:flex; align-items:center; gap:10px; padding:10px 12px; color:var(--text-dim); font-size:0.88rem; border-radius:12px; cursor:pointer; transition:all 0.2s; }
         .mobile-profile-action:hover { background:rgba(255,255,255,0.05); color:#fff; }
         .mobile-profile-action.danger { color:#ff4d4d; }
-        .mobile-profile-action.danger:hover { background:rgba(255,77,77,0.08); }
         .mobile-admin-badge { background:rgba(255,100,0,0.2); color:#ffa500; font-size:0.65rem; padding:2px 7px; border-radius:20px; margin-left:auto; }
 
         /* ── BAN ── */
-        .ban-message { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:20000; display:flex; align-items:center; justify-content:center; flex-direction:column; text-align:center; }
-        .ban-message-content { background:#1a1a1a; padding:50px; border-radius:30px; max-width:500px; border:1px solid #ff3b30; }
+        .ban-message { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:20000; display:flex; align-items:center; justify-content:center; flex-direction:column; }
+        .ban-message-content { background:#1a1a1a; padding:50px; border-radius:30px; max-width:500px; border:1px solid #ff3b30; text-align:center; }
         .ban-message h2 { color:#ff3b30; margin-bottom:20px; font-size:2rem; }
         .ban-message p { color:#ccc; margin-bottom:30px; line-height:1.6; }
         .ban-message button { background:#ff3b30; color:white; border:none; padding:12px 30px; border-radius:30px; cursor:pointer; font-size:1rem; }
 
-        /* ── PAGE HERO ── */
+        /* ══════════════════════════════
+           HERO
+        ══════════════════════════════ */
         .page-hero {
-            padding: 180px 8% 80px;
-            text-align: center;
             position: relative;
+            height: 100vh;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
         }
-        .page-hero-label {
+        .hero-bg {
+            position: absolute; inset: 0;
+            background-image: url('slided1.png');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.35;
+            transition: opacity 1.5s;
+        }
+        .hero-bg.slide-2 { background-image: url('slided2.png'); }
+        .hero-bg.slide-3 { background-image: url('slided3.png'); }
+        .hero-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.7) 100%);
+        }
+        .hero-content { position: relative; z-index: 2; padding: 0 20px; }
+        .hero-label {
             display: inline-block;
-            background: rgba(255,255,255,0.06);
-            border: 1px solid var(--glass-border);
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
             border-radius: 100px;
-            padding: 6px 18px;
+            padding: 7px 20px;
             font-size: 0.78rem;
-            letter-spacing: 1.5px;
-            color: var(--text-dim);
-            margin-bottom: 24px;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.7);
             text-transform: uppercase;
+            margin-bottom: 24px;
         }
-        .page-hero h1 {
-            font-size: clamp(2.8rem, 6vw, 5.5rem);
+        .hero-content h1 {
+            font-size: clamp(3rem, 7vw, 6.5rem);
             font-weight: 800;
-            letter-spacing: -2px;
+            letter-spacing: -3px;
+            line-height: 1;
             margin-bottom: 18px;
-            line-height: 1.05;
         }
-        .page-hero p {
+        .hero-content p {
             font-size: 1.15rem;
-            color: var(--text-dim);
-            max-width: 560px;
-            margin: 0 auto;
+            color: rgba(255,255,255,0.65);
+            max-width: 520px;
+            margin: 0 auto 40px;
             line-height: 1.7;
         }
 
-        /* ── CONTACT MAIN SECTION ── */
-        .contact-section { padding: 20px 8% 120px; }
-        .contact-container {
-            display: flex;
-            gap: 50px;
-            max-width: 1400px;
-            margin: 0 auto;
-            align-items: flex-start;
-        }
-
-        /* ── LEFT: INFO + FORM ── */
-        .contact-left { flex: 1; display: flex; flex-direction: column; gap: 30px; }
-
-        /* info cards */
-        .contact-info-cards { display: flex; flex-direction: column; gap: 14px; }
-        .contact-card {
-            background: #0c0c0c;
-            border: 1px solid var(--glass-border);
-            border-radius: 22px;
-            padding: 22px 24px;
-            display: flex;
-            align-items: center;
-            gap: 18px;
-            transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
-        }
-        .contact-card:hover { border-color: rgba(255,255,255,0.15); transform: translateY(-4px); }
-        .contact-card-icon {
-            width: 48px; height: 48px; flex-shrink: 0;
+        /* ── TYPE SWITCHER ── */
+        .type-switcher {
+            position: relative;
+            display: inline-flex;
             background: rgba(255,255,255,0.05);
-            border: 1px solid var(--glass-border);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
+            padding: 5px;
+            border-radius: 100px;
+            border: 1px solid rgba(255,255,255,0.08);
+            margin-bottom: 0;
         }
-        .contact-card-icon svg { width: 20px; height: 20px; stroke: #fff; stroke-width: 1.5; fill: none; }
-        .contact-card-label { font-size: 0.72rem; letter-spacing: 1.5px; color: var(--text-dim); margin-bottom: 4px; text-transform: uppercase; }
-        .contact-card-value { font-size: 1rem; font-weight: 600; color: #fff; }
+        .type-pill {
+            position: absolute;
+            top: 5px; left: 5px;
+            width: calc(50% - 5px);
+            height: calc(100% - 10px);
+            background: #fff;
+            border-radius: 100px;
+            transition: transform 0.4s cubic-bezier(0.2,0.9,0.4,1.1);
+            z-index: 1;
+            pointer-events: none;
+        }
+        .type-pill.teacher-active { transform: translateX(100%); }
+        .type-btn {
+            position: relative; z-index: 2;
+            background: transparent; border: none;
+            padding: 12px 32px;
+            border-radius: 100px;
+            font-size: 0.92rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.25s;
+            color: rgba(255,255,255,0.5);
+            min-width: 140px;
+        }
+        .type-btn.active { color: #000; }
 
-        /* form card */
-        .contact-form-card {
+        /* ══════════════════════════════
+           FORM SECTION
+        ══════════════════════════════ */
+        .form-section { padding: 80px 8% 120px; }
+        .form-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* form panels */
+        .form-panel { display: none; }
+        .form-panel.active { display: block; }
+
+        /* card */
+        .form-card {
             background: #0c0c0c;
-            border: 1px solid var(--glass-border);
-            border-radius: 28px;
-            padding: 36px;
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 32px;
+            overflow: hidden;
         }
-        .form-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 6px; }
-        .form-subtitle { font-size: 0.9rem; color: var(--text-dim); margin-bottom: 28px; line-height: 1.5; }
+        .form-card-header {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+        .form-card-header img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            opacity: 0.5;
+        }
+        .form-card-header-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(12,12,12,1));
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 28px 36px;
+        }
+        .form-card-tag {
+            display: inline-block;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 100px;
+            padding: 4px 14px;
+            font-size: 0.7rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 10px;
+            width: fit-content;
+        }
+        .form-card-header h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        .form-card-header p {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            margin-top: 6px;
+        }
+        .form-body { padding: 36px; }
 
-        .form-row { display: flex; gap: 14px; margin-bottom: 14px; }
-        .form-group { display: flex; flex-direction: column; flex: 1; }
-        .form-group label { font-size: 0.72rem; letter-spacing: 1px; color: var(--text-dim); margin-bottom: 8px; text-transform: uppercase; }
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
+        /* form fields */
+        .field-row { display: flex; gap: 16px; margin-bottom: 16px; }
+        .field-group { display: flex; flex-direction: column; flex: 1; }
+        .field-group.full { flex: 1 1 100%; }
+        .field-group label {
+            font-size: 0.7rem;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.45);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        .field-group input,
+        .field-group textarea,
+        .field-group select {
             background: rgba(255,255,255,0.04);
             border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 14px;
-            padding: 14px 16px;
+            border-radius: 16px;
+            padding: 15px 18px;
             color: #fff;
-            font-size: 0.92rem;
+            font-size: 0.93rem;
             font-family: inherit;
             outline: none;
             transition: border-color 0.25s, background 0.25s;
             width: 100%;
         }
-        .form-group input::placeholder,
-        .form-group textarea::placeholder { color: rgba(255,255,255,0.25); }
-        .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
-            border-color: rgba(255,255,255,0.3);
+        .field-group input::placeholder,
+        .field-group textarea::placeholder { color: rgba(255,255,255,0.2); }
+        .field-group input:focus,
+        .field-group textarea:focus,
+        .field-group select:focus {
+            border-color: rgba(255,255,255,0.25);
             background: rgba(255,255,255,0.07);
         }
-        .form-group textarea { resize: vertical; min-height: 110px; }
-        .form-group select { appearance: none; cursor: pointer; }
-        .form-group select option { background: #1a1a1a; color: #fff; }
+        .field-group textarea { resize: vertical; min-height: 120px; }
+        .field-group select { appearance: none; cursor: pointer; }
+        .field-group select option { background: #1a1a1a; }
 
+        /* section divider inside form */
+        .form-section-label {
+            font-size: 0.72rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.25);
+            margin: 28px 0 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* number stepper */
+        .stepper-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            overflow: hidden;
+            width: fit-content;
+        }
+        .stepper-btn {
+            background: transparent;
+            border: none;
+            color: rgba(255,255,255,0.5);
+            width: 44px; height: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: color 0.2s, background 0.2s;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .stepper-btn:hover { color: #fff; background: rgba(255,255,255,0.06); }
+        .stepper-val {
+            width: 60px;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            border: none;
+            background: transparent;
+            outline: none;
+        }
+
+        /* submit */
+        .form-submit-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 32px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .form-note {
+            font-size: 0.82rem;
+            color: rgba(255,255,255,0.3);
+            line-height: 1.5;
+            flex: 1;
+            min-width: 200px;
+        }
         .submit-btn {
-            width: 100%;
-            margin-top: 6px;
-            padding: 16px;
             background: #fff;
             color: #000;
             border: none;
             border-radius: 100px;
+            padding: 16px 44px;
             font-size: 0.95rem;
             font-weight: 700;
             cursor: pointer;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.2px;
             transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
-        }
-        .submit-btn:hover { background: rgba(255,255,255,0.88); transform: scale(1.02); }
-        .submit-btn:active { transform: scale(0.98); }
-
-        /* ── RIGHT: MAP ── */
-        .contact-right { flex: 1.1; display: flex; flex-direction: column; gap: 20px; position: sticky; top: 110px; }
-        .map-card {
-            border-radius: 28px;
-            overflow: hidden;
-            border: 1px solid var(--glass-border);
-            background: #111;
-            height: 520px;
-        }
-        .map-card iframe { width: 100%; height: 100%; border: 0; display: block; }
-
-        /* hours card */
-        .hours-card {
-            background: #0c0c0c;
-            border: 1px solid var(--glass-border);
-            border-radius: 22px;
-            padding: 24px 28px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-        }
-        .hours-left { display: flex; align-items: center; gap: 14px; }
-        .hours-icon { width: 44px; height: 44px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .hours-icon svg { width: 20px; height: 20px; stroke: #fff; stroke-width: 1.5; fill: none; }
-        .hours-label { font-size: 0.72rem; letter-spacing: 1px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 4px; }
-        .hours-value { font-size: 0.98rem; font-weight: 600; }
-        .hours-badge {
-            background: rgba(52,199,89,0.12);
-            border: 1px solid rgba(52,199,89,0.25);
-            color: #34c759;
-            font-size: 0.75rem;
-            font-weight: 600;
-            padding: 5px 14px;
-            border-radius: 100px;
             white-space: nowrap;
         }
+        .submit-btn:hover { background: rgba(255,255,255,0.88); transform: scale(1.03); }
+        .submit-btn:active { transform: scale(0.98); }
 
-        /* ── ANIMATIONS ── */
-        .reveal-up { opacity: 0; transform: translateY(40px); transition: 0.9s cubic-bezier(0.16,1,0.3,1); }
-        .reveal-up.active { opacity: 1; transform: translateY(0); }
+        /* success toast */
+        .toast {
+            position: fixed;
+            bottom: 40px; left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(30,30,30,0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 100px;
+            padding: 14px 28px;
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 500;
+            z-index: 9999;
+            transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+            display: flex; align-items: center; gap: 10px;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+        .toast-dot { width: 8px; height: 8px; background: #34c759; border-radius: 50%; flex-shrink: 0; }
+
+        /* animations */
+        .reveal-up { opacity:0; transform:translateY(40px); transition:0.9s cubic-bezier(0.16,1,0.3,1); }
+        .reveal-up.active { opacity:1; transform:translateY(0); }
 
         /* ── FOOTER ── */
-        footer { padding: 60px 8% 40px; text-align: center; border-top: 1px solid var(--glass-border); background: #000; }
-        .footer-content { max-width: 1200px; margin: 0 auto; }
-        .footer-logo { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 20px; color: #fff; }
-        .footer-copyright { color: var(--text-dim); font-size: 0.85rem; margin-bottom: 10px; }
-        .footer-made { color: var(--text-dim); font-size: 0.8rem; opacity: 0.7; }
+        footer { padding:60px 8% 40px; text-align:center; border-top:1px solid var(--glass-border); background:#000; }
+        .footer-logo { font-size:1.5rem; font-weight:700; letter-spacing:-0.5px; margin-bottom:20px; color:#fff; }
+        .footer-copyright { color:var(--text-dim); font-size:0.85rem; margin-bottom:10px; }
+        .footer-made { color:var(--text-dim); font-size:0.8rem; opacity:0.7; }
 
-        /* ── RESPONSIVE: iPad horizontal (768–1024px) ── */
+        /* ── RESPONSIVE ── */
         @media (min-width: 768px) and (max-width: 1024px) {
-            .nav-links { display: none; }
-            .auth-wrapper { display: none !important; }
-            .profile-section { display: none !important; }
-            .hamburger-btn { display: flex; }
-            .mobile-menu { display: block; }
-
-            .contact-container { flex-direction: row; gap: 30px; }
-            .contact-right { position: static; }
-            .map-card { height: 420px; }
-            .page-hero { padding: 160px 6% 60px; }
-            .contact-section { padding: 20px 6% 100px; }
+            .nav-links, .auth-wrapper, .profile-section { display:none !important; }
+            .hamburger-btn { display:flex; }
+            .mobile-menu { display:block; }
+            .form-section { padding: 60px 6% 100px; }
         }
-
-        /* ── RESPONSIVE: iPad vertical (600–767px) ── */
-        @media (min-width: 600px) and (max-width: 767px) {
-            .nav-links { display: none; }
-            .auth-wrapper { display: none !important; }
-            .profile-section { display: none !important; }
-            .hamburger-btn { display: flex; }
-            .mobile-menu { display: block; }
-
-            .contact-container { flex-direction: column; gap: 30px; }
-            .contact-right { position: static; }
-            .map-card { height: 380px; }
-            .page-hero { padding: 150px 6% 50px; }
-            .contact-section { padding: 20px 6% 90px; }
-            .form-row { flex-direction: row; }
-        }
-
-        /* ── RESPONSIVE: Mobile (< 600px) ── */
-        @media (max-width: 599px) {
-            .nav-links { display: none; }
-            .auth-wrapper { display: none !important; }
-            .profile-section { display: none !important; }
-            .hamburger-btn { display: flex; }
-            .mobile-menu { display: block; }
-
-            .page-hero { padding: 130px 6% 40px; }
-            .page-hero h1 { font-size: 2.4rem; letter-spacing: -1px; }
-            .page-hero p { font-size: 1rem; }
-            .contact-section { padding: 16px 5% 80px; }
-            .contact-container { flex-direction: column; gap: 24px; }
-            .contact-right { position: static; }
-            .map-card { height: 300px; }
-            .form-row { flex-direction: column; gap: 14px; }
-            .contact-form-card { padding: 24px 20px; }
-            .hours-card { flex-direction: column; align-items: flex-start; gap: 12px; }
+        @media (max-width: 767px) {
+            .nav-links, .auth-wrapper, .profile-section { display:none !important; }
+            .hamburger-btn { display:flex; }
+            .mobile-menu { display:block; }
+            .hero-content h1 { font-size: 2.8rem; letter-spacing: -1.5px; }
+            .hero-content p { font-size: 1rem; }
+            .type-btn { min-width: 110px; padding: 12px 20px; }
+            .form-section { padding: 50px 5% 80px; }
+            .field-row { flex-direction: column; gap: 14px; }
+            .form-body { padding: 24px 20px; }
+            .form-card-header-overlay { padding: 20px 24px; }
+            .form-card-header h2 { font-size: 1.6rem; }
+            .form-submit-row { flex-direction: column; align-items: stretch; }
+            .submit-btn { width: 100%; text-align: center; }
         }
     </style>
 </head>
@@ -339,7 +432,7 @@
             </div>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="Contact.html" class="active-page">Contact Us</a>
+                <li><a href="Contact.html">Contact Us</a>
                     <div class="dropdown-menu">
                         <a href="about.html">About Us</a>
                         <a href="teacher-contact.html">Teacher Contact</a>
@@ -356,7 +449,7 @@
                     </div>
                 </li>
             </ul>
-            <div style="display:flex; align-items:center;">
+            <div style="display:flex;align-items:center;">
                 <div class="auth-wrapper" id="authWrapper">
                     <div class="auth-pill signup-active" id="authPill"></div>
                     <button class="auth-btn" id="signUpBtn">Sign Up</button>
@@ -365,15 +458,15 @@
                 <div class="profile-section" id="profileSection" style="display:none;">
                     <img id="userAvatar" class="profile-avatar" src="default-avatar.png">
                     <div class="profile-dropdown">
-                        <div style="padding:10px 16px; border-bottom:1px solid rgba(255,255,255,0.05); margin-bottom:8px;">
-                            <p id="dropdownUserName" style="font-weight:700; font-size:0.95rem;"></p>
-                            <p id="dropdownUserEmail" style="font-size:0.75rem; color:var(--text-dim);"></p>
+                        <div style="padding:10px 16px;border-bottom:1px solid rgba(255,255,255,0.05);margin-bottom:8px;">
+                            <p id="dropdownUserName" style="font-weight:700;font-size:0.95rem;"></p>
+                            <p id="dropdownUserEmail" style="font-size:0.75rem;color:var(--text-dim);"></p>
                         </div>
                         <div class="dropdown-item" id="myAccountBtn"><span>My Account</span></div>
                         <div id="adminDropdownItem" style="display:none;">
                             <div class="dropdown-item" id="adminDashboardBtn">
                                 <span>Admin Dashboard</span>
-                                <span style="background:rgba(255,100,0,0.2); color:#ffa500; font-size:0.7rem; padding:2px 8px; border-radius:20px; margin-left:8px;">ADMIN</span>
+                                <span style="background:rgba(255,100,0,0.2);color:#ffa500;font-size:0.7rem;padding:2px 8px;border-radius:20px;margin-left:8px;">ADMIN</span>
                             </div>
                         </div>
                         <div class="dropdown-item" id="signOutBtn" style="color:#ff4d4d !important;"><span>Sign Out</span></div>
@@ -399,7 +492,7 @@
             <ul class="mobile-nav-links">
                 <li><a href="index.html" class="mobile-nav-item">Home</a></li>
                 <li>
-                    <div class="mobile-nav-item" onclick="toggleMobileAccordion(this, 'Contact.html')">
+                    <div class="mobile-nav-item" onclick="toggleMobileAccordion(this,'Contact.html')">
                         <span>Contact Us</span>
                         <svg viewBox="0 0 16 16"><polyline points="4 6 8 10 12 6"/></svg>
                     </div>
@@ -409,7 +502,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="mobile-nav-item" onclick="toggleMobileAccordion(this, 'academics.html')">
+                    <div class="mobile-nav-item" onclick="toggleMobileAccordion(this,'academics.html')">
                         <span>Academics</span>
                         <svg viewBox="0 0 16 16"><polyline points="4 6 8 10 12 6"/></svg>
                     </div>
@@ -418,7 +511,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="mobile-nav-item" onclick="toggleMobileAccordion(this, 'announcements.html')">
+                    <div class="mobile-nav-item" onclick="toggleMobileAccordion(this,'announcements.html')">
                         <span>Announcements</span>
                         <svg viewBox="0 0 16 16"><polyline points="4 6 8 10 12 6"/></svg>
                     </div>
@@ -457,121 +550,262 @@
         </div>
     </div>
 
-    <!-- BAN OVERLAY -->
+    <!-- BAN -->
     <div id="banOverlay" style="display:none;" class="ban-message">
         <div class="ban-message-content">
             <h2>Account Banned</h2>
-            <p>Your account has been banned from Korahey Academy. Please contact support for more information.</p>
+            <p>Your account has been banned from Korahey Academy. Please contact support.</p>
             <button onclick="logoutAndRedirect()">Sign Out</button>
         </div>
     </div>
 
-    <!-- PAGE HERO -->
+    <!-- HERO -->
     <section class="page-hero">
-        <div class="page-hero-label">Get In Touch</div>
-        <h1 class="reveal-up">Contact Us</h1>
-        <p class="reveal-up">We're here to help you with any questions about Korahey Academy. Get in touch or visit us to learn about our education.</p>
+        <div class="hero-bg" id="heroBg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-label">Korahey Academy</div>
+            <h1>Join Our<br>Community</h1>
+            <p>Whether you're a parent enrolling your child or an educator ready to inspire — your journey starts here.</p>
+            <!-- TYPE SWITCHER -->
+            <div class="type-switcher" id="typeSwitcher">
+                <div class="type-pill" id="typePill"></div>
+                <button class="type-btn active" id="btnStudent" onclick="switchForm('student')">Student</button>
+                <button class="type-btn" id="btnTeacher" onclick="switchForm('teacher')">Teacher</button>
+            </div>
+        </div>
     </section>
 
-    <!-- MAIN CONTACT SECTION -->
-    <section class="contact-section">
-        <div class="contact-container">
+    <!-- FORMS -->
+    <section class="form-section">
+        <div class="form-wrapper">
 
-            <!-- LEFT -->
-            <div class="contact-left">
-
-                <!-- Info cards -->
-                <div class="contact-info-cards reveal-up">
-                    <div class="contact-card">
-                        <div class="contact-card-icon">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 6 11 6 11s6-5.75 6-11c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
-                        </div>
-                        <div>
-                            <div class="contact-card-label">Address</div>
-                            <div class="contact-card-value">Jigjiga – Wajaale Rd, Jijiga</div>
+            <!-- STUDENT APPLICATION -->
+            <div class="form-panel active reveal-up" id="panelStudent">
+                <div class="form-card">
+                    <div class="form-card-header">
+                        <img src="slided1.png" alt="Students">
+                        <div class="form-card-header-overlay">
+                            <span class="form-card-tag">Enrollment</span>
+                            <h2>Student Application</h2>
+                            <p>Please provide detailed information to begin the registration process.</p>
                         </div>
                     </div>
-                    <div class="contact-card">
-                        <div class="contact-card-icon">
-                            <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                    <div class="form-body">
+
+                        <div class="form-section-label">Parent / Guardian Information</div>
+                        <div class="field-row">
+                            <div class="field-group">
+                                <label>Parent First Name</label>
+                                <input type="text" placeholder="First name">
+                            </div>
+                            <div class="field-group">
+                                <label>Parent Last Name</label>
+                                <input type="text" placeholder="Last name">
+                            </div>
                         </div>
-                        <div>
-                            <div class="contact-card-label">Phone</div>
-                            <div class="contact-card-value">090 090 4449</div>
+                        <div class="field-row">
+                            <div class="field-group">
+                                <label>Email Address</label>
+                                <input type="email" placeholder="example@email.com">
+                            </div>
+                            <div class="field-group">
+                                <label>Phone Number</label>
+                                <input type="tel" placeholder="+252 ...">
+                            </div>
+                        </div>
+
+                        <div class="form-section-label">Student Information</div>
+                        <div class="field-row">
+                            <div class="field-group">
+                                <label>Student First Name</label>
+                                <input type="text" placeholder="First name">
+                            </div>
+                            <div class="field-group">
+                                <label>Student Last Name</label>
+                                <input type="text" placeholder="Last name">
+                            </div>
+                        </div>
+                        <div class="field-row">
+                            <div class="field-group">
+                                <label>Date of Birth</label>
+                                <input type="date">
+                            </div>
+                            <div class="field-group">
+                                <label>Grade Applying For</label>
+                                <select>
+                                    <option value="" disabled selected>Select grade...</option>
+                                    <option>Grade 1</option><option>Grade 2</option><option>Grade 3</option>
+                                    <option>Grade 4</option><option>Grade 5</option><option>Grade 6</option>
+                                    <option>Grade 7</option><option>Grade 8</option><option>Grade 9</option>
+                                    <option>Grade 10</option><option>Grade 11</option><option>Grade 12</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-section-label">Previous School</div>
+                        <div class="field-row">
+                            <div class="field-group">
+                                <label>Last School Attended</label>
+                                <input type="text" placeholder="Name of previous institution">
+                            </div>
+                        </div>
+                        <div class="field-row">
+                            <div class="field-group">
+                                <label>Reason for Transfer</label>
+                                <textarea placeholder="Reason for leaving..."></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-section-label">Family</div>
+                        <div class="field-row" style="align-items:flex-end;">
+                            <div class="field-group" style="flex:0 0 auto;">
+                                <label>Total Number of Children</label>
+                                <div class="stepper-wrap">
+                                    <button class="stepper-btn" onclick="stepChange('childCount',-1)">−</button>
+                                    <input class="stepper-val" id="childCount" type="number" value="1" min="1" max="20" readonly>
+                                    <button class="stepper-btn" onclick="stepChange('childCount',1)">+</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-submit-row">
+                            <p class="form-note">By submitting, you agree that all information provided is accurate. Our admissions team will contact you within 3 business days.</p>
+                            <button class="submit-btn" onclick="handleSubmit('student')">Submit Application</button>
                         </div>
                     </div>
                 </div>
-
-                <!-- Enquiry Form -->
-                <div class="contact-form-card reveal-up">
-                    <div class="form-title">Send Us a Message</div>
-                    <div class="form-subtitle">Have a question or want to learn more? Fill in your details and we'll get back to you shortly.</div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>First Name</label>
-                            <input type="text" placeholder="Your first name">
-                        </div>
-                        <div class="form-group">
-                            <label>Last Name</label>
-                            <input type="text" placeholder="Your last name">
-                        </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:14px;">
-                        <label>Email Address</label>
-                        <input type="email" placeholder="example@email.com">
-                    </div>
-                    <div class="form-group" style="margin-bottom:14px;">
-                        <label>Phone Number</label>
-                        <input type="tel" placeholder="+252 ...">
-                    </div>
-                    <div class="form-group" style="margin-bottom:14px;">
-                        <label>Topic</label>
-                        <select>
-                            <option value="" disabled selected>Select a topic...</option>
-                            <option>Enrollment / Registration</option>
-                            <option>Fees & Payments</option>
-                            <option>Academic Results</option>
-                            <option>Teacher Contact</option>
-                            <option>General Inquiry</option>
-                        </select>
-                    </div>
-                    <div class="form-group" style="margin-bottom:20px;">
-                        <label>Message</label>
-                        <textarea placeholder="Write your message here..."></textarea>
-                    </div>
-                    <button class="submit-btn">Send Message</button>
-                </div>
-
             </div>
 
-            <!-- RIGHT -->
-            <div class="contact-right">
-                <div class="map-card reveal-up">
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3934.123456789!2d42.793!3d9.351!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zOcKwMjEnMDMuNiJOIDQywrA0NyczNC44IkU!5e0!3m2!1sen!2set!4v1620000000000!5m2!1sen!2set"
-                        allowfullscreen="" loading="lazy">
-                    </iframe>
-                </div>
-                <div class="hours-card reveal-up">
-                    <div class="hours-left">
-                        <div class="hours-icon">
-                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                        </div>
-                        <div>
-                            <div class="hours-label">School Hours</div>
-                            <div class="hours-value">Monday – Friday &nbsp;·&nbsp; 7:40 AM – 12:35 PM</div>
+            <!-- TEACHER APPLICATION -->
+            <div class="form-panel reveal-up" id="panelTeacher">
+                <div class="form-card">
+                    <div class="form-card-header">
+                        <img src="slided2.png" alt="Teachers">
+                        <div class="form-card-header-overlay">
+                            <span class="form-card-tag">Join Our Staff</span>
+                            <h2>Teacher Application</h2>
+                            <p>We're looking for passionate educators to inspire the next generation.</p>
                         </div>
                     </div>
-                    <div class="hours-badge">Open Weekdays</div>
+                    <div class="form-body">
+
+                        <div class="form-section-label">Personal Information</div>
+                        <div class="field-row">
+                            <div class="field-group">
+                                <label>First Name</label>
+                                <input type="text" placeholder="First name">
+                            </div>
+                            <div class="field-group">
+                                <label>Last Name</label>
+                                <input type="text" placeholder="Last name">
+                            </div>
+                        </div>
+                        <div class="field-row">
+                            <div class="field-group">
+                                <label>Email Address</label>
+                                <input type="email" placeholder="example@email.com">
+                            </div>
+                            <div class="field-group">
+                                <label>Phone Number</label>
+                                <input type="tel" placeholder="+252 ...">
+                            </div>
+                        </div>
+                        <div class="field-row">
+                            <div class="field-group">
+                                <label>Date of Birth</label>
+                                <input type="date">
+                            </div>
+                            <div class="field-group">
+                                <label>Gender</label>
+                                <select>
+                                    <option value="" disabled selected>Select...</option>
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                    <option>Prefer not to say</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-section-label">Qualifications</div>
+                        <div class="field-row">
+                            <div class="field-group">
+                                <label>Highest Education Level</label>
+                                <select>
+                                    <option value="" disabled selected>Select level...</option>
+                                    <option>High School Diploma</option>
+                                    <option>Bachelor's Degree</option>
+                                    <option>Master's Degree</option>
+                                    <option>PhD / Doctorate</option>
+                                    <option>Teaching Certificate</option>
+                                </select>
+                            </div>
+                            <div class="field-group">
+                                <label>Subject Specialisation</label>
+                                <select>
+                                    <option value="" disabled selected>Select subject...</option>
+                                    <option>Mathematics</option>
+                                    <option>English / Language Arts</option>
+                                    <option>Science</option>
+                                    <option>Social Studies / History</option>
+                                    <option>Islamic Studies</option>
+                                    <option>Physical Education</option>
+                                    <option>Art & Design</option>
+                                    <option>ICT / Computing</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="field-row">
+                            <div class="field-group">
+                                <label>Years of Teaching Experience</label>
+                                <div class="stepper-wrap">
+                                    <button class="stepper-btn" onclick="stepChange('yearsExp',-1)">−</button>
+                                    <input class="stepper-val" id="yearsExp" type="number" value="0" min="0" max="50" readonly>
+                                    <button class="stepper-btn" onclick="stepChange('yearsExp',1)">+</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section-label">Experience & Motivation</div>
+                        <div class="field-row">
+                            <div class="field-group">
+                                <label>Previous School / Employer</label>
+                                <input type="text" placeholder="Name of previous school or institution">
+                            </div>
+                        </div>
+                        <div class="field-row">
+                            <div class="field-group">
+                                <label>Why do you want to join Korahey Academy?</label>
+                                <textarea placeholder="Tell us about your passion for teaching and why you'd like to join our team..."></textarea>
+                            </div>
+                        </div>
+                        <div class="field-row">
+                            <div class="field-group">
+                                <label>Additional Notes (optional)</label>
+                                <textarea placeholder="Any other information you'd like us to know..." style="min-height:80px;"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-submit-row">
+                            <p class="form-note">By submitting, you confirm all information is accurate. Our HR team will review your application and reach out within 5 business days.</p>
+                            <button class="submit-btn" onclick="handleSubmit('teacher')">Submit Application</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
         </div>
     </section>
 
+    <!-- TOAST -->
+    <div class="toast" id="toast">
+        <div class="toast-dot"></div>
+        <span id="toastMsg">Application submitted successfully!</span>
+    </div>
+
     <footer>
-        <div class="footer-content">
+        <div class="footer-content" style="max-width:1200px;margin:0 auto;">
             <div class="footer-logo">Korahey Academy</div>
             <div class="footer-copyright">© 2026 Khalil · Official site for Korahey Academy</div>
             <div class="footer-made">Made by Khalil</div>
@@ -579,40 +813,88 @@
     </footer>
 
     <script>
-        // MOBILE MENU
+        /* ── FORM SWITCHER ── */
+        function switchForm(type) {
+            const pill = document.getElementById('typePill');
+            const btnS = document.getElementById('btnStudent');
+            const btnT = document.getElementById('btnTeacher');
+            const pS   = document.getElementById('panelStudent');
+            const pT   = document.getElementById('panelTeacher');
+            if (type === 'student') {
+                pill.classList.remove('teacher-active');
+                btnS.classList.add('active'); btnT.classList.remove('active');
+                pS.classList.add('active');   pT.classList.remove('active');
+            } else {
+                pill.classList.add('teacher-active');
+                btnT.classList.add('active'); btnS.classList.remove('active');
+                pT.classList.add('active');   pS.classList.remove('active');
+            }
+            // scroll to form
+            document.querySelector('.form-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        /* ── STEPPER ── */
+        function stepChange(id, delta) {
+            const el = document.getElementById(id);
+            const min = parseInt(el.min) || 0;
+            const max = parseInt(el.max) || 999;
+            el.value = Math.min(max, Math.max(min, parseInt(el.value) + delta));
+        }
+
+        /* ── SUBMIT ── */
+        function handleSubmit(type) {
+            const msg = type === 'student' ? 'Student application submitted!' : 'Teacher application submitted!';
+            document.getElementById('toastMsg').textContent = msg;
+            const t = document.getElementById('toast');
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 4000);
+        }
+
+        /* ── HERO BG SLIDESHOW ── */
+        const bgSlides = ['slided1.png','slided2.png','slided3.png'];
+        let bgIdx = 0;
+        const heroBg = document.getElementById('heroBg');
+        setInterval(() => {
+            bgIdx = (bgIdx + 1) % bgSlides.length;
+            heroBg.style.opacity = '0';
+            setTimeout(() => {
+                heroBg.style.backgroundImage = `url('${bgSlides[bgIdx]}')`;
+                heroBg.style.opacity = '0.35';
+            }, 800);
+        }, 6000);
+
+        /* ── MOBILE MENU ── */
         function toggleMobileAccordion(el, href) {
             const sub = el.nextElementSibling;
             const isOpen = sub.classList.contains('open');
             if (isOpen) { if (href) window.location.href = href; return; }
             document.querySelectorAll('.mobile-sub-links.open').forEach(s => s.classList.remove('open'));
             document.querySelectorAll('.mobile-nav-item.expanded').forEach(i => i.classList.remove('expanded'));
-            sub.classList.add('open');
-            el.classList.add('expanded');
+            sub.classList.add('open'); el.classList.add('expanded');
         }
         const hamburgerBtn = document.getElementById('hamburgerBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileMenu   = document.getElementById('mobileMenu');
         const mobileBackdrop = document.getElementById('mobileBackdrop');
         const mobileCloseBtn = document.getElementById('mobileCloseBtn');
-        function openMobileMenu() { mobileMenu.classList.add('open'); hamburgerBtn.classList.add('open'); document.body.style.overflow = 'hidden'; }
-        function closeMobileMenu() { mobileMenu.classList.remove('open'); hamburgerBtn.classList.remove('open'); document.body.style.overflow = ''; }
-        hamburgerBtn.addEventListener('click', openMobileMenu);
-        mobileCloseBtn.addEventListener('click', closeMobileMenu);
-        mobileBackdrop.addEventListener('click', closeMobileMenu);
+        hamburgerBtn.addEventListener('click', () => { mobileMenu.classList.add('open'); hamburgerBtn.classList.add('open'); document.body.style.overflow='hidden'; });
+        mobileCloseBtn.addEventListener('click', () => { mobileMenu.classList.remove('open'); hamburgerBtn.classList.remove('open'); document.body.style.overflow=''; });
+        mobileBackdrop.addEventListener('click', () => { mobileMenu.classList.remove('open'); hamburgerBtn.classList.remove('open'); document.body.style.overflow=''; });
         const mobileAuthPill = document.getElementById('mobileAuthPill');
         const mobileSignUpBtn = document.getElementById('mobileSignUpBtn');
-        const mobileLogInBtn = document.getElementById('mobileLogInBtn');
+        const mobileLogInBtn  = document.getElementById('mobileLogInBtn');
         if (mobileSignUpBtn) {
             mobileSignUpBtn.addEventListener('mouseenter', () => { mobileAuthPill.classList.remove('login-active'); mobileAuthPill.classList.add('signup-active'); });
-            mobileSignUpBtn.addEventListener('click', () => { window.location.href = 'Sign.up.html'; });
+            mobileSignUpBtn.addEventListener('click', () => { window.location.href='Sign.up.html'; });
         }
         if (mobileLogInBtn) {
             mobileLogInBtn.addEventListener('mouseenter', () => { mobileAuthPill.classList.remove('signup-active'); mobileAuthPill.classList.add('login-active'); });
-            mobileLogInBtn.addEventListener('click', () => { window.location.href = 'Log.in.html'; });
+            mobileLogInBtn.addEventListener('click', () => { window.location.href='Log.in.html'; });
         }
-        document.getElementById('mobileMyAccountBtn')?.addEventListener('click', () => { alert('My Account page coming soon!'); });
-        document.getElementById('mobileAdminBtn')?.addEventListener('click', () => { window.location.href = 'admin.html'; });
-        document.getElementById('mobileSignOutBtn')?.addEventListener('click', () => { firebase.auth().signOut().then(() => location.reload()); });
+        document.getElementById('mobileMyAccountBtn')?.addEventListener('click', () => alert('My Account page coming soon!'));
+        document.getElementById('mobileAdminBtn')?.addEventListener('click', () => { window.location.href='admin.html'; });
+        document.getElementById('mobileSignOutBtn')?.addEventListener('click', () => firebase.auth().signOut().then(() => location.reload()));
 
+        /* ── FIREBASE ── */
         document.addEventListener('DOMContentLoaded', function() {
             const firebaseConfig = {
                 apiKey: "AIzaSyCC5oK1cMufciR1v4wLi-jfYvXa_cQBnd0",
@@ -624,98 +906,91 @@
             };
             if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
             const auth = firebase.auth();
-            const db = firebase.firestore();
+            const db   = firebase.firestore();
             const ADMIN_EMAIL = "khalilmohamedaden@gmail.com";
-            const authWrapper = document.getElementById('authWrapper');
-            const authPill = document.getElementById('authPill');
-            const signUpBtn = document.getElementById('signUpBtn');
-            const logInBtn = document.getElementById('logInBtn');
-            const profileSection = document.getElementById('profileSection');
-            const userAvatar = document.getElementById('userAvatar');
+            const authWrapper      = document.getElementById('authWrapper');
+            const authPill         = document.getElementById('authPill');
+            const signUpBtn        = document.getElementById('signUpBtn');
+            const logInBtn         = document.getElementById('logInBtn');
+            const profileSection   = document.getElementById('profileSection');
+            const userAvatar       = document.getElementById('userAvatar');
             const dropdownUserName = document.getElementById('dropdownUserName');
-            const dropdownUserEmail = document.getElementById('dropdownUserEmail');
-            const adminDropdownItem = document.getElementById('adminDropdownItem');
-            const banOverlay = document.getElementById('banOverlay');
-            window.logoutAndRedirect = function() { auth.signOut().then(() => { window.location.href = 'index.html'; }); };
+            const dropdownUserEmail= document.getElementById('dropdownUserEmail');
+            const adminDropdownItem= document.getElementById('adminDropdownItem');
+            const banOverlay       = document.getElementById('banOverlay');
+            window.logoutAndRedirect = () => auth.signOut().then(() => { window.location.href='index.html'; });
             function setupAuthPill() {
-                if (!signUpBtn || !logInBtn || !authPill) return;
+                if (!signUpBtn||!logInBtn||!authPill) return;
                 signUpBtn.addEventListener('mouseenter', () => { authPill.classList.remove('login-active'); authPill.classList.add('signup-active'); });
-                logInBtn.addEventListener('mouseenter', () => { authPill.classList.remove('signup-active'); authPill.classList.add('login-active'); });
+                logInBtn.addEventListener('mouseenter',  () => { authPill.classList.remove('signup-active'); authPill.classList.add('login-active'); });
             }
-            if (signUpBtn) signUpBtn.addEventListener('click', () => { window.location.href = 'Sign.up.html'; });
-            if (logInBtn) logInBtn.addEventListener('click', () => { window.location.href = 'Log.in.html'; });
-            document.getElementById('myAccountBtn')?.addEventListener('click', () => { alert('My Account page coming soon!'); });
-            document.getElementById('adminDashboardBtn')?.addEventListener('click', () => { window.location.href = 'admin.html'; });
+            if (signUpBtn) signUpBtn.addEventListener('click', () => { window.location.href='Sign.up.html'; });
+            if (logInBtn)  logInBtn.addEventListener('click',  () => { window.location.href='Log.in.html'; });
+            document.getElementById('myAccountBtn')?.addEventListener('click', () => alert('My Account page coming soon!'));
+            document.getElementById('adminDashboardBtn')?.addEventListener('click', () => { window.location.href='admin.html'; });
             document.getElementById('signOutBtn')?.addEventListener('click', () => auth.signOut().then(() => location.reload()));
 
             async function updateProfileDropdown(user) {
                 if (dropdownUserName) dropdownUserName.textContent = user.displayName || user.email.split('@')[0];
                 if (dropdownUserEmail) dropdownUserEmail.textContent = user.email;
                 let isAdmin = user.email === ADMIN_EMAIL;
-                if (!isAdmin) {
-                    try { const doc = await db.collection('users').doc(user.uid).get(); isAdmin = doc.exists && doc.data().isAdmin === true; } catch(e) {}
-                }
+                if (!isAdmin) { try { const d = await db.collection('users').doc(user.uid).get(); isAdmin = d.exists && d.data().isAdmin; } catch(e){} }
                 if (adminDropdownItem) adminDropdownItem.style.display = isAdmin ? 'block' : 'none';
-                const mU = document.getElementById('mobileUserName');
-                const mE = document.getElementById('mobileUserEmail');
-                const mA = document.getElementById('mobileAdminBtn');
+                const mU=document.getElementById('mobileUserName'), mE=document.getElementById('mobileUserEmail'), mA=document.getElementById('mobileAdminBtn');
                 if (mU) mU.textContent = user.displayName || user.email.split('@')[0];
                 if (mE) mE.textContent = user.email;
                 if (mA) mA.style.display = isAdmin ? 'flex' : 'none';
             }
 
             auth.onAuthStateChanged(async (user) => {
-                const mobileAuthSection = document.getElementById('mobileAuthSection');
-                const mobileProfileSection = document.getElementById('mobileProfileSection');
-                const mobileUserAvatar = document.getElementById('mobileUserAvatar');
+                const mAS = document.getElementById('mobileAuthSection');
+                const mPS = document.getElementById('mobileProfileSection');
+                const mUA = document.getElementById('mobileUserAvatar');
                 if (user) {
                     try {
-                        const userDoc = await db.collection('users').doc(user.uid).get();
-                        if (userDoc.data()?.isBanned === true) {
-                            if (banOverlay) banOverlay.style.display = 'flex';
-                            if (authWrapper) authWrapper.style.display = 'none';
-                            if (profileSection) profileSection.style.display = 'none';
-                            if (mobileAuthSection) mobileAuthSection.style.display = 'none';
-                            if (mobileProfileSection) mobileProfileSection.style.display = 'none';
+                        const ud = await db.collection('users').doc(user.uid).get();
+                        if (ud.data()?.isBanned) {
+                            if (banOverlay) banOverlay.style.display='flex';
+                            [authWrapper,profileSection,mAS,mPS].forEach(e => e && (e.style.display='none'));
                             return;
                         }
                     } catch(e) {}
-                    if (banOverlay) banOverlay.style.display = 'none';
-                    if (authWrapper) authWrapper.style.display = 'none';
-                    if (profileSection) profileSection.style.display = 'flex';
-                    if (mobileAuthSection) mobileAuthSection.style.display = 'none';
-                    if (mobileProfileSection) mobileProfileSection.style.display = 'block';
-                    const avatarSrc = user.photoURL || `https://ui-avatars.com/api/?name=${(user.displayName||user.email.charAt(0)).toUpperCase()}&background=ffffff&color=000000&size=42`;
-                    if (userAvatar) userAvatar.src = avatarSrc;
-                    if (mobileUserAvatar) mobileUserAvatar.src = avatarSrc;
+                    if (banOverlay) banOverlay.style.display='none';
+                    if (authWrapper) authWrapper.style.display='none';
+                    if (profileSection) profileSection.style.display='flex';
+                    if (mAS) mAS.style.display='none';
+                    if (mPS) mPS.style.display='block';
+                    const src = user.photoURL || `https://ui-avatars.com/api/?name=${(user.displayName||user.email.charAt(0)).toUpperCase()}&background=ffffff&color=000000&size=42`;
+                    if (userAvatar) userAvatar.src = src;
+                    if (mUA) mUA.src = src;
                     await updateProfileDropdown(user);
-                    try { await db.collection('users').doc(user.uid).set({ email: user.email, name: user.displayName||'', photoURL: user.photoURL||'', lastLogin: new Date().toISOString(), ...(user.email===ADMIN_EMAIL && {isAdmin:true}) }, {merge:true}); } catch(e) {}
+                    try { await db.collection('users').doc(user.uid).set({email:user.email,name:user.displayName||'',photoURL:user.photoURL||'',lastLogin:new Date().toISOString(),...(user.email===ADMIN_EMAIL&&{isAdmin:true})},{merge:true}); } catch(e) {}
                 } else {
-                    if (banOverlay) banOverlay.style.display = 'none';
-                    if (profileSection) profileSection.style.display = 'none';
-                    if (mobileProfileSection) mobileProfileSection.style.display = 'none';
-                    if (authWrapper) { authWrapper.style.display = 'flex'; setupAuthPill(); }
-                    if (mobileAuthSection) mobileAuthSection.style.display = 'block';
+                    if (banOverlay) banOverlay.style.display='none';
+                    if (profileSection) profileSection.style.display='none';
+                    if (mPS) mPS.style.display='none';
+                    if (authWrapper) { authWrapper.style.display='flex'; setupAuthPill(); }
+                    if (mAS) mAS.style.display='block';
                 }
             });
 
             // Scroll reveal
             window.addEventListener('load', () => {
-                document.querySelectorAll('.reveal-up').forEach((el, i) => {
-                    el.style.transitionDelay = `${i * 0.07}s`;
-                    new IntersectionObserver((entries) => {
-                        entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
-                    }, { threshold: 0.1 }).observe(el);
+                document.querySelectorAll('.reveal-up').forEach((el,i) => {
+                    el.style.transitionDelay = `${i * 0.08}s`;
+                    new IntersectionObserver(entries => {
+                        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
+                    }, {threshold:0.1}).observe(el);
                 });
             });
 
             // Nav hide on scroll
-            let lastScrollY = window.scrollY;
+            let lastY = window.scrollY;
             const nav = document.getElementById('navbar');
             window.addEventListener('scroll', () => {
                 const cur = window.scrollY;
-                if (nav) { if (cur > lastScrollY && cur > 100) nav.classList.add('nav-hidden'); else nav.classList.remove('nav-hidden'); }
-                lastScrollY = cur;
+                if (nav) { if (cur > lastY && cur > 100) nav.classList.add('nav-hidden'); else nav.classList.remove('nav-hidden'); }
+                lastY = cur;
             });
         });
     </script>
