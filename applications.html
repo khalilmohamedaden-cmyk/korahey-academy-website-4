@@ -12,21 +12,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        :root {
-            --apple-blue: #0071e3;
-            --text-main: #1d1d1f;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-            background: #fff;
-            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
+            background: #f5f7fb;
+            color: #1d1d1f;
             overflow-x: hidden;
-            min-height: 100vh;
         }
-        
-        /* Entrance animation */
+
+        /* Entrance Animation */
         .page-entrance {
             position: fixed;
             top: 0;
@@ -54,17 +53,17 @@
             100% { opacity: 1; transform: scale(1) translateY(0); }
         }
         .entrance-logo {
-            font-size: 3rem;
+            font-size: 3.5rem;
             font-weight: 800;
             letter-spacing: -3px;
-            background: linear-gradient(135deg, #1d1d1f 0%, var(--apple-blue) 100%);
+            background: linear-gradient(135deg, #1d1d1f 0%, #0071e3 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 20px;
         }
         .entrance-sub {
-            font-size: 0.9rem;
-            color: #86868b;
+            font-size: 1rem;
+            color: #666;
             letter-spacing: 2px;
         }
         .entrance-dots {
@@ -76,7 +75,7 @@
         .entrance-dots span {
             width: 8px;
             height: 8px;
-            background: var(--apple-blue);
+            background: #0071e3;
             border-radius: 50%;
             display: inline-block;
             animation: dotPulse 1.4s ease infinite;
@@ -85,232 +84,244 @@
             0%, 100% { opacity: 0.3; transform: scale(0.8); }
             50% { opacity: 1; transform: scale(1.2); }
         }
-        
+
         /* Dynamic Island Sidebar */
         .dynamic-island {
             position: fixed;
-            background: rgba(255, 255, 255, 0.45);
+            top: 50%;
+            left: 24px;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(20px) saturate(180%);
             border-radius: 60px;
-            padding: 16px 12px;
+            padding: 20px 14px;
             display: flex;
+            flex-direction: column;
             gap: 12px;
             z-index: 2000;
-            border: 0.5px solid rgba(255, 255, 255, 0.3);
+            border: 0.5px solid rgba(255, 255, 255, 0.5);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
-        @media (min-width: 1025px) {
-            .dynamic-island {
-                top: 50%;
-                left: 24px;
-                transform: translateY(-50%);
-                flex-direction: column;
-                border-radius: 50px;
-                padding: 20px 14px;
-            }
-            .nav-item {
-                flex-direction: column !important;
-                padding: 12px 16px !important;
-                width: 80px;
-            }
-            .nav-item span {
-                margin-top: 6px;
-                font-size: 11px;
-            }
-            .nav-item svg {
-                width: 24px;
-                height: 24px;
-            }
-        }
-        @media (max-width: 1024px) {
-            .dynamic-island {
-                top: 16px;
-                left: 50%;
-                transform: translateX(-50%);
-                flex-direction: row;
-                padding: 10px 16px;
-                gap: 8px;
-            }
-            .nav-item {
-                flex-direction: column !important;
-                padding: 8px 12px !important;
-            }
-            .nav-item span {
-                font-size: 9px;
-            }
-            .nav-item svg {
-                width: 18px;
-                height: 18px;
-            }
-        }
         .nav-item {
-            position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 6px;
-            padding: 10px 12px;
+            padding: 12px 16px;
             border-radius: 40px;
             cursor: pointer;
             transition: all 0.2s ease;
             background: transparent;
+            width: 80px;
         }
         .nav-item svg {
-            stroke: #1d1d1f;
+            stroke: #555;
             fill: none;
             stroke-width: 1.8;
-            width: 22px;
-            height: 22px;
+            width: 24px;
+            height: 24px;
+            transition: stroke 0.2s;
         }
         .nav-item span {
             font-weight: 500;
-            color: #1d1d1f;
+            color: #555;
             font-size: 11px;
+            transition: color 0.2s;
         }
         .nav-item:hover {
-            transform: scale(1.05);
-            background: rgba(0,0,0,0.04);
+            background: rgba(0, 0, 0, 0.04);
+            transform: scale(1.02);
         }
         .nav-item.active {
             background: rgba(0, 113, 227, 0.12);
         }
         .nav-item.active svg {
-            stroke: var(--apple-blue);
+            stroke: #0071e3;
         }
         .nav-item.active span {
-            color: var(--apple-blue);
+            color: #0071e3;
             font-weight: 600;
         }
-        
-        /* Main Content Area */
+
+        /* Main Content */
         .main-content {
-            flex: 1;
-            overflow-x: hidden;
+            margin-left: 140px;
+            padding: 40px 48px 80px;
         }
         .glass-header {
-            padding: 100px 5% 40px;
-            text-align: center;
-            background: linear-gradient(-45deg, #ffffff, #eef8ff, #ffffff, #c2e4ff);
-            background-size: 400% 400%;
-            animation: liveGradient 12s ease infinite;
-        }
-        @keyframes liveGradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            margin-bottom: 48px;
+            text-align: left;
         }
         .page-title {
-            font-size: 3rem;
-            font-weight: 800;
-            letter-spacing: -2px;
-            background: linear-gradient(to right, #1d1d1f 30%, var(--apple-blue) 100%);
+            font-size: 2.8rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #1d1d1f 0%, #0071e3 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 16px;
+            margin-bottom: 8px;
         }
         .page-sub {
             font-size: 1rem;
             color: #666;
         }
-        
-        /* Section Containers */
-        .section-container {
-            display: none;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 40px 8% 80px;
-            animation: fadeInUp 0.5s ease;
-        }
-        .section-container.active {
-            display: block;
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* Teacher Management Card */
-        .teacher-card-app {
-            background: rgba(255,255,255,0.5);
+
+        /* Card Styles */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(20px);
-            border-radius: 28px;
-            border: 1px solid rgba(0,0,0,0.05);
-            padding: 24px;
-            margin-bottom: 24px;
+            border-radius: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            margin-bottom: 32px;
         }
+        .glass-card:hover {
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+        }
+        .card-header {
+            padding: 24px 28px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .card-header h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        .card-body {
+            padding: 24px 28px;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: #0071e3;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-primary:hover {
+            background: #005bb5;
+            transform: scale(1.02);
+        }
+        .btn-secondary {
+            background: rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-secondary:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        /* Form Styles */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .form-group label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #888;
+        }
+        input, select, textarea {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 16px;
+            padding: 12px 16px;
+            font-size: 0.9rem;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #0071e3;
+            box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+        }
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* Teacher List */
         .teacher-list {
-            max-height: 500px;
-            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
         .teacher-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 16px;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-        }
-        .teacher-info h4 { font-size: 1rem; font-weight: 600; }
-        .teacher-info p { font-size: 0.8rem; color: #666; }
-        .btn-icon {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1.1rem;
-            color: #ff3b30;
-            transition: transform 0.2s;
-        }
-        .btn-icon:hover { transform: scale(1.1); }
-        .add-form {
-            background: #f5f5f5;
+            background: rgba(255, 255, 255, 0.5);
             border-radius: 24px;
-            padding: 20px;
-            margin-bottom: 24px;
-        }
-        .add-form input, .add-form select {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 12px;
-            border: 1px solid rgba(0,0,0,0.1);
-            border-radius: 16px;
-            font-size: 0.9rem;
-        }
-        .btn-primary {
-            background: var(--apple-blue);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 40px;
-            font-weight: 600;
-            cursor: pointer;
             transition: all 0.2s;
         }
-        .btn-primary:hover { background: #0055aa; transform: scale(1.02); }
-        .btn-secondary {
-            background: #e5e5e5;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 40px;
-            font-weight: 500;
-            cursor: pointer;
-            margin-left: 8px;
+        .teacher-item:hover {
+            background: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
-        
+        .teacher-info h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .teacher-info p {
+            font-size: 0.8rem;
+            color: #666;
+        }
+        .delete-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: #ff3b30;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+        .delete-btn:hover {
+            background: rgba(255, 59, 48, 0.1);
+        }
+
         /* Attendance */
         .attendance-date-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
             margin-bottom: 24px;
-        }
-        .attendance-date-bar input {
-            padding: 12px;
-            border-radius: 16px;
-            border: 1px solid rgba(0,0,0,0.1);
-            font-size: 0.9rem;
         }
         .attendance-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
         .status-buttons {
             display: flex;
@@ -320,44 +331,60 @@
             padding: 6px 16px;
             border-radius: 40px;
             border: none;
+            font-size: 0.75rem;
+            font-weight: 500;
             cursor: pointer;
-            font-size: 0.8rem;
             transition: all 0.2s;
+            background: #e5e5e5;
+            color: #333;
         }
-        .status-btn.present { background: #34c759; color: white; }
-        .status-btn.absent { background: #ff3b30; color: white; }
-        .status-btn.late { background: #ff9500; color: white; }
-        .status-btn.selected { transform: scale(1.05); box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
-        
-        /* Application forms */
-        .app-form-card {
-            background: rgba(255,255,255,0.5);
-            backdrop-filter: blur(20px);
-            border-radius: 28px;
-            padding: 28px;
-            margin-bottom: 40px;
+        .status-btn.present {
+            background: #34c759;
+            color: white;
         }
-        .app-form input, .app-form select, .app-form textarea {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 16px;
-            border: 1px solid rgba(0,0,0,0.1);
-            border-radius: 16px;
-            font-size: 0.9rem;
-            font-family: inherit;
+        .status-btn.absent {
+            background: #ff3b30;
+            color: white;
         }
-        .app-form textarea { min-height: 80px; resize: vertical; }
-        .submissions-list {
-            background: rgba(255,255,255,0.3);
-            border-radius: 24px;
-            padding: 20px;
+        .status-btn.late {
+            background: #ff9500;
+            color: white;
         }
+        .status-btn.selected {
+            transform: scale(1.05);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Submissions List */
         .submission-item {
-            border-bottom: 1px solid rgba(0,0,0,0.08);
-            padding: 12px 0;
+            padding: 16px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
         }
-        .submission-item:last-child { border-bottom: none; }
-        
+        .submission-info strong {
+            font-size: 0.95rem;
+        }
+        .submission-info p {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 4px;
+        }
+        .submission-date {
+            font-size: 0.7rem;
+            color: #999;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
         /* Toast */
         .toast-notification {
             position: fixed;
@@ -373,13 +400,14 @@
             font-weight: 500;
             z-index: 10000;
             transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            white-space: nowrap;
         }
         .toast-notification.show {
             transform: translateX(-50%) translateY(0);
         }
-        
-        /* Access Denied Overlay */
+
+        /* Access Denied */
         .access-denied {
             display: flex;
             align-items: center;
@@ -389,17 +417,76 @@
         }
         .access-denied-content {
             background: white;
-            padding: 40px;
+            padding: 48px;
             border-radius: 40px;
             max-width: 400px;
             text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
-        
+
+        /* Section Container */
+        .section-container {
+            display: none;
+            animation: fadeInUp 0.4s ease;
+        }
+        .section-container.active {
+            display: block;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 1024px) {
+            .dynamic-island {
+                top: 16px;
+                left: 50%;
+                transform: translateX(-50%);
+                flex-direction: row;
+                padding: 12px 20px;
+                width: auto;
+            }
+            .nav-item {
+                width: auto;
+                padding: 8px 16px;
+                flex-direction: row;
+                gap: 8px;
+            }
+            .nav-item svg {
+                width: 18px;
+                height: 18px;
+            }
+            .main-content {
+                margin-left: 0;
+                margin-top: 100px;
+                padding: 20px 24px 60px;
+            }
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .toast-notification {
+                white-space: normal;
+                text-align: center;
+            }
+        }
+
         @media (max-width: 768px) {
-            .glass-header { padding: 100px 5% 30px; }
-            .page-title { font-size: 2rem; }
-            .teacher-item { flex-direction: column; align-items: flex-start; gap: 8px; }
-            .status-buttons { margin-top: 8px; }
+            .page-title {
+                font-size: 2rem;
+            }
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .attendance-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            .submission-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
         }
     </style>
 </head>
@@ -412,9 +499,9 @@
         </div>
     </div>
     <div id="toast" class="toast-notification"></div>
-    
+
     <!-- Dynamic Island Navigation -->
-    <div class="dynamic-island" id="dynamicIsland">
+    <div class="dynamic-island">
         <div class="nav-item" data-section="teachers">
             <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"/><polyline points="12 6 12 12 16 14"/></svg>
             <span>Teachers</span>
@@ -432,86 +519,120 @@
             <span>Teacher Apps</span>
         </div>
     </div>
-    
-    <div class="main-content" id="mainContent">
+
+    <div class="main-content">
         <header class="glass-header">
             <h1 class="page-title" id="pageTitle">Teacher Management</h1>
             <p class="page-sub" id="pageSub">Manage teacher profiles, attendance, and applications</p>
         </header>
-        
+
         <!-- Teacher Management Section -->
         <div class="section-container active" id="teachersSection">
-            <div class="teacher-card-app">
-                <button class="btn-primary" onclick="toggleAddTeacherForm()">+ Add New Teacher</button>
-                <div id="addTeacherForm" class="add-form" style="display: none; margin-top: 20px;">
-                    <input type="text" id="teacherName" placeholder="Full Name">
-                    <input type="text" id="teacherRole" placeholder="Role (e.g., Mathematics Teacher)">
-                    <input type="text" id="teacherSubject" placeholder="Subject">
-                    <select id="teacherLevel"><option value="Primary">Primary</option><option value="Secondary">Secondary</option><option value="Senior">Senior</option></select>
-                    <input type="text" id="teacherPhone" placeholder="Phone Number">
-                    <input type="email" id="teacherEmail" placeholder="Email">
-                    <input type="text" id="teacherGrades" placeholder="Grades (comma separated)">
-                    <button class="btn-primary" onclick="addTeacher()">Save Teacher</button>
-                    <button class="btn-secondary" onclick="toggleAddTeacherForm()">Cancel</button>
+            <div class="glass-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-chalkboard-user" style="margin-right: 8px;"></i> Teacher Directory</h2>
+                    <button class="btn-primary" onclick="toggleAddTeacherForm()"><i class="fas fa-plus"></i> Add Teacher</button>
                 </div>
-                <div class="teacher-list" id="teacherListContainer"></div>
+                <div class="card-body">
+                    <div id="addTeacherForm" style="display: none; margin-bottom: 24px;">
+                        <div class="form-grid">
+                            <div class="form-group"><label>Full Name</label><input type="text" id="teacherName" placeholder="e.g., Ahmed Hassan"></div>
+                            <div class="form-group"><label>Role</label><input type="text" id="teacherRole" placeholder="e.g., Mathematics Teacher"></div>
+                            <div class="form-group"><label>Subject</label><input type="text" id="teacherSubject" placeholder="e.g., Mathematics"></div>
+                            <div class="form-group"><label>Level</label><select id="teacherLevel"><option>Primary</option><option>Secondary</option><option>Senior</option></select></div>
+                            <div class="form-group"><label>Phone</label><input type="text" id="teacherPhone" placeholder="090 111 2201"></div>
+                            <div class="form-group"><label>Email</label><input type="email" id="teacherEmail" placeholder="teacher@korahey.edu.et"></div>
+                            <div class="form-group"><label>Grades (comma separated)</label><input type="text" id="teacherGrades" placeholder="Grade 10, Grade 11"></div>
+                        </div>
+                        <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                            <button class="btn-secondary" onclick="toggleAddTeacherForm()">Cancel</button>
+                            <button class="btn-primary" onclick="addTeacher()">Save Teacher</button>
+                        </div>
+                    </div>
+                    <div id="teacherListContainer" class="teacher-list"></div>
+                </div>
             </div>
         </div>
-        
-        <!-- Attendance Tracker Section -->
+
+        <!-- Attendance Section -->
         <div class="section-container" id="attendanceSection">
-            <div class="teacher-card-app">
-                <div class="attendance-date-bar">
-                    <label>Date: </label>
-                    <input type="date" id="attendanceDate" value="2026-05-29">
-                    <button class="btn-primary" style="margin-left: 12px;" onclick="loadAttendanceData()">Load</button>
+            <div class="glass-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-calendar-check"></i> Attendance Tracker</h2>
                 </div>
-                <div id="attendanceListContainer"></div>
-                <button class="btn-primary" onclick="saveAttendance()" style="margin-top: 20px;">Save Attendance</button>
+                <div class="card-body">
+                    <div class="attendance-date-bar">
+                        <div class="form-group" style="flex-direction: row; align-items: center; gap: 12px;">
+                            <label>Select Date</label>
+                            <input type="date" id="attendanceDate" value="2026-05-29" style="width: auto;">
+                        </div>
+                        <button class="btn-primary" onclick="loadAttendanceData()">Load</button>
+                    </div>
+                    <div id="attendanceListContainer"></div>
+                    <div style="margin-top: 24px; text-align: right;">
+                        <button class="btn-primary" onclick="saveAttendance()">Save Attendance</button>
+                    </div>
+                </div>
             </div>
         </div>
-        
+
         <!-- Student Applications Section -->
         <div class="section-container" id="studentAppsSection">
-            <div class="app-form-card">
-                <h3 style="margin-bottom: 20px;">New Student Application</h3>
-                <div class="app-form">
-                    <input type="text" id="studentAppName" placeholder="Student Full Name">
-                    <input type="text" id="studentAppParent" placeholder="Parent/Guardian Name">
-                    <input type="email" id="studentAppEmail" placeholder="Email">
-                    <input type="tel" id="studentAppPhone" placeholder="Phone Number">
-                    <select id="studentAppGrade"><option value="">Select Grade</option><option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option>Grade 5</option><option>Grade 6</option><option>Grade 7</option><option>Grade 8</option><option>Grade 9</option><option>Grade 10</option><option>Grade 11</option><option>Grade 12</option></select>
-                    <textarea id="studentAppMessage" placeholder="Additional notes / previous school"></textarea>
-                    <button class="btn-primary" onclick="submitStudentApp()">Submit Application</button>
+            <div class="glass-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-user-graduate"></i> Student Application Form</h2>
+                </div>
+                <div class="card-body">
+                    <div class="form-grid">
+                        <div class="form-group"><label>Student Full Name</label><input type="text" id="studentAppName" placeholder="Full name"></div>
+                        <div class="form-group"><label>Parent/Guardian Name</label><input type="text" id="studentAppParent" placeholder="Parent name"></div>
+                        <div class="form-group"><label>Email</label><input type="email" id="studentAppEmail" placeholder="email@example.com"></div>
+                        <div class="form-group"><label>Phone</label><input type="tel" id="studentAppPhone" placeholder="Phone number"></div>
+                        <div class="form-group"><label>Applying for Grade</label><select id="studentAppGrade"><option value="">Select Grade</option><option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option>Grade 5</option><option>Grade 6</option><option>Grade 7</option><option>Grade 8</option><option>Grade 9</option><option>Grade 10</option><option>Grade 11</option><option>Grade 12</option></select></div>
+                        <div class="form-group"><label>Additional Notes</label><textarea id="studentAppMessage" placeholder="Previous school, special needs, etc."></textarea></div>
+                    </div>
+                    <div style="text-align: right;">
+                        <button class="btn-primary" onclick="submitStudentApp()">Submit Application</button>
+                    </div>
                 </div>
             </div>
-            <div class="submissions-list">
-                <h3 style="margin-bottom: 16px;">Recent Submissions</h3>
-                <div id="studentAppsList"></div>
+            <div class="glass-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-list"></i> Recent Student Applications</h2>
+                </div>
+                <div class="card-body" id="studentAppsList"></div>
             </div>
         </div>
-        
+
         <!-- Teacher Applications Section -->
         <div class="section-container" id="teacherAppsSection">
-            <div class="app-form-card">
-                <h3 style="margin-bottom: 20px;">Teacher Application</h3>
-                <div class="app-form">
-                    <input type="text" id="teacherAppName" placeholder="Full Name">
-                    <input type="text" id="teacherAppSubject" placeholder="Subject Specialization">
-                    <input type="email" id="teacherAppEmail" placeholder="Email">
-                    <input type="tel" id="teacherAppPhone" placeholder="Phone Number">
-                    <select id="teacherAppExperience"><option value="">Years of Experience</option><option>0-2 years</option><option>3-5 years</option><option>6-10 years</option><option>10+ years</option></select>
-                    <textarea id="teacherAppMessage" placeholder="Why do you want to join Korahey Academy?"></textarea>
-                    <button class="btn-primary" onclick="submitTeacherApp()">Submit Application</button>
+            <div class="glass-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-chalkboard-user"></i> Teacher Application Form</h2>
+                </div>
+                <div class="card-body">
+                    <div class="form-grid">
+                        <div class="form-group"><label>Full Name</label><input type="text" id="teacherAppName" placeholder="Full name"></div>
+                        <div class="form-group"><label>Subject Specialization</label><input type="text" id="teacherAppSubject" placeholder="e.g., Mathematics"></div>
+                        <div class="form-group"><label>Email</label><input type="email" id="teacherAppEmail" placeholder="email@example.com"></div>
+                        <div class="form-group"><label>Phone</label><input type="tel" id="teacherAppPhone" placeholder="Phone number"></div>
+                        <div class="form-group"><label>Years of Experience</label><select id="teacherAppExperience"><option value="">Select</option><option>0-2 years</option><option>3-5 years</option><option>6-10 years</option><option>10+ years</option></select></div>
+                        <div class="form-group"><label>Why do you want to join Korahey?</label><textarea id="teacherAppMessage" placeholder="Tell us about your passion for teaching..."></textarea></div>
+                    </div>
+                    <div style="text-align: right;">
+                        <button class="btn-primary" onclick="submitTeacherApp()">Submit Application</button>
+                    </div>
                 </div>
             </div>
-            <div class="submissions-list">
-                <h3 style="margin-bottom: 16px;">Recent Submissions</h3>
-                <div id="teacherAppsList"></div>
+            <div class="glass-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-list"></i> Recent Teacher Applications</h2>
+                </div>
+                <div class="card-body" id="teacherAppsList"></div>
             </div>
         </div>
     </div>
-    
+
     <div id="accessDenied" class="access-denied" style="display: none;">
         <div class="access-denied-content">
             <h2>Access Denied</h2>
@@ -519,7 +640,7 @@
             <button class="btn-primary" onclick="window.location.href='index.html'">Back to Home</button>
         </div>
     </div>
-    
+
     <script>
         // Firebase Config
         const firebaseConfig = {
@@ -534,7 +655,7 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
         const HEAD_ADMIN_EMAIL = "khalilmohamedaden@gmail.com";
-        
+
         // Data stores
         let teachers = [
             { id: "t1", name: "Ahmed Hassan", role: "Head of Mathematics", subject: "Mathematics", level: "Senior", phone: "090 111 2201", email: "a.hassan@korahey.edu.et", grades: ["Grade 10","Grade 11","Grade 12"] },
@@ -544,20 +665,21 @@
         let attendanceRecords = JSON.parse(localStorage.getItem('attendanceRecords')) || {};
         let studentApplications = JSON.parse(localStorage.getItem('studentApps')) || [];
         let teacherApplications = JSON.parse(localStorage.getItem('teacherApps')) || [];
-        
-        // Helper functions
+        const sampleStudents = ['Ahmed Hassan', 'Fadumo Abdi', 'Omar Yusuf', 'Halima Mohamed', 'Ismail Diriye'];
+
         function showToast(msg) {
             const toast = document.getElementById('toast');
             toast.textContent = msg;
             toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
-        function escapeHtml(str) { return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); }
-        function getInitials(name) { return name.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase(); }
-        
-        // Navigation: switch sections
+        function escapeHtml(str) { 
+            if(!str) return '';
+            return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); 
+        }
+
+        // Navigation
         const sections = ['teachers', 'attendance', 'student-apps', 'teacher-apps'];
-        const navItems = document.querySelectorAll('.nav-item');
         const sectionContainers = {
             teachers: document.getElementById('teachersSection'),
             attendance: document.getElementById('attendanceSection'),
@@ -566,40 +688,35 @@
         };
         const pageTitle = document.getElementById('pageTitle');
         const pageSub = document.getElementById('pageSub');
-        
+
         function switchSection(sectionId) {
-            sections.forEach(s => {
-                sectionContainers[s].classList.remove('active');
-            });
+            sections.forEach(s => sectionContainers[s].classList.remove('active'));
             sectionContainers[sectionId].classList.add('active');
-            navItems.forEach(item => {
+            document.querySelectorAll('.nav-item').forEach(item => {
                 if(item.getAttribute('data-section') === sectionId) item.classList.add('active');
                 else item.classList.remove('active');
             });
-            // Update header text
             if(sectionId === 'teachers') { pageTitle.textContent = 'Teacher Management'; pageSub.textContent = 'Add, edit, or remove teacher profiles'; renderTeacherList(); }
             if(sectionId === 'attendance') { pageTitle.textContent = 'Attendance Tracker'; pageSub.textContent = 'Mark student attendance by date'; renderAttendanceList(); }
             if(sectionId === 'student-apps') { pageTitle.textContent = 'Student Applications'; pageSub.textContent = 'Review and manage student enrollment requests'; renderStudentApps(); }
             if(sectionId === 'teacher-apps') { pageTitle.textContent = 'Teacher Applications'; pageSub.textContent = 'Review applications from educators'; renderTeacherApps(); }
         }
-        
-        navItems.forEach(item => {
-            item.addEventListener('click', () => {
-                const section = item.getAttribute('data-section');
-                switchSection(section);
-            });
+
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => switchSection(item.getAttribute('data-section')));
         });
-        
+
         // Teacher Management
         function renderTeacherList() {
             const container = document.getElementById('teacherListContainer');
+            if(teachers.length === 0) { container.innerHTML = '<div class="empty-state">No teachers found. Click "Add Teacher" to get started.</div>'; return; }
             container.innerHTML = teachers.map(t => `
                 <div class="teacher-item">
                     <div class="teacher-info">
                         <h4>${escapeHtml(t.name)}</h4>
                         <p>${escapeHtml(t.role)} • ${t.level} • ${t.phone}</p>
                     </div>
-                    <button class="btn-icon" onclick="deleteTeacher('${t.id}')"><i class="fas fa-trash-alt"></i></button>
+                    <button class="delete-btn" onclick="deleteTeacher('${t.id}')"><i class="fas fa-trash-alt"></i></button>
                 </div>
             `).join('');
         }
@@ -621,13 +738,16 @@
             teachers.push(newTeacher);
             renderTeacherList();
             toggleAddTeacherForm();
-            document.querySelectorAll('#addTeacherForm input, #addTeacherForm select').forEach(el => el.value = '');
-            showToast(`Teacher ${name} added`);
+            ['teacherName','teacherRole','teacherSubject','teacherPhone','teacherEmail','teacherGrades'].forEach(id => document.getElementById(id).value = '');
+            showToast(`Teacher ${name} added successfully`);
         }
-        function deleteTeacher(id) { teachers = teachers.filter(t=>t.id !== id); renderTeacherList(); showToast('Teacher deleted'); }
-        
-        // Attendance Tracker
-        const sampleStudents = ['Ahmed Hassan', 'Fadumo Abdi', 'Omar Yusuf', 'Halima Mohamed', 'Ismail Diriye'];
+        function deleteTeacher(id) { 
+            teachers = teachers.filter(t=>t.id !== id); 
+            renderTeacherList(); 
+            showToast('Teacher deleted'); 
+        }
+
+        // Attendance
         function renderAttendanceList() {
             const date = document.getElementById('attendanceDate').value;
             const container = document.getElementById('attendanceListContainer');
@@ -642,6 +762,7 @@
                     </div>
                 </div>`;
             }).join('');
+            if(sampleStudents.length === 0) container.innerHTML = '<div class="empty-state">No students to display</div>';
         }
         function setAttendanceStatus(student, status) {
             const date = document.getElementById('attendanceDate').value;
@@ -649,12 +770,9 @@
             attendanceRecords[date][student] = status;
             renderAttendanceList();
         }
-        function saveAttendance() {
-            localStorage.setItem('attendanceRecords', JSON.stringify(attendanceRecords));
-            showToast('Attendance saved');
-        }
+        function saveAttendance() { localStorage.setItem('attendanceRecords', JSON.stringify(attendanceRecords)); showToast('Attendance saved'); }
         function loadAttendanceData() { renderAttendanceList(); }
-        
+
         // Student Applications
         function submitStudentApp() {
             const app = {
@@ -676,16 +794,18 @@
         }
         function renderStudentApps() {
             const container = document.getElementById('studentAppsList');
-            if(studentApplications.length === 0) { container.innerHTML = '<div style="padding:20px;text-align:center;color:#999;">No applications yet</div>'; return; }
+            if(studentApplications.length === 0) { container.innerHTML = '<div class="empty-state">No applications yet</div>'; return; }
             container.innerHTML = studentApplications.slice(0,8).map(a => `
                 <div class="submission-item">
-                    <strong>${escapeHtml(a.name)}</strong> (${a.grade})<br>
-                    Parent: ${escapeHtml(a.parent)}<br>
-                    <small>${a.date}</small>
+                    <div class="submission-info">
+                        <strong>${escapeHtml(a.name)}</strong> (${a.grade})<br>
+                        <p>Parent: ${escapeHtml(a.parent)}</p>
+                    </div>
+                    <div class="submission-date">${a.date}</div>
                 </div>
             `).join('');
         }
-        
+
         // Teacher Applications
         function submitTeacherApp() {
             const app = {
@@ -707,20 +827,22 @@
         }
         function renderTeacherApps() {
             const container = document.getElementById('teacherAppsList');
-            if(teacherApplications.length === 0) { container.innerHTML = '<div style="padding:20px;text-align:center;color:#999;">No applications yet</div>'; return; }
+            if(teacherApplications.length === 0) { container.innerHTML = '<div class="empty-state">No applications yet</div>'; return; }
             container.innerHTML = teacherApplications.slice(0,8).map(a => `
                 <div class="submission-item">
-                    <strong>${escapeHtml(a.name)}</strong> (${a.subject})<br>
-                    Experience: ${a.experience}<br>
-                    <small>${a.date}</small>
+                    <div class="submission-info">
+                        <strong>${escapeHtml(a.name)}</strong> (${a.subject})<br>
+                        <p>Experience: ${a.experience}</p>
+                    </div>
+                    <div class="submission-date">${a.date}</div>
                 </div>
             `).join('');
         }
-        
-        // Entrance animation and Auth
+
+        // Entrance & Auth
         const entrance = document.getElementById('pageEntrance');
         setTimeout(() => { if(entrance) entrance.classList.add('fade-out'); }, 1800);
-        
+
         auth.onAuthStateChanged(async (user) => {
             if (user) {
                 try {
@@ -728,7 +850,7 @@
                     const userData = userDoc.data();
                     if (userData && userData.isBanned === true) {
                         await auth.signOut();
-                        document.getElementById('mainContent').style.display = 'none';
+                        document.querySelector('.main-content').style.display = 'none';
                         document.getElementById('accessDenied').style.display = 'flex';
                         entrance.style.display = 'none';
                         return;
@@ -737,19 +859,18 @@
                     const isFirestoreAdmin = userData && userData.isAdmin === true;
                     const isAdmin = isHeadAdmin || isFirestoreAdmin;
                     if (isAdmin) {
-                        document.getElementById('mainContent').style.display = 'block';
+                        document.querySelector('.main-content').style.display = 'block';
                         document.getElementById('accessDenied').style.display = 'none';
-                        // Initialize first section
                         switchSection('teachers');
                         if(entrance) setTimeout(() => entrance.style.display = 'none', 2000);
                     } else {
-                        document.getElementById('mainContent').style.display = 'none';
+                        document.querySelector('.main-content').style.display = 'none';
                         document.getElementById('accessDenied').style.display = 'flex';
                         entrance.style.display = 'none';
                     }
                 } catch(e) { console.log(e); }
             } else {
-                document.getElementById('mainContent').style.display = 'none';
+                document.querySelector('.main-content').style.display = 'none';
                 document.getElementById('accessDenied').style.display = 'flex';
                 entrance.style.display = 'none';
             }
