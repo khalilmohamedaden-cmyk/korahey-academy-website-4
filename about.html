@@ -97,11 +97,10 @@
         .ban-message p { color:#ccc; margin-bottom:30px; line-height:1.6; }
         .ban-message button { background:#ff3b30; color:white; border:none; padding:12px 30px; border-radius:30px; cursor:pointer; font-size:1rem; }
 
-        /* ══ HERO ══ */
+        /* ══ HERO - STATIC IMAGE (NO SLIDER) ══ */
         .hero { height:85vh; min-height:560px; position:relative; display:flex; align-items:center; justify-content:center; text-align:center; overflow:hidden; }
-        .hero-slides img { position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:1.5s; }
-        .hero-slides img.active { opacity:0.4; }
-        .hero-overlay { position:absolute; inset:0; background:linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.75) 100%); }
+        .hero-bg { position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:0; }
+        .hero-overlay { position:absolute; inset:0; background:linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.75) 100%); z-index:1; }
         .hero-content { position:relative; z-index:2; padding:0 24px; max-width:760px; }
         .hero-label { display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); border-radius:100px; padding:7px 20px; font-size:0.75rem; letter-spacing:2px; color:rgba(255,255,255,0.65); text-transform:uppercase; margin-bottom:22px; }
         .hero-content h1 { font-size:clamp(3rem,7vw,6rem); font-weight:800; letter-spacing:-3px; line-height:1.05; margin-bottom:18px; }
@@ -273,14 +272,9 @@
     </div>
 </div>
 
-<!-- HERO SECTION with slides 6-9 -->
+<!-- HERO SECTION - STATIC IMAGE (NO SLIDER) using slided6 as background -->
 <section class="hero">
-    <div class="hero-slides">
-        <img src="slided6.png" class="active" alt="Korahey Academy">
-        <img src="slided7.png" alt="Korahey Academy">
-        <img src="slided8.png" alt="Korahey Academy">
-        <img src="slided9.png" alt="Korahey Academy">
-    </div>
+    <img src="slided6.png" alt="Korahey Academy" class="hero-bg">
     <div class="hero-overlay"></div>
     <div class="hero-content">
         <div class="hero-label">Our Story</div>
@@ -303,7 +297,7 @@
             </div>
         </div>
         <div class="split-visual">
-            <img src="slided6.png" class="split-img" alt="Korahey Academy Campus">
+            <img src="slided7.png" class="split-img" alt="Korahey Academy Campus">
         </div>
     </div>
 </section>
@@ -435,15 +429,6 @@
 </footer>
 
 <script>
-/* ── HERO SLIDESHOW with 4 images ── */
-const heroSlides = document.querySelectorAll('.hero-slides img');
-let heroIdx = 0;
-setInterval(() => {
-    heroSlides[heroIdx].classList.remove('active');
-    heroIdx = (heroIdx + 1) % heroSlides.length;
-    heroSlides[heroIdx].classList.add('active');
-}, 6000);
-
 /* ── MOBILE MENU ── */
 function toggleMobileAccordion(el, href) {
     const sub = el.nextElementSibling;
