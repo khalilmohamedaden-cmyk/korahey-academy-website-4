@@ -170,67 +170,21 @@
         /* hero stat pills */
         .hero-stats {
             display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
+            gap: 8px;
+            flex-wrap: nowrap;
         }
         .hero-stat-pill {
             background: rgba(255,255,255,0.07);
             border: 1px solid rgba(255,255,255,0.1);
             backdrop-filter: blur(20px);
             border-radius: 100px;
-            padding: 12px 22px;
+            padding: 10px 16px;
             text-align: center;
+            flex: 1;
+            min-width: 0;
         }
-        .hero-stat-pill strong { display:block; font-size:1.4rem; font-weight:800; letter-spacing:-1px; }
-        .hero-stat-pill span { display:block; font-size:0.7rem; color:rgba(255,255,255,0.5); margin-top:2px; letter-spacing:0.5px; }
-
-        /* scroll indicator */
-        .scroll-hint {
-            position: absolute;
-            bottom: 32px; left: 50%;
-            transform: translateX(-50%);
-            z-index: 3;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            opacity: 0.4;
-            animation: scrollBounce 2s ease infinite;
-        }
-        .scroll-hint span { font-size:0.65rem; letter-spacing:2px; text-transform:uppercase; }
-        .scroll-hint svg { width:18px; height:18px; stroke:#fff; stroke-width:1.5; fill:none; }
-        @keyframes scrollBounce { 0%,100%{transform:translateX(-50%) translateY(0);} 50%{transform:translateX(-50%) translateY(6px);} }
-
-        /* ══════════════════════════════════════
-           HORIZONTAL TICKER
-        ══════════════════════════════════════ */
-        .ticker-wrap {
-            overflow: hidden;
-            border-top: 1px solid rgba(255,255,255,0.06);
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-            padding: 18px 0;
-            background: #000;
-        }
-        .ticker-track {
-            display: flex;
-            gap: 0;
-            width: max-content;
-            animation: ticker 28s linear infinite;
-        }
-        .ticker-track:hover { animation-play-state: paused; }
-        .ticker-item {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 0 40px;
-            font-size: 0.78rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.35);
-            white-space: nowrap;
-        }
-        .ticker-item::before { content:''; width:5px; height:5px; background:rgba(255,255,255,0.2); border-radius:50%; flex-shrink:0; }
-        @keyframes ticker { from{transform:translateX(0);} to{transform:translateX(-50%);} }
+        .hero-stat-pill strong { display:block; font-size:1.2rem; font-weight:800; letter-spacing:-1px; white-space:nowrap; }
+        .hero-stat-pill span { display:block; font-size:0.65rem; color:rgba(255,255,255,0.5); margin-top:2px; letter-spacing:0.3px; white-space:nowrap; }
 
         /* ══════════════════════════════════════
            SECTION UTILITY
@@ -526,6 +480,27 @@
         }
         .cta-btn-ghost:hover { border-color:rgba(255,255,255,0.6); background:rgba(255,255,255,0.05); }
 
+        /* mobile values cards — shown only on mobile */
+        .value-card-mobile {
+            display: none;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 40px;
+        }
+        .vcm-card {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 22px;
+            padding: 26px 24px;
+            transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+        }
+        .vcm-card:hover { border-color:rgba(255,255,255,0.2); transform:translateY(-5px); }
+        .vcm-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+        .vcm-num { font-size:0.68rem; letter-spacing:1.5px; color:rgba(255,255,255,0.2); font-weight:700; }
+        .vcm-tag { background:rgba(255,255,255,0.06); border:1px solid var(--glass-border); border-radius:100px; padding:4px 12px; font-size:0.65rem; letter-spacing:1px; text-transform:uppercase; color:rgba(255,255,255,0.35); }
+        .vcm-card h3 { font-size:1.15rem; font-weight:700; margin-bottom:8px; }
+        .vcm-card p { font-size:0.85rem; color:var(--text-dim); line-height:1.65; }
+
         /* animations */
         .reveal-up { opacity:0; transform:translateY(40px); transition:0.9s cubic-bezier(0.16,1,0.3,1); }
         .reveal-up.active { opacity:1; transform:translateY(0); }
@@ -563,12 +538,15 @@
             .nav-links,.auth-wrapper,.profile-section { display:none !important; }
             .hamburger-btn { display:flex; }
             .mobile-menu { display:block; }
-            .hero-content h1 { font-size:2.8rem; letter-spacing:-1.5px; }
-            .hero-bottom-row { flex-direction:column; align-items:flex-start; }
-            .hero-stats { gap:8px; }
-            .hero-stat-pill strong { font-size:1.1rem; }
-            .hero-content { padding:0 6% 70px; }
-            .intro-quote { font-size:1.3rem; padding-left:20px; }
+            .hero-content h1 { font-size:2.4rem; letter-spacing:-1.5px; }
+            /* stats: single straight row, no wrapping, smaller pills */
+            .hero-bottom-row { flex-direction:column; align-items:stretch; gap:24px; }
+            .hero-stats { flex-wrap:nowrap; width:100%; }
+            .hero-stat-pill { padding:10px 8px; }
+            .hero-stat-pill strong { font-size:1rem; }
+            .hero-stat-pill span { font-size:0.6rem; }
+            .hero-content { padding:0 5% 70px; }
+            .intro-quote { font-size:1.2rem; padding-left:18px; }
             .intro-cols { grid-template-columns:1fr; gap:24px; }
             .img-strip { flex-direction:column; height:auto; padding:0 5%; gap:12px; }
             .img-strip-item { height:200px; flex:none !important; }
@@ -579,7 +557,9 @@
             .tl-item.right .tl-card { text-align:left; }
             .tl-spacer { display:none; }
             .tl-dot { left:16px; }
-            .value-row { flex-wrap:wrap; gap:14px; }
+            /* values: hide row list, show cards on mobile */
+            .values-list { display:none; }
+            .value-card-mobile { display:flex; }
             .director-inner { grid-template-columns:1fr; }
             .director-visual { height:300px; }
             .director-visual-overlay { background:linear-gradient(to top,#050505 15%,transparent 60%); }
@@ -704,35 +684,7 @@
             </div>
         </div>
     </div>
-    <div class="scroll-hint">
-        <span>Scroll</span>
-        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-    </div>
 </section>
-
-<!-- ══ TICKER ══ -->
-<div class="ticker-wrap">
-    <div class="ticker-track" id="tickerTrack">
-        <div class="ticker-item">Academic Excellence</div>
-        <div class="ticker-item">Korahey Academy</div>
-        <div class="ticker-item">Est. 2008</div>
-        <div class="ticker-item">Jijiga, Ethiopia</div>
-        <div class="ticker-item">98% University Acceptance</div>
-        <div class="ticker-item">1,200+ Students</div>
-        <div class="ticker-item">85+ Educators</div>
-        <div class="ticker-item">Safe & Supportive</div>
-        <div class="ticker-item">Inspiring Futures</div>
-        <div class="ticker-item">Academic Excellence</div>
-        <div class="ticker-item">Korahey Academy</div>
-        <div class="ticker-item">Est. 2008</div>
-        <div class="ticker-item">Jijiga, Ethiopia</div>
-        <div class="ticker-item">98% University Acceptance</div>
-        <div class="ticker-item">1,200+ Students</div>
-        <div class="ticker-item">85+ Educators</div>
-        <div class="ticker-item">Safe & Supportive</div>
-        <div class="ticker-item">Inspiring Futures</div>
-    </div>
-</div>
 
 <!-- ══ INTRO EDITORIAL ══ -->
 <section class="intro-section pad reveal-up">
@@ -759,7 +711,7 @@
 <div class="img-strip reveal-up" style="padding-bottom:16px;">
     <div class="img-strip-item"><img src="slided1.png" alt="Campus"><div class="img-strip-caption">Our Campus</div></div>
     <div class="img-strip-item"><img src="slided2.png" alt="Students"><div class="img-strip-caption">Students</div></div>
-    <div class="img-strip-item"><img src="slided3.png" alt="Learning"><div class="img-strip-caption">Learning</div></div>
+    <div class="img-strip-item"><img src="slided3.png" alt="Innovation"><div class="img-strip-caption">Innovation</div></div>
     <div class="img-strip-item"><img src="slided4.png" alt="Community"><div class="img-strip-caption">Community</div></div>
 </div>
 
@@ -858,10 +810,17 @@
                 <div class="value-row-arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
             </div>
         </div>
+
+        <!-- mobile cards version — shown only on small screens -->
+        <div class="value-card-mobile">
+            <div class="vcm-card"><div class="vcm-header"><span class="vcm-num">01</span><span class="vcm-tag">Learning</span></div><h3>Academic Excellence</h3><p>We hold the highest standards in teaching and learning. Every lesson is designed to push students toward their full potential.</p></div>
+            <div class="vcm-card"><div class="vcm-header"><span class="vcm-num">02</span><span class="vcm-tag">Character</span></div><h3>Respect & Integrity</h3><p>We build a culture where honesty, fairness, and mutual respect are non-negotiable — for students, teachers, and parents alike.</p></div>
+            <div class="vcm-card"><div class="vcm-header"><span class="vcm-num">03</span><span class="vcm-tag">Wellbeing</span></div><h3>Safe & Supportive</h3><p>Every child deserves to feel secure, valued, and heard. We invest in both campus safety and the emotional wellbeing of our students.</p></div>
+            <div class="vcm-card"><div class="vcm-header"><span class="vcm-num">04</span><span class="vcm-tag">Innovation</span></div><h3>Future-Readiness</h3><p>We embrace modern tools and creative pedagogy to ensure our graduates are ready for tomorrow — not just today.</p></div>
+            <div class="vcm-card"><div class="vcm-header"><span class="vcm-num">05</span><span class="vcm-tag">Community</span></div><h3>Community Partnership</h3><p>Great education is a team effort. We foster deep relationships between school, families, and the wider Jijiga community.</p></div>
+        </div>
     </div>
 </section>
-
-<!-- ══ DIRECTOR MESSAGE ══ -->
 <section class="director-section reveal-up">
     <div class="director-inner">
         <div class="director-visual">
@@ -871,10 +830,6 @@
         <div class="director-text">
             <div class="director-quote-mark">"</div>
             <p class="director-quote">Korahey Academy was born from a simple belief: every child deserves access to quality education that nurtures both the mind and the heart. Over the years, I have watched our students grow into confident, capable young adults who go on to achieve remarkable things. We are proud of what we have built together — a community where teachers inspire, parents partner, and students thrive.</p>
-            <div class="director-sig">
-                Khalil Mohamed
-                <span>Founder & Director, Korahey Academy</span>
-            </div>
         </div>
     </div>
 </section>
