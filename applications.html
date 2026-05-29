@@ -85,7 +85,7 @@
             50% { opacity: 1; transform: scale(1.2); }
         }
 
-        /* Dynamic Island Sidebar - Desktop */
+        /* Dynamic Island Sidebar */
         .dynamic-island {
             position: fixed;
             top: 50%;
@@ -174,7 +174,6 @@
             }
         }
 
-        /* Main Content */
         .main-content {
             margin-left: 140px;
             padding: 40px 48px 80px;
@@ -273,112 +272,51 @@
             background: #cc2f24;
         }
 
-        /* Teacher Directory List */
-        .teacher-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+        /* Search Bar */
+        .search-bar {
+            margin-bottom: 24px;
         }
-        .teacher-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px;
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 24px;
-            transition: all 0.2s;
-            cursor: pointer;
-        }
-        .teacher-item:hover {
-            background: white;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            transform: translateX(4px);
-        }
-        .teacher-info h4 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-        .teacher-info p {
-            font-size: 0.8rem;
-            color: #666;
-        }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
+        .search-bar input {
             width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(8px);
-            z-index: 5000;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.2s;
-        }
-        .modal.active {
-            display: flex;
-            opacity: 1;
-        }
-        .modal-content {
+            padding: 14px 20px;
+            border-radius: 40px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
             background: white;
-            border-radius: 32px;
-            width: 90%;
-            max-width: 500px;
-            padding: 28px;
-            transform: scale(0.95);
-            transition: transform 0.2s;
-        }
-        .modal.active .modal-content {
-            transform: scale(1);
-        }
-        .modal-content h3 {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-        }
-        .modal-actions {
-            display: flex;
-            gap: 12px;
-            justify-content: flex-end;
-            margin-top: 24px;
-        }
-
-        /* Form Grid */
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-        .form-group label {
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #888;
-        }
-        input, select, textarea {
-            background: white;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            border-radius: 16px;
-            padding: 12px 16px;
             font-size: 0.9rem;
-            font-family: inherit;
+            outline: none;
             transition: all 0.2s;
         }
-        input:focus, select:focus, textarea:focus {
-            outline: none;
+        .search-bar input:focus {
             border-color: #0071e3;
             box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+        }
+
+        /* Stats Row */
+        .stats-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 28px;
+            padding: 20px 24px;
+            flex: 1;
+            min-width: 160px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #0071e3;
+            line-height: 1;
+        }
+        .stat-label {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 8px;
         }
 
         /* Application Cards Grid */
@@ -414,7 +352,7 @@
             color: #999;
             margin-top: 8px;
         }
-        .app-card .status-badge {
+        .status-badge {
             display: inline-block;
             padding: 4px 12px;
             border-radius: 20px;
@@ -431,14 +369,171 @@
             color: #2e7d32;
         }
 
-        /* Empty State */
+        /* Teacher Directory */
+        .teacher-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .teacher-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 24px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .teacher-item:hover {
+            background: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transform: translateX(4px);
+        }
+        .teacher-info h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .teacher-info p {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            z-index: 5000;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 32px;
+            width: 90%;
+            max-width: 550px;
+            padding: 28px;
+            transform: scale(0.95);
+            transition: transform 0.2s;
+        }
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+        .modal-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+        }
+
+        /* Teacher Profile Modal (Improved) */
+        .teacher-profile-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        }
+        .teacher-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #0071e3, #0055aa);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 600;
+            color: white;
+        }
+        .teacher-profile-info h2 {
+            font-size: 1.4rem;
+            margin-bottom: 4px;
+        }
+        .teacher-profile-info p {
+            color: #666;
+        }
+        .teacher-detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .teacher-detail-item {
+            background: #f5f7fb;
+            padding: 12px;
+            border-radius: 20px;
+        }
+        .teacher-detail-item .label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: #888;
+            margin-bottom: 4px;
+        }
+        .teacher-detail-item .value {
+            font-weight: 500;
+        }
+
+        /* Class Management */
+        .class-card {
+            background: white;
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .class-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .student-list {
+            margin-top: 12px;
+        }
+        .student-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+        }
+        .add-student-form {
+            margin-top: 12px;
+            display: flex;
+            gap: 8px;
+        }
+        .add-student-form input {
+            flex: 1;
+            padding: 8px 12px;
+            border-radius: 40px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
         .empty-state {
             text-align: center;
             padding: 60px 20px;
             color: #999;
         }
-
-        /* Toast */
         .toast-notification {
             position: fixed;
             bottom: 30px;
@@ -453,14 +548,11 @@
             font-weight: 500;
             z-index: 10000;
             transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
             white-space: nowrap;
         }
         .toast-notification.show {
             transform: translateX(-50%) translateY(0);
         }
-
-        /* Access Denied */
         .access-denied {
             display: flex;
             align-items: center;
@@ -474,9 +566,7 @@
             border-radius: 40px;
             max-width: 400px;
             text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
-
         .section-container {
             display: none;
             animation: fadeInUp 0.4s ease;
@@ -488,25 +578,11 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         @media (max-width: 768px) {
-            .page-title {
-                font-size: 2rem;
-            }
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-            .card-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .apps-grid {
-                grid-template-columns: 1fr;
-            }
-            .toast-notification {
-                white-space: normal;
-                text-align: center;
-            }
+            .page-title { font-size: 2rem; }
+            .teacher-detail-grid { grid-template-columns: 1fr; }
+            .stats-row { flex-direction: column; }
+            .toast-notification { white-space: normal; text-align: center; }
         }
     </style>
 </head>
@@ -526,13 +602,17 @@
             <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"/><polyline points="12 6 12 12 16 14"/></svg>
             <span>Teachers</span>
         </div>
+        <div class="nav-item" data-section="classes">
+            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/></svg>
+            <span>Classes</span>
+        </div>
         <div class="nav-item" data-section="student-apps">
             <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             <span>Students</span>
         </div>
         <div class="nav-item" data-section="teacher-apps">
             <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-            <span>Teachers Apps</span>
+            <span>Teacher Apps</span>
         </div>
     </div>
 
@@ -551,14 +631,14 @@
                 </div>
                 <div class="card-body">
                     <div id="addTeacherForm" style="display: none; margin-bottom: 24px;">
-                        <div class="form-grid">
-                            <div class="form-group"><label>Full Name</label><input type="text" id="teacherName" placeholder="e.g., Ahmed Hassan"></div>
-                            <div class="form-group"><label>Role</label><input type="text" id="teacherRole" placeholder="e.g., Mathematics Teacher"></div>
-                            <div class="form-group"><label>Subject</label><input type="text" id="teacherSubject" placeholder="e.g., Mathematics"></div>
-                            <div class="form-group"><label>Level</label><select id="teacherLevel"><option>Primary</option><option>Secondary</option><option>Senior</option></select></div>
-                            <div class="form-group"><label>Phone</label><input type="text" id="teacherPhone" placeholder="090 111 2201"></div>
-                            <div class="form-group"><label>Email</label><input type="email" id="teacherEmail" placeholder="teacher@korahey.edu.et"></div>
-                            <div class="form-group"><label>Grades (comma)</label><input type="text" id="teacherGrades" placeholder="Grade 10, Grade 11"></div>
+                        <div class="teacher-detail-grid" style="background: #f5f7fb; padding: 20px; border-radius: 24px;">
+                            <input type="text" id="teacherName" placeholder="Full Name" style="grid-column: span 2;">
+                            <input type="text" id="teacherRole" placeholder="Role">
+                            <input type="text" id="teacherSubject" placeholder="Subject">
+                            <select id="teacherLevel"><option>Primary</option><option>Secondary</option><option>Senior</option></select>
+                            <input type="text" id="teacherPhone" placeholder="Phone">
+                            <input type="email" id="teacherEmail" placeholder="Email">
+                            <input type="text" id="teacherGrades" placeholder="Grades (comma)">
                         </div>
                         <div style="display: flex; gap: 12px; justify-content: flex-end;">
                             <button class="btn-secondary" onclick="toggleAddTeacherForm()">Cancel</button>
@@ -570,82 +650,54 @@
             </div>
         </div>
 
-        <!-- Student Applications Section (Pending + Accepted) -->
+        <!-- Class Management Section -->
+        <div class="section-container" id="classesSection">
+            <div class="glass-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-chalkboard"></i> Class Management</h2>
+                    <button class="btn-primary" onclick="createNewClass()"><i class="fas fa-plus"></i> New Class</button>
+                </div>
+                <div class="card-body" id="classesContainer"></div>
+            </div>
+        </div>
+
+        <!-- Student Applications Section (Receiving only) -->
         <div class="section-container" id="studentAppsSection">
             <div class="glass-card">
                 <div class="card-header">
                     <h2><i class="fas fa-user-graduate"></i> Student Applications</h2>
-                    <button class="btn-primary" onclick="showStudentAppForm()"><i class="fas fa-plus"></i> New Application</button>
                 </div>
                 <div class="card-body">
-                    <!-- Hidden Form -->
-                    <div id="studentAppForm" style="display: none; margin-bottom: 32px; background: #f5f7fb; border-radius: 24px; padding: 20px;">
-                        <h3 style="margin-bottom: 16px;">New Student Application</h3>
-                        <div class="form-grid">
-                            <div class="form-group"><label>Student Name</label><input type="text" id="studentAppName"></div>
-                            <div class="form-group"><label>Parent Name</label><input type="text" id="studentAppParent"></div>
-                            <div class="form-group"><label>Email</label><input type="email" id="studentAppEmail"></div>
-                            <div class="form-group"><label>Phone</label><input type="tel" id="studentAppPhone"></div>
-                            <div class="form-group"><label>Grade</label><select id="studentAppGrade"><option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option>Grade 5</option><option>Grade 6</option><option>Grade 7</option><option>Grade 8</option><option>Grade 9</option><option>Grade 10</option><option>Grade 11</option><option>Grade 12</option></select></div>
-                            <div class="form-group"><label>Previous School</label><input type="text" id="studentAppPrevSchool"></div>
-                            <div class="form-group"><label>Additional Notes</label><textarea id="studentAppMessage" rows="2"></textarea></div>
-                        </div>
-                        <div style="text-align: right;">
-                            <button class="btn-secondary" onclick="document.getElementById('studentAppForm').style.display='none'">Cancel</button>
-                            <button class="btn-primary" onclick="submitStudentApp()" style="margin-left: 8px;">Submit</button>
-                        </div>
+                    <div class="stats-row" id="studentStats"></div>
+                    <div class="search-bar">
+                        <input type="text" id="studentSearchInput" placeholder="Search by student name or parent..." oninput="filterStudentApps()">
                     </div>
-
-                    <!-- Tabs for Pending / Accepted -->
-                    <div style="display: flex; gap: 16px; border-bottom: 1px solid rgba(0,0,0,0.1); margin-bottom: 24px;">
-                        <button class="tab-btn active" data-tab="student-pending" onclick="switchStudentTab('pending')">Pending</button>
-                        <button class="tab-btn" data-tab="student-accepted" onclick="switchStudentTab('accepted')">Accepted</button>
-                    </div>
-                    <div id="studentPendingContainer" class="apps-grid"></div>
-                    <div id="studentAcceptedContainer" class="apps-grid" style="display: none;"></div>
+                    <div class="apps-grid" id="studentAppsContainer"></div>
                 </div>
             </div>
         </div>
 
-        <!-- Teacher Applications Section (Pending + Accepted) -->
+        <!-- Teacher Applications Section (Receiving only) -->
         <div class="section-container" id="teacherAppsSection">
             <div class="glass-card">
                 <div class="card-header">
                     <h2><i class="fas fa-chalkboard-user"></i> Teacher Applications</h2>
-                    <button class="btn-primary" onclick="showTeacherAppForm()"><i class="fas fa-plus"></i> New Application</button>
                 </div>
                 <div class="card-body">
-                    <div id="teacherAppForm" style="display: none; margin-bottom: 32px; background: #f5f7fb; border-radius: 24px; padding: 20px;">
-                        <h3 style="margin-bottom: 16px;">New Teacher Application</h3>
-                        <div class="form-grid">
-                            <div class="form-group"><label>Full Name</label><input type="text" id="teacherAppName"></div>
-                            <div class="form-group"><label>Subject Specialization</label><input type="text" id="teacherAppSubject"></div>
-                            <div class="form-group"><label>Email</label><input type="email" id="teacherAppEmail"></div>
-                            <div class="form-group"><label>Phone</label><input type="tel" id="teacherAppPhone"></div>
-                            <div class="form-group"><label>Experience</label><select id="teacherAppExperience"><option>0-2 years</option><option>3-5 years</option><option>6-10 years</option><option>10+ years</option></select></div>
-                            <div class="form-group"><label>Message</label><textarea id="teacherAppMessage" rows="2"></textarea></div>
-                        </div>
-                        <div style="text-align: right;">
-                            <button class="btn-secondary" onclick="document.getElementById('teacherAppForm').style.display='none'">Cancel</button>
-                            <button class="btn-primary" onclick="submitTeacherApp()" style="margin-left: 8px;">Submit</button>
-                        </div>
+                    <div class="stats-row" id="teacherStats"></div>
+                    <div class="search-bar">
+                        <input type="text" id="teacherSearchInput" placeholder="Search by name or subject..." oninput="filterTeacherApps()">
                     </div>
-                    <div style="display: flex; gap: 16px; border-bottom: 1px solid rgba(0,0,0,0.1); margin-bottom: 24px;">
-                        <button class="tab-btn active" data-tab="teacher-pending" onclick="switchTeacherTab('pending')">Pending</button>
-                        <button class="tab-btn" data-tab="teacher-accepted" onclick="switchTeacherTab('accepted')">Accepted</button>
-                    </div>
-                    <div id="teacherPendingContainer" class="apps-grid"></div>
-                    <div id="teacherAcceptedContainer" class="apps-grid" style="display: none;"></div>
+                    <div class="apps-grid" id="teacherAppsContainer"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Teacher Profile Modal (Edit/Delete) -->
+    <!-- Teacher Profile Modal (Improved) -->
     <div class="modal" id="teacherModal">
         <div class="modal-content">
-            <h3 id="teacherModalTitle">Teacher Profile</h3>
-            <div id="teacherModalBody"></div>
+            <div id="teacherModalContent"></div>
             <div class="modal-actions">
                 <button class="btn-secondary" onclick="closeTeacherModal()">Close</button>
                 <button class="btn-primary" id="teacherModalEditBtn">Edit</button>
@@ -656,12 +708,12 @@
 
     <!-- Application Detail Modal -->
     <div class="modal" id="appDetailModal">
-        <div class="modal-content" style="max-width: 500px;">
+        <div class="modal-content">
             <h3 id="appDetailTitle">Application Details</h3>
             <div id="appDetailBody"></div>
             <div class="modal-actions">
                 <button class="btn-secondary" onclick="closeAppDetailModal()">Close</button>
-                <button class="btn-primary" id="appAcceptBtn" style="display: none;">Accept Application</button>
+                <button class="btn-primary" id="appAcceptBtn">Accept Application</button>
             </div>
         </div>
     </div>
@@ -675,7 +727,6 @@
     </div>
 
     <script>
-        // Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyCC5oK1cMufciR1v4wLi-jfYvXa_cQBnd0",
             authDomain: "korahey-admin.firebaseapp.com",
@@ -692,17 +743,26 @@
         // Data stores
         let teachers = [
             { id: "t1", name: "Ahmed Hassan", role: "Head of Mathematics", subject: "Mathematics", level: "Senior", phone: "090 111 2201", email: "a.hassan@korahey.edu.et", grades: ["Grade 10","Grade 11","Grade 12"] },
-            { id: "t2", name: "Fadumo Abdi", role: "English Language Teacher", subject: "English", level: "Secondary", phone: "090 111 2202", email: "f.abdi@korahey.edu.et", grades: ["Grade 7","Grade 8","Grade 9"] }
+            { id: "t2", name: "Fadumo Abdi", role: "English Teacher", subject: "English", level: "Secondary", phone: "090 111 2202", email: "f.abdi@korahey.edu.et", grades: ["Grade 7","Grade 8","Grade 9"] }
         ];
         
-        let studentApps = JSON.parse(localStorage.getItem('studentApps')) || [];
-        let teacherApps = JSON.parse(localStorage.getItem('teacherApps')) || [];
+        let classes = JSON.parse(localStorage.getItem('adminClasses')) || [
+            { id: "c1", name: "Grade 10A", students: ["Ahmed Hassan", "Fatima Ali", "Omar Yusuf"] },
+            { id: "c2", name: "Grade 11B", students: ["Safia Jama", "Mustafa Osman"] }
+        ];
+        
+        let studentApps = JSON.parse(localStorage.getItem('studentApps')) || [
+            { id: 1001, name: "Ali Mohamed", parent: "Mohamed Ali", email: "ali@test.com", phone: "0901112233", grade: "Grade 10", prevSchool: "Jijiga Primary", message: "", date: "2026-05-20", status: "pending" },
+            { id: 1002, name: "Amina Hassan", parent: "Hassan Abdullahi", email: "amina@test.com", phone: "0901112244", grade: "Grade 11", prevSchool: "Jijiga Academy", message: "", date: "2026-05-25", status: "pending" }
+        ];
+        let teacherApps = JSON.parse(localStorage.getItem('teacherApps')) || [
+            { id: 2001, name: "Khalid Ahmed", subject: "Physics", email: "khalid@test.com", phone: "0901112255", experience: "6-10 years", message: "Experienced teacher", date: "2026-05-22", status: "pending" }
+        ];
         let acceptedStudentApps = JSON.parse(localStorage.getItem('acceptedStudentApps')) || [];
         let acceptedTeacherApps = JSON.parse(localStorage.getItem('acceptedTeacherApps')) || [];
 
         let currentTeacherId = null;
         let currentAppDetail = null;
-        let currentAppType = null;
 
         function showToast(msg) {
             const toast = document.getElementById('toast');
@@ -713,9 +773,10 @@
         function escapeHtml(str) { return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); }
 
         // Navigation
-        const sections = ['teachers', 'student-apps', 'teacher-apps'];
+        const sections = ['teachers', 'classes', 'student-apps', 'teacher-apps'];
         const sectionContainers = {
             teachers: document.getElementById('teachersSection'),
+            classes: document.getElementById('classesSection'),
             'student-apps': document.getElementById('studentAppsSection'),
             'teacher-apps': document.getElementById('teacherAppsSection')
         };
@@ -730,8 +791,9 @@
                 else item.classList.remove('active');
             });
             if(sectionId === 'teachers') { pageTitle.textContent = 'Teacher Directory'; pageSub.textContent = 'Manage teacher profiles'; renderTeacherList(); }
-            if(sectionId === 'student-apps') { pageTitle.textContent = 'Student Applications'; pageSub.textContent = 'Review and accept applications'; renderStudentApps(); }
-            if(sectionId === 'teacher-apps') { pageTitle.textContent = 'Teacher Applications'; pageSub.textContent = 'Review and accept applications'; renderTeacherApps(); }
+            if(sectionId === 'classes') { pageTitle.textContent = 'Class Management'; pageSub.textContent = 'Create classes and manage student rosters'; renderClasses(); }
+            if(sectionId === 'student-apps') { pageTitle.textContent = 'Student Applications'; pageSub.textContent = 'Review and accept student applications'; renderStudentAppsDashboard(); }
+            if(sectionId === 'teacher-apps') { pageTitle.textContent = 'Teacher Applications'; pageSub.textContent = 'Review and accept teacher applications'; renderTeacherAppsDashboard(); }
         }
 
         document.querySelectorAll('.nav-item').forEach(item => {
@@ -741,12 +803,12 @@
         // Teacher Directory
         function renderTeacherList() {
             const container = document.getElementById('teacherListContainer');
-            if(teachers.length === 0) { container.innerHTML = '<div class="empty-state">No teachers found. Click "Add Teacher" to get started.</div>'; return; }
+            if(teachers.length === 0) { container.innerHTML = '<div class="empty-state">No teachers found.</div>'; return; }
             container.innerHTML = teachers.map(t => `
                 <div class="teacher-item" onclick="openTeacherModal('${t.id}')">
                     <div class="teacher-info">
                         <h4>${escapeHtml(t.name)}</h4>
-                        <p>${escapeHtml(t.role)} • ${t.level} • ${t.phone}</p>
+                        <p>${escapeHtml(t.role)} • ${t.level}</p>
                     </div>
                     <i class="fas fa-chevron-right" style="color: #aaa;"></i>
                 </div>
@@ -755,57 +817,51 @@
 
         function openTeacherModal(id) {
             currentTeacherId = id;
-            const teacher = teachers.find(t => t.id === id);
-            if(!teacher) return;
-            document.getElementById('teacherModalTitle').innerHTML = `<i class="fas fa-user-circle"></i> ${escapeHtml(teacher.name)}`;
-            document.getElementById('teacherModalBody').innerHTML = `
-                <div style="margin-bottom: 16px;"><strong>Role:</strong> ${escapeHtml(teacher.role)}</div>
-                <div style="margin-bottom: 16px;"><strong>Subject:</strong> ${escapeHtml(teacher.subject)}</div>
-                <div style="margin-bottom: 16px;"><strong>Level:</strong> ${teacher.level}</div>
-                <div style="margin-bottom: 16px;"><strong>Phone:</strong> ${escapeHtml(teacher.phone)}</div>
-                <div style="margin-bottom: 16px;"><strong>Email:</strong> ${escapeHtml(teacher.email)}</div>
-                <div><strong>Grades:</strong> ${teacher.grades.join(', ')}</div>
+            const t = teachers.find(t => t.id === id);
+            if(!t) return;
+            document.getElementById('teacherModalContent').innerHTML = `
+                <div class="teacher-profile-header">
+                    <div class="teacher-avatar">${getInitials(t.name)}</div>
+                    <div class="teacher-profile-info">
+                        <h2>${escapeHtml(t.name)}</h2>
+                        <p>${escapeHtml(t.role)}</p>
+                    </div>
+                </div>
+                <div class="teacher-detail-grid">
+                    <div class="teacher-detail-item"><div class="label">Subject</div><div class="value">${escapeHtml(t.subject)}</div></div>
+                    <div class="teacher-detail-item"><div class="label">Level</div><div class="value">${t.level}</div></div>
+                    <div class="teacher-detail-item"><div class="label">Phone</div><div class="value">${escapeHtml(t.phone)}</div></div>
+                    <div class="teacher-detail-item"><div class="label">Email</div><div class="value">${escapeHtml(t.email)}</div></div>
+                    <div class="teacher-detail-item"><div class="label">Grades</div><div class="value">${t.grades.join(', ')}</div></div>
+                </div>
             `;
             document.getElementById('teacherModal').classList.add('active');
         }
 
         function closeTeacherModal() { document.getElementById('teacherModal').classList.remove('active'); currentTeacherId = null; }
+        function getInitials(name) { return name.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase(); }
 
-        document.getElementById('teacherModalEditBtn').onclick = () => {
-            if(currentTeacherId) editTeacher(currentTeacherId);
-        };
-        document.getElementById('teacherModalDeleteBtn').onclick = () => {
-            if(currentTeacherId) deleteTeacher(currentTeacherId);
-        };
+        document.getElementById('teacherModalEditBtn').onclick = () => { if(currentTeacherId) editTeacher(currentTeacherId); };
+        document.getElementById('teacherModalDeleteBtn').onclick = () => { if(currentTeacherId) deleteTeacher(currentTeacherId); };
 
         function editTeacher(id) {
-            const teacher = teachers.find(t => t.id === id);
-            if(!teacher) return;
-            document.getElementById('teacherName').value = teacher.name;
-            document.getElementById('teacherRole').value = teacher.role;
-            document.getElementById('teacherSubject').value = teacher.subject;
-            document.getElementById('teacherLevel').value = teacher.level;
-            document.getElementById('teacherPhone').value = teacher.phone;
-            document.getElementById('teacherEmail').value = teacher.email;
-            document.getElementById('teacherGrades').value = teacher.grades.join(', ');
+            const t = teachers.find(t => t.id === id);
+            if(!t) return;
+            document.getElementById('teacherName').value = t.name;
+            document.getElementById('teacherRole').value = t.role;
+            document.getElementById('teacherSubject').value = t.subject;
+            document.getElementById('teacherLevel').value = t.level;
+            document.getElementById('teacherPhone').value = t.phone;
+            document.getElementById('teacherEmail').value = t.email;
+            document.getElementById('teacherGrades').value = t.grades.join(', ');
             teachers = teachers.filter(t => t.id !== id);
             toggleAddTeacherForm();
             closeTeacherModal();
-            showToast(`Edit ${teacher.name} and click Save to update`);
+            showToast(`Edit ${t.name} and click Save`);
         }
 
-        function deleteTeacher(id) {
-            teachers = teachers.filter(t => t.id !== id);
-            renderTeacherList();
-            closeTeacherModal();
-            showToast('Teacher deleted');
-        }
-
-        function toggleAddTeacherForm() {
-            const form = document.getElementById('addTeacherForm');
-            form.style.display = form.style.display === 'none' ? 'block' : 'none';
-        }
-
+        function deleteTeacher(id) { teachers = teachers.filter(t => t.id !== id); renderTeacherList(); closeTeacherModal(); showToast('Teacher deleted'); }
+        function toggleAddTeacherForm() { const f = document.getElementById('addTeacherForm'); f.style.display = f.style.display === 'none' ? 'block' : 'none'; }
         function addTeacher() {
             const name = document.getElementById('teacherName').value.trim();
             const role = document.getElementById('teacherRole').value.trim();
@@ -816,218 +872,173 @@
             const gradesStr = document.getElementById('teacherGrades').value.trim();
             if(!name || !role || !subject || !phone || !email) { showToast('Please fill all fields'); return; }
             const grades = gradesStr ? gradesStr.split(',').map(g=>g.trim()) : [];
-            const newTeacher = { id: 't'+Date.now(), name, role, subject, level, phone, email, grades };
-            teachers.push(newTeacher);
+            teachers.push({ id: 't'+Date.now(), name, role, subject, level, phone, email, grades });
             renderTeacherList();
             toggleAddTeacherForm();
             ['teacherName','teacherRole','teacherSubject','teacherPhone','teacherEmail','teacherGrades'].forEach(id => document.getElementById(id).value = '');
             showToast(`Teacher ${name} added`);
         }
 
-        // Student Applications
-        let studentTab = 'pending';
-        function switchStudentTab(tab) {
-            studentTab = tab;
-            document.querySelectorAll('#studentAppsSection .tab-btn').forEach(btn => btn.classList.remove('active'));
-            if(tab === 'pending') {
-                document.querySelector('#studentAppsSection .tab-btn[data-tab="student-pending"]').classList.add('active');
-                document.getElementById('studentPendingContainer').style.display = 'grid';
-                document.getElementById('studentAcceptedContainer').style.display = 'none';
-                renderStudentPending();
-            } else {
-                document.querySelector('#studentAppsSection .tab-btn[data-tab="student-accepted"]').classList.add('active');
-                document.getElementById('studentPendingContainer').style.display = 'none';
-                document.getElementById('studentAcceptedContainer').style.display = 'grid';
-                renderStudentAccepted();
-            }
+        // Class Management
+        function renderClasses() {
+            const container = document.getElementById('classesContainer');
+            if(classes.length === 0) { container.innerHTML = '<div class="empty-state">No classes created. Click "New Class" to get started.</div>'; return; }
+            container.innerHTML = classes.map(c => `
+                <div class="class-card">
+                    <div class="class-header">
+                        <h3><i class="fas fa-users"></i> ${escapeHtml(c.name)}</h3>
+                        <button class="btn-secondary" onclick="deleteClass('${c.id}')">Delete Class</button>
+                    </div>
+                    <div class="student-list" id="student-list-${c.id}">
+                        ${c.students.map(s => `<div class="student-item"><span>${escapeHtml(s)}</span><button class="btn-secondary" style="padding:4px 12px;" onclick="removeStudent('${c.id}','${escapeHtml(s)}')">Remove</button></div>`).join('')}
+                    </div>
+                    <div class="add-student-form">
+                        <input type="text" id="newStudent-${c.id}" placeholder="Student name">
+                        <button class="btn-primary" onclick="addStudent('${c.id}')">Add Student</button>
+                    </div>
+                </div>
+            `).join('');
         }
 
-        function renderStudentApps() { renderStudentPending(); renderStudentAccepted(); }
-        function renderStudentPending() {
-            const container = document.getElementById('studentPendingContainer');
-            if(studentApps.length === 0) { container.innerHTML = '<div class="empty-state">No pending applications</div>'; return; }
-            container.innerHTML = studentApps.map(app => `
-                <div class="app-card" onclick="showAppDetail('student', '${app.id}')">
+        function createNewClass() {
+            let name = prompt("Enter class name (e.g., Grade 12A):");
+            if(name) { classes.push({ id: 'c'+Date.now(), name, students: [] }); localStorage.setItem('adminClasses', JSON.stringify(classes)); renderClasses(); showToast(`Class ${name} created`); }
+        }
+        function deleteClass(id) { classes = classes.filter(c => c.id !== id); localStorage.setItem('adminClasses', JSON.stringify(classes)); renderClasses(); showToast('Class deleted'); }
+        function addStudent(classId) {
+            const input = document.getElementById(`newStudent-${classId}`);
+            const studentName = input.value.trim();
+            if(!studentName) return;
+            const classObj = classes.find(c => c.id === classId);
+            if(classObj) { classObj.students.push(studentName); localStorage.setItem('adminClasses', JSON.stringify(classes)); renderClasses(); showToast(`Added ${studentName}`); }
+            input.value = '';
+        }
+        function removeStudent(classId, studentName) {
+            const classObj = classes.find(c => c.id === classId);
+            if(classObj) { classObj.students = classObj.students.filter(s => s !== studentName); localStorage.setItem('adminClasses', JSON.stringify(classes)); renderClasses(); showToast(`Removed ${studentName}`); }
+        }
+
+        // Student Applications Dashboard (Receiving)
+        function renderStudentAppsDashboard() {
+            const pending = studentApps.filter(a => a.status === 'pending');
+            const acceptedCount = acceptedStudentApps.length;
+            const last30Days = studentApps.filter(a => new Date(a.date) > new Date(Date.now() - 30*24*60*60*1000)).length;
+            document.getElementById('studentStats').innerHTML = `
+                <div class="stat-card"><div class="stat-number">${pending.length}</div><div class="stat-label">Pending Applications</div></div>
+                <div class="stat-card"><div class="stat-number">${acceptedCount}</div><div class="stat-label">Accepted Students</div></div>
+                <div class="stat-card"><div class="stat-number">${last30Days}</div><div class="stat-label">Applied (Last 30 days)</div></div>
+            `;
+            renderStudentAppsList();
+        }
+
+        function renderStudentAppsList() {
+            const search = document.getElementById('studentSearchInput')?.value.toLowerCase() || '';
+            const filtered = studentApps.filter(a => a.status === 'pending' && (a.name.toLowerCase().includes(search) || a.parent.toLowerCase().includes(search)));
+            const container = document.getElementById('studentAppsContainer');
+            if(filtered.length === 0) { container.innerHTML = '<div class="empty-state">No pending applications</div>'; return; }
+            container.innerHTML = filtered.map(app => `
+                <div class="app-card" onclick="showStudentAppDetail('${app.id}')">
                     <h4>${escapeHtml(app.name)}</h4>
-                    <p><i class="fas fa-user-friends"></i> Parent: ${escapeHtml(app.parent)}</p>
-                    <p><i class="fas fa-graduation-cap"></i> Grade: ${app.grade}</p>
+                    <p>Parent: ${escapeHtml(app.parent)}</p>
+                    <p>Grade: ${app.grade}</p>
                     <div class="date">${app.date}</div>
                     <span class="status-badge status-pending">Pending</span>
                 </div>
             `).join('');
         }
-        function renderStudentAccepted() {
-            const container = document.getElementById('studentAcceptedContainer');
-            if(acceptedStudentApps.length === 0) { container.innerHTML = '<div class="empty-state">No accepted applications</div>'; return; }
-            container.innerHTML = acceptedStudentApps.map(app => `
-                <div class="app-card" onclick="showAppDetail('student-accepted', '${app.id}')">
-                    <h4>${escapeHtml(app.name)}</h4>
-                    <p><i class="fas fa-user-friends"></i> Parent: ${escapeHtml(app.parent)}</p>
-                    <p><i class="fas fa-graduation-cap"></i> Grade: ${app.grade}</p>
-                    <div class="date">${app.date}</div>
-                    <span class="status-badge status-accepted">Accepted</span>
-                </div>
-            `).join('');
-        }
 
-        function showStudentAppForm() { document.getElementById('studentAppForm').style.display = 'block'; }
-        function submitStudentApp() {
-            const app = {
-                id: Date.now(),
-                name: document.getElementById('studentAppName').value.trim(),
-                parent: document.getElementById('studentAppParent').value.trim(),
-                email: document.getElementById('studentAppEmail').value.trim(),
-                phone: document.getElementById('studentAppPhone').value.trim(),
-                grade: document.getElementById('studentAppGrade').value,
-                prevSchool: document.getElementById('studentAppPrevSchool').value.trim(),
-                message: document.getElementById('studentAppMessage').value.trim(),
-                date: new Date().toLocaleString()
-            };
-            if(!app.name || !app.parent || !app.email) { showToast('Please fill required fields'); return; }
-            studentApps.unshift(app);
-            localStorage.setItem('studentApps', JSON.stringify(studentApps));
-            renderStudentPending();
-            document.getElementById('studentAppForm').style.display = 'none';
-            ['studentAppName','studentAppParent','studentAppEmail','studentAppPhone','studentAppPrevSchool','studentAppMessage'].forEach(id => document.getElementById(id).value = '');
-            showToast('Student application submitted');
-        }
+        function filterStudentApps() { renderStudentAppsList(); }
 
-        // Teacher Applications
-        let teacherTab = 'pending';
-        function switchTeacherTab(tab) {
-            teacherTab = tab;
-            document.querySelectorAll('#teacherAppsSection .tab-btn').forEach(btn => btn.classList.remove('active'));
-            if(tab === 'pending') {
-                document.querySelector('#teacherAppsSection .tab-btn[data-tab="teacher-pending"]').classList.add('active');
-                document.getElementById('teacherPendingContainer').style.display = 'grid';
-                document.getElementById('teacherAcceptedContainer').style.display = 'none';
-                renderTeacherPending();
-            } else {
-                document.querySelector('#teacherAppsSection .tab-btn[data-tab="teacher-accepted"]').classList.add('active');
-                document.getElementById('teacherPendingContainer').style.display = 'none';
-                document.getElementById('teacherAcceptedContainer').style.display = 'grid';
-                renderTeacherAccepted();
-            }
-        }
-
-        function renderTeacherApps() { renderTeacherPending(); renderTeacherAccepted(); }
-        function renderTeacherPending() {
-            const container = document.getElementById('teacherPendingContainer');
-            if(teacherApps.length === 0) { container.innerHTML = '<div class="empty-state">No pending applications</div>'; return; }
-            container.innerHTML = teacherApps.map(app => `
-                <div class="app-card" onclick="showAppDetail('teacher', '${app.id}')">
-                    <h4>${escapeHtml(app.name)}</h4>
-                    <p><i class="fas fa-chalkboard"></i> Subject: ${escapeHtml(app.subject)}</p>
-                    <p><i class="fas fa-briefcase"></i> Experience: ${app.experience}</p>
-                    <div class="date">${app.date}</div>
-                    <span class="status-badge status-pending">Pending</span>
-                </div>
-            `).join('');
-        }
-        function renderTeacherAccepted() {
-            const container = document.getElementById('teacherAcceptedContainer');
-            if(acceptedTeacherApps.length === 0) { container.innerHTML = '<div class="empty-state">No accepted applications</div>'; return; }
-            container.innerHTML = acceptedTeacherApps.map(app => `
-                <div class="app-card" onclick="showAppDetail('teacher-accepted', '${app.id}')">
-                    <h4>${escapeHtml(app.name)}</h4>
-                    <p><i class="fas fa-chalkboard"></i> Subject: ${escapeHtml(app.subject)}</p>
-                    <p><i class="fas fa-briefcase"></i> Experience: ${app.experience}</p>
-                    <div class="date">${app.date}</div>
-                    <span class="status-badge status-accepted">Accepted</span>
-                </div>
-            `).join('');
-        }
-
-        function showTeacherAppForm() { document.getElementById('teacherAppForm').style.display = 'block'; }
-        function submitTeacherApp() {
-            const app = {
-                id: Date.now(),
-                name: document.getElementById('teacherAppName').value.trim(),
-                subject: document.getElementById('teacherAppSubject').value.trim(),
-                email: document.getElementById('teacherAppEmail').value.trim(),
-                phone: document.getElementById('teacherAppPhone').value.trim(),
-                experience: document.getElementById('teacherAppExperience').value,
-                message: document.getElementById('teacherAppMessage').value.trim(),
-                date: new Date().toLocaleString()
-            };
-            if(!app.name || !app.subject || !app.email) { showToast('Please fill required fields'); return; }
-            teacherApps.unshift(app);
-            localStorage.setItem('teacherApps', JSON.stringify(teacherApps));
-            renderTeacherPending();
-            document.getElementById('teacherAppForm').style.display = 'none';
-            ['teacherAppName','teacherAppSubject','teacherAppEmail','teacherAppPhone','teacherAppMessage'].forEach(id => document.getElementById(id).value = '');
-            showToast('Teacher application submitted');
-        }
-
-        // Application Detail Modal with Accept
-        function showAppDetail(type, id) {
-            let app, isAccepted = false;
-            if(type === 'student') { app = studentApps.find(a => a.id == id); isAccepted = false; currentAppType = 'student'; }
-            else if(type === 'student-accepted') { app = acceptedStudentApps.find(a => a.id == id); isAccepted = true; currentAppType = 'student-accepted'; }
-            else if(type === 'teacher') { app = teacherApps.find(a => a.id == id); isAccepted = false; currentAppType = 'teacher'; }
-            else { app = acceptedTeacherApps.find(a => a.id == id); isAccepted = true; currentAppType = 'teacher-accepted'; }
+        function showStudentAppDetail(id) {
+            const app = studentApps.find(a => a.id == id);
             if(!app) return;
-            currentAppDetail = { type, id, isAccepted };
-            let html = '';
-            if(type.startsWith('student')) {
-                html = `
-                    <div><strong>Student Name:</strong> ${escapeHtml(app.name)}</div>
-                    <div><strong>Parent/Guardian:</strong> ${escapeHtml(app.parent)}</div>
-                    <div><strong>Email:</strong> ${escapeHtml(app.email)}</div>
-                    <div><strong>Phone:</strong> ${escapeHtml(app.phone)}</div>
-                    <div><strong>Applying for Grade:</strong> ${app.grade}</div>
-                    <div><strong>Previous School:</strong> ${escapeHtml(app.prevSchool || 'N/A')}</div>
-                    <div><strong>Notes:</strong> ${escapeHtml(app.message || 'None')}</div>
-                    <div><strong>Submitted:</strong> ${app.date}</div>
-                `;
-            } else {
-                html = `
-                    <div><strong>Name:</strong> ${escapeHtml(app.name)}</div>
-                    <div><strong>Subject:</strong> ${escapeHtml(app.subject)}</div>
-                    <div><strong>Email:</strong> ${escapeHtml(app.email)}</div>
-                    <div><strong>Phone:</strong> ${escapeHtml(app.phone)}</div>
-                    <div><strong>Experience:</strong> ${app.experience}</div>
-                    <div><strong>Message:</strong> ${escapeHtml(app.message || 'None')}</div>
-                    <div><strong>Submitted:</strong> ${app.date}</div>
-                `;
-            }
-            document.getElementById('appDetailTitle').textContent = type.startsWith('student') ? 'Student Application' : 'Teacher Application';
-            document.getElementById('appDetailBody').innerHTML = html;
-            const acceptBtn = document.getElementById('appAcceptBtn');
-            if(!isAccepted) {
-                acceptBtn.style.display = 'block';
-                acceptBtn.onclick = () => acceptApplication();
-            } else {
-                acceptBtn.style.display = 'none';
-            }
+            currentAppDetail = { type: 'student', id };
+            document.getElementById('appDetailTitle').innerHTML = 'Student Application';
+            document.getElementById('appDetailBody').innerHTML = `
+                <div><strong>Student Name:</strong> ${escapeHtml(app.name)}</div>
+                <div><strong>Parent/Guardian:</strong> ${escapeHtml(app.parent)}</div>
+                <div><strong>Email:</strong> ${escapeHtml(app.email)}</div>
+                <div><strong>Phone:</strong> ${escapeHtml(app.phone)}</div>
+                <div><strong>Grade:</strong> ${app.grade}</div>
+                <div><strong>Previous School:</strong> ${escapeHtml(app.prevSchool || 'N/A')}</div>
+                <div><strong>Notes:</strong> ${escapeHtml(app.message || 'None')}</div>
+                <div><strong>Submitted:</strong> ${app.date}</div>
+            `;
+            document.getElementById('appAcceptBtn').onclick = () => acceptStudentApp(id);
             document.getElementById('appDetailModal').classList.add('active');
         }
 
-        function acceptApplication() {
-            if(!currentAppDetail) return;
-            const { type, id } = currentAppDetail;
-            if(type === 'student') {
-                const app = studentApps.find(a => a.id == id);
-                if(app) {
-                    studentApps = studentApps.filter(a => a.id != id);
-                    acceptedStudentApps.unshift(app);
-                    localStorage.setItem('studentApps', JSON.stringify(studentApps));
-                    localStorage.setItem('acceptedStudentApps', JSON.stringify(acceptedStudentApps));
-                    renderStudentPending();
-                    renderStudentAccepted();
-                    showToast(`Application from ${app.name} accepted`);
-                }
-            } else if(type === 'teacher') {
-                const app = teacherApps.find(a => a.id == id);
-                if(app) {
-                    teacherApps = teacherApps.filter(a => a.id != id);
-                    acceptedTeacherApps.unshift(app);
-                    localStorage.setItem('teacherApps', JSON.stringify(teacherApps));
-                    localStorage.setItem('acceptedTeacherApps', JSON.stringify(acceptedTeacherApps));
-                    renderTeacherPending();
-                    renderTeacherAccepted();
-                    showToast(`Application from ${app.name} accepted`);
-                }
+        function acceptStudentApp(id) {
+            const app = studentApps.find(a => a.id == id);
+            if(app) {
+                studentApps = studentApps.filter(a => a.id != id);
+                acceptedStudentApps.unshift({ ...app, status: 'accepted' });
+                localStorage.setItem('studentApps', JSON.stringify(studentApps));
+                localStorage.setItem('acceptedStudentApps', JSON.stringify(acceptedStudentApps));
+                renderStudentAppsDashboard();
+                showToast(`Student ${app.name} accepted`);
+            }
+            closeAppDetailModal();
+        }
+
+        // Teacher Applications Dashboard
+        function renderTeacherAppsDashboard() {
+            const pending = teacherApps.filter(a => a.status === 'pending');
+            const acceptedCount = acceptedTeacherApps.length;
+            const last30Days = teacherApps.filter(a => new Date(a.date) > new Date(Date.now() - 30*24*60*60*1000)).length;
+            document.getElementById('teacherStats').innerHTML = `
+                <div class="stat-card"><div class="stat-number">${pending.length}</div><div class="stat-label">Pending Applications</div></div>
+                <div class="stat-card"><div class="stat-number">${acceptedCount}</div><div class="stat-label">Accepted Teachers</div></div>
+                <div class="stat-card"><div class="stat-number">${last30Days}</div><div class="stat-label">Applied (Last 30 days)</div></div>
+            `;
+            renderTeacherAppsList();
+        }
+
+        function renderTeacherAppsList() {
+            const search = document.getElementById('teacherSearchInput')?.value.toLowerCase() || '';
+            const filtered = teacherApps.filter(a => a.status === 'pending' && (a.name.toLowerCase().includes(search) || a.subject.toLowerCase().includes(search)));
+            const container = document.getElementById('teacherAppsContainer');
+            if(filtered.length === 0) { container.innerHTML = '<div class="empty-state">No pending applications</div>'; return; }
+            container.innerHTML = filtered.map(app => `
+                <div class="app-card" onclick="showTeacherAppDetail('${app.id}')">
+                    <h4>${escapeHtml(app.name)}</h4>
+                    <p>Subject: ${escapeHtml(app.subject)}</p>
+                    <p>Experience: ${app.experience}</p>
+                    <div class="date">${app.date}</div>
+                    <span class="status-badge status-pending">Pending</span>
+                </div>
+            `).join('');
+        }
+
+        function filterTeacherApps() { renderTeacherAppsList(); }
+
+        function showTeacherAppDetail(id) {
+            const app = teacherApps.find(a => a.id == id);
+            if(!app) return;
+            currentAppDetail = { type: 'teacher', id };
+            document.getElementById('appDetailTitle').innerHTML = 'Teacher Application';
+            document.getElementById('appDetailBody').innerHTML = `
+                <div><strong>Name:</strong> ${escapeHtml(app.name)}</div>
+                <div><strong>Subject:</strong> ${escapeHtml(app.subject)}</div>
+                <div><strong>Email:</strong> ${escapeHtml(app.email)}</div>
+                <div><strong>Phone:</strong> ${escapeHtml(app.phone)}</div>
+                <div><strong>Experience:</strong> ${app.experience}</div>
+                <div><strong>Message:</strong> ${escapeHtml(app.message || 'None')}</div>
+                <div><strong>Submitted:</strong> ${app.date}</div>
+            `;
+            document.getElementById('appAcceptBtn').onclick = () => acceptTeacherApp(id);
+            document.getElementById('appDetailModal').classList.add('active');
+        }
+
+        function acceptTeacherApp(id) {
+            const app = teacherApps.find(a => a.id == id);
+            if(app) {
+                teacherApps = teacherApps.filter(a => a.id != id);
+                acceptedTeacherApps.unshift({ ...app, status: 'accepted' });
+                localStorage.setItem('teacherApps', JSON.stringify(teacherApps));
+                localStorage.setItem('acceptedTeacherApps', JSON.stringify(acceptedTeacherApps));
+                renderTeacherAppsDashboard();
+                showToast(`Teacher ${app.name} accepted`);
             }
             closeAppDetailModal();
         }
