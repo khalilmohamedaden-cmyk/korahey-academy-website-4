@@ -794,9 +794,9 @@ auth.onAuthStateChanged(async(user)=>{
             dismissEntrance();
         }
     } else {
-        // Not logged in — redirect to login page
-        setStatus('Not signed in. Redirecting…');
-        setTimeout(() => { window.location.href = 'Log.in.html'; }, 1500);
+        // Not logged in — redirect to login with return address
+        setStatus('Not signed in. Redirecting to login…');
+        setTimeout(() => { window.location.href = 'Log.in.html?redirect=admin.html'; }, 1200);
     }
 });
 </script>
