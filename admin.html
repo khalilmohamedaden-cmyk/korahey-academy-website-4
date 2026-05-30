@@ -724,18 +724,29 @@ if(clearBtn)clearBtn.addEventListener('click',()=>{searchInput.value='';updateCl
 
 /* ── AUTH ── */
 const entrance=document.getElementById('adminEntrance'),adminContent=document.getElementById('adminContent'),accessDenied=document.getElementById('accessDenied');
-setTimeout(()=>{if(entrance)entrance.classList.add('fade-out');},2000);
+
+function dismissEntrance() {
+    if (!entrance) return;
+    entrance.classList.add('fade-out');
+    setTimeout(() => { entrance.style.display = 'none'; }, 650);
+}
+
+// Hard fallback: if Firebase takes longer than 6s, dismiss anyway
+setTimeout(dismissEntrance, 6000);
+
 auth.onAuthStateChanged(async(user)=>{
     if(user){
         try{
             const ud=await db.collection('users').doc(user.uid).get();
             const userData=ud.data();
-            if(userData?.isBanned){await auth.signOut();if(adminContent)adminContent.style.display='none';if(accessDenied){accessDenied.style.display='flex';accessDenied.querySelector('p').textContent='Your account has been banned.';}if(entrance)entrance.style.display='none';return;}
+            if(userData?.isBanned){await auth.signOut();if(adminContent)adminContent.style.display='none';if(accessDenied){accessDenied.style.display='flex';accessDenied.querySelector('p').textContent='Your account has been banned.';}dismissEntrance();return;}
             const isAdmin=user.email===HEAD_ADMIN_EMAIL||(userData?.isAdmin===true);
-            if(isAdmin){if(user.email===HEAD_ADMIN_EMAIL&&!userData?.isAdmin)await db.collection('users').doc(user.uid).set({isAdmin:true,role:'head_admin'},{merge:true});if(adminContent)adminContent.style.display='block';if(accessDenied)accessDenied.style.display='none';document.getElementById('greetingText').innerHTML=`Hello ${user.displayName?.split(' ')[0]||'Admin'}`;loadProjects();if(entrance)setTimeout(()=>{entrance.style.display='none';},2000);}
-            else{if(adminContent)adminContent.style.display='none';if(accessDenied)accessDenied.style.display='flex';if(entrance)entrance.style.display='none';}
-        }catch(e){if(adminContent)adminContent.style.display='none';if(accessDenied)accessDenied.style.display='flex';if(entrance)entrance.style.display='none';}
-    }else{if(adminContent)adminContent.style.display='none';if(accessDenied)accessDenied.style.display='flex';if(entrance)entrance.style.display='none';}
+            if(isAdmin){if(user.email===HEAD_ADMIN_EMAIL&&!userData?.isAdmin)await db.collection('users').doc(user.uid).set({isAdmin:true,role:'head_admin'},{merge:true});if(adminContent)adminContent.style.display='block';if(accessDenied)accessDenied.style.display='none';document.getElementById('greetingText').innerHTML=`Hello ${user.displayName?.split(' ')[0]||'Admin'}`;loadProjects();dismissEntrance();}
+            else{if(adminContent)adminContent.style.display='none';if(accessDenied)accessDenied.style.display='flex';dismissEntrance();}
+        }catch(e){console.log(e);if(adminContent)adminContent.style.display='none';if(accessDenied)accessDenied.style.display='flex';dismissEntrance();}
+    }else{
+        if(adminContent)adminContent.style.display='none';if(accessDenied)accessDenied.style.display='flex';dismissEntrance();
+    }
 });
 </script>
 </body>
