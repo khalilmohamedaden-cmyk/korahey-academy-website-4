@@ -8,376 +8,231 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <style>
-        :root {
-            --glass-border: rgba(255,255,255,0.05);
-            --text-dim: rgba(255,255,255,0.6);
-            --card-bg: #0c0c0c;
-            --apple-spring: cubic-bezier(0.4,0,0.2,1.4);
-        }
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif; background:#000; color:#fff; overflow-x:hidden; }
+        :root { --glass-border:rgba(255,255,255,0.05); --text-dim:rgba(255,255,255,0.6); --card-bg:#0c0c0c; --apple-spring:cubic-bezier(0.4,0,0.2,1.4); }
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif;background:#000;color:#fff;overflow-x:hidden;}
+        nav{position:fixed;width:100%;top:25px;display:flex;justify-content:center;z-index:1000;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);}
+        nav.nav-hidden{transform:translateY(-120px);}
+        .nav-container{width:92%;height:75px;background:rgba(15,15,15,0.7);backdrop-filter:blur(30px);border:1px solid var(--glass-border);border-radius:100px;display:flex;align-items:center;justify-content:space-between;padding:0 35px;}
+        .logo-img{height:45px;cursor:pointer;}
+        .nav-links{display:flex;list-style:none;gap:35px;align-items:center;}
+        .nav-links li{position:relative;padding:20px 0;}
+        .nav-links a{text-decoration:none;color:var(--text-dim);font-size:0.95rem;font-weight:500;transition:color 0.3s;}
+        .nav-links a.active-page,.nav-links li:hover>a{color:#fff;}
+        .dropdown-menu{position:absolute;top:65px;left:50%;transform:translateX(-50%) scale(0.4) translateY(-20px);background:rgba(22,22,22,0.95);backdrop-filter:blur(40px);border:1px solid rgba(255,255,255,0.1);border-radius:24px;min-width:220px;padding:10px;opacity:0;visibility:hidden;transition:all 0.5s var(--apple-spring);z-index:100;box-shadow:0 30px 60px rgba(0,0,0,0.5);}
+        .nav-links li:hover .dropdown-menu{opacity:1;visibility:visible;transform:translateX(-50%) scale(1) translateY(0);}
+        .dropdown-menu a{display:flex !important;align-items:center;gap:12px;padding:12px 16px !important;color:var(--text-dim) !important;font-size:0.88rem !important;text-decoration:none;border-radius:14px;transition:all 0.2s ease;margin-bottom:2px;}
+        .dropdown-menu a:hover{background:rgba(255,255,255,0.06);color:#fff !important;transform:translateX(5px);}
+        .profile-dropdown{position:absolute;top:65px;right:0;transform:scale(0.4) translateY(-20px);background:rgba(22,22,22,0.95);backdrop-filter:blur(40px);border:1px solid rgba(255,255,255,0.1);border-radius:24px;min-width:220px;padding:10px;opacity:0;visibility:hidden;transition:all 0.5s var(--apple-spring);z-index:100;box-shadow:0 30px 60px rgba(0,0,0,0.5);}
+        .profile-section:hover .profile-dropdown{opacity:1;visibility:visible;transform:scale(1) translateY(0);}
+        .dropdown-item{display:flex !important;align-items:center;gap:12px;padding:12px 16px !important;color:var(--text-dim) !important;font-size:0.88rem !important;border-radius:14px;transition:all 0.2s ease;margin-bottom:2px;cursor:pointer;}
+        .dropdown-item:hover{background:rgba(255,255,255,0.06);color:#fff !important;transform:translateX(5px);}
+        .profile-section{position:relative;margin-left:20px;cursor:pointer;}
+        .profile-avatar{width:42px;height:42px;border-radius:50%;border:2px solid rgba(255,255,255,0.1);transition:0.3s;object-fit:cover;}
+        .profile-section:hover .profile-avatar{border-color:#fff;transform:scale(1.05);}
+        .auth-wrapper{position:relative;display:inline-flex;background:rgba(255,255,255,0.03);padding:5px;border-radius:100px;border:1px solid var(--glass-border);}
+        .auth-pill{position:absolute;top:5px;left:5px;width:calc(50% - 5px);height:calc(100% - 10px);background:rgba(255,255,255,0.2);backdrop-filter:blur(15px);border-radius:100px;transition:transform 0.35s cubic-bezier(0.2,0.9,0.4,1.1);z-index:1;pointer-events:none;}
+        .auth-pill.signup-active{transform:translateX(0);}
+        .auth-pill.login-active{transform:translateX(100%);}
+        .auth-btn{position:relative;z-index:2;background:transparent;border:none;color:#fff;padding:10px 28px;cursor:pointer;font-weight:600;border-radius:100px;min-width:110px;font-size:0.9rem;}
+        .hamburger-btn{display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:44px;height:44px;background:rgba(255,255,255,0.05);border:1px solid var(--glass-border);border-radius:50%;cursor:pointer;z-index:1100;transition:background 0.3s;flex-shrink:0;}
+        .hamburger-btn:hover{background:rgba(255,255,255,0.1);}
+        .hamburger-btn span{display:block;width:18px;height:1.5px;background:#fff;border-radius:2px;transition:all 0.35s cubic-bezier(0.16,1,0.3,1);transform-origin:center;}
+        .hamburger-btn.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+        .hamburger-btn.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+        .hamburger-btn.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+        .mobile-menu{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:1050;pointer-events:none;}
+        .mobile-menu.open{pointer-events:all;}
+        .mobile-menu-backdrop{position:absolute;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);opacity:0;transition:opacity 0.4s ease;}
+        .mobile-menu.open .mobile-menu-backdrop{opacity:1;}
+        .mobile-menu-panel{position:absolute;top:20px;left:50%;transform:translateX(-50%) translateY(-30px) scale(0.96);width:92%;max-height:calc(100vh - 40px);background:rgba(12,12,12,0.96);backdrop-filter:blur(40px);border:1px solid rgba(255,255,255,0.08);border-radius:28px;padding:24px 20px 28px;overflow-y:auto;opacity:0;transition:all 0.45s cubic-bezier(0.16,1,0.3,1);display:flex;flex-direction:column;}
+        .mobile-menu.open .mobile-menu-panel{opacity:1;transform:translateX(-50%) translateY(0) scale(1);}
+        .mobile-menu-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;padding:0 4px;}
+        .mobile-menu-logo{height:36px;cursor:pointer;}
+        .mobile-close-btn{width:36px;height:36px;background:rgba(255,255,255,0.05);border:1px solid var(--glass-border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+        .mobile-close-btn svg{width:14px;height:14px;stroke:#fff;stroke-width:2;fill:none;}
+        .mobile-nav-links{list-style:none;margin-bottom:16px;}
+        .mobile-nav-links li{border-bottom:1px solid rgba(255,255,255,0.04);}
+        .mobile-nav-links li:last-child{border-bottom:none;}
+        .mobile-nav-item{display:flex;align-items:center;justify-content:space-between;padding:16px 12px;color:#fff;font-size:1.05rem;font-weight:600;cursor:pointer;border-radius:14px;transition:background 0.2s;text-decoration:none;}
+        .mobile-nav-item:hover{background:rgba(255,255,255,0.05);}
+        .mobile-nav-item svg{width:16px;height:16px;stroke:var(--text-dim);stroke-width:2;fill:none;transition:transform 0.3s;flex-shrink:0;}
+        .mobile-nav-item.expanded svg{transform:rotate(180deg);}
+        .mobile-sub-links{max-height:0;overflow:hidden;transition:max-height 0.4s cubic-bezier(0.16,1,0.3,1);}
+        .mobile-sub-links.open{max-height:300px;}
+        .mobile-sub-links a{display:block;padding:12px 12px 12px 28px;color:var(--text-dim);font-size:0.92rem;font-weight:500;text-decoration:none;border-radius:12px;transition:all 0.2s;}
+        .mobile-sub-links a:hover{color:#fff;background:rgba(255,255,255,0.04);}
+        .mobile-divider{height:1px;background:rgba(255,255,255,0.06);margin:12px 0;}
+        .mobile-auth-wrapper{position:relative;display:flex;background:rgba(255,255,255,0.03);padding:5px;border-radius:100px;border:1px solid var(--glass-border);margin-bottom:12px;}
+        .mobile-auth-pill{position:absolute;top:5px;left:5px;width:calc(50% - 5px);height:calc(100% - 10px);background:rgba(255,255,255,0.18);backdrop-filter:blur(15px);border-radius:100px;transition:transform 0.35s cubic-bezier(0.2,0.9,0.4,1.1);z-index:1;pointer-events:none;}
+        .mobile-auth-pill.signup-active{transform:translateX(0);}
+        .mobile-auth-pill.login-active{transform:translateX(100%);}
+        .mobile-auth-btn{position:relative;z-index:2;flex:1;background:transparent;border:none;color:#fff;padding:12px 10px;cursor:pointer;font-weight:600;border-radius:100px;font-size:0.9rem;text-align:center;}
+        .mobile-profile-card{background:rgba(255,255,255,0.03);border:1px solid var(--glass-border);border-radius:20px;padding:16px;margin-bottom:12px;}
+        .mobile-profile-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+        .mobile-profile-avatar{width:46px;height:46px;border-radius:50%;border:2px solid rgba(255,255,255,0.12);object-fit:cover;flex-shrink:0;}
+        .mobile-profile-name{font-weight:700;font-size:0.95rem;color:#fff;}
+        .mobile-profile-email{font-size:0.75rem;color:var(--text-dim);margin-top:2px;}
+        .mobile-profile-actions{display:flex;flex-direction:column;gap:4px;}
+        .mobile-profile-action{display:flex;align-items:center;gap:10px;padding:10px 12px;color:var(--text-dim);font-size:0.88rem;border-radius:12px;cursor:pointer;transition:all 0.2s;}
+        .mobile-profile-action:hover{background:rgba(255,255,255,0.05);color:#fff;}
+        .mobile-profile-action.danger{color:#ff4d4d;}
+        .mobile-admin-badge{background:rgba(255,100,0,0.2);color:#ffa500;font-size:0.65rem;padding:2px 7px;border-radius:20px;margin-left:auto;}
+        .ban-message{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:20000;display:flex;align-items:center;justify-content:center;flex-direction:column;}
+        .ban-message-content{background:#1a1a1a;padding:50px;border-radius:30px;max-width:500px;border:1px solid #ff3b30;text-align:center;}
+        .ban-message h2{color:#ff3b30;margin-bottom:20px;font-size:2rem;}
+        .ban-message p{color:#ccc;margin-bottom:30px;line-height:1.6;}
+        .ban-message button{background:#ff3b30;color:white;border:none;padding:12px 30px;border-radius:30px;cursor:pointer;font-size:1rem;}
 
-        /* NAV */
-        nav { position:fixed; width:100%; top:25px; display:flex; justify-content:center; z-index:1000; transition:transform 0.4s cubic-bezier(0.16,1,0.3,1); }
-        nav.nav-hidden { transform:translateY(-120px); }
-        .nav-container { width:92%; height:75px; background:rgba(15,15,15,0.7); backdrop-filter:blur(30px); border:1px solid var(--glass-border); border-radius:100px; display:flex; align-items:center; justify-content:space-between; padding:0 35px; }
-        .logo-img { height:45px; cursor:pointer; }
-        .nav-links { display:flex; list-style:none; gap:35px; align-items:center; }
-        .nav-links li { position:relative; padding:20px 0; }
-        .nav-links a { text-decoration:none; color:var(--text-dim); font-size:0.95rem; font-weight:500; transition:color 0.3s; }
-        .nav-links a.active-page, .nav-links li:hover > a { color:#fff; }
-        .dropdown-menu { position:absolute; top:65px; left:50%; transform:translateX(-50%) scale(0.4) translateY(-20px); background:rgba(22,22,22,0.95); backdrop-filter:blur(40px); border:1px solid rgba(255,255,255,0.1); border-radius:24px; min-width:220px; padding:10px; opacity:0; visibility:hidden; transition:all 0.5s var(--apple-spring); z-index:100; box-shadow:0 30px 60px rgba(0,0,0,0.5); }
-        .nav-links li:hover .dropdown-menu { opacity:1; visibility:visible; transform:translateX(-50%) scale(1) translateY(0); }
-        .dropdown-menu a { display:flex !important; align-items:center; gap:12px; padding:12px 16px !important; color:var(--text-dim) !important; font-size:0.88rem !important; text-decoration:none; border-radius:14px; transition:all 0.2s ease; margin-bottom:2px; }
-        .dropdown-menu a:hover { background:rgba(255,255,255,0.06); color:#fff !important; transform:translateX(5px); }
-        .profile-dropdown { position:absolute; top:65px; right:0; transform:scale(0.4) translateY(-20px); background:rgba(22,22,22,0.95); backdrop-filter:blur(40px); border:1px solid rgba(255,255,255,0.1); border-radius:24px; min-width:220px; padding:10px; opacity:0; visibility:hidden; transition:all 0.5s var(--apple-spring); z-index:100; box-shadow:0 30px 60px rgba(0,0,0,0.5); }
-        .profile-section:hover .profile-dropdown { opacity:1; visibility:visible; transform:scale(1) translateY(0); }
-        .dropdown-item { display:flex !important; align-items:center; gap:12px; padding:12px 16px !important; color:var(--text-dim) !important; font-size:0.88rem !important; border-radius:14px; transition:all 0.2s ease; margin-bottom:2px; cursor:pointer; }
-        .dropdown-item:hover { background:rgba(255,255,255,0.06); color:#fff !important; transform:translateX(5px); }
-        .profile-section { position:relative; margin-left:20px; cursor:pointer; }
-        .profile-avatar { width:42px; height:42px; border-radius:50%; border:2px solid rgba(255,255,255,0.1); transition:0.3s; object-fit:cover; }
-        .profile-section:hover .profile-avatar { border-color:#fff; transform:scale(1.05); }
-        .auth-wrapper { position:relative; display:inline-flex; background:rgba(255,255,255,0.03); padding:5px; border-radius:100px; border:1px solid var(--glass-border); }
-        .auth-pill { position:absolute; top:5px; left:5px; width:calc(50% - 5px); height:calc(100% - 10px); background:rgba(255,255,255,0.2); backdrop-filter:blur(15px); border-radius:100px; transition:transform 0.35s cubic-bezier(0.2,0.9,0.4,1.1); z-index:1; pointer-events:none; }
-        .auth-pill.signup-active { transform:translateX(0); }
-        .auth-pill.login-active { transform:translateX(100%); }
-        .auth-btn { position:relative; z-index:2; background:transparent; border:none; color:#fff; padding:10px 28px; cursor:pointer; font-weight:600; border-radius:100px; min-width:110px; font-size:0.9rem; }
-        .hamburger-btn { display:none; flex-direction:column; justify-content:center; align-items:center; gap:5px; width:44px; height:44px; background:rgba(255,255,255,0.05); border:1px solid var(--glass-border); border-radius:50%; cursor:pointer; z-index:1100; transition:background 0.3s; flex-shrink:0; }
-        .hamburger-btn:hover { background:rgba(255,255,255,0.1); }
-        .hamburger-btn span { display:block; width:18px; height:1.5px; background:#fff; border-radius:2px; transition:all 0.35s cubic-bezier(0.16,1,0.3,1); transform-origin:center; }
-        .hamburger-btn.open span:nth-child(1) { transform:translateY(6.5px) rotate(45deg); }
-        .hamburger-btn.open span:nth-child(2) { opacity:0; transform:scaleX(0); }
-        .hamburger-btn.open span:nth-child(3) { transform:translateY(-6.5px) rotate(-45deg); }
-        .mobile-menu { display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:1050; pointer-events:none; }
-        .mobile-menu.open { pointer-events:all; }
-        .mobile-menu-backdrop { position:absolute; inset:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(6px); opacity:0; transition:opacity 0.4s ease; }
-        .mobile-menu.open .mobile-menu-backdrop { opacity:1; }
-        .mobile-menu-panel { position:absolute; top:20px; left:50%; transform:translateX(-50%) translateY(-30px) scale(0.96); width:92%; max-height:calc(100vh - 40px); background:rgba(12,12,12,0.96); backdrop-filter:blur(40px); border:1px solid rgba(255,255,255,0.08); border-radius:28px; padding:24px 20px 28px; overflow-y:auto; opacity:0; transition:all 0.45s cubic-bezier(0.16,1,0.3,1); display:flex; flex-direction:column; }
-        .mobile-menu.open .mobile-menu-panel { opacity:1; transform:translateX(-50%) translateY(0) scale(1); }
-        .mobile-menu-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; padding:0 4px; }
-        .mobile-menu-logo { height:36px; cursor:pointer; }
-        .mobile-close-btn { width:36px; height:36px; background:rgba(255,255,255,0.05); border:1px solid var(--glass-border); border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; }
-        .mobile-close-btn svg { width:14px; height:14px; stroke:#fff; stroke-width:2; fill:none; }
-        .mobile-nav-links { list-style:none; margin-bottom:16px; }
-        .mobile-nav-links li { border-bottom:1px solid rgba(255,255,255,0.04); }
-        .mobile-nav-links li:last-child { border-bottom:none; }
-        .mobile-nav-item { display:flex; align-items:center; justify-content:space-between; padding:16px 12px; color:#fff; font-size:1.05rem; font-weight:600; cursor:pointer; border-radius:14px; transition:background 0.2s; text-decoration:none; }
-        .mobile-nav-item:hover { background:rgba(255,255,255,0.05); }
-        .mobile-nav-item svg { width:16px; height:16px; stroke:var(--text-dim); stroke-width:2; fill:none; transition:transform 0.3s; flex-shrink:0; }
-        .mobile-nav-item.expanded svg { transform:rotate(180deg); }
-        .mobile-sub-links { max-height:0; overflow:hidden; transition:max-height 0.4s cubic-bezier(0.16,1,0.3,1); }
-        .mobile-sub-links.open { max-height:300px; }
-        .mobile-sub-links a { display:block; padding:12px 12px 12px 28px; color:var(--text-dim); font-size:0.92rem; font-weight:500; text-decoration:none; border-radius:12px; transition:all 0.2s; }
-        .mobile-sub-links a:hover { color:#fff; background:rgba(255,255,255,0.04); }
-        .mobile-divider { height:1px; background:rgba(255,255,255,0.06); margin:12px 0; }
-        .mobile-auth-wrapper { position:relative; display:flex; background:rgba(255,255,255,0.03); padding:5px; border-radius:100px; border:1px solid var(--glass-border); margin-bottom:12px; }
-        .mobile-auth-pill { position:absolute; top:5px; left:5px; width:calc(50% - 5px); height:calc(100% - 10px); background:rgba(255,255,255,0.18); backdrop-filter:blur(15px); border-radius:100px; transition:transform 0.35s cubic-bezier(0.2,0.9,0.4,1.1); z-index:1; pointer-events:none; }
-        .mobile-auth-pill.signup-active { transform:translateX(0); }
-        .mobile-auth-pill.login-active { transform:translateX(100%); }
-        .mobile-auth-btn { position:relative; z-index:2; flex:1; background:transparent; border:none; color:#fff; padding:12px 10px; cursor:pointer; font-weight:600; border-radius:100px; font-size:0.9rem; text-align:center; }
-        .mobile-profile-card { background:rgba(255,255,255,0.03); border:1px solid var(--glass-border); border-radius:20px; padding:16px; margin-bottom:12px; }
-        .mobile-profile-header { display:flex; align-items:center; gap:12px; margin-bottom:14px; }
-        .mobile-profile-avatar { width:46px; height:46px; border-radius:50%; border:2px solid rgba(255,255,255,0.12); object-fit:cover; flex-shrink:0; }
-        .mobile-profile-name { font-weight:700; font-size:0.95rem; color:#fff; }
-        .mobile-profile-email { font-size:0.75rem; color:var(--text-dim); margin-top:2px; }
-        .mobile-profile-actions { display:flex; flex-direction:column; gap:4px; }
-        .mobile-profile-action { display:flex; align-items:center; gap:10px; padding:10px 12px; color:var(--text-dim); font-size:0.88rem; border-radius:12px; cursor:pointer; transition:all 0.2s; }
-        .mobile-profile-action:hover { background:rgba(255,255,255,0.05); color:#fff; }
-        .mobile-profile-action.danger { color:#ff4d4d; }
-        .mobile-admin-badge { background:rgba(255,100,0,0.2); color:#ffa500; font-size:0.65rem; padding:2px 7px; border-radius:20px; margin-left:auto; }
-        .ban-message { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:20000; display:flex; align-items:center; justify-content:center; flex-direction:column; }
-        .ban-message-content { background:#1a1a1a; padding:50px; border-radius:30px; max-width:500px; border:1px solid #ff3b30; text-align:center; }
-        .ban-message h2 { color:#ff3b30; margin-bottom:20px; font-size:2rem; }
-        .ban-message p { color:#ccc; margin-bottom:30px; line-height:1.6; }
-        .ban-message button { background:#ff3b30; color:white; border:none; padding:12px 30px; border-radius:30px; cursor:pointer; font-size:1rem; }
+        /* PAGE */
+        .page-hero{padding:175px 8% 60px;max-width:1400px;margin:0 auto;}
+        .page-eyebrow{display:inline-block;background:rgba(255,255,255,0.05);border:1px solid var(--glass-border);border-radius:100px;padding:6px 18px;font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:22px;}
+        .page-hero h1{font-size:clamp(2.6rem,5vw,4.5rem);font-weight:800;letter-spacing:-2px;line-height:1.05;margin-bottom:16px;}
+        .page-hero p{font-size:1.05rem;color:var(--text-dim);max-width:540px;line-height:1.75;}
 
-        /* ── PAGE HERO ── */
-        .page-hero {
-            padding: 175px 8% 70px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        .page-eyebrow {
-            display: inline-block;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--glass-border);
-            border-radius: 100px;
-            padding: 6px 18px;
-            font-size: 0.72rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.4);
-            margin-bottom: 22px;
-        }
-        .page-hero h1 {
-            font-size: clamp(2.6rem, 5vw, 4.5rem);
-            font-weight: 800;
-            letter-spacing: -2px;
-            line-height: 1.05;
-            margin-bottom: 16px;
-        }
-        .page-hero p {
-            font-size: 1.05rem;
-            color: var(--text-dim);
-            max-width: 540px;
-            line-height: 1.75;
-        }
+        /* FILTER BAR */
+        .filter-bar{padding:0 8% 44px;max-width:1400px;margin:0 auto;}
+        .filter-inner{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+        .search-wrap{position:relative;flex:1;min-width:220px;}
+        .search-wrap svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:rgba(255,255,255,0.3);stroke-width:2;fill:none;pointer-events:none;}
+        .search-input{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:100px;padding:13px 18px 13px 44px;color:#fff;font-size:0.9rem;font-family:inherit;outline:none;transition:border-color 0.25s,background 0.25s;}
+        .search-input::placeholder{color:rgba(255,255,255,0.25);}
+        .search-input:focus{border-color:rgba(255,255,255,0.22);background:rgba(255,255,255,0.06);}
+        .filter-pill{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:100px;padding:12px 22px;font-size:0.85rem;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;transition:all 0.25s;white-space:nowrap;}
+        .filter-pill:hover{border-color:rgba(255,255,255,0.2);color:#fff;}
+        .filter-pill.active{background:#fff;color:#000;border-color:#fff;}
 
-        /* ── SEARCH / FILTER BAR ── */
-        .filter-bar {
-            padding: 0 8% 50px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        .filter-inner {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-        .search-wrap {
-            position: relative;
-            flex: 1;
-            min-width: 220px;
-        }
-        .search-wrap svg {
-            position: absolute;
-            left: 16px; top: 50%;
-            transform: translateY(-50%);
-            width: 16px; height: 16px;
-            stroke: rgba(255,255,255,0.3);
-            stroke-width: 2; fill: none;
-            pointer-events: none;
-        }
-        .search-input {
-            width: 100%;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 100px;
-            padding: 13px 18px 13px 44px;
-            color: #fff;
-            font-size: 0.9rem;
-            font-family: inherit;
-            outline: none;
-            transition: border-color 0.25s, background 0.25s;
-        }
-        .search-input::placeholder { color: rgba(255,255,255,0.25); }
-        .search-input:focus { border-color: rgba(255,255,255,0.22); background: rgba(255,255,255,0.06); }
-        .filter-pill {
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 100px;
-            padding: 12px 22px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: rgba(255,255,255,0.5);
-            cursor: pointer;
-            transition: all 0.25s;
-            white-space: nowrap;
-        }
-        .filter-pill:hover { border-color: rgba(255,255,255,0.2); color: #fff; }
-        .filter-pill.active { background: #fff; color: #000; border-color: #fff; }
+        /* ADMIN ADD BUTTON — only visible when admin */
+        .admin-add-btn{display:none;align-items:center;gap:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:100px;padding:12px 22px;font-size:0.85rem;font-weight:600;color:#fff;cursor:pointer;transition:all 0.3s;white-space:nowrap;}
+        .admin-add-btn:hover{background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.25);}
+        .admin-add-btn svg{width:16px;height:16px;stroke:#fff;stroke-width:2;fill:none;}
+        .admin-add-btn.visible{display:flex;}
 
-        /* ── TEACHER GRID ── */
-        .teachers-section {
-            padding: 0 8% 120px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        .teachers-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
+        /* GRID */
+        .teachers-section{padding:0 8% 120px;max-width:1400px;margin:0 auto;}
+        .teachers-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
 
-        /* teacher card */
-        .teacher-card {
-            background: var(--card-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 28px;
-            overflow: hidden;
-            transition: all 0.45s cubic-bezier(0.16,1,0.3,1);
-            cursor: default;
-        }
-        .teacher-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(255,255,255,0.14);
-            box-shadow: 0 24px 48px rgba(0,0,0,0.5);
-        }
-
-        /* avatar area */
-        .tc-avatar-wrap {
-            height: 180px;
-            position: relative;
-            overflow: hidden;
-            background: rgba(255,255,255,0.03);
-        }
-        .tc-avatar-wrap img {
-            width: 100%; height: 100%;
-            object-fit: cover;
-            opacity: 0.7;
-            transition: transform 0.5s ease, opacity 0.4s;
-        }
-        .teacher-card:hover .tc-avatar-wrap img { transform: scale(1.04); opacity: 0.85; }
-        .tc-avatar-overlay {
-            position: absolute; inset: 0;
-            background: linear-gradient(to bottom, transparent 40%, rgba(12,12,12,0.95) 100%);
-        }
-        /* initials fallback */
-        .tc-initials {
-            width: 100%; height: 100%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: rgba(255,255,255,0.12);
-            letter-spacing: -1px;
-            background: rgba(255,255,255,0.02);
-        }
-        /* subject tag floating on image */
-        .tc-subject-badge {
-            position: absolute;
-            bottom: 14px; left: 16px;
-            background: rgba(0,0,0,0.65);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 100px;
-            padding: 5px 13px;
-            font-size: 0.68rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.7);
-        }
-
-        /* card body */
-        .tc-body { padding: 22px 24px 24px; }
-        .tc-name { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
-        .tc-role { font-size: 0.82rem; color: var(--text-dim); margin-bottom: 18px; }
-
-        /* contact rows */
-        .tc-contacts { display: flex; flex-direction: column; gap: 10px; }
-        .tc-contact-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 14px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 14px;
-            transition: all 0.2s;
-            text-decoration: none;
-            color: inherit;
-        }
-        .tc-contact-row:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.12); }
-        .tc-contact-icon {
-            width: 30px; height: 30px; flex-shrink: 0;
-            background: rgba(255,255,255,0.06);
-            border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .tc-contact-icon svg { width: 14px; height: 14px; stroke: rgba(255,255,255,0.6); stroke-width: 2; fill: none; }
-        .tc-contact-info { flex: 1; min-width: 0; }
-        .tc-contact-label { font-size: 0.62rem; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.28); display: block; margin-bottom: 1px; }
-        .tc-contact-value { font-size: 0.82rem; font-weight: 500; color: rgba(255,255,255,0.8); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-        /* grades badge row */
-        .tc-grades {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-top: 14px;
-            padding-top: 14px;
-            border-top: 1px solid rgba(255,255,255,0.05);
-        }
-        .tc-grade-tag {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--glass-border);
-            border-radius: 100px;
-            padding: 3px 11px;
-            font-size: 0.7rem;
-            color: rgba(255,255,255,0.45);
-        }
+        /* CARD */
+        .teacher-card{background:var(--card-bg);border:1px solid var(--glass-border);border-radius:28px;overflow:hidden;transition:all 0.45s cubic-bezier(0.16,1,0.3,1);cursor:pointer;opacity:0;transform:translateY(18px) scale(0.97);}
+        .teacher-card.visible{opacity:1;transform:translateY(0) scale(1);}
+        .teacher-card:hover{transform:translateY(-8px);border-color:rgba(255,255,255,0.14);box-shadow:0 24px 48px rgba(0,0,0,0.5);}
+        .tc-avatar-wrap{height:170px;position:relative;overflow:hidden;background:rgba(255,255,255,0.03);display:flex;align-items:center;justify-content:center;}
+        .tc-initials{font-size:2.8rem;font-weight:800;color:rgba(255,255,255,0.1);letter-spacing:-2px;position:relative;z-index:1;}
+        .tc-avatar-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(12,12,12,0.9) 100%);}
+        .tc-subject-badge{position:absolute;bottom:14px;left:16px;background:rgba(0,0,0,0.65);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.1);border-radius:100px;padding:5px 13px;font-size:0.68rem;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.7);z-index:2;}
+        .tc-body{padding:20px 22px 22px;}
+        .tc-name{font-size:1.05rem;font-weight:700;margin-bottom:3px;}
+        .tc-role{font-size:0.8rem;color:var(--text-dim);margin-bottom:16px;}
+        .tc-contacts{display:flex;flex-direction:column;gap:8px;}
+        .tc-contact-row{display:flex;align-items:center;gap:10px;padding:9px 13px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);border-radius:13px;transition:all 0.2s;text-decoration:none;color:inherit;}
+        .tc-contact-row:hover{background:rgba(255,255,255,0.07);border-color:rgba(255,255,255,0.12);}
+        .tc-contact-icon{width:28px;height:28px;flex-shrink:0;background:rgba(255,255,255,0.06);border-radius:8px;display:flex;align-items:center;justify-content:center;}
+        .tc-contact-icon svg{width:13px;height:13px;stroke:rgba(255,255,255,0.6);stroke-width:2;fill:none;}
+        .tc-contact-label{font-size:0.6rem;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.28);display:block;margin-bottom:1px;}
+        .tc-contact-value{font-size:0.8rem;font-weight:500;color:rgba(255,255,255,0.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+        .tc-grades{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.05);}
+        .tc-grade-tag{background:rgba(255,255,255,0.05);border:1px solid var(--glass-border);border-radius:100px;padding:3px 10px;font-size:0.68rem;color:rgba(255,255,255,0.4);}
 
         /* no results */
-        .no-results {
-            grid-column: 1/-1;
-            text-align: center;
-            padding: 80px 20px;
-            color: var(--text-dim);
-        }
-        .no-results svg { width:40px; height:40px; stroke:rgba(255,255,255,0.15); stroke-width:1.5; fill:none; margin-bottom:16px; }
-        .no-results p { font-size:1rem; }
+        .no-results{grid-column:1/-1;text-align:center;padding:80px 20px;color:var(--text-dim);}
+        .no-results svg{width:36px;height:36px;stroke:rgba(255,255,255,0.15);stroke-width:1.5;fill:none;margin-bottom:14px;}
 
-        /* note strip */
-        .note-strip {
-            margin: 0 8% 80px;
-            max-width: 1400px;
-        }
-        .note-inner {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 22px;
-            padding: 22px 28px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-        .note-icon { width:36px; height:36px; background:rgba(255,255,255,0.05); border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-        .note-icon svg { width:18px; height:18px; stroke:rgba(255,255,255,0.5); stroke-width:1.5; fill:none; }
-        .note-text { font-size:0.88rem; color:var(--text-dim); line-height:1.6; }
-        .note-text strong { color:rgba(255,255,255,0.8); }
+        /* ── PROFILE MODAL ── */
+        .profile-modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(18px);z-index:2000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.4s ease;}
+        .profile-modal-backdrop.open{opacity:1;pointer-events:all;}
+        .profile-modal{background:rgba(14,14,14,0.98);border:1px solid rgba(255,255,255,0.08);border-radius:32px;width:90%;max-width:420px;padding:36px 32px 32px;position:relative;transform:scale(0.92) translateY(20px);transition:transform 0.45s cubic-bezier(0.16,1,0.3,1);}
+        .profile-modal-backdrop.open .profile-modal{transform:scale(1) translateY(0);}
+        .pm-close{position:absolute;top:18px;right:18px;width:32px;height:32px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background 0.2s;}
+        .pm-close:hover{background:rgba(255,255,255,0.12);}
+        .pm-close svg{width:12px;height:12px;stroke:#fff;stroke-width:2.5;fill:none;}
+        .pm-avatar{width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:800;color:rgba(255,255,255,0.25);margin:0 auto 16px;letter-spacing:-1px;}
+        .pm-name{text-align:center;font-size:1.3rem;font-weight:700;margin-bottom:4px;}
+        .pm-role{text-align:center;font-size:0.85rem;color:var(--text-dim);margin-bottom:12px;}
+        .pm-tag{display:block;width:fit-content;margin:0 auto 20px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:100px;padding:5px 16px;font-size:0.7rem;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.5);}
+        .pm-divider{height:1px;background:rgba(255,255,255,0.06);margin-bottom:18px;}
+        .pm-contact-rows{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
+        .pm-contact-row{display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:16px;text-decoration:none;color:inherit;transition:all 0.2s;}
+        .pm-contact-row:hover{background:rgba(255,255,255,0.07);}
+        .pm-contact-icon{width:34px;height:34px;background:rgba(255,255,255,0.06);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+        .pm-contact-icon svg{width:15px;height:15px;stroke:rgba(255,255,255,0.6);stroke-width:2;fill:none;}
+        .pm-contact-label{font-size:0.62rem;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.28);display:block;margin-bottom:2px;}
+        .pm-contact-value{font-size:0.88rem;font-weight:500;color:rgba(255,255,255,0.85);}
+        .pm-grades{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;}
+        .pm-grade-tag{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:100px;padding:4px 12px;font-size:0.7rem;color:rgba(255,255,255,0.4);}
+        /* admin delete button in modal */
+        .pm-delete-btn{display:none;width:100%;margin-top:18px;padding:13px;background:rgba(255,77,77,0.08);border:1px solid rgba(255,77,77,0.18);border-radius:100px;color:#ff4d4d;font-size:0.9rem;font-weight:600;cursor:pointer;transition:all 0.25s;}
+        .pm-delete-btn:hover{background:rgba(255,77,77,0.16);}
+        .pm-delete-btn.admin-visible{display:block;}
+
+        /* ── ADD TEACHER MODAL ── */
+        .add-modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(18px);z-index:2100;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.4s ease;}
+        .add-modal-backdrop.open{opacity:1;pointer-events:all;}
+        .add-modal{background:rgba(14,14,14,0.98);border:1px solid rgba(255,255,255,0.08);border-radius:32px;width:90%;max-width:480px;max-height:90vh;overflow-y:auto;padding:36px 32px 32px;position:relative;transform:scale(0.92) translateY(20px);transition:transform 0.45s cubic-bezier(0.16,1,0.3,1);}
+        .add-modal-backdrop.open .add-modal{transform:scale(1) translateY(0);}
+        .am-title{font-size:1.4rem;font-weight:700;margin-bottom:6px;}
+        .am-sub{font-size:0.85rem;color:var(--text-dim);margin-bottom:24px;}
+        .am-close{position:absolute;top:18px;right:18px;width:32px;height:32px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+        .am-close svg{width:12px;height:12px;stroke:#fff;stroke-width:2.5;fill:none;}
+        .am-field{display:flex;flex-direction:column;margin-bottom:14px;}
+        .am-field label{font-size:0.68rem;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,0.38);margin-bottom:7px;font-weight:600;}
+        .am-field input,.am-field select{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:13px 15px;color:#fff;font-size:0.9rem;font-family:inherit;outline:none;transition:border-color 0.2s;}
+        .am-field input::placeholder{color:rgba(255,255,255,0.2);}
+        .am-field input:focus,.am-field select:focus{border-color:rgba(255,255,255,0.25);}
+        .am-field select{appearance:none;cursor:pointer;}
+        .am-field select option{background:#1a1a1a;}
+        .am-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+        .am-save-btn{width:100%;margin-top:8px;padding:14px;background:#fff;color:#000;border:none;border-radius:100px;font-size:0.93rem;font-weight:700;cursor:pointer;transition:all 0.3s cubic-bezier(0.16,1,0.3,1);}
+        .am-save-btn:hover{background:rgba(255,255,255,0.88);transform:scale(1.02);}
+        .am-save-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+
+        /* toast */
+        .toast{position:fixed;bottom:36px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(20,20,20,0.96);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.08);border-radius:100px;padding:13px 26px;color:#fff;font-size:0.88rem;font-weight:500;z-index:9999;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);display:flex;align-items:center;gap:10px;}
+        .toast.show{transform:translateX(-50%) translateY(0);}
+        .toast-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+        .toast-dot.green{background:#34c759;}
+        .toast-dot.red{background:#ff4d4d;}
 
         /* animations */
-        .reveal-up { opacity:0; transform:translateY(30px); transition:0.8s cubic-bezier(0.16,1,0.3,1); }
-        .reveal-up.active { opacity:1; transform:translateY(0); }
-        .card-hidden { opacity:0; transform:scale(0.96) translateY(16px); transition: opacity 0.35s ease, transform 0.35s ease; }
-        .card-hidden.visible { opacity:1; transform:scale(1) translateY(0); }
+        .reveal-up{opacity:0;transform:translateY(30px);transition:0.8s cubic-bezier(0.16,1,0.3,1);}
+        .reveal-up.active{opacity:1;transform:translateY(0);}
 
-        /* footer */
-        footer { padding:60px 8% 40px; text-align:center; border-top:1px solid var(--glass-border); background:#000; }
-        .footer-logo { font-size:1.5rem; font-weight:700; letter-spacing:-0.5px; margin-bottom:20px; color:#fff; }
-        .footer-copyright { color:var(--text-dim); font-size:0.85rem; margin-bottom:10px; }
-        .footer-made { color:var(--text-dim); font-size:0.8rem; opacity:0.7; }
+        footer{padding:60px 8% 40px;text-align:center;border-top:1px solid var(--glass-border);background:#000;}
+        .footer-logo{font-size:1.5rem;font-weight:700;letter-spacing:-0.5px;margin-bottom:20px;color:#fff;}
+        .footer-copyright{color:var(--text-dim);font-size:0.85rem;margin-bottom:10px;}
+        .footer-made{color:var(--text-dim);font-size:0.8rem;opacity:0.7;}
 
-        /* RESPONSIVE */
-        @media (min-width:768px) and (max-width:1024px) {
-            .nav-links,.auth-wrapper,.profile-section { display:none !important; }
-            .hamburger-btn { display:flex; }
-            .mobile-menu { display:block; }
-            .teachers-grid { grid-template-columns:1fr 1fr; }
-            .page-hero { padding:160px 6% 60px; }
-            .filter-bar { padding:0 6% 44px; }
-            .teachers-section { padding:0 6% 100px; }
-            .note-strip { margin:0 6% 70px; }
+        @media(min-width:768px) and (max-width:1024px){
+            .nav-links,.auth-wrapper,.profile-section{display:none !important;}
+            .hamburger-btn{display:flex;}
+            .mobile-menu{display:block;}
+            .teachers-grid{grid-template-columns:1fr 1fr;}
+            .page-hero{padding:160px 6% 50px;}
+            .filter-bar{padding:0 6% 40px;}
+            .teachers-section{padding:0 6% 100px;}
         }
-        @media (max-width:767px) {
-            .nav-links,.auth-wrapper,.profile-section { display:none !important; }
-            .hamburger-btn { display:flex; }
-            .mobile-menu { display:block; }
-            .teachers-grid { grid-template-columns:1fr; }
-            .page-hero { padding:140px 6% 50px; }
-            .page-hero h1 { font-size:2.4rem; letter-spacing:-1.5px; }
-            .filter-bar { padding:0 5% 36px; }
-            .filter-inner { flex-direction:column; align-items:stretch; }
-            .filter-pill { text-align:center; }
-            .teachers-section { padding:0 5% 80px; }
-            .note-strip { margin:0 5% 60px; }
-            .note-inner { flex-direction:column; align-items:flex-start; gap:12px; }
+        @media(max-width:767px){
+            .nav-links,.auth-wrapper,.profile-section{display:none !important;}
+            .hamburger-btn{display:flex;}
+            .mobile-menu{display:block;}
+            .teachers-grid{grid-template-columns:1fr;}
+            .page-hero{padding:140px 6% 46px;}
+            .page-hero h1{font-size:2.2rem;letter-spacing:-1.5px;}
+            .filter-bar{padding:0 5% 32px;}
+            .filter-inner{flex-wrap:wrap;}
+            .teachers-section{padding:0 5% 80px;}
+            .am-row{grid-template-columns:1fr;}
         }
     </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav id="navbar">
     <div class="nav-container">
         <div class="logo" onclick="window.location.href='index.html'"><img src="logo.png" alt="KORAHEY" class="logo-img"></div>
         <ul class="nav-links">
             <li><a href="index.html">Home</a></li>
             <li><a href="Contact.html">Contact Us</a>
-                <div class="dropdown-menu">
-                    <a href="about.html">About Us</a>
-                    <a href="teacher-contact.html" class="active-page">Teacher Contact</a>
-                </div>
+                <div class="dropdown-menu"><a href="about.html">About Us</a><a href="teacher-contact.html" class="active-page">Teacher Contact</a></div>
             </li>
             <li><a href="academics.html">Academics</a>
                 <div class="dropdown-menu"><a href="results.html">Results & Resources</a></div>
@@ -400,9 +255,7 @@
                         <p id="dropdownUserEmail" style="font-size:0.75rem;color:var(--text-dim);"></p>
                     </div>
                     <div class="dropdown-item" id="myAccountBtn"><span>My Account</span></div>
-                    <div id="adminDropdownItem" style="display:none;">
-                        <div class="dropdown-item" id="adminDashboardBtn"><span>Admin Dashboard</span><span style="background:rgba(255,100,0,0.2);color:#ffa500;font-size:0.7rem;padding:2px 8px;border-radius:20px;margin-left:8px;">ADMIN</span></div>
-                    </div>
+                    <div id="adminDropdownItem" style="display:none;"><div class="dropdown-item" id="adminDashboardBtn"><span>Admin Dashboard</span><span style="background:rgba(255,100,0,0.2);color:#ffa500;font-size:0.7rem;padding:2px 8px;border-radius:20px;margin-left:8px;">ADMIN</span></div></div>
                     <div class="dropdown-item" id="signOutBtn" style="color:#ff4d4d !important;"><span>Sign Out</span></div>
                 </div>
             </div>
@@ -411,7 +264,6 @@
     </div>
 </nav>
 
-<!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
     <div class="mobile-menu-backdrop" id="mobileBackdrop"></div>
     <div class="mobile-menu-panel">
@@ -421,18 +273,12 @@
         </div>
         <ul class="mobile-nav-links">
             <li><a href="index.html" class="mobile-nav-item">Home</a></li>
-            <li>
-                <div class="mobile-nav-item" onclick="toggleMobileAccordion(this,'Contact.html')"><span>Contact Us</span><svg viewBox="0 0 16 16"><polyline points="4 6 8 10 12 6"/></svg></div>
-                <div class="mobile-sub-links"><a href="about.html">About Us</a><a href="teacher-contact.html">Teacher Contact</a></div>
-            </li>
-            <li>
-                <div class="mobile-nav-item" onclick="toggleMobileAccordion(this,'academics.html')"><span>Academics</span><svg viewBox="0 0 16 16"><polyline points="4 6 8 10 12 6"/></svg></div>
-                <div class="mobile-sub-links"><a href="results.html">Results & Resources</a></div>
-            </li>
-            <li>
-                <div class="mobile-nav-item" onclick="toggleMobileAccordion(this,'announcements.html')"><span>Announcements</span><svg viewBox="0 0 16 16"><polyline points="4 6 8 10 12 6"/></svg></div>
-                <div class="mobile-sub-links"><a href="exam-calendar.html">Exam Calendar</a></div>
-            </li>
+            <li><div class="mobile-nav-item" onclick="toggleMobileAccordion(this,'Contact.html')"><span>Contact Us</span><svg viewBox="0 0 16 16"><polyline points="4 6 8 10 12 6"/></svg></div>
+                <div class="mobile-sub-links"><a href="about.html">About Us</a><a href="teacher-contact.html">Teacher Contact</a></div></li>
+            <li><div class="mobile-nav-item" onclick="toggleMobileAccordion(this,'academics.html')"><span>Academics</span><svg viewBox="0 0 16 16"><polyline points="4 6 8 10 12 6"/></svg></div>
+                <div class="mobile-sub-links"><a href="results.html">Results & Resources</a></div></li>
+            <li><div class="mobile-nav-item" onclick="toggleMobileAccordion(this,'announcements.html')"><span>Announcements</span><svg viewBox="0 0 16 16"><polyline points="4 6 8 10 12 6"/></svg></div>
+                <div class="mobile-sub-links"><a href="exam-calendar.html">Exam Calendar</a></div></li>
         </ul>
         <div class="mobile-divider"></div>
         <div id="mobileAuthSection">
@@ -458,7 +304,6 @@
     </div>
 </div>
 
-<!-- BAN -->
 <div id="banOverlay" style="display:none;" class="ban-message">
     <div class="ban-message-content"><h2>Account Banned</h2><p>Your account has been banned. Please contact support.</p><button onclick="logoutAndRedirect()">Sign Out</button></div>
 </div>
@@ -467,7 +312,7 @@
 <div class="page-hero reveal-up">
     <div class="page-eyebrow">Our Educators</div>
     <h1>Teacher Contact<br>Directory</h1>
-    <p>Reach out directly to any of our teachers. Find their subject, email, and phone number below.</p>
+    <p>Find and reach out directly to any of our teachers. Click a card to view full contact details.</p>
 </div>
 
 <!-- FILTER BAR -->
@@ -477,27 +322,59 @@
             <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             <input class="search-input" id="searchInput" type="text" placeholder="Search by name or subject…">
         </div>
-        <button class="filter-pill active" data-filter="all" onclick="setFilter(this,'all')">All</button>
-        <button class="filter-pill" data-filter="Primary"   onclick="setFilter(this,'Primary')">Primary</button>
-        <button class="filter-pill" data-filter="Secondary" onclick="setFilter(this,'Secondary')">Secondary</button>
-        <button class="filter-pill" data-filter="Senior"    onclick="setFilter(this,'Senior')">Senior</button>
+        <button class="filter-pill active" onclick="setFilter(this,'all')">All</button>
+        <button class="filter-pill" onclick="setFilter(this,'Primary')">Primary</button>
+        <button class="filter-pill" onclick="setFilter(this,'Secondary')">Secondary</button>
+        <button class="filter-pill" onclick="setFilter(this,'Senior')">Senior</button>
+        <!-- admin only -->
+        <button class="admin-add-btn" id="adminAddBtn" onclick="openAddModal()">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Teacher
+        </button>
     </div>
 </div>
 
-<!-- NOTE -->
-<div class="note-strip reveal-up">
-    <div class="note-inner">
-        <div class="note-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
-        <p class="note-text"><strong>School hours only.</strong> Please contact teachers during school hours, Monday–Friday 7:40 AM – 12:35 PM. For urgent matters outside school hours, contact the school office directly at <strong>090 090 4449</strong>.</p>
-    </div>
-</div>
-
-<!-- TEACHER GRID -->
+<!-- TEACHERS GRID -->
 <div class="teachers-section">
     <div class="teachers-grid" id="teachersGrid">
-        <!-- cards injected by JS -->
+        <div class="no-results"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><p>Loading teachers…</p></div>
     </div>
 </div>
+
+<!-- PROFILE MODAL -->
+<div class="profile-modal-backdrop" id="profileModalBackdrop" onclick="closeProfileModal(event)">
+    <div class="profile-modal" onclick="event.stopPropagation()">
+        <div class="pm-close" onclick="closeProfileModal(null,true)"><svg viewBox="0 0 14 14"><line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/></svg></div>
+        <div id="profileModalContent"></div>
+    </div>
+</div>
+
+<!-- ADD TEACHER MODAL (admin only) -->
+<div class="add-modal-backdrop" id="addModalBackdrop" onclick="closeAddModal(event)">
+    <div class="add-modal" onclick="event.stopPropagation()">
+        <div class="am-close" onclick="closeAddModal(null,true)"><svg viewBox="0 0 14 14"><line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/></svg></div>
+        <div class="am-title">Add New Teacher</div>
+        <div class="am-sub">Fill in the teacher's details. They will appear on the directory immediately.</div>
+        <div class="am-row">
+            <div class="am-field"><label>First Name</label><input id="amFirstName" type="text" placeholder="First name"></div>
+            <div class="am-field"><label>Last Name</label><input id="amLastName" type="text" placeholder="Last name"></div>
+        </div>
+        <div class="am-field"><label>Role / Title</label><input id="amRole" type="text" placeholder="e.g. Mathematics Teacher"></div>
+        <div class="am-field"><label>Subject</label><input id="amSubject" type="text" placeholder="e.g. Mathematics"></div>
+        <div class="am-row">
+            <div class="am-field"><label>School Level</label>
+                <select id="amLevel"><option value="" disabled selected>Select…</option><option value="Primary">Primary</option><option value="Secondary">Secondary</option><option value="Senior">Senior</option></select>
+            </div>
+            <div class="am-field"><label>Phone</label><input id="amPhone" type="tel" placeholder="090 …"></div>
+        </div>
+        <div class="am-field"><label>Email</label><input id="amEmail" type="email" placeholder="name@korahey.edu.et"></div>
+        <div class="am-field"><label>Grades (comma separated)</label><input id="amGrades" type="text" placeholder="Grade 10, Grade 11, Grade 12"></div>
+        <button class="am-save-btn" id="amSaveBtn" onclick="saveTeacher()">Add Teacher</button>
+    </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><div class="toast-dot green" id="toastDot"></div><span id="toastMsg"></span></div>
 
 <footer>
     <div style="max-width:1200px;margin:0 auto;">
@@ -508,32 +385,18 @@
 </footer>
 
 <script>
-/* ── TEACHER DATA ── */
-const teachers = [
-    { name:"Ahmed Hassan",       role:"Head of Mathematics",       subject:"Mathematics",   level:"Senior",    phone:"090 111 2201", email:"a.hassan@korahey.edu.et",    grades:["Grade 10","Grade 11","Grade 12"] },
-    { name:"Fadumo Abdi",        role:"English Language Teacher",  subject:"English",       level:"Secondary", phone:"090 111 2202", email:"f.abdi@korahey.edu.et",       grades:["Grade 7","Grade 8","Grade 9"] },
-    { name:"Omar Yusuf",         role:"Science & Biology Teacher", subject:"Science",       level:"Senior",    phone:"090 111 2203", email:"o.yusuf@korahey.edu.et",      grades:["Grade 10","Grade 11","Grade 12"] },
-    { name:"Halima Mohamed",     role:"Primary Class Teacher",     subject:"Primary",       level:"Primary",   phone:"090 111 2204", email:"h.mohamed@korahey.edu.et",    grades:["Grade 1","Grade 2","Grade 3"] },
-    { name:"Ismail Diriye",      role:"Social Studies Teacher",    subject:"Social Studies",level:"Secondary", phone:"090 111 2205", email:"i.diriye@korahey.edu.et",     grades:["Grade 7","Grade 8","Grade 9"] },
-    { name:"Faadumo Warsame",    role:"Islamic Studies Teacher",   subject:"Islamic Studies",level:"Primary",  phone:"090 111 2206", email:"f.warsame@korahey.edu.et",    grades:["Grade 4","Grade 5","Grade 6"] },
-    { name:"Abdi Farah",         role:"ICT & Computing Teacher",   subject:"ICT",           level:"Secondary", phone:"090 111 2207", email:"a.farah@korahey.edu.et",      grades:["Grade 8","Grade 9","Grade 10"] },
-    { name:"Safia Jama",         role:"Physical Education",        subject:"PE",            level:"Primary",   phone:"090 111 2208", email:"s.jama@korahey.edu.et",       grades:["Grade 1","Grade 2","Grade 3","Grade 4"] },
-    { name:"Mahad Ibrahim",      role:"Chemistry & Physics",       subject:"Science",       level:"Senior",    phone:"090 111 2209", email:"m.ibrahim@korahey.edu.et",    grades:["Grade 11","Grade 12"] },
-    { name:"Hodan Ali",          role:"Grade 5 Class Teacher",     subject:"Primary",       level:"Primary",   phone:"090 111 2210", email:"h.ali@korahey.edu.et",        grades:["Grade 5","Grade 6"] },
-    { name:"Mustafa Osman",      role:"History & Geography",       subject:"Social Studies",level:"Senior",    phone:"090 111 2211", email:"m.osman@korahey.edu.et",      grades:["Grade 10","Grade 11","Grade 12"] },
-    { name:"Ladan Noor",         role:"Art & Design Teacher",      subject:"Art",           level:"Secondary", phone:"090 111 2212", email:"l.noor@korahey.edu.et",       grades:["Grade 7","Grade 8","Grade 9"] },
-];
+let allTeachers = [];
+let activeFilter = 'all';
+let isAdminUser = false;
+let currentTeacher = null;
 
 function initials(name) {
-    return name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+    return name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
 }
 
-function buildCard(t, idx) {
+function buildCard(t, i) {
     const card = document.createElement('div');
-    card.className = 'teacher-card card-hidden';
-    card.dataset.level = t.level;
-    card.dataset.name  = t.name.toLowerCase();
-    card.dataset.subject = t.subject.toLowerCase();
+    card.className = 'teacher-card';
     card.innerHTML = `
         <div class="tc-avatar-wrap">
             <div class="tc-initials">${initials(t.name)}</div>
@@ -544,49 +407,40 @@ function buildCard(t, idx) {
             <div class="tc-name">${t.name}</div>
             <div class="tc-role">${t.role}</div>
             <div class="tc-contacts">
-                <a href="tel:${t.phone.replace(/\s/g,'')}" class="tc-contact-row">
+                <div class="tc-contact-row">
                     <div class="tc-contact-icon"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
-                    <div class="tc-contact-info">
-                        <span class="tc-contact-label">Phone</span>
-                        <span class="tc-contact-value">${t.phone}</span>
-                    </div>
-                </a>
-                <a href="mailto:${t.email}" class="tc-contact-row">
+                    <div class="tc-contact-info"><span class="tc-contact-label">Phone</span><span class="tc-contact-value">${t.phone}</span></div>
+                </div>
+                <div class="tc-contact-row">
                     <div class="tc-contact-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-                    <div class="tc-contact-info">
-                        <span class="tc-contact-label">Email</span>
-                        <span class="tc-contact-value">${t.email}</span>
-                    </div>
-                </a>
+                    <div class="tc-contact-info"><span class="tc-contact-label">Email</span><span class="tc-contact-value">${t.email}</span></div>
+                </div>
             </div>
-            <div class="tc-grades">
-                ${t.grades.map(g => `<span class="tc-grade-tag">${g}</span>`).join('')}
-            </div>
+            <div class="tc-grades">${(t.grades||[]).map(g=>`<span class="tc-grade-tag">${g}</span>`).join('')}</div>
         </div>`;
-    setTimeout(() => card.classList.add('visible'), 60 + idx * 55);
+    setTimeout(() => card.classList.add('visible'), 60 + i * 55);
+    card.addEventListener('click', () => openProfileModal(t));
     return card;
 }
 
-let activeFilter = 'all';
-
-function renderCards(query = '') {
+function renderCards(query='') {
     const grid = document.getElementById('teachersGrid');
-    grid.innerHTML = '';
     const q = query.toLowerCase().trim();
-    const filtered = teachers.filter(t => {
-        const matchFilter = activeFilter === 'all' || t.level === activeFilter;
+    const filtered = allTeachers.filter(t => {
+        const matchFilter = activeFilter==='all' || t.level===activeFilter;
         const matchSearch = !q || t.name.toLowerCase().includes(q) || t.subject.toLowerCase().includes(q) || t.role.toLowerCase().includes(q);
         return matchFilter && matchSearch;
     });
+    grid.innerHTML = '';
     if (!filtered.length) {
-        grid.innerHTML = `<div class="no-results"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><p>No teachers found matching your search.</p></div>`;
+        grid.innerHTML = `<div class="no-results"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><p>No teachers found.</p></div>`;
         return;
     }
-    filtered.forEach((t, i) => grid.appendChild(buildCard(t, i)));
+    filtered.forEach((t,i) => grid.appendChild(buildCard(t,i)));
 }
 
 function setFilter(btn, level) {
-    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.filter-pill').forEach(p=>p.classList.remove('active'));
     btn.classList.add('active');
     activeFilter = level;
     renderCards(document.getElementById('searchInput').value);
@@ -594,13 +448,107 @@ function setFilter(btn, level) {
 
 document.getElementById('searchInput').addEventListener('input', e => renderCards(e.target.value));
 
-/* ── MOBILE MENU ── */
+/* PROFILE MODAL */
+function openProfileModal(t) {
+    currentTeacher = t;
+    document.getElementById('profileModalContent').innerHTML = `
+        <div class="pm-avatar">${initials(t.name)}</div>
+        <div class="pm-name">${t.name}</div>
+        <div class="pm-role">${t.role}</div>
+        <span class="pm-tag">${t.subject}</span>
+        <div class="pm-divider"></div>
+        <div class="pm-contact-rows">
+            <a href="tel:${(t.phone||'').replace(/\s/g,'')}" class="pm-contact-row">
+                <div class="pm-contact-icon"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
+                <div><span class="pm-contact-label">Phone</span><div class="pm-contact-value">${t.phone}</div></div>
+            </a>
+            <a href="mailto:${t.email}" class="pm-contact-row">
+                <div class="pm-contact-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+                <div><span class="pm-contact-label">Email</span><div class="pm-contact-value">${t.email}</div></div>
+            </a>
+        </div>
+        ${(t.grades&&t.grades.length)?`<div class="pm-grades">${t.grades.map(g=>`<span class="pm-grade-tag">${g}</span>`).join('')}</div>`:''}
+        <button class="pm-delete-btn ${isAdminUser?'admin-visible':''}" onclick="deleteTeacher()">Remove Teacher</button>`;
+    document.getElementById('profileModalBackdrop').classList.add('open');
+}
+
+function closeProfileModal(e, force=false) {
+    if (force || (e && e.target===document.getElementById('profileModalBackdrop'))) {
+        document.getElementById('profileModalBackdrop').classList.remove('open');
+    }
+}
+
+/* DELETE */
+async function deleteTeacher() {
+    if (!currentTeacher || !currentTeacher.id) return;
+    if (!confirm(`Remove ${currentTeacher.name} from the directory?`)) return;
+    try {
+        await window._db.collection('teachers').doc(currentTeacher.id).delete();
+        closeProfileModal(null, true);
+        showToast(`${currentTeacher.name} removed.`, 'red');
+    } catch(e) {
+        showToast('Error removing teacher.', 'red');
+    }
+}
+
+/* ADD MODAL */
+function openAddModal() {
+    document.getElementById('addModalBackdrop').classList.add('open');
+}
+function closeAddModal(e, force=false) {
+    if (force || (e && e.target===document.getElementById('addModalBackdrop'))) {
+        document.getElementById('addModalBackdrop').classList.remove('open');
+    }
+}
+
+async function saveTeacher() {
+    const firstName = document.getElementById('amFirstName').value.trim();
+    const lastName  = document.getElementById('amLastName').value.trim();
+    const role      = document.getElementById('amRole').value.trim();
+    const subject   = document.getElementById('amSubject').value.trim();
+    const level     = document.getElementById('amLevel').value;
+    const phone     = document.getElementById('amPhone').value.trim();
+    const email     = document.getElementById('amEmail').value.trim();
+    const gradesRaw = document.getElementById('amGrades').value.trim();
+    if (!firstName||!lastName||!role||!subject||!level||!phone||!email) {
+        showToast('Please fill in all required fields.', 'red'); return;
+    }
+    const grades = gradesRaw ? gradesRaw.split(',').map(g=>g.trim()).filter(Boolean) : [];
+    const btn = document.getElementById('amSaveBtn');
+    btn.disabled = true; btn.textContent = 'Saving…';
+    try {
+        await window._db.collection('teachers').add({
+            name: `${firstName} ${lastName}`,
+            role, subject, level, phone, email, grades,
+            createdAt: new Date().toISOString()
+        });
+        closeAddModal(null, true);
+        showToast(`${firstName} ${lastName} added!`, 'green');
+        // clear fields
+        ['amFirstName','amLastName','amRole','amSubject','amLevel','amPhone','amEmail','amGrades'].forEach(id => { document.getElementById(id).value=''; });
+    } catch(e) {
+        showToast('Error saving teacher.', 'red');
+    }
+    btn.disabled = false; btn.textContent = 'Add Teacher';
+}
+
+/* TOAST */
+function showToast(msg, color='green') {
+    const t = document.getElementById('toast');
+    const dot = document.getElementById('toastDot');
+    document.getElementById('toastMsg').textContent = msg;
+    dot.className = `toast-dot ${color}`;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+/* MOBILE MENU */
 function toggleMobileAccordion(el, href) {
     const sub = el.nextElementSibling;
     const isOpen = sub.classList.contains('open');
     if (isOpen) { if (href) window.location.href = href; return; }
-    document.querySelectorAll('.mobile-sub-links.open').forEach(s => s.classList.remove('open'));
-    document.querySelectorAll('.mobile-nav-item.expanded').forEach(i => i.classList.remove('expanded'));
+    document.querySelectorAll('.mobile-sub-links.open').forEach(s=>s.classList.remove('open'));
+    document.querySelectorAll('.mobile-nav-item.expanded').forEach(i=>i.classList.remove('expanded'));
     sub.classList.add('open'); el.classList.add('expanded');
 }
 const hamburgerBtn=document.getElementById('hamburgerBtn'),mobileMenu=document.getElementById('mobileMenu'),mobileBackdrop=document.getElementById('mobileBackdrop'),mobileCloseBtn=document.getElementById('mobileCloseBtn');
@@ -610,35 +558,43 @@ mobileBackdrop.addEventListener('click',()=>{mobileMenu.classList.remove('open')
 const mobileAuthPill=document.getElementById('mobileAuthPill'),mobileSignUpBtn=document.getElementById('mobileSignUpBtn'),mobileLogInBtn=document.getElementById('mobileLogInBtn');
 if(mobileSignUpBtn){mobileSignUpBtn.addEventListener('mouseenter',()=>{mobileAuthPill.classList.remove('login-active');mobileAuthPill.classList.add('signup-active');});mobileSignUpBtn.addEventListener('click',()=>{window.location.href='Sign.up.html';});}
 if(mobileLogInBtn){mobileLogInBtn.addEventListener('mouseenter',()=>{mobileAuthPill.classList.remove('signup-active');mobileAuthPill.classList.add('login-active');});mobileLogInBtn.addEventListener('click',()=>{window.location.href='Log.in.html';});}
-document.getElementById('mobileMyAccountBtn')?.addEventListener('click',()=>alert('My Account page coming soon!'));
+document.getElementById('mobileMyAccountBtn')?.addEventListener('click',()=>alert('My Account coming soon!'));
 document.getElementById('mobileAdminBtn')?.addEventListener('click',()=>{window.location.href='admin.html';});
 document.getElementById('mobileSignOutBtn')?.addEventListener('click',()=>firebase.auth().signOut().then(()=>location.reload()));
 
-/* ── FIREBASE ── */
+/* FIREBASE */
 document.addEventListener('DOMContentLoaded', function() {
     const firebaseConfig={apiKey:"AIzaSyCC5oK1cMufciR1v4wLi-jfYvXa_cQBnd0",authDomain:"korahey-admin.firebaseapp.com",projectId:"korahey-admin",storageBucket:"korahey-admin.firebasestorage.app",messagingSenderId:"86298888884",appId:"1:86298888884:web:f1d835de1cb9d2534d65e1"};
     if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);
-    const auth=firebase.auth(),db=firebase.firestore(),ADMIN_EMAIL="khalilmohamedaden@gmail.com";
+    const auth=firebase.auth(), db=firebase.firestore();
+    window._db = db;
+    const ADMIN_EMAIL="khalilmohamedaden@gmail.com";
     const authWrapper=document.getElementById('authWrapper'),authPill=document.getElementById('authPill'),signUpBtn=document.getElementById('signUpBtn'),logInBtn=document.getElementById('logInBtn');
     const profileSection=document.getElementById('profileSection'),userAvatar=document.getElementById('userAvatar'),dropdownUserName=document.getElementById('dropdownUserName'),dropdownUserEmail=document.getElementById('dropdownUserEmail'),adminDropdownItem=document.getElementById('adminDropdownItem'),banOverlay=document.getElementById('banOverlay');
     window.logoutAndRedirect=()=>auth.signOut().then(()=>{window.location.href='index.html';});
     function setupAuthPill(){if(!signUpBtn||!logInBtn||!authPill)return;signUpBtn.addEventListener('mouseenter',()=>{authPill.classList.remove('login-active');authPill.classList.add('signup-active');});logInBtn.addEventListener('mouseenter',()=>{authPill.classList.remove('signup-active');authPill.classList.add('login-active');});}
     if(signUpBtn)signUpBtn.addEventListener('click',()=>{window.location.href='Sign.up.html';});
     if(logInBtn)logInBtn.addEventListener('click',()=>{window.location.href='Log.in.html';});
-    document.getElementById('myAccountBtn')?.addEventListener('click',()=>alert('My Account page coming soon!'));
+    document.getElementById('myAccountBtn')?.addEventListener('click',()=>alert('My Account coming soon!'));
     document.getElementById('adminDashboardBtn')?.addEventListener('click',()=>{window.location.href='admin.html';});
     document.getElementById('signOutBtn')?.addEventListener('click',()=>auth.signOut().then(()=>location.reload()));
+
     async function updateProfileDropdown(user){
         if(dropdownUserName)dropdownUserName.textContent=user.displayName||user.email.split('@')[0];
         if(dropdownUserEmail)dropdownUserEmail.textContent=user.email;
         let isAdmin=user.email===ADMIN_EMAIL;
         if(!isAdmin){try{const d=await db.collection('users').doc(user.uid).get();isAdmin=d.exists&&d.data().isAdmin;}catch(e){}}
         if(adminDropdownItem)adminDropdownItem.style.display=isAdmin?'block':'none';
+        isAdminUser = isAdmin;
+        // show admin add button
+        const addBtn = document.getElementById('adminAddBtn');
+        if (addBtn && isAdmin) addBtn.classList.add('visible');
         const mU=document.getElementById('mobileUserName'),mE=document.getElementById('mobileUserEmail'),mA=document.getElementById('mobileAdminBtn');
         if(mU)mU.textContent=user.displayName||user.email.split('@')[0];
         if(mE)mE.textContent=user.email;
         if(mA)mA.style.display=isAdmin?'flex':'none';
     }
+
     auth.onAuthStateChanged(async(user)=>{
         const mAS=document.getElementById('mobileAuthSection'),mPS=document.getElementById('mobileProfileSection'),mUA=document.getElementById('mobileUserAvatar');
         if(user){
@@ -655,15 +611,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // render cards + scroll reveal
-    renderCards();
+    /* REAL-TIME TEACHER LISTENER */
+    db.collection('teachers').orderBy('name').onSnapshot(snap => {
+        allTeachers = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        renderCards(document.getElementById('searchInput').value);
+    }, err => {
+        console.log('Firestore error:', err);
+        document.getElementById('teachersGrid').innerHTML = `<div class="no-results"><p>Could not load teachers.</p></div>`;
+    });
+
     window.addEventListener('load',()=>{
         document.querySelectorAll('.reveal-up').forEach((el,i)=>{
             el.style.transitionDelay=`${i*0.07}s`;
             new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('active');});},{threshold:0.1}).observe(el);
         });
     });
-    let lastY=window.scrollY;const nav=document.getElementById('navbar');
+    let lastY=window.scrollY; const nav=document.getElementById('navbar');
     window.addEventListener('scroll',()=>{const cur=window.scrollY;if(nav){if(cur>lastY&&cur>100)nav.classList.add('nav-hidden');else nav.classList.remove('nav-hidden');}lastY=cur;});
 });
 </script>
