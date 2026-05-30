@@ -735,13 +735,29 @@ setTimeout(dismissEntrance, 5000);
 
 auth.onAuthStateChanged(async(user)=>{
     if(user){
+        // HEAD ADMIN — bypass Firestore entirely, always let through
+        if(user.email === HEAD_ADMIN_EMAIL){
+            if(adminContent)adminContent.style.display='block';
+            if(accessDenied)accessDenied.style.display='none';
+            document.getElementById('greetingText').innerHTML=`Hello ${user.displayName?.split(' ')[0]||'Admin'}`;
+            loadProjects();
+            dismissEntrance();
+            // silently update Firestore in background, don't await
+            db.collection('users').doc(user.uid).set({isAdmin:true,role:'head_admin',email:user.email},{merge:true}).catch(()=>{});
+            return;
+        }
+        // OTHER USERS — check Firestore for admin status
         try{
             const ud=await db.collection('users').doc(user.uid).get();
-            const userData=ud.data();
-            if(userData?.isBanned){await auth.signOut();if(adminContent)adminContent.style.display='none';if(accessDenied){accessDenied.style.display='flex';accessDenied.querySelector('p').textContent='Your account has been banned.';}dismissEntrance();return;}
-            const isAdmin=user.email===HEAD_ADMIN_EMAIL||(userData?.isAdmin===true);
-            if(isAdmin){
-                if(user.email===HEAD_ADMIN_EMAIL&&!userData?.isAdmin)await db.collection('users').doc(user.uid).set({isAdmin:true,role:'head_admin'},{merge:true});
+            const userData=ud.exists ? ud.data() : {};
+            if(userData?.isBanned){
+                await auth.signOut();
+                if(adminContent)adminContent.style.display='none';
+                if(accessDenied){accessDenied.style.display='flex';accessDenied.querySelector('p').textContent='Your account has been banned.';}
+                dismissEntrance();
+                return;
+            }
+            if(userData?.isAdmin===true){
                 if(adminContent)adminContent.style.display='block';
                 if(accessDenied)accessDenied.style.display='none';
                 document.getElementById('greetingText').innerHTML=`Hello ${user.displayName?.split(' ')[0]||'Admin'}`;
@@ -753,7 +769,8 @@ auth.onAuthStateChanged(async(user)=>{
                 dismissEntrance();
             }
         } catch(e) {
-            console.log(e);
+            console.log('Firestore error:', e);
+            // Firestore failed — deny access for non-head-admin
             if(adminContent)adminContent.style.display='none';
             if(accessDenied)accessDenied.style.display='flex';
             dismissEntrance();
