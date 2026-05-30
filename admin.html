@@ -705,10 +705,9 @@ document.getElementById('appDetailOverlay').addEventListener('click', e => {
     if (e.target === document.getElementById('appDetailOverlay')) closeAppDetail();
 });
 
-/* add teacher */
-function openAddTeacher(){
-    // build grade checkboxes
-    const grades=[];for(let i=1;i<=12;i++)grades.push(`Grade ${i}`);
+/* add teacher — placeholder, managed via teacher-contact.html */
+function openAddTeacher(){ showToast('Use the Teacher Contact page to add teachers.'); }
+
 /* ── NAV ACTIONS ── */
 function goHome(){window.location.href='index.html';}
 function scrollToProjects(){document.querySelector('.recent-section')?.scrollIntoView({behavior:'smooth'});}
