@@ -278,6 +278,7 @@
         <div class="entrance-logo">KORAHEY ACADEMY</div>
         <div class="entrance-sub">ADMIN DASHBOARD</div>
         <div class="entrance-dots"><span></span><span></span><span></span></div>
+        <div id="entranceStatus" style="margin-top:20px;font-size:0.8rem;color:#aaa;letter-spacing:1px;"></div>
     </div>
 </div>
 <div id="toastNotification" class="toast-notification"></div>
@@ -725,60 +726,77 @@ if(clearBtn)clearBtn.addEventListener('click',()=>{searchInput.value='';updateCl
 /* ── AUTH ── */
 const entrance=document.getElementById('adminEntrance'),adminContent=document.getElementById('adminContent'),accessDenied=document.getElementById('accessDenied');
 
+function setStatus(msg) {
+    const el = document.getElementById('entranceStatus');
+    if (el) el.textContent = msg;
+}
+
 function dismissEntrance() {
     if (!entrance) return;
     entrance.classList.add('fade-out');
 }
 
-// Hard fallback: dismiss after 5s no matter what
-setTimeout(dismissEntrance, 5000);
+// Hard fallback: 8 seconds
+setTimeout(() => {
+    setStatus('Taking too long — check your connection.');
+    setTimeout(dismissEntrance, 2000);
+}, 8000);
+
+setStatus('Checking authentication…');
 
 auth.onAuthStateChanged(async(user)=>{
     if(user){
-        // HEAD ADMIN — bypass Firestore entirely, always let through
+        setStatus('Signed in as ' + user.email);
+
+        // HEAD ADMIN — no Firestore needed
         if(user.email === HEAD_ADMIN_EMAIL){
-            if(adminContent)adminContent.style.display='block';
-            if(accessDenied)accessDenied.style.display='none';
+            setStatus('Welcome, Admin!');
+            if(adminContent) adminContent.style.display='block';
+            if(accessDenied) accessDenied.style.display='none';
             document.getElementById('greetingText').innerHTML=`Hello ${user.displayName?.split(' ')[0]||'Admin'}`;
             loadProjects();
             dismissEntrance();
-            // silently update Firestore in background, don't await
             db.collection('users').doc(user.uid).set({isAdmin:true,role:'head_admin',email:user.email},{merge:true}).catch(()=>{});
             return;
         }
-        // OTHER USERS — check Firestore for admin status
+
+        // OTHER USERS — check Firestore
         try{
-            const ud=await db.collection('users').doc(user.uid).get();
-            const userData=ud.exists ? ud.data() : {};
+            setStatus('Verifying permissions…');
+            const ud = await db.collection('users').doc(user.uid).get();
+            const userData = ud.exists ? ud.data() : {};
+
             if(userData?.isBanned){
                 await auth.signOut();
-                if(adminContent)adminContent.style.display='none';
-                if(accessDenied){accessDenied.style.display='flex';accessDenied.querySelector('p').textContent='Your account has been banned.';}
+                if(adminContent) adminContent.style.display='none';
+                if(accessDenied){ accessDenied.style.display='flex'; accessDenied.querySelector('p').textContent='Your account has been banned.'; }
                 dismissEntrance();
                 return;
             }
             if(userData?.isAdmin===true){
-                if(adminContent)adminContent.style.display='block';
-                if(accessDenied)accessDenied.style.display='none';
+                setStatus('Access granted!');
+                if(adminContent) adminContent.style.display='block';
+                if(accessDenied) accessDenied.style.display='none';
                 document.getElementById('greetingText').innerHTML=`Hello ${user.displayName?.split(' ')[0]||'Admin'}`;
                 loadProjects();
                 dismissEntrance();
             } else {
-                if(adminContent)adminContent.style.display='none';
-                if(accessDenied)accessDenied.style.display='flex';
+                if(adminContent) adminContent.style.display='none';
+                if(accessDenied) accessDenied.style.display='flex';
                 dismissEntrance();
             }
         } catch(e) {
             console.log('Firestore error:', e);
-            // Firestore failed — deny access for non-head-admin
-            if(adminContent)adminContent.style.display='none';
-            if(accessDenied)accessDenied.style.display='flex';
+            setStatus('Error: ' + e.message);
+            // If Firestore fails, still let head admin through (checked above)
+            if(adminContent) adminContent.style.display='none';
+            if(accessDenied) accessDenied.style.display='flex';
             dismissEntrance();
         }
     } else {
-        if(adminContent)adminContent.style.display='none';
-        if(accessDenied)accessDenied.style.display='flex';
-        dismissEntrance();
+        // Not logged in — redirect to login page
+        setStatus('Not signed in. Redirecting…');
+        setTimeout(() => { window.location.href = 'Log.in.html'; }, 1500);
     }
 });
 </script>
