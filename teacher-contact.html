@@ -349,6 +349,31 @@
     </div>
 </div>
 
+<!-- EDIT TEACHER MODAL (admin only) -->
+<div class="add-modal-backdrop" id="editModalBackdrop" onclick="closeEditModal(event)">
+    <div class="add-modal" onclick="event.stopPropagation()">
+        <div class="am-close" onclick="closeEditModal(null,true)"><svg viewBox="0 0 14 14"><line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/></svg></div>
+        <div class="am-title">Edit Teacher</div>
+        <div class="am-sub">Update the teacher's details. Changes will appear immediately.</div>
+        <input type="hidden" id="emTeacherId">
+        <div class="am-row">
+            <div class="am-field"><label>First Name</label><input id="emFirstName" type="text" placeholder="First name"></div>
+            <div class="am-field"><label>Last Name</label><input id="emLastName" type="text" placeholder="Last name"></div>
+        </div>
+        <div class="am-field"><label>Role / Title</label><input id="emRole" type="text" placeholder="e.g. Mathematics Teacher"></div>
+        <div class="am-field"><label>Subject</label><input id="emSubject" type="text" placeholder="e.g. Mathematics"></div>
+        <div class="am-row">
+            <div class="am-field"><label>School Level</label>
+                <select id="emLevel"><option value="Primary">Primary</option><option value="Secondary">Secondary</option><option value="Senior">Senior</option></select>
+            </div>
+            <div class="am-field"><label>Phone</label><input id="emPhone" type="tel" placeholder="090 …"></div>
+        </div>
+        <div class="am-field"><label>Email</label><input id="emEmail" type="email" placeholder="name@korahey.edu.et"></div>
+        <div class="am-field"><label>Grades (comma separated)</label><input id="emGrades" type="text" placeholder="Grade 10, Grade 11, Grade 12"></div>
+        <button class="am-save-btn" id="emSaveBtn" onclick="saveEditTeacher()">Save Changes</button>
+    </div>
+</div>
+
 <!-- ADD TEACHER MODAL (admin only) -->
 <div class="add-modal-backdrop" id="addModalBackdrop" onclick="closeAddModal(event)">
     <div class="add-modal" onclick="event.stopPropagation()">
@@ -468,7 +493,10 @@ function openProfileModal(t) {
             </a>
         </div>
         ${(t.grades&&t.grades.length)?`<div class="pm-grades">${t.grades.map(g=>`<span class="pm-grade-tag">${g}</span>`).join('')}</div>`:''}
-        <button class="pm-delete-btn ${isAdminUser?'admin-visible':''}" onclick="deleteTeacher()">Remove Teacher</button>`;
+        <div style="display:flex;gap:10px;margin-top:18px;">
+            <button class="pm-delete-btn ${isAdminUser?'admin-visible':''}" style="flex:1;margin-top:0;" onclick="deleteTeacher()">Remove</button>
+            <button class="pm-delete-btn ${isAdminUser?'admin-visible':''}" style="flex:1;margin-top:0;color:#fff;background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.12);" onclick="openEditModal()">Edit</button>
+        </div>`;
     document.getElementById('profileModalBackdrop').classList.add('open');
 }
 
@@ -476,6 +504,56 @@ function closeProfileModal(e, force=false) {
     if (force || (e && e.target===document.getElementById('profileModalBackdrop'))) {
         document.getElementById('profileModalBackdrop').classList.remove('open');
     }
+}
+
+/* EDIT MODAL */
+function openEditModal() {
+    if (!currentTeacher) return;
+    const t = currentTeacher;
+    const nameParts = t.name.split(' ');
+    document.getElementById('emTeacherId').value = t.id || '';
+    document.getElementById('emFirstName').value = nameParts[0] || '';
+    document.getElementById('emLastName').value = nameParts.slice(1).join(' ') || '';
+    document.getElementById('emRole').value = t.role || '';
+    document.getElementById('emSubject').value = t.subject || '';
+    document.getElementById('emLevel').value = t.level || 'Secondary';
+    document.getElementById('emPhone').value = t.phone || '';
+    document.getElementById('emEmail').value = t.email || '';
+    document.getElementById('emGrades').value = (t.grades||[]).join(', ');
+    closeProfileModal(null, true);
+    document.getElementById('editModalBackdrop').classList.add('open');
+}
+function closeEditModal(e, force=false) {
+    if (force || (e && e.target===document.getElementById('editModalBackdrop'))) {
+        document.getElementById('editModalBackdrop').classList.remove('open');
+    }
+}
+async function saveEditTeacher() {
+    const id = document.getElementById('emTeacherId').value;
+    const firstName = document.getElementById('emFirstName').value.trim();
+    const lastName  = document.getElementById('emLastName').value.trim();
+    const role      = document.getElementById('emRole').value.trim();
+    const subject   = document.getElementById('emSubject').value.trim();
+    const level     = document.getElementById('emLevel').value;
+    const phone     = document.getElementById('emPhone').value.trim();
+    const email     = document.getElementById('emEmail').value.trim();
+    const gradesRaw = document.getElementById('emGrades').value.trim();
+    if (!firstName||!lastName||!role||!subject||!level||!phone||!email) {
+        showToast('Please fill in all required fields.', 'red'); return;
+    }
+    const grades = gradesRaw ? gradesRaw.split(',').map(g=>g.trim()).filter(Boolean) : [];
+    const btn = document.getElementById('emSaveBtn');
+    btn.disabled = true; btn.textContent = 'Saving…';
+    try {
+        await window._db.collection('teachers').doc(id).update({
+            name: `${firstName} ${lastName}`, role, subject, level, phone, email, grades
+        });
+        closeEditModal(null, true);
+        showToast(`${firstName} ${lastName} updated!`, 'green');
+    } catch(e) {
+        showToast('Error saving changes.', 'red');
+    }
+    btn.disabled = false; btn.textContent = 'Save Changes';
 }
 
 /* DELETE */
