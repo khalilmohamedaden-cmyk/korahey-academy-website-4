@@ -291,12 +291,12 @@
             <div class="dynamic-island-wrapper">
                 <div class="nav-item" onclick="goHome()"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2h-5v-7H9v7H5a2 2 0 0 1-2-2z"/></svg><span>Home</span></div>
                 <div class="nav-item" onclick="scrollToProjects()"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg><span>Projects</span></div>
-                <div class="nav-item" onclick="openApplications()"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span>Apps</span></div>
                 <div class="create-nav-item" onclick="openCreateModal()"><div class="create-circle"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><span>Create</span></div>
                 <div class="ai-nav-item" onclick="openAI()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="4" y="8" width="16" height="12" rx="2"/><circle cx="9" cy="13" r="1.5" fill="currentColor" stroke="none"/><circle cx="15" cy="13" r="1.5" fill="currentColor" stroke="none"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="10" y1="3" x2="14" y2="3"/></svg><span>AI</span></div>
                 <div class="nav-item" onclick="openUserManagementPanel()"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Users</span><span class="badge" id="usersBadge" style="display:none;">0</span></div>
-                <div class="nav-item" onclick="openApplicationsHub()"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg><span>Applications</span></div>
                 <div class="nav-item" onclick="openMessagesModal()"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>Messages</span><span class="badge" id="messagesBadge" style="display:none;">0</span></div>
+                <div class="nav-item" onclick="openApplicationsHub()"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg><span>Applications</span></div>
+                <div class="nav-item" onclick="openStudentTracker()"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg><span>Tracker</span></div>
                 <div class="nav-item" onclick="openEditor()"><i class="fas fa-palette" style="font-size:20px;stroke:none;fill:#1d1d1f;"></i><span>Editor</span></div>
             </div>
         </nav>
@@ -344,26 +344,98 @@
     </div>
 </div>
 
-<!-- ══ APPLICATIONS HUB MODAL ══ -->
-<div id="appsHubOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);backdrop-filter:blur(14px);z-index:4000;align-items:center;justify-content:center;">
-    <div id="appsHubPanel" style="width:94%;max-width:1100px;height:88vh;background:#0a0a0a;border:1px solid rgba(255,255,255,0.08);border-radius:32px;display:flex;flex-direction:column;overflow:hidden;position:relative;transform:scale(0.95);transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);">
-        <!-- close -->
-        <button onclick="closeApplicationsHub()" style="position:absolute;top:18px;right:18px;z-index:10;width:34px;height:34px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:50%;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
-        <!-- inner nav tabs -->
-        <div id="ahTabBar" style="display:flex;align-items:center;gap:4px;padding:20px 24px 0;border-bottom:1px solid rgba(255,255,255,0.06);flex-shrink:0;">
-            <button class="ah-tab active" data-tab="studentApps" onclick="switchAHTab(this,'studentApps')">Student Applications</button>
-            <button class="ah-tab" data-tab="teacherApps" onclick="switchAHTab(this,'teacherApps')">Teacher Applications</button>
+<!-- ══ APPLICATIONS HUB — WHITE UI ══ -->
+<div id="appsHubOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);backdrop-filter:blur(12px);z-index:4000;align-items:center;justify-content:center;">
+    <div id="appsHubPanel" style="width:96%;max-width:1200px;height:90vh;background:#f5f7fb;border-radius:32px;display:flex;flex-direction:column;overflow:hidden;position:relative;transform:scale(0.95);transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);box-shadow:0 30px 60px rgba(0,0,0,0.25);">
+        <!-- header -->
+        <div style="background:#fff;border-bottom:1px solid rgba(0,0,0,0.06);padding:20px 28px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+            <div style="display:flex;align-items:center;gap:16px;">
+                <h2 style="font-size:1.4rem;font-weight:700;color:#1d1d1f;">Applications</h2>
+                <!-- tabs -->
+                <div style="display:flex;gap:4px;background:#f0f0f5;border-radius:100px;padding:4px;">
+                    <button class="ah-tab active" data-tab="studentApps" onclick="switchAHTab(this,'studentApps')" style="background:#fff;color:#1d1d1f;border:none;padding:7px 18px;border-radius:100px;font-size:0.83rem;font-weight:600;cursor:pointer;transition:all 0.2s;box-shadow:0 1px 3px rgba(0,0,0,0.1);">Students</button>
+                    <button class="ah-tab" data-tab="teacherApps" onclick="switchAHTab(this,'teacherApps')" style="background:transparent;color:#666;border:none;padding:7px 18px;border-radius:100px;font-size:0.83rem;font-weight:600;cursor:pointer;transition:all 0.2s;">Teachers</button>
+                    <button class="ah-tab" data-tab="accepted" onclick="switchAHTab(this,'accepted')" style="background:transparent;color:#666;border:none;padding:7px 18px;border-radius:100px;font-size:0.83rem;font-weight:600;cursor:pointer;transition:all 0.2s;">Accepted</button>
+                </div>
+            </div>
+            <button onclick="closeApplicationsHub()" style="width:34px;height:34px;background:#f0f0f5;border:none;border-radius:50%;color:#666;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;" onmouseover="this.style.background='#e0e0e5'" onmouseout="this.style.background='#f0f0f5'">✕</button>
         </div>
-        <!-- content area -->
-        <div id="ahContent" style="flex:1;overflow-y:auto;padding:28px 28px 40px;"></div>
+        <!-- content -->
+        <div id="ahContent" style="flex:1;overflow-y:auto;padding:24px 28px 40px;"></div>
     </div>
 </div>
 
-<!-- APPLICATION DETAIL MODAL (inside hub) -->
-<div id="appDetailOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(16px);z-index:5000;align-items:center;justify-content:center;">
-    <div id="appDetailPanel" style="width:90%;max-width:560px;background:#0d0d0d;border:1px solid rgba(255,255,255,0.09);border-radius:28px;padding:32px;max-height:88vh;overflow-y:auto;position:relative;transform:scale(0.95);transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);">
-        <button onclick="closeAppDetail()" style="position:absolute;top:16px;right:16px;width:32px;height:32px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:50%;color:#fff;font-size:15px;cursor:pointer;">✕</button>
+<!-- APPLICATION DETAIL MODAL — white -->
+<div id="appDetailOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(16px);z-index:5000;align-items:center;justify-content:center;">
+    <div id="appDetailPanel" style="width:90%;max-width:520px;background:#fff;border-radius:28px;padding:32px;max-height:88vh;overflow-y:auto;position:relative;transform:scale(0.95);transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);box-shadow:0 20px 60px rgba(0,0,0,0.2);">
+        <button onclick="closeAppDetail()" style="position:absolute;top:16px;right:16px;width:32px;height:32px;background:#f0f0f5;border:none;border-radius:50%;color:#666;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
         <div id="appDetailInner"></div>
+    </div>
+</div>
+
+<!-- ══ STUDENT TRACKER — white UI ══ -->
+<div id="studentTrackerOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);backdrop-filter:blur(12px);z-index:4000;align-items:center;justify-content:center;">
+    <div id="studentTrackerPanel" style="width:96%;max-width:1200px;height:90vh;background:#f5f7fb;border-radius:32px;display:flex;flex-direction:column;overflow:hidden;position:relative;transform:scale(0.95);transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);box-shadow:0 30px 60px rgba(0,0,0,0.25);">
+        <!-- header -->
+        <div style="background:#fff;border-bottom:1px solid rgba(0,0,0,0.06);padding:20px 28px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+            <div style="display:flex;align-items:center;gap:16px;">
+                <h2 style="font-size:1.4rem;font-weight:700;color:#1d1d1f;">Student Tracker</h2>
+                <div style="display:flex;gap:4px;background:#f0f0f5;border-radius:100px;padding:4px;">
+                    <button id="stTabAll" onclick="switchSTTab('all')" style="background:#fff;color:#1d1d1f;border:none;padding:7px 18px;border-radius:100px;font-size:0.83rem;font-weight:600;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.1);">All Grades</button>
+                    <button id="stTabKG" onclick="switchSTTab('KG')" style="background:transparent;color:#666;border:none;padding:7px 18px;border-radius:100px;font-size:0.83rem;font-weight:600;cursor:pointer;">KG</button>
+                    <button id="stTabPrimary" onclick="switchSTTab('Primary')" style="background:transparent;color:#666;border:none;padding:7px 18px;border-radius:100px;font-size:0.83rem;font-weight:600;cursor:pointer;">Primary</button>
+                    <button id="stTabSecondary" onclick="switchSTTab('Secondary')" style="background:transparent;color:#666;border:none;padding:7px 18px;border-radius:100px;font-size:0.83rem;font-weight:600;cursor:pointer;">Secondary</button>
+                    <button id="stTabSenior" onclick="switchSTTab('Senior')" style="background:transparent;color:#666;border:none;padding:7px 18px;border-radius:100px;font-size:0.83rem;font-weight:600;cursor:pointer;">Senior</button>
+                </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;">
+                <button onclick="openAddStudentModal()" style="display:flex;align-items:center;gap:6px;background:#0071e3;color:#fff;border:none;border-radius:100px;padding:9px 18px;font-size:0.83rem;font-weight:600;cursor:pointer;"><span style="font-size:16px;line-height:1;">+</span> Add Student</button>
+                <button onclick="closeStudentTracker()" style="width:34px;height:34px;background:#f0f0f5;border:none;border-radius:50%;color:#666;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+            </div>
+        </div>
+        <!-- search -->
+        <div style="background:#fff;padding:14px 28px;border-bottom:1px solid rgba(0,0,0,0.05);flex-shrink:0;display:flex;gap:12px;align-items:center;">
+            <div style="position:relative;flex:1;max-width:380px;">
+                <svg style="position:absolute;left:13px;top:50%;transform:translateY(-50%);width:15px;height:15px;stroke:#999;fill:none;stroke-width:2;" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input id="stSearchInput" type="text" placeholder="Search by name, grade, or ID…" oninput="renderStudentTracker()" style="width:100%;padding:10px 14px 10px 38px;border:1px solid rgba(0,0,0,0.1);border-radius:100px;font-size:0.88rem;outline:none;background:#f9f9fb;transition:all 0.2s;" onfocus="this.style.borderColor='#0071e3';this.style.background='#fff'" onblur="this.style.borderColor='rgba(0,0,0,0.1)';this.style.background='#f9f9fb'">
+            </div>
+            <span id="stCount" style="font-size:0.8rem;color:#999;white-space:nowrap;"></span>
+        </div>
+        <!-- content -->
+        <div id="stContent" style="flex:1;overflow-y:auto;padding:20px 28px 40px;"></div>
+    </div>
+</div>
+
+<!-- ADD STUDENT MODAL -->
+<div id="addStudentOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(10px);z-index:5500;align-items:center;justify-content:center;">
+    <div style="background:#fff;border-radius:28px;width:90%;max-width:480px;padding:32px;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.2);">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+            <h3 style="font-size:1.25rem;font-weight:700;">Add Student</h3>
+            <button onclick="closeAddStudentModal()" style="width:32px;height:32px;background:#f0f0f5;border:none;border-radius:50%;cursor:pointer;font-size:16px;color:#666;">✕</button>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+            <div><label style="display:block;font-size:0.7rem;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:#777;margin-bottom:6px;">First Name</label><input id="asFirstName" type="text" placeholder="First name" style="width:100%;padding:11px 14px;border:1px solid rgba(0,0,0,0.12);border-radius:12px;font-size:0.9rem;outline:none;"></div>
+            <div><label style="display:block;font-size:0.7rem;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:#777;margin-bottom:6px;">Last Name</label><input id="asLastName" type="text" placeholder="Last name" style="width:100%;padding:11px 14px;border:1px solid rgba(0,0,0,0.12);border-radius:12px;font-size:0.9rem;outline:none;"></div>
+        </div>
+        <div style="margin-bottom:12px;"><label style="display:block;font-size:0.7rem;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:#777;margin-bottom:6px;">Grade</label>
+            <select id="asGrade" style="width:100%;padding:11px 14px;border:1px solid rgba(0,0,0,0.12);border-radius:12px;font-size:0.9rem;outline:none;appearance:none;background:#fff;">
+                <option value="" disabled selected>Select grade…</option>
+                <option>KDT 1</option><option>KDT 2</option><option>KDT 3</option>
+                <option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option>Grade 5</option><option>Grade 6</option>
+                <option>Grade 7</option><option>Grade 8</option><option>Grade 9</option>
+                <option>Grade 10</option><option>Grade 11</option><option>Grade 12</option>
+            </select>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+            <div><label style="display:block;font-size:0.7rem;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:#777;margin-bottom:6px;">Student ID</label><input id="asId" type="text" placeholder="e.g. KA-2026-001" style="width:100%;padding:11px 14px;border:1px solid rgba(0,0,0,0.12);border-radius:12px;font-size:0.9rem;outline:none;"></div>
+            <div><label style="display:block;font-size:0.7rem;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:#777;margin-bottom:6px;">Parent Phone</label><input id="asPhone" type="tel" placeholder="090 …" style="width:100%;padding:11px 14px;border:1px solid rgba(0,0,0,0.12);border-radius:12px;font-size:0.9rem;outline:none;"></div>
+        </div>
+        <div style="margin-bottom:20px;"><label style="display:block;font-size:0.7rem;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:#777;margin-bottom:6px;">Status</label>
+            <select id="asStatus" style="width:100%;padding:11px 14px;border:1px solid rgba(0,0,0,0.12);border-radius:12px;font-size:0.9rem;outline:none;appearance:none;background:#fff;">
+                <option value="Active">Active</option><option value="Inactive">Inactive</option><option value="Transferred">Transferred</option>
+            </select>
+        </div>
+        <button onclick="saveStudent()" style="width:100%;padding:13px;background:#0071e3;color:#fff;border:none;border-radius:100px;font-size:0.95rem;font-weight:700;cursor:pointer;transition:all 0.2s;">Add Student</button>
     </div>
 </div>
 
@@ -394,12 +466,13 @@ const HEAD_ADMIN_EMAIL="khalilmohamedaden@gmail.com";
 let projects=[], currentCategory='all', currentOwnerFilter='any', currentSort='az';
 let messages=[{id:1,title:'Welcome to Admin Dashboard',read:false}];
 let selectedUserId=null;
-let teachersList=[];
 
+/* ── UTILS ── */
 function showToast(msg,type='success'){const t=document.getElementById('toastNotification');t.textContent=msg;t.className=`toast-notification ${type}`;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
 function initials(n){if(!n)return'U';const p=n.trim().split(' ');return(p.length===1?p[0].charAt(0):(p[0].charAt(0)+p[p.length-1].charAt(0))).toUpperCase();}
 function escapeHtml(s){return String(s).replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));}
 function formatDate(d){return new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric'});}
+function ahInitials(name){if(!name)return'?';return name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();}
 
 /* ── PROJECTS ── */
 const sampleProjects=[{id:1,title:'Final Exam - Grade 12',type:'exam',date:new Date().toISOString(),category:'exam',owner:'me'},{id:2,title:'Weekly Class Schedule',type:'schedule',date:new Date().toISOString(),category:'schedule',owner:'me'},{id:3,title:'Mathematics Notes',type:'classwork',date:new Date().toISOString(),category:'classwork',owner:'shared'},{id:4,title:'Physics Assignment',type:'assignment',date:new Date().toISOString(),category:'assignment',owner:'me'},{id:5,title:'Algebra Homework',type:'homework',date:new Date().toISOString(),category:'homework',owner:'shared'}];
@@ -411,7 +484,7 @@ function createProject(type){let t=prompt(`Enter ${type} title:`,`${type.charAt(
 function toggleSort(){const b=document.getElementById('sortBtn');if(currentSort==='az'){currentSort='za';b.innerHTML='<svg viewBox="0 0 24 24"><polyline points="18 9 12 15 6 9"/></svg> Z-A';}else{currentSort='az';b.innerHTML='<svg viewBox="0 0 24 24"><polyline points="6 15 12 9 18 15"/></svg> A-Z';}renderProjects();}
 function setOwnerFilter(f){currentOwnerFilter=f;const o=document.getElementById('ownerSelected');if(f==='any')o.textContent='Any owner';else if(f==='me')o.textContent='khalil mohammed (You)';else o.textContent='Shared with you';renderProjects();}
 function setCategoryFilter(c){currentCategory=c;document.getElementById('categorySelected').textContent=c==='all'?'All Categories':c.charAt(0).toUpperCase()+c.slice(1);document.querySelectorAll('.category-icon-card').forEach(x=>x.classList.remove('active'));if(c!=='all'){const ic=document.querySelector(`.category-icon-card[data-cat="${c}"]`);if(ic)ic.classList.add('active');}renderProjects();}
-function filterByCategory(c,el){setCategoryFilter(c);}
+function filterByCategory(c){setCategoryFilter(c);}
 function toggleDropdown(id){document.querySelectorAll('.dropdown-menu').forEach(m=>{if(m.id!==id)m.classList.remove('active');});document.getElementById(id).classList.toggle('active');}
 function closeDropdown(id){document.getElementById(id)?.classList.remove('active');}
 document.addEventListener('click',e=>{if(!e.target.closest('.dropdown'))document.querySelectorAll('.dropdown-menu').forEach(m=>m.classList.remove('active'));});
@@ -421,423 +494,404 @@ async function fetchUsers(){try{const s=await db.collection('users').get();const
 async function renderUserList(){const q=document.getElementById('userSearchInput')?.value.toLowerCase()||'';const users=await fetchUsers();const f=users.filter(u=>u.email&&(u.email.toLowerCase().includes(q)||u.name.toLowerCase().includes(q)));const c=document.getElementById('usersListPanel');if(!f.length){c.innerHTML='<div style="padding:40px;text-align:center">No users found</div>';return;}c.innerHTML=f.map(u=>`<div class="user-list-item" onclick="selectUser('${u.id}')" data-user-id="${u.id}"><div class="user-list-avatar">${u.avatarInitial}</div><div class="user-list-info"><h4>${escapeHtml(u.name)}${u.isAdmin?'<span class="admin-badge">ADMIN</span>':''}${u.isBanned?'<span class="banned-badge">BANNED</span>':''}</h4><p>${escapeHtml(u.email)}</p></div></div>`).join('');if(selectedUserId){const el=document.querySelector(`.user-list-item[data-user-id="${selectedUserId}"]`);if(el)el.classList.add('active');await renderUserDetails(selectedUserId);}}
 async function renderUserDetails(uid){try{const doc=await db.collection('users').doc(uid).get();if(!doc.exists)return;const u=doc.data();const isHead=u.email===HEAD_ADMIN_EMAIL;const name=u.name||(u.email?u.email.split('@')[0]:'User');const isBanned=u.isBanned||false;const isAdmin=u.isAdmin||false;if(isHead){document.getElementById('userDetailContent').innerHTML=`<div class="user-profile-section"><div class="user-profile-avatar">${initials(name)}</div><div class="user-profile-name">${escapeHtml(name)}</div><div class="user-profile-email">${escapeHtml(u.email||'')}</div><span class="admin-badge">HEAD ADMIN</span></div><div class="head-admin-message">Head Admin · Cannot be modified</div>`;return;}document.getElementById('userDetailContent').innerHTML=`<div class="user-profile-section"><div class="user-profile-avatar">${initials(name)}</div><div class="user-profile-name">${escapeHtml(name)}</div><div class="user-profile-email">${escapeHtml(u.email||'')}</div>${isAdmin?'<span class="admin-badge">ADMIN</span>':''}</div><div class="user-info-grid"><div class="info-row"><span class="info-label">Email</span><span>${escapeHtml(u.email||'')}</span></div><div class="info-row"><span class="info-label">Role</span><span>${isAdmin?'Admin':'User'}</span></div><div class="info-row"><span class="info-label">Status</span><span>${isBanned?'Banned':'Active'}</span></div></div><div class="action-pill-group"><div class="single-pill" onclick="toggleAdmin('${uid}',${isAdmin})"><div class="single-pill-inner"></div><div class="single-pill-text">${isAdmin?'Remove Admin':'Make Admin'}</div></div><div class="single-pill" onclick="toggleBan('${uid}',${isBanned})"><div class="single-pill-inner ban-mode"></div><div class="single-pill-text">${isBanned?'Unban User':'Ban User'}</div></div></div>`;}catch(e){console.log(e);}}
 async function selectUser(id){selectedUserId=id;await renderUserList();}
-async function toggleAdmin(id,cur){try{await db.collection('users').doc(id).update({isAdmin:!cur});showToast(!cur?'Admin granted':'Admin removed');await renderUserList();if(selectedUserId===id)await renderUserDetails(id);}catch(e){showToast('Error: '+e.message,'error');}}
-async function toggleBan(id,cur){try{await db.collection('users').doc(id).update({isBanned:!cur});showToast(!cur?'User banned':'User unbanned');await renderUserList();if(selectedUserId===id)await renderUserDetails(id);}catch(e){showToast('Error: '+e.message,'error');}}
+async function toggleAdmin(id,cur){try{await db.collection('users').doc(id).update({isAdmin:!cur});showToast(!cur?'Admin granted':'Admin removed');await renderUserList();if(selectedUserId===id)await renderUserDetails(id);}catch(e){showToast('Error: '+e.message);}}
+async function toggleBan(id,cur){try{await db.collection('users').doc(id).update({isBanned:!cur});showToast(!cur?'User banned':'User unbanned');await renderUserList();if(selectedUserId===id)await renderUserDetails(id);}catch(e){showToast('Error: '+e.message);}}
 function openUserManagementPanel(){document.getElementById('userPanelModal').classList.add('active');renderUserList();}
 function closeUserManagementPanel(){document.getElementById('userPanelModal').classList.remove('active');selectedUserId=null;}
 document.getElementById('userSearchInput')?.addEventListener('input',()=>renderUserList());
 
-/* ══ APPLICATIONS HUB ══ */
-let ahCurrentTab = 'studentApps';
-let ahCurrentAppId = null;
-let ahCurrentAppType = null;
-let studentApps = JSON.parse(localStorage.getItem('studentApps')) || [];
-let teacherAppsData = JSON.parse(localStorage.getItem('teacherApps')) || [];
+/* ══ APPLICATIONS HUB — WHITE UI ══ */
+let ahCurrentTab='studentApps';
+let studentApps=JSON.parse(localStorage.getItem('studentApps'))||[];
+let teacherAppsData=JSON.parse(localStorage.getItem('teacherApps'))||[];
 
-function openApplicationsHub() {
-    const overlay = document.getElementById('appsHubOverlay');
-    overlay.style.display = 'flex';
-    requestAnimationFrame(() => { document.getElementById('appsHubPanel').style.transform = 'scale(1)'; });
-    // load from Firestore if available
+function openApplicationsHub(){
+    const o=document.getElementById('appsHubOverlay');
+    o.style.display='flex';
+    requestAnimationFrame(()=>{document.getElementById('appsHubPanel').style.transform='scale(1)';});
     loadApplicationsFromFirestore();
-    switchAHTab(document.querySelector('.ah-tab[data-tab="studentApps"]'), 'studentApps');
+    switchAHTab(document.querySelector('.ah-tab[data-tab="studentApps"]'),'studentApps');
 }
-function closeApplicationsHub() {
-    document.getElementById('appsHubPanel').style.transform = 'scale(0.95)';
-    setTimeout(() => { document.getElementById('appsHubOverlay').style.display = 'none'; }, 350);
+function closeApplicationsHub(){
+    document.getElementById('appsHubPanel').style.transform='scale(0.95)';
+    setTimeout(()=>{document.getElementById('appsHubOverlay').style.display='none';},350);
 }
-
-async function loadApplicationsFromFirestore() {
-    try {
-        const [sSnap, tSnap] = await Promise.all([
+async function loadApplicationsFromFirestore(){
+    try{
+        const[sSnap,tSnap]=await Promise.all([
             db.collection('studentApplications').orderBy('submittedAt','desc').get(),
             db.collection('teacherApplications').orderBy('submittedAt','desc').get()
         ]);
-        if (!sSnap.empty) {
-            studentApps = sSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-            localStorage.setItem('studentApps', JSON.stringify(studentApps));
-        }
-        if (!tSnap.empty) {
-            teacherAppsData = tSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-            localStorage.setItem('teacherApps', JSON.stringify(teacherAppsData));
-        }
+        if(!sSnap.empty){studentApps=sSnap.docs.map(d=>({id:d.id,...d.data()}));localStorage.setItem('studentApps',JSON.stringify(studentApps));}
+        if(!tSnap.empty){teacherAppsData=tSnap.docs.map(d=>({id:d.id,...d.data()}));localStorage.setItem('teacherApps',JSON.stringify(teacherAppsData));}
         renderAHContent(ahCurrentTab);
-    } catch(e) { console.log('Apps load error:', e); }
+    }catch(e){console.log('Apps load:',e);}
 }
-
-function switchAHTab(btn, tab) {
-    if (!btn) return;
-    document.querySelectorAll('.ah-tab').forEach(t => t.classList.remove('active'));
-    btn.classList.add('active');
-    ahCurrentTab = tab;
+function switchAHTab(btn,tab){
+    ahCurrentTab=tab;
+    document.querySelectorAll('.ah-tab').forEach(t=>{
+        const a=t.dataset.tab===tab;
+        t.style.background=a?'#fff':'transparent';
+        t.style.color=a?'#1d1d1f':'#666';
+        t.style.boxShadow=a?'0 1px 3px rgba(0,0,0,0.1)':'none';
+    });
     renderAHContent(tab);
 }
-
-function renderAHContent(tab) {
-    const content = document.getElementById('ahContent');
-    if (tab === 'studentApps') renderStudentApps(content);
-    else renderTeacherApps(content);
+function renderAHContent(tab){
+    const c=document.getElementById('ahContent');
+    if(tab==='studentApps')renderStudentAppsHub(c);
+    else if(tab==='teacherApps')renderTeacherAppsHub(c);
+    else renderAcceptedHub(c);
 }
 
-function ahInitials(name) {
-    if (!name) return '?';
-    return name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-}
-
-function renderStudentApps(container) {
-    const apps = studentApps;
-    const pending = apps.filter(a => a.status !== 'accepted').length;
-    const accepted = apps.filter(a => a.status === 'accepted').length;
-    const last30 = apps.filter(a => {
-        const d = a.submittedAt?.toDate ? a.submittedAt.toDate() : new Date(a.submittedAt || a.date || 0);
-        return (Date.now() - d.getTime()) < 30*24*60*60*1000;
-    }).length;
-
-    container.innerHTML = `
-        <div class="ah-stats">
-            <div class="ah-stat"><div class="ah-stat-num">${pending}</div><div class="ah-stat-lbl">Pending</div></div>
-            <div class="ah-stat"><div class="ah-stat-num">${accepted}</div><div class="ah-stat-lbl">Accepted</div></div>
-            <div class="ah-stat"><div class="ah-stat-num">${last30}</div><div class="ah-stat-lbl">Last 30 days</div></div>
+function renderStudentAppsHub(container){
+    const pending=studentApps.filter(a=>a.status!=='accepted');
+    const accepted=studentApps.filter(a=>a.status==='accepted').length;
+    const last30=studentApps.filter(a=>{const d=a.submittedAt?.toDate?a.submittedAt.toDate():new Date(a.submittedAt||a.date||0);return(Date.now()-d.getTime())<30*24*60*60*1000;}).length;
+    const months=[];
+    for(let i=5;i>=0;i--){const d=new Date();d.setMonth(d.getMonth()-i);months.push({label:d.toLocaleString('default',{month:'short'}),count:0});}
+    studentApps.forEach(a=>{const d=a.submittedAt?.toDate?a.submittedAt.toDate():new Date(a.submittedAt||a.date||0);const lbl=d.toLocaleString('default',{month:'short'});const m=months.find(x=>x.label===lbl);if(m)m.count++;});
+    const maxC=Math.max(...months.map(m=>m.count),1);
+    container.innerHTML=`
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px;">
+        <div style="background:#fff;border-radius:20px;padding:20px 22px;border:1px solid rgba(0,0,0,0.05);box-shadow:0 2px 8px rgba(0,0,0,0.03);">
+          <div style="font-size:2.2rem;font-weight:900;color:#0071e3;letter-spacing:-1.5px;line-height:1;">${pending.length}</div>
+          <div style="font-size:0.72rem;color:#999;margin-top:6px;text-transform:uppercase;letter-spacing:0.5px;">Pending</div>
         </div>
-        <div class="ah-search">
-            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input type="text" id="ahStudentSearch" placeholder="Search by name or parent…" oninput="filterAHStudents()">
+        <div style="background:#fff;border-radius:20px;padding:20px 22px;border:1px solid rgba(0,0,0,0.05);box-shadow:0 2px 8px rgba(0,0,0,0.03);">
+          <div style="font-size:2.2rem;font-weight:900;color:#34c759;letter-spacing:-1.5px;line-height:1;">${accepted}</div>
+          <div style="font-size:0.72rem;color:#999;margin-top:6px;text-transform:uppercase;letter-spacing:0.5px;">Accepted</div>
         </div>
-        <div class="ah-grid" id="ahStudentGrid"></div>`;
-    renderAHStudentGrid(apps);
+        <div style="background:#fff;border-radius:20px;padding:20px 22px;border:1px solid rgba(0,0,0,0.05);box-shadow:0 2px 8px rgba(0,0,0,0.03);">
+          <div style="font-size:2.2rem;font-weight:900;color:#ff9500;letter-spacing:-1.5px;line-height:1;">${last30}</div>
+          <div style="font-size:0.72rem;color:#999;margin-top:6px;text-transform:uppercase;letter-spacing:0.5px;">Last 30 days</div>
+        </div>
+      </div>
+      <div style="background:#fff;border-radius:20px;padding:20px 24px;margin-bottom:22px;border:1px solid rgba(0,0,0,0.05);box-shadow:0 2px 8px rgba(0,0,0,0.03);">
+        <div style="font-size:0.72rem;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:16px;">Applications — Last 6 months</div>
+        <div style="display:flex;align-items:flex-end;gap:8px;height:80px;">
+          ${months.map(m=>`
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;">
+              <div style="font-size:0.7rem;color:#666;font-weight:600;">${m.count||''}</div>
+              <div style="width:100%;background:#0071e3;border-radius:6px 6px 0 0;height:${Math.max(4,Math.round((m.count/maxC)*55))}px;"></div>
+              <div style="font-size:0.65rem;color:#999;">${m.label}</div>
+            </div>`).join('')}
+        </div>
+      </div>
+      <div style="position:relative;margin-bottom:18px;">
+        <svg style="position:absolute;left:14px;top:50%;transform:translateY(-50%);width:15px;height:15px;stroke:#bbb;fill:none;stroke-width:2;" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="ahStudentSearch" placeholder="Search by student name or parent…" oninput="filterAHStudents()" style="width:100%;padding:12px 16px 12px 42px;border:1px solid rgba(0,0,0,0.1);border-radius:100px;font-size:0.88rem;outline:none;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;" id="ahStudentGrid"></div>`;
+    renderAHStudentGrid(pending);
 }
 
-function renderAHStudentGrid(apps, query='') {
-    const q = query.toLowerCase();
-    const filtered = q ? apps.filter(a => (a.studentName||a.name||'').toLowerCase().includes(q) || (a.parentName||a.parent||'').toLowerCase().includes(q)) : apps;
-    const grid = document.getElementById('ahStudentGrid');
-    if (!grid) return;
-    if (!filtered.length) { grid.innerHTML = '<div class="ah-empty">No student applications found.</div>'; return; }
-    grid.innerHTML = filtered.map(app => {
-        const name = app.studentName || app.name || 'Unknown';
-        const parent = app.parentName || app.parent || '—';
-        const grade = app.gradeApplying || app.grade || '—';
-        const status = app.status === 'accepted' ? 'accepted' : 'pending';
-        const dateRaw = app.submittedAt?.toDate ? app.submittedAt.toDate() : new Date(app.submittedAt || app.date || 0);
-        const date = dateRaw.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-        return `<div class="ah-app-card" onclick="openAppDetail('student','${app.id}')">
-            <div class="ah-card-top">
-                <div class="ah-card-avatar">${ahInitials(name)}</div>
-                <span class="ah-status-badge ah-status-${status}">${status}</span>
-            </div>
-            <div class="ah-card-name">${escapeHtml(name)}</div>
-            <div class="ah-card-sub">Parent: ${escapeHtml(parent)}</div>
-            <div class="ah-card-sub">Grade: ${escapeHtml(grade)}</div>
-            <div class="ah-card-date">${date}</div>
+function renderAHStudentGrid(apps,query=''){
+    const q=query.toLowerCase();
+    const filtered=q?apps.filter(a=>(a.studentName||a.name||'').toLowerCase().includes(q)||(a.parentName||a.parent||'').toLowerCase().includes(q)):apps;
+    const grid=document.getElementById('ahStudentGrid');
+    if(!grid)return;
+    if(!filtered.length){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:50px;color:#bbb;">No pending student applications</div>';return;}
+    grid.innerHTML=filtered.map(app=>{
+        const name=app.studentName||app.name||'Unknown';
+        const parent=app.parentName||app.parent||'—';
+        const grade=app.gradeApplying||app.grade||'—';
+        const dateRaw=app.submittedAt?.toDate?app.submittedAt.toDate():new Date(app.submittedAt||app.date||0);
+        const date=dateRaw.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+        return`<div onclick="openAppDetail('student','${app.id}')" style="background:#fff;border:1px solid rgba(0,0,0,0.07);border-radius:20px;padding:18px;cursor:pointer;transition:all 0.25s;box-shadow:0 2px 8px rgba(0,0,0,0.04);" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 28px rgba(0,0,0,0.1)'" onmouseout="this.style.transform='';this.style.boxShadow='0 2px 8px rgba(0,0,0,0.04)'">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+            <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#4facfe,#0071e3);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:1rem;">${ahInitials(name)}</div>
+            <span style="font-size:0.65rem;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;padding:4px 10px;border-radius:100px;background:#fff8e1;color:#f57f17;border:1px solid #ffe082;">Pending</span>
+          </div>
+          <div style="font-size:0.98rem;font-weight:700;color:#1d1d1f;margin-bottom:3px;">${escapeHtml(name)}</div>
+          <div style="font-size:0.78rem;color:#999;margin-bottom:2px;">Parent: ${escapeHtml(parent)}</div>
+          <div style="font-size:0.78rem;color:#999;">Grade: ${escapeHtml(grade)}</div>
+          <div style="font-size:0.68rem;color:#bbb;margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,0.05);">${date}</div>
         </div>`;
     }).join('');
 }
+function filterAHStudents(){renderAHStudentGrid(studentApps.filter(a=>a.status!=='accepted'),document.getElementById('ahStudentSearch')?.value||'');}
 
-function filterAHStudents() {
-    const q = document.getElementById('ahStudentSearch')?.value || '';
-    renderAHStudentGrid(studentApps, q);
+function renderTeacherAppsHub(container){
+    const pending=teacherAppsData.filter(a=>a.status!=='accepted');
+    const accepted=teacherAppsData.filter(a=>a.status==='accepted').length;
+    const last30=teacherAppsData.filter(a=>{const d=a.submittedAt?.toDate?a.submittedAt.toDate():new Date(a.submittedAt||a.date||0);return(Date.now()-d.getTime())<30*24*60*60*1000;}).length;
+    container.innerHTML=`
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px;">
+        <div style="background:#fff;border-radius:20px;padding:20px 22px;border:1px solid rgba(0,0,0,0.05);box-shadow:0 2px 8px rgba(0,0,0,0.03);"><div style="font-size:2.2rem;font-weight:900;color:#0071e3;letter-spacing:-1.5px;">${pending.length}</div><div style="font-size:0.72rem;color:#999;margin-top:6px;text-transform:uppercase;letter-spacing:0.5px;">Pending</div></div>
+        <div style="background:#fff;border-radius:20px;padding:20px 22px;border:1px solid rgba(0,0,0,0.05);box-shadow:0 2px 8px rgba(0,0,0,0.03);"><div style="font-size:2.2rem;font-weight:900;color:#34c759;letter-spacing:-1.5px;">${accepted}</div><div style="font-size:0.72rem;color:#999;margin-top:6px;text-transform:uppercase;letter-spacing:0.5px;">Accepted</div></div>
+        <div style="background:#fff;border-radius:20px;padding:20px 22px;border:1px solid rgba(0,0,0,0.05);box-shadow:0 2px 8px rgba(0,0,0,0.03);"><div style="font-size:2.2rem;font-weight:900;color:#ff9500;letter-spacing:-1.5px;">${last30}</div><div style="font-size:0.72rem;color:#999;margin-top:6px;text-transform:uppercase;letter-spacing:0.5px;">Last 30 days</div></div>
+      </div>
+      <div style="position:relative;margin-bottom:18px;">
+        <svg style="position:absolute;left:14px;top:50%;transform:translateY(-50%);width:15px;height:15px;stroke:#bbb;fill:none;stroke-width:2;" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="ahTeacherSearch" placeholder="Search by name or subject…" oninput="filterAHTeachers()" style="width:100%;padding:12px 16px 12px 42px;border:1px solid rgba(0,0,0,0.1);border-radius:100px;font-size:0.88rem;outline:none;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;" id="ahTeacherGrid"></div>`;
+    renderAHTeacherGrid(pending);
 }
-
-function renderTeacherApps(container) {
-    const apps = teacherAppsData;
-    const pending = apps.filter(a => a.status !== 'accepted').length;
-    const accepted = apps.filter(a => a.status === 'accepted').length;
-    const last30 = apps.filter(a => {
-        const d = a.submittedAt?.toDate ? a.submittedAt.toDate() : new Date(a.submittedAt || a.date || 0);
-        return (Date.now() - d.getTime()) < 30*24*60*60*1000;
-    }).length;
-
-    container.innerHTML = `
-        <div class="ah-stats">
-            <div class="ah-stat"><div class="ah-stat-num">${pending}</div><div class="ah-stat-lbl">Pending</div></div>
-            <div class="ah-stat"><div class="ah-stat-num">${accepted}</div><div class="ah-stat-lbl">Accepted</div></div>
-            <div class="ah-stat"><div class="ah-stat-num">${last30}</div><div class="ah-stat-lbl">Last 30 days</div></div>
-        </div>
-        <div class="ah-search">
-            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input type="text" id="ahTeacherSearch" placeholder="Search by name or subject…" oninput="filterAHTeachers()">
-        </div>
-        <div class="ah-grid" id="ahTeacherGrid"></div>`;
-    renderAHTeacherGrid(apps);
-}
-
-function renderAHTeacherGrid(apps, query='') {
-    const q = query.toLowerCase();
-    const filtered = q ? apps.filter(a => (a.firstName||a.name||'').toLowerCase().includes(q) || (a.subject||'').toLowerCase().includes(q)) : apps;
-    const grid = document.getElementById('ahTeacherGrid');
-    if (!grid) return;
-    if (!filtered.length) { grid.innerHTML = '<div class="ah-empty">No teacher applications found.</div>'; return; }
-    grid.innerHTML = filtered.map(app => {
-        const firstName = app.firstName || (app.name||'').split(' ')[0] || 'Unknown';
-        const lastName = app.lastName || (app.name||'').split(' ').slice(1).join(' ') || '';
-        const fullName = `${firstName} ${lastName}`.trim();
-        const subject = app.subject || app.subjectSpecialisation || '—';
-        const status = app.status === 'accepted' ? 'accepted' : 'pending';
-        const dateRaw = app.submittedAt?.toDate ? app.submittedAt.toDate() : new Date(app.submittedAt || app.date || 0);
-        const date = dateRaw.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-        return `<div class="ah-app-card" onclick="openAppDetail('teacher','${app.id}')">
-            <div class="ah-card-top">
-                <div class="ah-card-avatar">${ahInitials(fullName)}</div>
-                <span class="ah-status-badge ah-status-${status}">${status}</span>
-            </div>
-            <div class="ah-card-name">${escapeHtml(fullName)}</div>
-            <div class="ah-card-sub">Subject: ${escapeHtml(subject)}</div>
-            <div class="ah-card-date">${date}</div>
+function renderAHTeacherGrid(apps,query=''){
+    const q=query.toLowerCase();
+    const filtered=q?apps.filter(a=>(a.firstName||a.name||'').toLowerCase().includes(q)||(a.subject||'').toLowerCase().includes(q)):apps;
+    const grid=document.getElementById('ahTeacherGrid');
+    if(!grid)return;
+    if(!filtered.length){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:50px;color:#bbb;">No pending teacher applications</div>';return;}
+    grid.innerHTML=filtered.map(app=>{
+        const firstName=app.firstName||(app.name||'').split(' ')[0]||'Unknown';
+        const lastName=app.lastName||(app.name||'').split(' ').slice(1).join(' ')||'';
+        const fullName=`${firstName} ${lastName}`.trim();
+        const subject=app.subject||app.subjectSpecialisation||'—';
+        const dateRaw=app.submittedAt?.toDate?app.submittedAt.toDate():new Date(app.submittedAt||app.date||0);
+        const date=dateRaw.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+        return`<div onclick="openAppDetail('teacher','${app.id}')" style="background:#fff;border:1px solid rgba(0,0,0,0.07);border-radius:20px;padding:18px;cursor:pointer;transition:all 0.25s;box-shadow:0 2px 8px rgba(0,0,0,0.04);" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 28px rgba(0,0,0,0.1)'" onmouseout="this.style.transform='';this.style.boxShadow='0 2px 8px rgba(0,0,0,0.04)'">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+            <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#a8edea,#667eea);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:1rem;">${ahInitials(fullName)}</div>
+            <span style="font-size:0.65rem;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;padding:4px 10px;border-radius:100px;background:#fff8e1;color:#f57f17;border:1px solid #ffe082;">Pending</span>
+          </div>
+          <div style="font-size:0.98rem;font-weight:700;color:#1d1d1f;margin-bottom:3px;">${escapeHtml(fullName)}</div>
+          <div style="font-size:0.78rem;color:#999;">Subject: ${escapeHtml(subject)}</div>
+          <div style="font-size:0.68rem;color:#bbb;margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,0.05);">${date}</div>
         </div>`;
     }).join('');
 }
+function filterAHTeachers(){renderAHTeacherGrid(teacherAppsData.filter(a=>a.status!=='accepted'),document.getElementById('ahTeacherSearch')?.value||'');}
 
-function filterAHTeachers() {
-    const q = document.getElementById('ahTeacherSearch')?.value || '';
-    renderAHTeacherGrid(teacherAppsData, q);
+function renderAcceptedHub(container){
+    const aS=studentApps.filter(a=>a.status==='accepted');
+    const aT=teacherAppsData.filter(a=>a.status==='accepted');
+    container.innerHTML=`
+      <div style="margin-bottom:28px;">
+        <div style="font-size:0.72rem;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:14px;">Accepted Students (${aS.length})</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;">
+          ${aS.length?aS.map(a=>{const n=a.studentName||a.name||'Unknown';return`<div style="background:#fff;border-radius:18px;padding:16px;border:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;gap:12px;box-shadow:0 1px 4px rgba(0,0,0,0.04);"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#34c759,#30b350);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:0.88rem;flex-shrink:0;">${ahInitials(n)}</div><div style="flex:1;min-width:0;"><div style="font-size:0.9rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(n)}</div><div style="font-size:0.72rem;color:#999;">Grade: ${a.gradeApplying||a.grade||'—'}</div></div><span style="font-size:0.65rem;background:#e8f5e9;color:#2e7d32;padding:3px 9px;border-radius:100px;font-weight:700;flex-shrink:0;">✓ Done</span></div>`;}).join(''):'<div style="color:#bbb;font-size:0.88rem;padding:12px 0;">No accepted students yet.</div>'}
+        </div>
+      </div>
+      <div>
+        <div style="font-size:0.72rem;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:14px;">Accepted Teachers (${aT.length})</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;">
+          ${aT.length?aT.map(a=>{const n=(a.firstName||'')+(a.lastName?' '+a.lastName:'')||a.name||'Unknown';return`<div style="background:#fff;border-radius:18px;padding:16px;border:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;gap:12px;box-shadow:0 1px 4px rgba(0,0,0,0.04);"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#0071e3,#005bb5);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:0.88rem;flex-shrink:0;">${ahInitials(n)}</div><div style="flex:1;min-width:0;"><div style="font-size:0.9rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(n)}</div><div style="font-size:0.72rem;color:#999;">${a.subject||a.subjectSpecialisation||'—'}</div></div><span style="font-size:0.65rem;background:#e8f5e9;color:#2e7d32;padding:3px 9px;border-radius:100px;font-weight:700;flex-shrink:0;">✓ Done</span></div>`;}).join(''):'<div style="color:#bbb;font-size:0.88rem;padding:12px 0;">No accepted teachers yet.</div>'}
+        </div>
+      </div>`;
 }
 
-function openAppDetail(type, id) {
-    const apps = type === 'student' ? studentApps : teacherAppsData;
-    const app = apps.find(a => String(a.id) === String(id));
-    if (!app) return;
-    ahCurrentAppId = id;
-    ahCurrentAppType = type;
-    const overlay = document.getElementById('appDetailOverlay');
-    const panel = document.getElementById('appDetailPanel');
-    const inner = document.getElementById('appDetailInner');
-    const isAccepted = app.status === 'accepted';
-    const dateRaw = app.submittedAt?.toDate ? app.submittedAt.toDate() : new Date(app.submittedAt || app.date || 0);
-    const dateStr = dateRaw.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
-
-    if (type === 'student') {
-        const name = app.studentName || app.name || 'Unknown';
-        const parent = app.parentName || app.parent || '—';
-        const grade = app.gradeApplying || app.grade || '—';
-        const phone = app.phone || app.parentPhone || '—';
-        const email = app.email || app.parentEmail || '—';
-        const prevSchool = app.lastSchoolAttended || app.prevSchool || '—';
-        const reason = app.reasonForTransfer || app.message || '—';
-        inner.innerHTML = `
-            <div class="ad-avatar">${ahInitials(name)}</div>
-            <div class="ad-name">${escapeHtml(name)}</div>
-            <div class="ad-role">Student Application</div>
-            <div class="ad-divider"></div>
-            <div class="ad-rows">
-                <div class="ad-row"><div class="ad-row-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div><div><span class="ad-row-label">Parent</span><span class="ad-row-val">${escapeHtml(parent)}</span></div></div>
-                <div class="ad-row"><div class="ad-row-icon"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div><div><span class="ad-row-label">Phone</span><span class="ad-row-val">${escapeHtml(phone)}</span></div></div>
-                <div class="ad-row"><div class="ad-row-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div><span class="ad-row-label">Email</span><span class="ad-row-val">${escapeHtml(email)}</span></div></div>
-                <div class="ad-row"><div class="ad-row-icon"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div><div><span class="ad-row-label">Grade Applying</span><span class="ad-row-val">${escapeHtml(grade)}</span></div></div>
-                <div class="ad-row"><div class="ad-row-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg></div><div><span class="ad-row-label">Previous School</span><span class="ad-row-val">${escapeHtml(prevSchool)}</span></div></div>
-                <div class="ad-row"><div class="ad-row-icon"><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></div><div><span class="ad-row-label">Reason</span><span class="ad-row-val">${escapeHtml(reason)}</span></div></div>
-                <div class="ad-row"><div class="ad-row-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><span class="ad-row-label">Submitted</span><span class="ad-row-val">${dateStr}</span></div></div>
-            </div>
-            ${isAccepted ? '<div class="ad-accepted-tag">✓ Application Accepted</div>' : `<button class="ad-accept-btn" onclick="acceptApplication('student','${id}')">Accept Student</button>`}`;
-    } else {
-        const firstName = app.firstName || (app.name||'').split(' ')[0] || 'Unknown';
-        const lastName = app.lastName || (app.name||'').split(' ').slice(1).join(' ') || '';
-        const fullName = `${firstName} ${lastName}`.trim();
-        const subject = app.subject || app.subjectSpecialisation || '—';
-        const education = app.educationLevel || app.highestEducationLevel || '—';
-        const phone = app.phone || '—';
-        const email = app.email || '—';
-        const prevSchool = app.previousSchool || app.prevSchool || '—';
-        const motivation = app.motivation || app.whyJoin || app.message || '—';
-        inner.innerHTML = `
-            <div class="ad-avatar">${ahInitials(fullName)}</div>
-            <div class="ad-name">${escapeHtml(fullName)}</div>
-            <div class="ad-role">Teacher Application</div>
-            <div class="ad-divider"></div>
-            <div class="ad-rows">
-                <div class="ad-row"><div class="ad-row-icon"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div><div><span class="ad-row-label">Phone</span><span class="ad-row-val">${escapeHtml(phone)}</span></div></div>
-                <div class="ad-row"><div class="ad-row-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div><span class="ad-row-label">Email</span><span class="ad-row-val">${escapeHtml(email)}</span></div></div>
-                <div class="ad-row"><div class="ad-row-icon"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div><div><span class="ad-row-label">Subject</span><span class="ad-row-val">${escapeHtml(subject)}</span></div></div>
-                <div class="ad-row"><div class="ad-row-icon"><svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div><div><span class="ad-row-label">Education</span><span class="ad-row-val">${escapeHtml(education)}</span></div></div>
-                <div class="ad-row"><div class="ad-row-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg></div><div><span class="ad-row-label">Previous School</span><span class="ad-row-val">${escapeHtml(prevSchool)}</span></div></div>
-                <div class="ad-row"><div class="ad-row-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div><span class="ad-row-label">Motivation</span><span class="ad-row-val">${escapeHtml(motivation)}</span></div></div>
-                <div class="ad-row"><div class="ad-row-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><span class="ad-row-label">Submitted</span><span class="ad-row-val">${dateStr}</span></div></div>
-            </div>
-            ${isAccepted ? '<div class="ad-accepted-tag">✓ Application Accepted</div>' : `<button class="ad-accept-btn" onclick="acceptApplication('teacher','${id}')">Accept Teacher</button>`}`;
+function openAppDetail(type,id){
+    const apps=type==='student'?studentApps:teacherAppsData;
+    const app=apps.find(a=>String(a.id)===String(id));
+    if(!app)return;
+    const overlay=document.getElementById('appDetailOverlay');
+    const panel=document.getElementById('appDetailPanel');
+    const inner=document.getElementById('appDetailInner');
+    const isAccepted=app.status==='accepted';
+    const dateRaw=app.submittedAt?.toDate?app.submittedAt.toDate():new Date(app.submittedAt||app.date||0);
+    const dateStr=dateRaw.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+    const row=(icon,label,val)=>`<div style="display:flex;align-items:center;gap:12px;padding:11px 14px;background:#f9f9fb;border-radius:14px;margin-bottom:8px;"><div style="width:30px;height:30px;background:#eef0f5;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${icon}</div><div><span style="font-size:0.6rem;letter-spacing:1px;text-transform:uppercase;color:#aaa;display:block;margin-bottom:2px;">${label}</span><span style="font-size:0.88rem;font-weight:500;color:#1d1d1f;">${val}</span></div></div>`;
+    const phoneIcon=`<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:#666;stroke-width:2;fill:none;"><rect x="5" y="2" width="14" height="20" rx="2"/></svg>`;
+    const emailIcon=`<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:#666;stroke-width:2;fill:none;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>`;
+    const bookIcon=`<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:#666;stroke-width:2;fill:none;"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`;
+    const clockIcon=`<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:#666;stroke-width:2;fill:none;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`;
+    const acceptBtn=`<button onclick="acceptApplication('${type}','${id}')" style="width:100%;padding:14px;background:#0071e3;color:#fff;border:none;border-radius:100px;font-size:0.95rem;font-weight:700;cursor:pointer;margin-top:12px;transition:all 0.2s;" onmouseover="this.style.background='#005bb5'" onmouseout="this.style.background='#0071e3'">Accept ${type==='student'?'Student':'Teacher'}</button>`;
+    const acceptedTag=`<div style="text-align:center;padding:13px;background:#e8f5e9;border-radius:100px;color:#2e7d32;font-size:0.88rem;font-weight:700;margin-top:12px;">✓ Application Accepted</div>`;
+    if(type==='student'){
+        const name=app.studentName||app.name||'Unknown';
+        inner.innerHTML=`
+          <div style="width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,#4facfe,#0071e3);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.5rem;font-weight:800;margin:0 auto 12px;">${ahInitials(name)}</div>
+          <div style="text-align:center;font-size:1.25rem;font-weight:700;color:#1d1d1f;margin-bottom:4px;">${escapeHtml(name)}</div>
+          <div style="text-align:center;font-size:0.72rem;color:#999;letter-spacing:1px;text-transform:uppercase;margin-bottom:18px;">Student Application</div>
+          <div style="height:1px;background:rgba(0,0,0,0.06);margin-bottom:14px;"></div>
+          ${row('<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:#666;stroke-width:2;fill:none;"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>','Parent',escapeHtml(app.parentName||app.parent||'—'))}
+          ${row(phoneIcon,'Phone',escapeHtml(app.phone||app.parentPhone||'—'))}
+          ${row(emailIcon,'Email',escapeHtml(app.email||app.parentEmail||'—'))}
+          ${row(bookIcon,'Grade Applying',escapeHtml(app.gradeApplying||app.grade||'—'))}
+          ${row('<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:#666;stroke-width:2;fill:none;"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>','Previous School',escapeHtml(app.lastSchoolAttended||app.prevSchool||'—'))}
+          ${row(clockIcon,'Submitted',dateStr)}
+          ${isAccepted?acceptedTag:acceptBtn}`;
+    }else{
+        const fn=app.firstName||(app.name||'').split(' ')[0]||'Unknown';
+        const ln=app.lastName||(app.name||'').split(' ').slice(1).join(' ')||'';
+        const fullName=`${fn} ${ln}`.trim();
+        inner.innerHTML=`
+          <div style="width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,#a8edea,#667eea);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.5rem;font-weight:800;margin:0 auto 12px;">${ahInitials(fullName)}</div>
+          <div style="text-align:center;font-size:1.25rem;font-weight:700;color:#1d1d1f;margin-bottom:4px;">${escapeHtml(fullName)}</div>
+          <div style="text-align:center;font-size:0.72rem;color:#999;letter-spacing:1px;text-transform:uppercase;margin-bottom:18px;">Teacher Application</div>
+          <div style="height:1px;background:rgba(0,0,0,0.06);margin-bottom:14px;"></div>
+          ${row(phoneIcon,'Phone',escapeHtml(app.phone||'—'))}
+          ${row(emailIcon,'Email',escapeHtml(app.email||'—'))}
+          ${row(bookIcon,'Subject',escapeHtml(app.subject||app.subjectSpecialisation||'—'))}
+          ${row('<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:#666;stroke-width:2;fill:none;"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/></svg>','Education',escapeHtml(app.educationLevel||app.highestEducationLevel||'—'))}
+          ${row('<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:#666;stroke-width:2;fill:none;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>','Motivation',escapeHtml(app.motivation||app.whyJoin||app.message||'—'))}
+          ${row(clockIcon,'Submitted',dateStr)}
+          ${isAccepted?acceptedTag:acceptBtn}`;
     }
-
-    overlay.style.display = 'flex';
-    requestAnimationFrame(() => { panel.style.transform = 'scale(1)'; });
+    overlay.style.display='flex';
+    requestAnimationFrame(()=>{panel.style.transform='scale(1)';});
 }
-
-function closeAppDetail() {
-    document.getElementById('appDetailPanel').style.transform = 'scale(0.95)';
-    setTimeout(() => { document.getElementById('appDetailOverlay').style.display = 'none'; }, 300);
+function closeAppDetail(){
+    document.getElementById('appDetailPanel').style.transform='scale(0.95)';
+    setTimeout(()=>{document.getElementById('appDetailOverlay').style.display='none';},300);
 }
-
-async function acceptApplication(type, id) {
-    try {
-        const col = type === 'student' ? 'studentApplications' : 'teacherApplications';
-        await db.collection(col).doc(id).update({ status: 'accepted' });
-        if (type === 'student') {
-            const idx = studentApps.findIndex(a => String(a.id) === String(id));
-            if (idx > -1) studentApps[idx].status = 'accepted';
-            localStorage.setItem('studentApps', JSON.stringify(studentApps));
-        } else {
-            const idx = teacherAppsData.findIndex(a => String(a.id) === String(id));
-            if (idx > -1) teacherAppsData[idx].status = 'accepted';
-            localStorage.setItem('teacherApps', JSON.stringify(teacherAppsData));
-        }
-        closeAppDetail();
-        showToast('Application accepted!');
-        renderAHContent(ahCurrentTab);
-    } catch(e) {
-        // fallback: update locally only
-        if (type === 'student') {
-            const idx = studentApps.findIndex(a => String(a.id) === String(id));
-            if (idx > -1) studentApps[idx].status = 'accepted';
-            localStorage.setItem('studentApps', JSON.stringify(studentApps));
-        } else {
-            const idx = teacherAppsData.findIndex(a => String(a.id) === String(id));
-            if (idx > -1) teacherAppsData[idx].status = 'accepted';
-            localStorage.setItem('teacherApps', JSON.stringify(teacherAppsData));
-        }
-        closeAppDetail();
-        showToast('Accepted (local)');
-        renderAHContent(ahCurrentTab);
-    }
+async function acceptApplication(type,id){
+    try{const col=type==='student'?'studentApplications':'teacherApplications';await db.collection(col).doc(id).update({status:'accepted'});}catch(e){console.log('Accept error:',e);}
+    if(type==='student'){const i=studentApps.findIndex(a=>String(a.id)===String(id));if(i>-1)studentApps[i].status='accepted';localStorage.setItem('studentApps',JSON.stringify(studentApps));}
+    else{const i=teacherAppsData.findIndex(a=>String(a.id)===String(id));if(i>-1)teacherAppsData[i].status='accepted';localStorage.setItem('teacherApps',JSON.stringify(teacherAppsData));}
+    closeAppDetail();
+    showToast('Application accepted!');
+    renderAHContent(ahCurrentTab);
 }
+document.getElementById('appsHubOverlay').addEventListener('click',e=>{if(e.target===document.getElementById('appsHubOverlay'))closeApplicationsHub();});
+document.getElementById('appDetailOverlay').addEventListener('click',e=>{if(e.target===document.getElementById('appDetailOverlay'))closeAppDetail();});
 
-// click backdrop to close hub
-document.getElementById('appsHubOverlay').addEventListener('click', e => {
-    if (e.target === document.getElementById('appsHubOverlay')) closeApplicationsHub();
-});
-document.getElementById('appDetailOverlay').addEventListener('click', e => {
-    if (e.target === document.getElementById('appDetailOverlay')) closeAppDetail();
-});
+/* ══ STUDENT TRACKER ══ */
+let studentTrackerData=JSON.parse(localStorage.getItem('studentTrackerData'))||[];
+let stCurrentTab='all';
+const gradeGroups={KG:['KDT 1','KDT 2','KDT 3'],Primary:['Grade 1','Grade 2','Grade 3','Grade 4','Grade 5','Grade 6'],Secondary:['Grade 7','Grade 8','Grade 9'],Senior:['Grade 10','Grade 11','Grade 12']};
+const statusColors={Active:{bg:'#e8f5e9',color:'#2e7d32'},Inactive:{bg:'#fce4ec',color:'#c62828'},Transferred:{bg:'#fff8e1',color:'#f57f17'}};
+const gradeOrder=['KDT 1','KDT 2','KDT 3','Grade 1','Grade 2','Grade 3','Grade 4','Grade 5','Grade 6','Grade 7','Grade 8','Grade 9','Grade 10','Grade 11','Grade 12'];
 
-/* add teacher — placeholder, managed via teacher-contact.html */
-function openAddTeacher(){ showToast('Use the Teacher Contact page to add teachers.'); }
+function openStudentTracker(){
+    document.getElementById('studentTrackerOverlay').style.display='flex';
+    requestAnimationFrame(()=>{document.getElementById('studentTrackerPanel').style.transform='scale(1)';});
+    loadStudentsFromFirestore();
+    renderStudentTracker();
+}
+function closeStudentTracker(){
+    document.getElementById('studentTrackerPanel').style.transform='scale(0.95)';
+    setTimeout(()=>{document.getElementById('studentTrackerOverlay').style.display='none';},350);
+}
+async function loadStudentsFromFirestore(){
+    try{const snap=await db.collection('students').orderBy('name').get();if(!snap.empty){studentTrackerData=snap.docs.map(d=>({id:d.id,...d.data()}));localStorage.setItem('studentTrackerData',JSON.stringify(studentTrackerData));renderStudentTracker();}}catch(e){console.log('Tracker load:',e);}
+}
+function switchSTTab(tab){
+    stCurrentTab=tab;
+    ['all','KG','Primary','Secondary','Senior'].forEach(t=>{
+        const btn=document.getElementById('stTab'+t.charAt(0).toUpperCase()+t.slice(1));
+        if(!btn)return;
+        const a=t===tab;
+        btn.style.background=a?'#fff':'transparent';
+        btn.style.color=a?'#1d1d1f':'#666';
+        btn.style.boxShadow=a?'0 1px 3px rgba(0,0,0,0.1)':'none';
+    });
+    renderStudentTracker();
+}
+function renderStudentTracker(){
+    const q=(document.getElementById('stSearchInput')?.value||'').toLowerCase();
+    let filtered=studentTrackerData;
+    if(stCurrentTab!=='all'){const grades=gradeGroups[stCurrentTab]||[];filtered=filtered.filter(s=>grades.includes(s.grade));}
+    if(q)filtered=filtered.filter(s=>(s.name||'').toLowerCase().includes(q)||(s.grade||'').toLowerCase().includes(q)||(s.studentId||'').toLowerCase().includes(q));
+    const cnt=document.getElementById('stCount');
+    if(cnt)cnt.textContent=`${filtered.length} student${filtered.length!==1?'s':''}`;
+    const container=document.getElementById('stContent');
+    if(!container)return;
+    if(!filtered.length){container.innerHTML=`<div style="text-align:center;padding:80px 20px;color:#bbb;"><div style="font-size:2.5rem;margin-bottom:12px;">📋</div><p>No students found. Use "Add Student" to get started.</p></div>`;return;}
+    const grouped={};
+    filtered.forEach(s=>{if(!grouped[s.grade])grouped[s.grade]=[];grouped[s.grade].push(s);});
+    const sortedGrades=Object.keys(grouped).sort((a,b)=>gradeOrder.indexOf(a)-gradeOrder.indexOf(b));
+    container.innerHTML=sortedGrades.map(grade=>{
+        const students=grouped[grade];
+        return`<div style="margin-bottom:24px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+            <span style="font-size:0.9rem;font-weight:700;color:#1d1d1f;">${grade}</span>
+            <span style="font-size:0.72rem;background:#f0f0f5;color:#666;padding:3px 10px;border-radius:100px;font-weight:600;">${students.length} student${students.length!==1?'s':''}</span>
+          </div>
+          <div style="background:#fff;border-radius:20px;border:1px solid rgba(0,0,0,0.06);overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.03);">
+            ${students.map((s,i)=>{const sc=statusColors[s.status]||statusColors.Active;return`<div style="display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:${i<students.length-1?'1px solid rgba(0,0,0,0.05)':'none'};transition:background 0.15s;cursor:pointer;" onmouseover="this.style.background='#fafafa'" onmouseout="this.style.background=''">
+              <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#4facfe,#0071e3);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:0.85rem;flex-shrink:0;">${ahInitials(s.name||'')}</div>
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:0.92rem;font-weight:600;color:#1d1d1f;">${escapeHtml(s.name||'—')}</div>
+                <div style="font-size:0.75rem;color:#999;">ID: ${s.studentId||'—'} · ${s.phone||'—'}</div>
+              </div>
+              <span style="font-size:0.68rem;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;padding:4px 10px;border-radius:100px;background:${sc.bg};color:${sc.color};white-space:nowrap;flex-shrink:0;">${s.status||'Active'}</span>
+              <button onclick="deleteStudent('${s.id}')" style="width:30px;height:30px;background:#fff0f0;border:none;border-radius:50%;cursor:pointer;color:#ff3b30;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s;" onmouseover="this.style.background='#ff3b30';this.style.color='#fff'" onmouseout="this.style.background='#fff0f0';this.style.color='#ff3b30'">✕</button>
+            </div>`;}).join('')}
+          </div>
+        </div>`;
+    }).join('');
+}
+function openAddStudentModal(){document.getElementById('addStudentOverlay').style.display='flex';}
+function closeAddStudentModal(){document.getElementById('addStudentOverlay').style.display='none';}
+async function saveStudent(){
+    const first=document.getElementById('asFirstName').value.trim();
+    const last=document.getElementById('asLastName').value.trim();
+    const grade=document.getElementById('asGrade').value;
+    const sid=document.getElementById('asId').value.trim();
+    const phone=document.getElementById('asPhone').value.trim();
+    const status=document.getElementById('asStatus').value;
+    if(!first||!last||!grade){showToast('Please fill name and grade');return;}
+    const student={name:`${first} ${last}`,grade,studentId:sid||`KA-${Date.now()}`,phone,status,createdAt:new Date().toISOString()};
+    try{const ref=await db.collection('students').add(student);student.id=ref.id;}catch(e){student.id='local-'+Date.now();}
+    studentTrackerData.push(student);
+    localStorage.setItem('studentTrackerData',JSON.stringify(studentTrackerData));
+    closeAddStudentModal();
+    renderStudentTracker();
+    showToast(`${first} ${last} added!`);
+    ['asFirstName','asLastName','asId','asPhone'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+    document.getElementById('asGrade').value='';document.getElementById('asStatus').value='Active';
+}
+async function deleteStudent(id){
+    if(!confirm('Remove this student?'))return;
+    try{await db.collection('students').doc(id).delete();}catch(e){}
+    studentTrackerData=studentTrackerData.filter(s=>s.id!==id);
+    localStorage.setItem('studentTrackerData',JSON.stringify(studentTrackerData));
+    renderStudentTracker();
+    showToast('Student removed');
+}
+document.getElementById('studentTrackerOverlay').addEventListener('click',e=>{if(e.target===document.getElementById('studentTrackerOverlay'))closeStudentTracker();});
+document.getElementById('addStudentOverlay').addEventListener('click',e=>{if(e.target===document.getElementById('addStudentOverlay'))closeAddStudentModal();});
 
 /* ── NAV ACTIONS ── */
 function goHome(){window.location.href='index.html';}
 function scrollToProjects(){document.querySelector('.recent-section')?.scrollIntoView({behavior:'smooth'});}
 function openCreateModal(){openModal('createModal');}
 function openMessagesModal(){loadMessages();openModal('messagesModal');}
-function openApplications(){openModal('applicationsModal');}
 function openAI(){showToast('AI Assistant coming soon!');}
 function openEditor(){window.location.href='editor.html';}
 function openModal(id){document.getElementById(id).classList.add('active');}
 function closeModal(id){document.getElementById(id).classList.remove('active');}
 function loadMessages(){const l=document.getElementById('messagesList');l.innerHTML=messages.length?messages.map(m=>`<div style="padding:12px 0;border-bottom:1px solid #f0f0f0;">${m.title}</div>`).join(''):'<div style="padding:40px;text-align:center">No messages</div>';}
+function openAddTeacher(){showToast('Manage teachers via the Teacher Contact page.');}
 
 const searchInput=document.getElementById('searchInput'),clearBtn=document.getElementById('clearSearchBtn');
-function updateClear(){if(clearBtn)clearBtn.style.display=searchInput.value.length>0?'flex':'none';}
+function updateClear(){if(clearBtn)clearBtn.style.display=searchInput?.value.length>0?'flex':'none';}
 if(searchInput)searchInput.addEventListener('input',()=>{updateClear();renderProjects();});
-if(clearBtn)clearBtn.addEventListener('click',()=>{searchInput.value='';updateClear();renderProjects();});
+if(clearBtn)clearBtn.addEventListener('click',()=>{if(searchInput)searchInput.value='';updateClear();renderProjects();});
 
 /* ── AUTH ── */
 const entrance=document.getElementById('adminEntrance'),adminContent=document.getElementById('adminContent'),accessDenied=document.getElementById('accessDenied');
-
-const _log = [];
-function setStatus(msg, isError) {
-    const time = new Date().toLocaleTimeString();
+const _log=[];
+function setStatus(msg,isError){
+    const time=new Date().toLocaleTimeString();
     _log.push(`[${time}] ${msg}`);
-    console.log('[ADMIN]', msg);
-    const el = document.getElementById('entranceStatus');
-    if (el) el.textContent = msg;
-    const dbg = document.getElementById('entranceDebug');
-    if (dbg) dbg.innerHTML = _log.map(l => `• ${l}`).join('<br>');
-    if (isError) {
-        const errEl = document.getElementById('entranceError');
-        if (errEl) { errEl.style.display = 'block'; errEl.textContent = '❌ ' + msg; }
-        const btn = document.getElementById('entranceManualBtn');
-        if (btn) btn.style.display = 'inline-block';
-    }
+    console.log('[ADMIN]',msg);
+    const el=document.getElementById('entranceStatus');if(el)el.textContent=msg;
+    const dbg=document.getElementById('entranceDebug');if(dbg)dbg.innerHTML=_log.map(l=>`• ${l}`).join('<br>');
+    if(isError){const e=document.getElementById('entranceError');if(e){e.style.display='block';e.textContent='❌ '+msg;}const b=document.getElementById('entranceManualBtn');if(b)b.style.display='inline-block';}
 }
-
-function dismissEntrance() {
-    if (!entrance) return;
-    entrance.classList.add('fade-out');
-}
-
-// Hard fallback at 12s
-setTimeout(() => {
-    setStatus('⏰ Timeout after 12s — Firebase did not respond. Possible causes: not signed in, bad internet, Firestore rules blocking access.', true);
-}, 12000);
-
-setStatus('⏳ Page loaded. Checking Firebase…');
-
-try {
-    setStatus(`✅ Firebase apps loaded: ${firebase.apps.length}`);
-} catch(e) {
-    setStatus(`❌ Firebase SDK failed to load: ${e.message}`, true);
-}
-
-setStatus(`🔑 HEAD_ADMIN_EMAIL = "${HEAD_ADMIN_EMAIL}"`);
-setStatus('⏳ Waiting for onAuthStateChanged…');
-
-auth.onAuthStateChanged(async (user) => {
-    try {
-        setStatus('🔔 onAuthStateChanged fired');
-
-        if (!user) {
-            setStatus('⚠️ No user. Redirecting to login in 2s…');
-            setTimeout(() => { window.location.href = 'Log.in.html?redirect=admin.html'; }, 2000);
-            return;
-        }
-
-        setStatus(`✅ User email: "${user.email}"`);
-        setStatus(`📋 User UID: ${user.uid}`);
-        setStatus(`🔍 Email matches HEAD_ADMIN: ${user.email === HEAD_ADMIN_EMAIL}`);
-
-        if (user.email === HEAD_ADMIN_EMAIL) {
-            setStatus('✅ HEAD ADMIN — bypassing Firestore. Loading dashboard…');
-            if (adminContent) adminContent.style.display = 'block';
-            if (accessDenied) accessDenied.style.display = 'none';
-            document.getElementById('greetingText').innerHTML = `Hello ${user.displayName?.split(' ')[0] || 'Admin'}`;
+function dismissEntrance(){if(!entrance)return;entrance.classList.add('fade-out');}
+setTimeout(()=>{setStatus('⏰ Timeout — check connection or Firestore rules.',true);},12000);
+setStatus('⏳ Checking Firebase…');
+auth.onAuthStateChanged(async(user)=>{
+    try{
+        setStatus('🔔 Auth check fired');
+        if(!user){setStatus('⚠️ Not signed in. Redirecting…');setTimeout(()=>{window.location.href='Log.in.html?redirect=admin.html';},2000);return;}
+        setStatus(`✅ Signed in: ${user.email}`);
+        if(user.email===HEAD_ADMIN_EMAIL){
+            setStatus('✅ Head admin — loading dashboard…');
+            if(adminContent)adminContent.style.display='block';
+            if(accessDenied)accessDenied.style.display='none';
+            document.getElementById('greetingText').innerHTML=`Hello ${user.displayName?.split(' ')[0]||'Admin'}`;
             loadProjects();
             dismissEntrance();
-            db.collection('users').doc(user.uid).set({ isAdmin: true, role: 'head_admin', email: user.email }, { merge: true })
-                .then(() => setStatus('✅ Firestore head admin record updated.'))
-                .catch(e => setStatus(`⚠️ Background Firestore write failed: ${e.code} ${e.message}`));
+            db.collection('users').doc(user.uid).set({isAdmin:true,role:'head_admin',email:user.email},{merge:true}).catch(()=>{});
             return;
         }
-
-        setStatus('🔄 Not head admin. Reading Firestore…');
-        try {
-            const ud = await db.collection('users').doc(user.uid).get();
-            setStatus(`📄 Doc exists: ${ud.exists}`);
-            if (ud.exists) {
-                const d = ud.data();
-                setStatus(`📄 isAdmin: ${d.isAdmin}, isBanned: ${d.isBanned}`);
-                if (d.isBanned) {
-                    setStatus('🚫 Banned. Signing out.', true);
-                    await auth.signOut();
-                    if (adminContent) adminContent.style.display = 'none';
-                    if (accessDenied) { accessDenied.style.display = 'flex'; accessDenied.querySelector('p').textContent = 'Your account has been banned.'; }
-                    dismissEntrance();
-                    return;
-                }
-                if (d.isAdmin === true) {
-                    setStatus('✅ Firestore admin confirmed. Loading…');
-                    if (adminContent) adminContent.style.display = 'block';
-                    if (accessDenied) accessDenied.style.display = 'none';
-                    document.getElementById('greetingText').innerHTML = `Hello ${user.displayName?.split(' ')[0] || 'Admin'}`;
-                    loadProjects();
-                    dismissEntrance();
-                } else {
-                    setStatus('🚫 isAdmin is false or missing — access denied.', true);
-                    if (adminContent) adminContent.style.display = 'none';
-                    if (accessDenied) accessDenied.style.display = 'flex';
-                    dismissEntrance();
-                }
-            } else {
-                setStatus('🚫 No Firestore doc found for this user — access denied.', true);
-                if (adminContent) adminContent.style.display = 'none';
-                if (accessDenied) accessDenied.style.display = 'flex';
-                dismissEntrance();
-            }
-        } catch (e) {
-            setStatus(`❌ Firestore read error: [${e.code}] ${e.message}`, true);
-            if (adminContent) adminContent.style.display = 'none';
-            if (accessDenied) accessDenied.style.display = 'flex';
-            dismissEntrance();
-        }
-
-    } catch (e) {
-        setStatus(`❌ Unexpected auth handler error: ${e.message}`, true);
-        dismissEntrance();
-    }
+        setStatus('🔄 Checking Firestore admin flag…');
+        try{
+            const ud=await db.collection('users').doc(user.uid).get();
+            const data=ud.exists?ud.data():{};
+            setStatus(`📄 isAdmin: ${data.isAdmin}, isBanned: ${data.isBanned}`);
+            if(data.isBanned){await auth.signOut();if(adminContent)adminContent.style.display='none';if(accessDenied){accessDenied.style.display='flex';accessDenied.querySelector('p').textContent='Your account has been banned.';}dismissEntrance();return;}
+            if(data.isAdmin===true){if(adminContent)adminContent.style.display='block';if(accessDenied)accessDenied.style.display='none';document.getElementById('greetingText').innerHTML=`Hello ${user.displayName?.split(' ')[0]||'Admin'}`;loadProjects();dismissEntrance();}
+            else{setStatus('🚫 Not an admin.',true);if(adminContent)adminContent.style.display='none';if(accessDenied)accessDenied.style.display='flex';dismissEntrance();}
+        }catch(e){setStatus(`❌ Firestore error: ${e.code} ${e.message}`,true);if(adminContent)adminContent.style.display='none';if(accessDenied)accessDenied.style.display='flex';dismissEntrance();}
+    }catch(e){setStatus(`❌ Auth error: ${e.message}`,true);dismissEntrance();}
 });
 </script>
 </body>
