@@ -12,9 +12,9 @@
         :root { --apple-blue:#0071e3; --text-main:#1d1d1f; }
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif; background:#fff; color:var(--text-main); overflow-x:hidden; min-height:100vh; }
-        .admin-entrance { position:fixed; top:0; left:0; width:100%; height:100%; background:linear-gradient(135deg,#ffffff 0%,#eef8ff 100%); z-index:10000; display:flex; align-items:center; justify-content:center; opacity:1; transition:opacity 0.6s ease,visibility 0.6s ease; }
-        .admin-entrance.fade-out { opacity:0; visibility:hidden; }
-        .entrance-content { text-align:center; animation:entrancePop 0.8s cubic-bezier(0.34,1.2,0.64,1) forwards; }
+        .admin-entrance { position:fixed; top:0; left:0; width:100%; height:100%; background:linear-gradient(135deg,#ffffff 0%,#eef8ff 100%); z-index:10000; display:flex; align-items:center; justify-content:center; opacity:1; transition:opacity 0.5s ease; pointer-events:none; }
+        .admin-entrance.fade-out { opacity:0; }
+        .entrance-content { text-align:center; }
         @keyframes entrancePop { 0%{opacity:0;transform:scale(0.8) translateY(30px);}100%{opacity:1;transform:scale(1) translateY(0);} }
         .entrance-logo { font-size:4rem; font-weight:800; letter-spacing:-3px; background:linear-gradient(135deg,#1d1d1f 0%,var(--apple-blue) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:20px; }
         .entrance-sub { font-size:1rem; color:#86868b; letter-spacing:2px; }
@@ -728,11 +728,10 @@ const entrance=document.getElementById('adminEntrance'),adminContent=document.ge
 function dismissEntrance() {
     if (!entrance) return;
     entrance.classList.add('fade-out');
-    setTimeout(() => { entrance.style.display = 'none'; }, 650);
 }
 
-// Hard fallback: if Firebase takes longer than 6s, dismiss anyway
-setTimeout(dismissEntrance, 6000);
+// Hard fallback: dismiss after 5s no matter what
+setTimeout(dismissEntrance, 5000);
 
 auth.onAuthStateChanged(async(user)=>{
     if(user){
@@ -741,11 +740,28 @@ auth.onAuthStateChanged(async(user)=>{
             const userData=ud.data();
             if(userData?.isBanned){await auth.signOut();if(adminContent)adminContent.style.display='none';if(accessDenied){accessDenied.style.display='flex';accessDenied.querySelector('p').textContent='Your account has been banned.';}dismissEntrance();return;}
             const isAdmin=user.email===HEAD_ADMIN_EMAIL||(userData?.isAdmin===true);
-            if(isAdmin){if(user.email===HEAD_ADMIN_EMAIL&&!userData?.isAdmin)await db.collection('users').doc(user.uid).set({isAdmin:true,role:'head_admin'},{merge:true});if(adminContent)adminContent.style.display='block';if(accessDenied)accessDenied.style.display='none';document.getElementById('greetingText').innerHTML=`Hello ${user.displayName?.split(' ')[0]||'Admin'}`;loadProjects();dismissEntrance();}
-            else{if(adminContent)adminContent.style.display='none';if(accessDenied)accessDenied.style.display='flex';dismissEntrance();}
-        }catch(e){console.log(e);if(adminContent)adminContent.style.display='none';if(accessDenied)accessDenied.style.display='flex';dismissEntrance();}
-    }else{
-        if(adminContent)adminContent.style.display='none';if(accessDenied)accessDenied.style.display='flex';dismissEntrance();
+            if(isAdmin){
+                if(user.email===HEAD_ADMIN_EMAIL&&!userData?.isAdmin)await db.collection('users').doc(user.uid).set({isAdmin:true,role:'head_admin'},{merge:true});
+                if(adminContent)adminContent.style.display='block';
+                if(accessDenied)accessDenied.style.display='none';
+                document.getElementById('greetingText').innerHTML=`Hello ${user.displayName?.split(' ')[0]||'Admin'}`;
+                loadProjects();
+                dismissEntrance();
+            } else {
+                if(adminContent)adminContent.style.display='none';
+                if(accessDenied)accessDenied.style.display='flex';
+                dismissEntrance();
+            }
+        } catch(e) {
+            console.log(e);
+            if(adminContent)adminContent.style.display='none';
+            if(accessDenied)accessDenied.style.display='flex';
+            dismissEntrance();
+        }
+    } else {
+        if(adminContent)adminContent.style.display='none';
+        if(accessDenied)accessDenied.style.display='flex';
+        dismissEntrance();
     }
 });
 </script>
