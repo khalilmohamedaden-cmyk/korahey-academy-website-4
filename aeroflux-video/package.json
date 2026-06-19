@@ -8,10 +8,12 @@
     "render": "npx remotion render src/index.ts AerofluxComposition out/aeroflux.mp4"
   },
   "dependencies": {
-    "remotion": "^4.0.0",
     "@remotion/cli": "^4.0.0",
+    "@remotion/google-fonts": "4.0.481",
+    "@remotion/transitions": "4.0.481",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "remotion": "^4.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.0",

@@ -3,33 +3,55 @@ import React from 'react';
 interface GlassPanelProps {
   width?: number | string;
   height?: number | string;
+  glowColor?: string;
+  glowIntensity?: number;
   style?: React.CSSProperties;
   children?: React.ReactNode;
-  glowColor?: string;
   borderOpacity?: number;
 }
 
 export const GlassPanel: React.FC<GlassPanelProps> = ({
   width = 600,
   height = 400,
+  glowColor = 'rgba(0,245,255,0.3)',
+  glowIntensity = 1,
   style = {},
   children,
-  glowColor = 'rgba(0,245,255,0.2)',
   borderOpacity = 0.15,
 }) => {
-  const panelStyle: React.CSSProperties = {
-    position: 'relative',
-    width,
-    height,
-    background: 'rgba(10,10,30,0.7)',
-    border: `1px solid rgba(255,255,255,${borderOpacity})`,
-    backdropFilter: 'blur(20px)',
-    WebkitBackdropFilter: 'blur(20px)',
-    borderRadius: 20,
-    boxShadow: `0 0 40px ${glowColor}, inset 0 1px 0 rgba(255,255,255,0.08)`,
-    overflow: 'hidden',
-    ...style,
-  };
-
-  return <div style={panelStyle}>{children}</div>;
+  return (
+    <div
+      style={{
+        width,
+        height,
+        background: 'rgba(8, 6, 24, 0.8)',
+        backdropFilter: 'blur(32px)',
+        border: `1px solid rgba(255,255,255,${borderOpacity})`,
+        borderRadius: 20,
+        boxShadow: `
+          0 0 0 1px rgba(255,255,255,0.04),
+          0 8px 48px rgba(0,0,0,0.7),
+          0 0 ${80 * glowIntensity}px ${glowColor},
+          inset 0 1px 0 rgba(255,255,255,0.1)
+        `,
+        overflow: 'hidden',
+        position: 'relative',
+        ...style,
+      }}
+    >
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: '10%',
+          width: '80%',
+          height: 1,
+          background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent)',
+          pointerEvents: 'none',
+          zIndex: 10,
+        }}
+      />
+      {children}
+    </div>
+  );
 };

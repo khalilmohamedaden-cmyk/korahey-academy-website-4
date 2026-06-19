@@ -1,360 +1,287 @@
 import React from 'react';
-import { AbsoluteFill, useCurrentFrame, interpolate, Easing } from 'remotion';
+import { AbsoluteFill, useCurrentFrame, interpolate, Easing, useVideoConfig } from 'remotion';
+import { loadFont } from '@remotion/google-fonts/SpaceGrotesk';
 import { GlassPanel } from '../components/GlassPanel';
 import { Particles } from '../components/Particles';
 import { TypewriterText } from '../components/TypewriterText';
 
-const CHAT_MESSAGES = [
-  'User: Summarize the lecture on quantum entanglement.',
-  'Flux: Quantum entanglement describes a phenomenon where...',
-  'User: Give me 3 exam questions based on this.',
-  'Flux: 1. Explain Bell\'s theorem and its implications...',
+const { fontFamily } = loadFont('normal', { weights: ['300', '400'], subsets: ['latin'] });
+
+const MSGS = [
+  { role: 'user', text: 'Summarize quantum entanglement in 3 lines.' },
+  { role: 'ai', text: 'Entanglement links two particles regardless of distance — measuring one instantly determines the other\'s state.' },
+  { role: 'user', text: 'Give me 2 exam questions on this.' },
+  { role: 'ai', text: '1. Explain Bell\'s inequality. 2. How does entanglement differ from classical correlation?' },
 ];
 
-const OrbComponent: React.FC<{ frame: number }> = ({ frame }) => {
-  const scale = interpolate(frame, [0, 30], [0, 1], {
-    easing: Easing.bezier(0.34, 1.56, 0.64, 1),
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
-  const opacity = interpolate(frame, [60, 80], [1, 0], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
-  const pulse = interpolate(Math.sin(frame * 0.1), [-1, 1], [0.95, 1.05]);
-
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        width: 120,
-        height: 120,
-        borderRadius: '50%',
-        background:
-          'radial-gradient(circle at 35% 35%, #00f5ff 0%, #9b59b6 40%, #1a0a4a 100%)',
-        boxShadow:
-          '0 0 60px rgba(0,245,255,0.8), 0 0 120px rgba(0,245,255,0.4), 0 0 200px rgba(155,89,182,0.3)',
-        transform: `scale(${scale * pulse})`,
-        opacity,
-        left: '50%',
-        top: '50%',
-        marginLeft: -60,
-        marginTop: -60,
-      }}
-    />
-  );
-};
-
-const ChatPanel: React.FC<{ frame: number }> = ({ frame }) => {
-  const panelOpacity = interpolate(frame, [80, 120], [0, 1], {
-    easing: Easing.bezier(0.25, 0.46, 0.45, 0.94),
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
-  const panelY = interpolate(frame, [80, 120], [40, 0], {
-    easing: Easing.bezier(0.25, 0.46, 0.45, 0.94),
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
-
-  const inputPulse = interpolate(Math.sin(frame * 0.08), [-1, 1], [0.5, 1]);
-
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        left: '50%',
-        top: '50%',
-        transform: `translateX(-50%) translateY(calc(-50% + ${panelY}px))`,
-        opacity: panelOpacity,
-        width: 680,
-      }}
-    >
-      <GlassPanel
-        width={680}
-        height={440}
-        glowColor="rgba(0,245,255,0.25)"
-        style={{ display: 'flex', flexDirection: 'column', padding: 0 }}
-      >
-        {/* Header bar */}
-        <div
-          style={{
-            padding: '16px 24px',
-            borderBottom: '1px solid rgba(255,255,255,0.08)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 8,
-          }}
-        >
-          {[0, 1, 2].map((i) => (
-            <div
-              key={i}
-              style={{
-                width: 10,
-                height: 10,
-                borderRadius: '50%',
-                background:
-                  i === 0
-                    ? '#ff5f57'
-                    : i === 1
-                      ? '#febc2e'
-                      : '#28c840',
-              }}
-            />
-          ))}
-          <span
-            style={{
-              marginLeft: 12,
-              fontFamily: '"Space Grotesk", sans-serif',
-              fontSize: 13,
-              fontWeight: 300,
-              color: 'rgba(255,255,255,0.5)',
-              letterSpacing: '0.1em',
-            }}
-          >
-            FLUX CHAT — LOCAL SESSION
-          </span>
-          <div
-            style={{
-              marginLeft: 'auto',
-              width: 8,
-              height: 8,
-              borderRadius: '50%',
-              background: '#00f5ff',
-              boxShadow: '0 0 8px #00f5ff',
-              opacity: inputPulse,
-            }}
-          />
-        </div>
-
-        {/* Messages area */}
-        <div
-          style={{
-            flex: 1,
-            padding: '20px 24px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 16,
-            overflow: 'hidden',
-          }}
-        >
-          {CHAT_MESSAGES.map((msg, i) => {
-            const msgStartFrame = 120 + i * 35;
-            const msgOpacity = interpolate(
-              frame,
-              [msgStartFrame, msgStartFrame + 15],
-              [0, 1],
-              {
-                extrapolateLeft: 'clamp',
-                extrapolateRight: 'clamp',
-              },
-            );
-            const isUser = msg.startsWith('User:');
-
-            return (
-              <div
-                key={i}
-                style={{
-                  opacity: msgOpacity,
-                  display: 'flex',
-                  justifyContent: isUser ? 'flex-end' : 'flex-start',
-                }}
-              >
-                <div
-                  style={{
-                    maxWidth: '80%',
-                    padding: '10px 16px',
-                    borderRadius: isUser ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
-                    background: isUser
-                      ? 'linear-gradient(135deg, rgba(0,245,255,0.2), rgba(155,89,182,0.2))'
-                      : 'rgba(255,255,255,0.05)',
-                    border: `1px solid ${isUser ? 'rgba(0,245,255,0.3)' : 'rgba(255,255,255,0.08)'}`,
-                  }}
-                >
-                  <TypewriterText
-                    text={msg}
-                    startFrame={msgStartFrame}
-                    charsPerFrame={0.8}
-                    style={{ fontSize: 13, color: isUser ? '#a0e8ff' : '#d0d8f0' }}
-                  />
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Input bar */}
-        <div
-          style={{
-            padding: '16px 24px',
-            borderTop: '1px solid rgba(255,255,255,0.08)',
-          }}
-        >
-          <div
-            style={{
-              background: 'rgba(255,255,255,0.05)',
-              border: `1px solid rgba(0,245,255,${0.2 + inputPulse * 0.15})`,
-              borderRadius: 999,
-              padding: '10px 20px',
-              display: 'flex',
-              alignItems: 'center',
-              boxShadow: `0 0 ${16 + inputPulse * 8}px rgba(0,245,255,0.15)`,
-            }}
-          >
-            <span
-              style={{
-                fontFamily: '"Space Grotesk", sans-serif',
-                fontSize: 13,
-                fontWeight: 300,
-                color: 'rgba(255,255,255,0.3)',
-                flex: 1,
-              }}
-            >
-              Ask Flux anything…
-            </span>
-            <div
-              style={{
-                width: 28,
-                height: 28,
-                borderRadius: '50%',
-                background: 'linear-gradient(135deg, #00f5ff, #9b59b6)',
-                boxShadow: '0 0 12px rgba(0,245,255,0.4)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <div
-                style={{
-                  width: 0,
-                  height: 0,
-                  borderTop: '5px solid transparent',
-                  borderBottom: '5px solid transparent',
-                  borderLeft: '8px solid rgba(0,0,20,0.9)',
-                  marginLeft: 2,
-                }}
-              />
-            </div>
-          </div>
-        </div>
-      </GlassPanel>
-    </div>
-  );
-};
-
-const WordmarkAssembly: React.FC<{ frame: number }> = ({ frame }) => {
-  const letters = 'AEROFLUX'.split('');
-
-  const subtitleOpacity = interpolate(frame, [275, 295], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
-
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        top: 60,
-        left: '50%',
-        transform: 'translateX(-50%)',
-        textAlign: 'center',
-      }}
-    >
-      <div style={{ display: 'flex', gap: 2 }}>
-        {letters.map((letter, i) => {
-          const letterStart = 200 + i * 10;
-          const letterOpacity = interpolate(
-            frame,
-            [letterStart, letterStart + 20],
-            [0, 1],
-            {
-              easing: Easing.bezier(0.25, 0.46, 0.45, 0.94),
-              extrapolateLeft: 'clamp',
-              extrapolateRight: 'clamp',
-            },
-          );
-          const letterY = interpolate(
-            frame,
-            [letterStart, letterStart + 20],
-            [-20, 0],
-            {
-              easing: Easing.bezier(0.25, 0.46, 0.45, 0.94),
-              extrapolateLeft: 'clamp',
-              extrapolateRight: 'clamp',
-            },
-          );
-
-          return (
-            <span
-              key={i}
-              style={{
-                fontFamily: '"Space Grotesk", "Inter", sans-serif',
-                fontSize: 52,
-                fontWeight: 100,
-                color: '#ffffff',
-                letterSpacing: '0.15em',
-                opacity: letterOpacity,
-                transform: `translateY(${letterY}px)`,
-                display: 'inline-block',
-                textShadow: '0 0 30px rgba(0,245,255,0.5)',
-              }}
-            >
-              {letter}
-            </span>
-          );
-        })}
-      </div>
-
-      <div
-        style={{
-          opacity: subtitleOpacity,
-          fontFamily: '"Space Grotesk", sans-serif',
-          fontSize: 14,
-          fontWeight: 300,
-          color: '#00f5ff',
-          letterSpacing: '0.3em',
-          marginTop: 8,
-          textTransform: 'uppercase',
-        }}
-      >
-        Flux Chat — local AI, zero latency
-      </div>
-    </div>
-  );
-};
+const ease = { easing: Easing.bezier(0.16, 1, 0.3, 1), extrapolateLeft: 'clamp' as const, extrapolateRight: 'clamp' as const };
+const easeOut = { easing: Easing.out(Easing.cubic), extrapolateLeft: 'clamp' as const, extrapolateRight: 'clamp' as const };
 
 export const Scene1: React.FC = () => {
   const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
 
-  const sceneOpacity = interpolate(frame, [270, 300], [1, 0], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
+  // Orb birth
+  const orbScale = interpolate(frame, [0, 25], [0, 1], { ...ease });
+  const orbPulse = 1 + Math.sin(frame * 0.08) * 0.04;
+  const orbOpacity = interpolate(frame, [55, 80], [1, 0], easeOut);
+  const orbGlow = interpolate(frame, [0, 40], [0, 1], easeOut);
+
+  // Panel entrance
+  const panelOpacity = interpolate(frame, [80, 115], [0, 1], ease);
+  const panelY = interpolate(frame, [80, 115], [50, 0], ease);
+  const panelScale = interpolate(frame, [80, 115], [0.96, 1], ease);
+
+  // Pill input pulse
+  const pillGlow = 0.15 + Math.sin(frame * 0.07) * 0.1;
+  const dotPulse = 0.5 + Math.sin(frame * 0.12) * 0.5;
+
+  // Wordmark
+  const letters = 'AEROFLUX'.split('');
+  const subtitleOpacity = interpolate(frame, [260, 280], [0, 1], ease);
+
+  // Viewport camera push: subtle scale from 1 to 1.03 as orb blooms
+  const camScale = interpolate(frame, [0, 60], [1.06, 1], easeOut);
 
   return (
-    <AbsoluteFill
-      style={{
-        background: '#000010',
-        opacity: sceneOpacity,
-      }}
-    >
-      {/* Background gradient */}
-      <div
+    <AbsoluteFill style={{ background: '#000008', fontFamily }}>
+      {/* Deep space background nebula */}
+      <AbsoluteFill
         style={{
-          position: 'absolute',
-          inset: 0,
-          background:
-            'radial-gradient(ellipse at 50% 50%, rgba(26,10,74,0.4) 0%, transparent 70%)',
+          background: 'radial-gradient(ellipse 80% 60% at 50% 55%, rgba(26,10,74,0.55) 0%, rgba(0,0,8,0) 70%)',
+          transform: `scale(${camScale})`,
         }}
       />
 
-      <Particles count={20} startFrame={0} />
+      <Particles count={20} startFrame={0} color="#00f5ff" />
+      <Particles count={8} startFrame={10} color="#9b59b6" />
 
-      <AbsoluteFill>
-        <OrbComponent frame={frame} />
-        <ChatPanel frame={frame} />
-        <WordmarkAssembly frame={frame} />
+      {/* Orb */}
+      <AbsoluteFill style={{ transform: `scale(${camScale})` }}>
+        <div
+          style={{
+            position: 'absolute',
+            left: '50%',
+            top: '50%',
+            width: 130,
+            height: 130,
+            marginLeft: -65,
+            marginTop: -65,
+            borderRadius: '50%',
+            background: 'radial-gradient(circle at 38% 32%, rgba(0,245,255,0.9) 0%, rgba(155,89,182,0.8) 40%, rgba(20,8,60,1) 100%)',
+            boxShadow: `
+              0 0 ${60 * orbGlow}px rgba(0,245,255,0.9),
+              0 0 ${120 * orbGlow}px rgba(0,245,255,0.5),
+              0 0 ${200 * orbGlow}px rgba(155,89,182,0.35),
+              inset 0 0 40px rgba(255,255,255,0.08)
+            `,
+            transform: `scale(${orbScale * orbPulse})`,
+            opacity: orbOpacity,
+          }}
+        />
+        {/* Orb refraction ring */}
+        <div
+          style={{
+            position: 'absolute',
+            left: '50%',
+            top: '50%',
+            width: 160,
+            height: 160,
+            marginLeft: -80,
+            marginTop: -80,
+            borderRadius: '50%',
+            border: '1px solid rgba(0,245,255,0.15)',
+            transform: `scale(${orbScale})`,
+            opacity: orbOpacity * 0.6,
+          }}
+        />
       </AbsoluteFill>
+
+      {/* Chat Panel */}
+      <AbsoluteFill
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          opacity: panelOpacity,
+          transform: `translateY(${panelY}px) scale(${panelScale})`,
+        }}
+      >
+        <GlassPanel width={700} height={460} glowColor="rgba(0,245,255,0.2)" glowIntensity={0.9}>
+          {/* Title bar */}
+          <div
+            style={{
+              padding: '14px 22px',
+              borderBottom: '1px solid rgba(255,255,255,0.07)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 7,
+            }}
+          >
+            {['#ff5f57', '#febc2e', '#28c840'].map((c, i) => (
+              <div key={i} style={{ width: 10, height: 10, borderRadius: '50%', background: c, opacity: 0.8 }} />
+            ))}
+            <span
+              style={{
+                marginLeft: 14,
+                fontFamily,
+                fontSize: 11,
+                fontWeight: 300,
+                color: 'rgba(255,255,255,0.35)',
+                letterSpacing: '0.18em',
+                textTransform: 'uppercase',
+              }}
+            >
+              Flux Chat — Local Session
+            </span>
+            <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 6 }}>
+              <div
+                style={{
+                  width: 7,
+                  height: 7,
+                  borderRadius: '50%',
+                  background: '#00f5ff',
+                  boxShadow: '0 0 8px #00f5ff',
+                  opacity: dotPulse,
+                }}
+              />
+              <span style={{ fontFamily, fontSize: 10, color: 'rgba(0,245,255,0.6)', letterSpacing: '0.1em' }}>LIVE</span>
+            </div>
+          </div>
+
+          {/* Messages */}
+          <div style={{ flex: 1, padding: '18px 22px', display: 'flex', flexDirection: 'column', gap: 14, overflow: 'hidden' }}>
+            {MSGS.map((msg, i) => {
+              const start = 115 + i * 40;
+              const msgOpacity = interpolate(frame, [start, start + 20], [0, 1], ease);
+              const msgY = interpolate(frame, [start, start + 20], [12, 0], ease);
+              const isUser = msg.role === 'user';
+              return (
+                <div
+                  key={i}
+                  style={{
+                    opacity: msgOpacity,
+                    transform: `translateY(${msgY}px)`,
+                    display: 'flex',
+                    justifyContent: isUser ? 'flex-end' : 'flex-start',
+                  }}
+                >
+                  <div
+                    style={{
+                      maxWidth: '78%',
+                      padding: '10px 15px',
+                      borderRadius: isUser ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
+                      background: isUser
+                        ? 'linear-gradient(135deg, rgba(0,180,220,0.18), rgba(120,60,180,0.18))'
+                        : 'rgba(255,255,255,0.04)',
+                      border: `1px solid ${isUser ? 'rgba(0,245,255,0.25)' : 'rgba(255,255,255,0.07)'}`,
+                      boxShadow: isUser ? '0 2px 16px rgba(0,245,255,0.1)' : 'none',
+                    }}
+                  >
+                    <TypewriterText
+                      text={msg.text}
+                      startFrame={start + 10}
+                      charsPerFrame={1.4}
+                      showCursor
+                      style={{
+                        fontFamily,
+                        fontSize: 13,
+                        fontWeight: 300,
+                        lineHeight: 1.55,
+                        color: isUser ? 'rgba(160,230,255,0.95)' : 'rgba(210,218,240,0.9)',
+                      }}
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Input pill */}
+          <div style={{ padding: '14px 22px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+            <div
+              style={{
+                background: 'rgba(255,255,255,0.04)',
+                border: `1px solid rgba(0,245,255,${pillGlow + 0.1})`,
+                borderRadius: 999,
+                padding: '10px 18px',
+                display: 'flex',
+                alignItems: 'center',
+                boxShadow: `0 0 ${20 + pillGlow * 40}px rgba(0,245,255,0.12)`,
+              }}
+            >
+              <span style={{ fontFamily, fontSize: 13, fontWeight: 300, color: 'rgba(255,255,255,0.25)', flex: 1 }}>
+                Ask Flux anything…
+              </span>
+              <div
+                style={{
+                  width: 28,
+                  height: 28,
+                  borderRadius: '50%',
+                  background: 'linear-gradient(135deg, #00f5ff, #9b59b6)',
+                  boxShadow: '0 0 14px rgba(0,245,255,0.5)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <div style={{ width: 0, height: 0, borderTop: '5px solid transparent', borderBottom: '5px solid transparent', borderLeft: '8px solid rgba(0,0,20,0.9)', marginLeft: 2 }} />
+              </div>
+            </div>
+          </div>
+        </GlassPanel>
+      </AbsoluteFill>
+
+      {/* Wordmark */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 52,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          textAlign: 'center',
+        }}
+      >
+        <div style={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
+          {letters.map((letter, i) => {
+            const ls = 200 + i * 8;
+            const lo = interpolate(frame, [ls, ls + 18], [0, 1], ease);
+            const ly = interpolate(frame, [ls, ls + 18], [-16, 0], ease);
+            return (
+              <span
+                key={i}
+                style={{
+                  fontFamily,
+                  fontSize: 48,
+                  fontWeight: 100,
+                  letterSpacing: '0.18em',
+                  color: '#fff',
+                  opacity: lo,
+                  transform: `translateY(${ly}px)`,
+                  display: 'inline-block',
+                  textShadow: '0 0 40px rgba(0,245,255,0.6)',
+                }}
+              >
+                {letter}
+              </span>
+            );
+          })}
+        </div>
+        <div
+          style={{
+            opacity: subtitleOpacity,
+            fontFamily,
+            fontSize: 12,
+            fontWeight: 300,
+            color: '#00f5ff',
+            letterSpacing: '0.35em',
+            marginTop: 6,
+            textTransform: 'uppercase',
+          }}
+        >
+          Flux Chat — local AI, zero latency
+        </div>
+      </div>
     </AbsoluteFill>
   );
 };
