@@ -8,7 +8,7 @@ export const Root: React.FC = () => {
       <Composition
         id="AerofluxComposition"
         component={AerofluxComposition}
-        durationInFrames={900}
+        durationInFrames={2100}
         fps={30}
         width={1920}
         height={1080}
