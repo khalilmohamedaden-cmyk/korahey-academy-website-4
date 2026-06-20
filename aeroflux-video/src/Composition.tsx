@@ -3,98 +3,57 @@ import { AbsoluteFill, Sequence, useCurrentFrame, interpolate } from 'remotion';
 import { Scene1 } from './scenes/Scene1';
 import { Scene2 } from './scenes/Scene2';
 import { Scene3 } from './scenes/Scene3';
+import { Scene4 } from './scenes/Scene4';
+import { Scene5 } from './scenes/Scene5';
 
-// Google Fonts import via style tag
-const FontLoader: React.FC = () => (
-  <style>{`
-    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@100;200;300;400&family=Inter:wght@100;200;300&display=swap');
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-  `}</style>
-);
+const BG: React.FC<{ frame: number }> = ({ frame }) => {
+  // Gentle hue shift across the whole video
+  const hue = interpolate(frame, [0, 900], [220, 260], { extrapolateRight: 'clamp' });
+  return (
+    <AbsoluteFill
+      style={{
+        background: `
+          radial-gradient(ellipse 80% 60% at 10% 10%, hsl(${hue},60%,92%) 0%, transparent 60%),
+          radial-gradient(ellipse 70% 55% at 90% 85%, hsl(300,50%,90%) 0%, transparent 60%),
+          #f8f7ff
+        `,
+      }}
+    />
+  );
+};
 
 export const AerofluxComposition: React.FC = () => {
   const frame = useCurrentFrame();
 
-  // Overall composition fade-in at the very start
-  const introOpacity = interpolate(frame, [0, 15], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
-
   return (
     <AbsoluteFill
-      style={{
-        background: '#000010',
-        opacity: introOpacity,
-        fontFamily: '"Space Grotesk", "Inter", sans-serif',
-      }}
+      style={{ fontFamily: '-apple-system, "SF Pro Display", "Inter", sans-serif' }}
     >
-      <FontLoader />
+      <BG frame={frame} />
 
-      {/* Scene 1: Flux Chat — frames 0–300 */}
-      <Sequence from={0} durationInFrames={300}>
+      {/* Scene 1: Problem — 0-180f */}
+      <Sequence from={0} durationInFrames={180}>
         <Scene1 />
       </Sequence>
 
-      {/* Transition: cross-fade between scene 1 and 2 */}
-      <Sequence from={270} durationInFrames={60}>
-        <AbsoluteFill>
-          <div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              background: '#000010',
-              opacity: interpolate(frame - 270, [0, 30, 60], [0, 0.6, 0], {
-                extrapolateLeft: 'clamp',
-                extrapolateRight: 'clamp',
-              }),
-            }}
-          />
-        </AbsoluteFill>
-      </Sequence>
-
-      {/* Scene 2: Flux Code — frames 300–600 */}
-      <Sequence from={300} durationInFrames={300}>
+      {/* Scene 2: Flux Chat — 180-360f */}
+      <Sequence from={180} durationInFrames={180}>
         <Scene2 />
       </Sequence>
 
-      {/* Transition: cross-fade between scene 2 and 3 */}
-      <Sequence from={570} durationInFrames={60}>
-        <AbsoluteFill>
-          <div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              background: '#000010',
-              opacity: interpolate(frame - 570, [0, 30, 60], [0, 0.7, 0], {
-                extrapolateLeft: 'clamp',
-                extrapolateRight: 'clamp',
-              }),
-            }}
-          />
-        </AbsoluteFill>
-      </Sequence>
-
-      {/* Scene 3: Flux Study + Outro — frames 600–900 */}
-      <Sequence from={600} durationInFrames={300}>
+      {/* Scene 3: Flux Code — 360-540f */}
+      <Sequence from={360} durationInFrames={180}>
         <Scene3 />
       </Sequence>
 
-      {/* Final fade to black */}
-      <Sequence from={885} durationInFrames={15}>
-        <AbsoluteFill>
-          <div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              background: '#000000',
-              opacity: interpolate(frame - 885, [0, 15], [0, 1], {
-                extrapolateLeft: 'clamp',
-                extrapolateRight: 'clamp',
-              }),
-            }}
-          />
-        </AbsoluteFill>
+      {/* Scene 4: Flux Study — 540-720f */}
+      <Sequence from={540} durationInFrames={180}>
+        <Scene4 />
+      </Sequence>
+
+      {/* Scene 5: Outro — 720-900f */}
+      <Sequence from={720} durationInFrames={180}>
+        <Scene5 />
       </Sequence>
     </AbsoluteFill>
   );
