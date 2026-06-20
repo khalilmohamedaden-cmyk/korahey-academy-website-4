@@ -1,145 +1,175 @@
 import React from 'react';
-import { AbsoluteFill, useCurrentFrame, interpolate, spring, useVideoConfig } from 'remotion';
+import { AbsoluteFill, useCurrentFrame, interpolate, spring, useVideoConfig, Easing } from 'remotion';
 
 const CODE_LINES = [
-  { tokens: [{ t: 'def ', c: '#CF6EFF' }, { t: 'solve_quadratic', c: '#5B8CFF' }, { t: '(a, b, c):', c: '#333' }] },
-  { tokens: [{ t: '    ', c: '' }, { t: 'discriminant', c: '#E55' }, { t: ' = b**2 - 4*a*c', c: '#333' }] },
-  { tokens: [{ t: '    ', c: '' }, { t: 'if ', c: '#CF6EFF' }, { t: 'discriminant < 0:', c: '#333' }] },
+  { tokens: [{ t: 'def ', c: '#CF6EFF' }, { t: 'solve_quadratic', c: '#7CB9FF' }, { t: '(a, b, c):', c: 'rgba(255,255,255,0.7)' }] },
+  { tokens: [{ t: '    discriminant', c: '#FF7070' }, { t: ' = b**2 - 4*a*c', c: 'rgba(255,255,255,0.6)' }] },
+  { tokens: [{ t: '    ', c: '' }, { t: 'if ', c: '#CF6EFF' }, { t: 'discriminant < 0:', c: 'rgba(255,255,255,0.6)' }] },
   { tokens: [{ t: '        ', c: '' }, { t: 'return ', c: '#CF6EFF' }, { t: '"No real solutions"', c: '#4CAF50' }] },
-  { tokens: [{ t: '    x1 = (-b + discriminant**0.5) / (2*a)', c: '#333' }] },
-  { tokens: [{ t: '    x2 = (-b - discriminant**0.5) / (2*a)', c: '#333' }] },
-  { tokens: [{ t: '    ', c: '' }, { t: 'return ', c: '#CF6EFF' }, { t: 'x1, x2', c: '#E55' }] },
+  { tokens: [{ t: '    x1 = (-b + discriminant**0.5) / (2*a)', c: 'rgba(255,255,255,0.6)' }] },
+  { tokens: [{ t: '    x2 = (-b - discriminant**0.5) / (2*a)', c: 'rgba(255,255,255,0.6)' }] },
+  { tokens: [{ t: '    ', c: '' }, { t: 'return ', c: '#CF6EFF' }, { t: 'x1, x2', c: '#FF7070' }] },
 ];
-
-const CodeCard: React.FC<{ frame: number }> = ({ frame }) => {
-  const { fps } = useVideoConfig();
-  const cardS = spring({ frame, fps, config: { damping: 14, stiffness: 70 }, durationInFrames: 50 });
-  const tilt = interpolate(Math.sin(frame * 0.038), [-1, 1], [-1.2, 1.2]);
-
-  return (
-    <div style={{
-      position: 'absolute', left: '50%', top: '50%',
-      transform: `
-        translate(-50%, -50%)
-        translateY(${interpolate(cardS, [0, 1], [80, 0])}px)
-        rotate(${tilt}deg)
-        perspective(1200px) rotateX(3deg)
-      `,
-      opacity: cardS,
-    }}>
-      {/* Shadow */}
-      <div style={{
-        position: 'absolute', bottom: -30, left: '10%', width: '80%', height: 30,
-        background: 'radial-gradient(ellipse, rgba(0,0,0,0.12) 0%, transparent 70%)',
-        filter: 'blur(8px)',
-      }} />
-
-      <div style={{
-        width: 520,
-        background: '#1C1C2E',
-        borderRadius: 24,
-        boxShadow: '0 20px 60px rgba(0,0,0,0.20), 0 4px 12px rgba(0,0,0,0.12)',
-        overflow: 'hidden',
-      }}>
-        {/* Traffic lights header */}
-        <div style={{
-          padding: '14px 18px',
-          background: '#252538',
-          display: 'flex', alignItems: 'center', gap: 8,
-          borderBottom: '1px solid rgba(255,255,255,0.06)',
-        }}>
-          {['#FF5F56', '#FFBD2E', '#27C93F'].map((c, i) => (
-            <div key={i} style={{ width: 12, height: 12, borderRadius: '50%', background: c }} />
-          ))}
-          <div style={{
-            marginLeft: 12, fontSize: 12, color: 'rgba(255,255,255,0.35)',
-            fontFamily: '"SF Mono", "Fira Code", monospace',
-          }}>
-            quadratic_solver.py
-          </div>
-          <div style={{
-            marginLeft: 'auto',
-            fontSize: 11, color: '#4CAF50',
-            fontFamily: '"SF Mono", monospace',
-            background: 'rgba(76,175,80,0.12)',
-            padding: '2px 8px', borderRadius: 6,
-          }}>● Flux suggestions on</div>
-        </div>
-
-        {/* Code */}
-        <div style={{ padding: '20px 24px', fontFamily: '"SF Mono", "Fira Code", monospace' }}>
-          {CODE_LINES.map((line, li) => {
-            const lineDelay = li * 10 + 15;
-            const lineOpacity = interpolate(frame, [lineDelay, lineDelay + 15], [0, 1], {
-              extrapolateLeft: 'clamp', extrapolateRight: 'clamp',
-            });
-            const lineX = interpolate(frame, [lineDelay, lineDelay + 15], [10, 0], {
-              extrapolateLeft: 'clamp', extrapolateRight: 'clamp',
-            });
-            return (
-              <div key={li} style={{
-                display: 'flex', marginBottom: 4,
-                opacity: lineOpacity, transform: `translateX(${lineX}px)`,
-              }}>
-                <span style={{ color: 'rgba(255,255,255,0.18)', fontSize: 13, width: 28, userSelect: 'none' }}>
-                  {li + 1}
-                </span>
-                <span style={{ fontSize: 13, lineHeight: 1.7 }}>
-                  {line.tokens.map((tok, ti) => (
-                    <span key={ti} style={{ color: tok.c || '#cdd6f4' }}>{tok.t}</span>
-                  ))}
-                </span>
-              </div>
-            );
-          })}
-
-          {/* Flux inline suggestion */}
-          {frame > 95 && (
-            <div style={{
-              marginTop: 16, padding: '10px 14px',
-              background: 'rgba(91,140,255,0.1)',
-              border: '1px solid rgba(91,140,255,0.25)',
-              borderRadius: 10,
-              opacity: interpolate(frame, [95, 115], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }),
-            }}>
-              <div style={{ fontSize: 11, color: '#5B8CFF', fontWeight: 600, marginBottom: 4 }}>
-                ✦ Flux suggestion
-              </div>
-              <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.6)', lineHeight: 1.5 }}>
-                Add error handling for a=0 to avoid division by zero
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-};
 
 export const Scene3: React.FC = () => {
   const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
 
-  const textOpacity = interpolate(frame, [8, 30], [0, 1], { extrapolateRight: 'clamp' });
-  const textY = interpolate(frame, [8, 30], [20, 0], { extrapolateRight: 'clamp' });
-  const fadeOut = interpolate(frame, [155, 175], [1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+  // CAMERA: arc/orbit movement — pans right while tilting perspective
+  const camX = interpolate(frame, [0, 180], [60, -20], {
+    extrapolateRight: 'clamp',
+    easing: Easing.bezier(0.4, 0, 0.2, 1),
+  });
+  const camY = interpolate(frame, [0, 90, 180], [0, -15, 5], { extrapolateRight: 'clamp' });
+  const camScale = interpolate(frame, [0, 40, 180], [0.88, 1.02, 1.0], {
+    extrapolateRight: 'clamp',
+    easing: Easing.out(Easing.cubic),
+  });
+  const perspRot = interpolate(frame, [0, 180], [-4, 4], { extrapolateRight: 'clamp' });
+
+  const fadeIn = interpolate(frame, [0, 10], [0, 1], { extrapolateRight: 'clamp' });
+  const fadeOut = interpolate(frame, [158, 178], [1, 0], { extrapolateRight: 'clamp' });
+
+  const cardS = spring({ frame: frame - 4, fps, config: { damping: 15, stiffness: 75 }, durationInFrames: 45 });
+  const tilt = interpolate(Math.sin(frame * 0.038), [-1, 1], [-1.5, 1.5]);
+  const floatY = interpolate(Math.sin(frame * 0.05), [-1, 1], [-8, 8]);
+
+  const titleS = spring({ frame: frame - 2, fps, config: { damping: 20, stiffness: 100 }, durationInFrames: 28 });
+
+  const orbX = interpolate(Math.sin(frame * 0.03), [-1, 1], [-80, 80]);
 
   return (
-    <AbsoluteFill style={{ opacity: fadeOut }}>
-      <div style={{
-        position: 'absolute', top: 200, left: 0, right: 0,
-        textAlign: 'center',
-        opacity: textOpacity, transform: `translateY(${textY}px)`,
+    <AbsoluteFill style={{ opacity: Math.min(fadeIn, fadeOut) }}>
+      <AbsoluteFill style={{
+        transform: `scale(${camScale}) translate(${camX}px, ${camY}px) perspective(1800px) rotateY(${perspRot}deg)`,
       }}>
-        <div style={{ fontSize: 58, fontWeight: 700, color: '#111', letterSpacing: -1.5 }}>
-          Code smarter with{' '}
-          <span style={{ color: '#5B8CFF' }}>Flux Code.</span>
-        </div>
-        <div style={{ fontSize: 20, color: 'rgba(0,0,0,0.45)', marginTop: 12, fontWeight: 400 }}>
-          AI pair programming for every assignment
-        </div>
-      </div>
+        {/* Ambient */}
+        <div style={{
+          position: 'absolute', width: 700, height: 700, borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(91,140,255,0.12) 0%, transparent 60%)',
+          right: `calc(20% + ${orbX}px)`, top: '5%',
+          filter: 'blur(80px)',
+        }} />
 
-      <CodeCard frame={frame} />
+        {/* Left — headline */}
+        <div style={{
+          position: 'absolute', left: 110, top: '50%',
+          transform: `translateY(-50%) translateY(${interpolate(titleS, [0, 1], [28, 0])}px)`,
+          opacity: titleS, width: 380,
+        }}>
+          <div style={{ fontSize: 12, letterSpacing: 4, textTransform: 'uppercase', color: 'rgba(255,255,255,0.22)', marginBottom: 16 }}>
+            Flux Code
+          </div>
+          <div style={{ fontSize: 60, fontWeight: 800, letterSpacing: -2.5, lineHeight: 1.05, color: '#fff' }}>
+            Code smarter.{'\n'}
+            <span style={{
+              background: 'linear-gradient(120deg, #5B8CFF, #B06EFF)',
+              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+            }}>
+              Ship faster.
+            </span>
+          </div>
+          <div style={{
+            fontSize: 17, color: 'rgba(255,255,255,0.35)', marginTop: 18, lineHeight: 1.5,
+            opacity: interpolate(frame, [35, 55], [0, 1], { extrapolateRight: 'clamp' }),
+          }}>
+            AI pair programming. For every assignment.
+          </div>
+        </div>
+
+        {/* Right — code editor glass card */}
+        <div style={{
+          position: 'absolute', right: 90, top: '50%',
+          transform: `
+            translateY(calc(-50% + ${floatY}px))
+            rotate(${tilt}deg)
+            scale(${interpolate(cardS, [0, 1], [0.84, 1])})
+            perspective(1400px) rotateY(${interpolate(cardS, [0, 1], [14, 0])}deg)
+          `,
+          opacity: cardS,
+        }}>
+          <div style={{
+            position: 'absolute', bottom: -40, left: '10%', width: '80%', height: 40,
+            background: 'radial-gradient(ellipse, rgba(176,110,255,0.25) 0%, transparent 70%)',
+            filter: 'blur(18px)',
+          }} />
+
+          <div style={{
+            width: 480,
+            background: 'rgba(12,12,28,0.92)',
+            backdropFilter: 'blur(32px)',
+            WebkitBackdropFilter: 'blur(32px)',
+            borderRadius: 20,
+            border: '1px solid rgba(255,255,255,0.08)',
+            overflow: 'hidden',
+            boxShadow: '0 24px 64px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04)',
+          }}>
+            {/* Traffic lights */}
+            <div style={{
+              padding: '12px 16px',
+              background: 'rgba(255,255,255,0.03)',
+              borderBottom: '1px solid rgba(255,255,255,0.05)',
+              display: 'flex', alignItems: 'center', gap: 7,
+            }}>
+              {['#FF5F57', '#FEBC2E', '#28C840'].map((c, i) => (
+                <div key={i} style={{ width: 11, height: 11, borderRadius: '50%', background: c }} />
+              ))}
+              <div style={{
+                marginLeft: 10, fontSize: 11, color: 'rgba(255,255,255,0.28)',
+                fontFamily: 'monospace',
+              }}>quadratic_solver.py</div>
+              <div style={{
+                marginLeft: 'auto', fontSize: 10, color: '#4CAF50',
+                background: 'rgba(76,175,80,0.10)',
+                padding: '2px 8px', borderRadius: 5, fontFamily: 'monospace',
+              }}>● Flux on</div>
+            </div>
+
+            {/* Code */}
+            <div style={{ padding: '18px 20px', fontFamily: '"Fira Code", "SF Mono", monospace' }}>
+              {CODE_LINES.map((line, li) => {
+                const d = li * 10 + 12;
+                const op = interpolate(frame, [d, d + 14], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+                const x = interpolate(frame, [d, d + 14], [10, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+                return (
+                  <div key={li} style={{ display: 'flex', marginBottom: 4, opacity: op, transform: `translateX(${x}px)` }}>
+                    <span style={{ color: 'rgba(255,255,255,0.15)', fontSize: 12, width: 26, fontFamily: 'monospace', flexShrink: 0 }}>
+                      {li + 1}
+                    </span>
+                    <span style={{ fontSize: 12, lineHeight: 1.75 }}>
+                      {line.tokens.map((tok, ti) => (
+                        <span key={ti} style={{ color: tok.c || 'rgba(255,255,255,0.6)' }}>{tok.t}</span>
+                      ))}
+                    </span>
+                  </div>
+                );
+              })}
+
+              {/* Inline suggestion */}
+              {frame > 90 && (
+                <div style={{
+                  marginTop: 14, padding: '10px 14px',
+                  background: 'rgba(91,140,255,0.08)',
+                  border: '1px solid rgba(91,140,255,0.20)',
+                  borderRadius: 10,
+                  opacity: interpolate(frame, [90, 108], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }),
+                  transform: `translateY(${interpolate(
+                    interpolate(frame, [90, 108], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }),
+                    [0, 1], [8, 0]
+                  )}px)`,
+                }}>
+                  <div style={{ fontSize: 10, color: '#5B8CFF', fontWeight: 700, marginBottom: 5, letterSpacing: 1 }}>
+                    ✦ FLUX SUGGESTION
+                  </div>
+                  <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', lineHeight: 1.5, fontFamily: 'monospace' }}>
+                    Handle a=0 to avoid division by zero
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </AbsoluteFill>
     </AbsoluteFill>
   );
 };
